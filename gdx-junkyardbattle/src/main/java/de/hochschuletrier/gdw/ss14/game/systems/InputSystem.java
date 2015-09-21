@@ -5,6 +5,9 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import de.hochschuletrier.gdw.ss14.game.components.InputComponent;
+import de.hochschuletrier.gdw.ss14.game.input.InputAction;
+
 import java.util.LinkedList;
 
 /**
@@ -20,7 +23,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor {
     }
 
     public InputSystem(int priority){
-        super(Family.one(InputComponent.class),priority);
+        super(Family.one(InputComponent.class).get(),priority);
     }
 
     @Override
@@ -81,7 +84,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor {
         switch (button){
             case Input.Buttons.LEFT: actions.add(new InputAction("leftMBReleased", 1,screenX,screenY));
                 break;
-            case Input.Buttons.RIGHT: actions.add(new InputAction("rightMBReleased", 1 screenX, screenY));
+            case Input.Buttons.RIGHT: actions.add(new InputAction("rightMBReleased", 1, screenX, screenY));
                 break;
         }
         return true;
