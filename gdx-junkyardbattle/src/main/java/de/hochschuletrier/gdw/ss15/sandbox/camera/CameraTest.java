@@ -9,7 +9,8 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
-import de.hochschuletrier.gdw.commons.gdx.cameras.orthogonal.LimitedSmoothCamera;
+import de.hochschuletrier.gdw.commons.gdx.input.hotkey.Hotkey;
+import de.hochschuletrier.gdw.commons.gdx.input.hotkey.HotkeyModifier;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixBodyDef;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixFixtureDef;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
@@ -26,7 +27,6 @@ import de.hochschuletrier.gdw.commons.tiled.TiledMap;
 import de.hochschuletrier.gdw.commons.tiled.tmx.TmxImage;
 import de.hochschuletrier.gdw.commons.tiled.utils.RectangleGenerator;
 import de.hochschuletrier.gdw.commons.utils.Rectangle;
-import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.game.GameConstants;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.sandbox.SandboxGame;
@@ -45,6 +45,8 @@ public class CameraTest extends SandboxGame {
 
     private static final Logger logger = LoggerFactory.getLogger(MapTest.class);
 
+    private final Hotkey hkey = new Hotkey(this::addEntity, Input.Keys.E, HotkeyModifier.SHIFT);
+    
     public static final int POSITION_ITERATIONS = 3;
     public static final int VELOCITY_ITERATIONS = 8;
     public static final float STEP_SIZE = 1 / 30.0f;
@@ -60,7 +62,6 @@ public class CameraTest extends SandboxGame {
     );
     private final PhysixDebugRenderSystem physixDebugRenderSystem = new PhysixDebugRenderSystem(GameConstants.PRIORITY_DEBUG_WORLD);
     private final CameraSystem cameraSystem = new CameraSystem();
-    private final LimitedSmoothCamera camera = new LimitedSmoothCamera();
     private float totalMapWidth, totalMapHeight;
 
     private TiledMap map;
@@ -74,7 +75,6 @@ public class CameraTest extends SandboxGame {
         engine.addSystem(physixDebugRenderSystem);
     }
 
-    // UNNECCESARY CODE FOR CAMERA ---
     @Override
     public void init(AssetManagerX assetManager) {
         map = loadMap("data/maps/demo.tmx");
@@ -92,12 +92,11 @@ public class CameraTest extends SandboxGame {
         generator.generate(map,
                 (Layer layer, TileInfo info) -> info.getBooleanProperty("blocked", false),
                 (Rectangle rect) -> addShape(rect, tileWidth, tileHeight));
-    // --- UNNECCESARY CODE FOR CAMERA
         
         // create a simple player ball
         Entity player = engine.createEntity();
         
-        // PlayerComponent
+        // Registering Entity components
         PlayerComponent playerComponent = engine.createComponent(PlayerComponent.class);
         player.add(playerComponent);
         
@@ -116,15 +115,11 @@ public class CameraTest extends SandboxGame {
             player.add(playerBody);
         });
         engine.addEntity(player);
-
+        hkey.register();
         
-        // Setup camera
-        camera.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         totalMapWidth = map.getWidth() * map.getTileWidth();
         totalMapHeight = map.getHeight() * map.getTileHeight();
         cameraSystem.setCameraBounds(0, 0, totalMapWidth, totalMapHeight);
-        camera.updateForced();
-        Main.getInstance().addScreenListener(camera);
     }
 
     private void addShape(Rectangle rect, int tileWidth, int tileHeight) {
@@ -141,7 +136,8 @@ public class CameraTest extends SandboxGame {
 
     @Override
     public void dispose() {
-        Main.getInstance().removeScreenListener(camera);
+        hkey.unregister();
+        cameraSystem.dispose();
         tilesetImages.values().forEach(Texture::dispose);
     }
 
@@ -156,17 +152,19 @@ public class CameraTest extends SandboxGame {
 
     @Override
     public void update(float delta) {
-        //camera.bind();
+    
+        // TODO: andere Implementierung? Bind woander aufrufen? z.B. innerhalb der CameraSystem-Klasse?        
+        cameraSystem.bind();
+        
         for (Layer layer : map.getLayers()) {
             mapRenderer.render(0, 0, layer);
         }
-        engine.update(delta);
         
+        engine.update(delta);        
         mapRenderer.update(delta);
-        //camera.update(delta);
 
         if(playerBody != null) {
-            float speed = 10000.0f;
+            float speed = 30000.0f;
             float velX = 0, velY = 0;
             if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
                 velX -= delta * speed;
@@ -181,8 +179,19 @@ public class CameraTest extends SandboxGame {
                 velY += delta * speed;
             }
 
+            PositionComponent posComp = playerBody.getEntity().getComponent(PositionComponent.class);
+            posComp.x = playerBody.getX();
+            posComp.y = playerBody.getY();
+            
             playerBody.setLinearVelocity(velX, velY);
-            camera.setDestination(playerBody.getPosition());
         }
     }
+    
+    private void addEntity(){
+        Entity newEnt = new Entity();
+        engine.addEntity(newEnt);
+        newEnt.add(new PlayerComponent());
+        logger.debug("added new entity");
+    }
+    
 }

@@ -8,32 +8,32 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntityListener;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
-import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.math.Vector2;
 
-import de.hochschuletrier.gdw.commons.gdx.cameras.orthogonal.AbstractCamera;
 import de.hochschuletrier.gdw.commons.gdx.cameras.orthogonal.LimitedSmoothCamera;
-import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
+import de.hochschuletrier.gdw.commons.utils.Assert;
 import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
-import de.hochschuletrier.gdw.ss15.game.components.AnimationComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 
 public class CameraSystem extends EntitySystem implements EntityListener {
 
-    private LimitedSmoothCamera camera = new LimitedSmoothCamera();
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private LimitedSmoothCamera camera = new LimitedSmoothCamera();
+    
     private Entity player;
-    private Vector2 playerPos = new Vector2();
+    // TODO: fehlenden Player handlen?
         
     public CameraSystem() {
-        // TODO Auto-generated constructor stub
+        // Resizing Camera to match window dimensions
         camera.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-        camera.setBounds(0, 0, 200, 200);
-        camera.updateForced();
+        // Registering camering for resize-Events
         Main.getInstance().addScreenListener(camera);
+        camera.updateForced();
+    }
+    
+    public void bind(){
+        camera.bind();
     }
     
     public final LimitedSmoothCamera getCamera(){
@@ -41,37 +41,46 @@ public class CameraSystem extends EntitySystem implements EntityListener {
     }
     
     public void setCameraBounds(float minX, float minY, float maxX, float maxY){
+        // Set Camera Bounds to a matching region (e.g. map size)
         camera.setBounds(minX, minY, maxX, maxY);
-    }    
+        camera.updateForced();
+    }
     
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
-        camera.bind();
+        // TODO: Update der Superklasse ohne Effekt?
         camera.update(deltaTime);
 
-        //PositionComponent pcomp = ComponentMappers.position.get(player);
-        PhysixBodyComponent pcomp = ComponentMappers.physixBody.get(player);
-        if(pcomp != null){
-            playerPos.set(pcomp.getPosition());
-            logger.debug("New Player pos: {} | {}", pcomp.getX(), pcomp.getY());
+        PositionComponent posComp = ComponentMappers.position.get(player);
+        if(posComp != null){
+            camera.setDestination(posComp.x, posComp.y);  
         }
-        camera.setDestination(playerPos);    
+        
     }
 
     @Override
     public void entityAdded(Entity entity) {
-        logger.debug("Entity with PlayerComp added");
-        player = entity;
-    }
-
-    @Override
-    public void entityRemoved(Entity entity) {        
+        logger.debug("Entity with PlayerComponent added to Engine!");
+        Assert.that(player == null, "Only one Entity with PlayerComponent allowed at same time!");
+        if(entity != null){
+            player = entity;    
+        }
     }
 
     @Override
     public void addedToEngine(Engine engine) {
+        @SuppressWarnings("unchecked")
         Family family = Family.all(PlayerComponent.class).get();
         engine.addEntityListener(family, this);
     }
+    
+    @Override
+    public void entityRemoved(Entity entity) {}
+    
+    // TODO: Abmeldung des Listeners benötigt? Wenn ja, dann hier mit custom dispose-Methode?
+    public void dispose(){
+        Main.getInstance().removeScreenListener(camera);
+    }
+    
 }
