@@ -14,4 +14,8 @@ public class ComponentMappers {
     public static final ComponentMapper<HealthComponent> health = ComponentMapper.getFor(HealthComponent.class);
     public static final ComponentMapper<DamageComponent> damage = ComponentMapper.getFor(DamageComponent.class);
     public static final ComponentMapper<DeathComponent> death = ComponentMapper.getFor(DeathComponent.class);
+    public static final ComponentMapper<BulletComponent> bullet = ComponentMapper.getFor(BulletComponent.class);
+    public static final ComponentMapper<MetalComponent> metal = ComponentMapper.getFor(MetalComponent.class);
+    public static final ComponentMapper<MoveComponent> move = ComponentMapper.getFor(MoveComponent.class);
+    public static final ComponentMapper<PlayerComponent> player = ComponentMapper.getFor(PlayerComponent.class);
 }
