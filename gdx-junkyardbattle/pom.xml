@@ -10,11 +10,11 @@
     </parent>
 
     <groupId>de.hochschuletrier.gdw</groupId>
-    <artifactId>gdx-test</artifactId>
+    <artifactId>gdx-junkyardbattle</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>GDX-Test</name>
+    <name>GDX-Junkyardbattle</name>
     
     <dependencies>
         <dependency>
@@ -91,7 +91,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>de.hochschuletrier.gdw.ss14.Main</mainClass>
+                            <mainClass>de.hochschuletrier.gdw.ss15.Main</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
