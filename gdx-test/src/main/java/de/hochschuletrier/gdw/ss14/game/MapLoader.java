@@ -9,6 +9,7 @@ import com.badlogic.ashley.core.Entity;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.commons.tiled.Layer;
 import de.hochschuletrier.gdw.commons.tiled.LayerObject;
+import de.hochschuletrier.gdw.commons.tiled.TileInfo;
 import de.hochschuletrier.gdw.commons.tiled.TiledMap;
 
 /**
@@ -60,6 +61,8 @@ public class MapLoader
      */     
     private void loadObjectsFromMap(Game game,TiledMap tiledMap)
     {
+        int mapWidth = tiledMap.getWidth();
+        int mapHeight = tiledMap.getHeight();
         /// fuer alles Layers 
         for (Layer layer : tiledMap.getLayers() )
         {
@@ -67,12 +70,13 @@ public class MapLoader
             {   /// Objects
                 for( LayerObject obj : layer.getObjects() )
                 {
+                    
                     Entity resultEnt;
                     String objectName = obj.getName();
                     float xPos = obj.getX();
                     float yPos = obj.getY();
                     resultEnt = game.createEntity(objectName, xPos, yPos);
-                    
+
                     
                     Consumer<MapSpecialEntities.CreatorInfo> creator = MapSpecialEntities.specialEntities.get( objectName );
                     if ( creator != null )
@@ -83,6 +87,14 @@ public class MapLoader
             } else
             {   /// Tiles
                 // Objekte laden die fest in der tiledMap sind
+                TileInfo[][] tiles = layer.getTiles();
+                for( int x = 0; x < mapWidth; x++ )
+                {
+                    for( int y = 0; y < mapHeight; y++ )
+                    {
+                        TileInfo tileInfo = tiles[x][y];
+                    }
+                }
             }
         }
     }
