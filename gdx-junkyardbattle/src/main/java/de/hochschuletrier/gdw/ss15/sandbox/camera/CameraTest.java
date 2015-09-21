@@ -122,7 +122,7 @@ public class CameraTest extends SandboxGame {
         camera.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         totalMapWidth = map.getWidth() * map.getTileWidth();
         totalMapHeight = map.getHeight() * map.getTileHeight();
-        cameraSystem.setCameraBounds(totalMapWidth, totalMapHeight);
+        cameraSystem.setCameraBounds(0, 0, totalMapWidth, totalMapHeight);
         camera.updateForced();
         Main.getInstance().addScreenListener(camera);
     }

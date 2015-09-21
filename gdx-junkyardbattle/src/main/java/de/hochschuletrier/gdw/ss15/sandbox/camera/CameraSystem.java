@@ -36,12 +36,12 @@ public class CameraSystem extends EntitySystem implements EntityListener {
         Main.getInstance().addScreenListener(camera);
     }
     
-    public final AbstractCamera getCamera(){
+    public final LimitedSmoothCamera getCamera(){
         return camera;
     }
     
-    public void setCameraBounds(float x, float y){
-        camera.setBounds(0, 0, x, y);
+    public void setCameraBounds(float minX, float minY, float maxX, float maxY){
+        camera.setBounds(minX, minY, maxX, maxY);
     }    
     
     @Override

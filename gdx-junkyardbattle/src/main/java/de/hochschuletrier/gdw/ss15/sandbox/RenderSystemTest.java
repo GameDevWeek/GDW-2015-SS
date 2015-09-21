@@ -1,13 +1,18 @@
 package de.hochschuletrier.gdw.ss15.sandbox;
 
+import box2dLight.PointLight;
+import box2dLight.RayHandler;
+
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.cameras.orthogonal.LimitedSmoothCamera;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixBodyDef;
@@ -28,8 +33,16 @@ import de.hochschuletrier.gdw.commons.tiled.utils.RectangleGenerator;
 import de.hochschuletrier.gdw.commons.utils.Rectangle;
 import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.game.GameConstants;
+import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
+import de.hochschuletrier.gdw.ss15.game.components.light.PointLightComponent;
+import de.hochschuletrier.gdw.ss15.game.systems.RenderSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ss15.sandbox.SandboxGame;
+import de.hochschuletrier.gdw.ss15.sandbox.camera.CameraSystem;
+import de.hochschuletrier.gdw.ss15.sandbox.camera.PlayerComponent;
+
 import java.util.HashMap;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,7 +68,10 @@ public class RenderSystemTest extends SandboxGame {
             GameConstants.VELOCITY_ITERATIONS, GameConstants.POSITION_ITERATIONS, GameConstants.PRIORITY_PHYSIX
     );
     private final PhysixDebugRenderSystem physixDebugRenderSystem = new PhysixDebugRenderSystem(GameConstants.PRIORITY_DEBUG_WORLD);
-    private final LimitedSmoothCamera camera = new LimitedSmoothCamera();
+    private final CameraSystem cameraSystem = new CameraSystem();
+    private final RenderSystem renderSystem = new RenderSystem(new RayHandler(physixSystem.getWorld()),
+            GameConstants.PRIORITY_RENDER_SYSTEM, cameraSystem.getCamera().getOrthographicCamera());
+    private final UpdatePositionSystem updatePosSystem = new UpdatePositionSystem();
     private float totalMapWidth, totalMapHeight;
 
     private TiledMap map;
@@ -66,6 +82,22 @@ public class RenderSystemTest extends SandboxGame {
     public RenderSystemTest() {
         engine.addSystem(physixSystem);
         engine.addSystem(physixDebugRenderSystem);
+        engine.addSystem(cameraSystem);
+        engine.addSystem(renderSystem);
+        engine.addSystem(updatePosSystem);
+    }
+    
+    private PointLightComponent pointLight(float x, float y, Color color, float distance, float offsetX, float offsetY, boolean isStatic, boolean active) {
+        PointLightComponent pointLightComponent = engine.createComponent(PointLightComponent.class);
+
+        pointLightComponent.pointLight = new PointLight(engine.getSystem(RenderSystem.class).getRayHandler(), 
+                GameConstants.LIGHT_RAYS, color, distance, 0.f, 0.f);
+        pointLightComponent.pointLight.setPosition(x, y);
+        pointLightComponent.pointLight.setActive(active);
+        pointLightComponent.offsetX = offsetX;
+        pointLightComponent.offsetY = offsetY;
+        
+        return pointLightComponent;
     }
 
     @Override
@@ -91,6 +123,11 @@ public class RenderSystemTest extends SandboxGame {
         PhysixModifierComponent modifyComponent = engine.createComponent(PhysixModifierComponent.class);
         player.add(modifyComponent);
 
+        PositionComponent posComponent = engine.createComponent(PositionComponent.class);
+        player.add(posComponent);
+        
+        player.add(engine.createComponent(PlayerComponent.class));
+        
         modifyComponent.schedule(() -> {
             playerBody = engine.createComponent(PhysixBodyComponent.class);
             PhysixBodyDef bodyDef = new PhysixBodyDef(BodyType.DynamicBody, physixSystem).position(100, 100).fixedRotation(true);
@@ -101,13 +138,16 @@ public class RenderSystemTest extends SandboxGame {
         });
         engine.addEntity(player);
 
+        Entity pointLight = engine.createEntity();
+        pointLight.add(engine.createComponent(PositionComponent.class));
+        pointLight.add(pointLight(0.f, 0.f, Color.RED, 10.f, 0.f, 0.f, true, true));
+        engine.addEntity(pointLight);
+        
         // Setup camera
-        camera.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         totalMapWidth = map.getWidth() * map.getTileWidth();
         totalMapHeight = map.getHeight() * map.getTileHeight();
-        camera.setBounds(0, 0, totalMapWidth, totalMapHeight);
-        camera.updateForced();
-        Main.getInstance().addScreenListener(camera);
+        cameraSystem.setCameraBounds(0, 0, totalMapWidth, totalMapHeight);
+        Main.getInstance().addScreenListener(cameraSystem.getCamera());
     }
 
     private void addShape(Rectangle rect, int tileWidth, int tileHeight) {
@@ -124,7 +164,7 @@ public class RenderSystemTest extends SandboxGame {
 
     @Override
     public void dispose() {
-        Main.getInstance().removeScreenListener(camera);
+        Main.getInstance().removeScreenListener(cameraSystem.getCamera());
         tilesetImages.values().forEach(Texture::dispose);
     }
 
@@ -139,14 +179,14 @@ public class RenderSystemTest extends SandboxGame {
 
     @Override
     public void update(float delta) {
-        camera.bind();
+        cameraSystem.getCamera().bind();
         for (Layer layer : map.getLayers()) {
             mapRenderer.render(0, 0, layer);
         }
         engine.update(delta);
         
         mapRenderer.update(delta);
-        camera.update(delta);
+        cameraSystem.getCamera().update(delta);
 
         if(playerBody != null) {
             float speed = 10000.0f;
@@ -165,7 +205,6 @@ public class RenderSystemTest extends SandboxGame {
             }
 
             playerBody.setLinearVelocity(velX, velY);
-            camera.setDestination(playerBody.getPosition());
         }
     }
 }
