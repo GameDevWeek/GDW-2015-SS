@@ -1,4 +1,4 @@
-package gdwNetwork.basic;
+package de.hochschuletrier.gdw.ss14.networktest.gdwNetwork.basic;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

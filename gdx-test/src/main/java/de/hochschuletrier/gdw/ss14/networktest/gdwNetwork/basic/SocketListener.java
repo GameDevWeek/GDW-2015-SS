@@ -1,6 +1,6 @@
-package gdwNetwork.basic;
+package de.hochschuletrier.gdw.ss14.networktest.gdwNetwork.basic;
 
-import gdwNetwork.data.Packet;
+import de.hochschuletrier.gdw.ss14.networktest.gdwNetwork.data.*;
 
 public interface SocketListener
 {

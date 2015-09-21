@@ -1,7 +1,9 @@
-package gdwNetwork.tools;
+package de.hochschuletrier.gdw.ss14.networktest.gdwNetwork.tools;
 
-import gdwNetwork.basic.UdpData;
-import gdwNetwork.basic.UdpSocket;
+import de.hochschuletrier.gdw.ss14.networktest.gdwNetwork.data.*;
+import de.hochschuletrier.gdw.ss14.networktest.gdwNetwork.enums.*;
+import de.hochschuletrier.gdw.ss14.networktest.gdwNetwork.basic.*;
+import de.hochschuletrier.gdw.ss14.networktest.gdwNetwork.tools.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

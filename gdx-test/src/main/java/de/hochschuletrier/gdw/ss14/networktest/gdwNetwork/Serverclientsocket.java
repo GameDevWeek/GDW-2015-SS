@@ -1,4 +1,4 @@
-package gdwNetwork;
+package de.hochschuletrier.gdw.ss14.networktest.gdwNetwork;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -6,17 +6,10 @@ import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.LinkedList;
 
-import gdwNetwork.basic.BaseClient;
-import gdwNetwork.basic.UdpData;
-import gdwNetwork.basic.UdpSocket;
-import gdwNetwork.data.Packet;
-import gdwNetwork.enums.SaveSocketFlag;
-import gdwNetwork.enums.Sockettypes;
-import gdwNetwork.enums.UnsaveSocketFlag;
-import gdwNetwork.tools.DisconnectHandler;
-import gdwNetwork.tools.MyTimer;
-import gdwNetwork.tools.ReliablePackethandler;
-import gdwNetwork.tools.Tools;
+import de.hochschuletrier.gdw.ss14.networktest.gdwNetwork.data.*;
+import de.hochschuletrier.gdw.ss14.networktest.gdwNetwork.enums.*;
+import de.hochschuletrier.gdw.ss14.networktest.gdwNetwork.basic.*;
+import de.hochschuletrier.gdw.ss14.networktest.gdwNetwork.tools.*;
 
 public class Serverclientsocket extends BaseClient
 {

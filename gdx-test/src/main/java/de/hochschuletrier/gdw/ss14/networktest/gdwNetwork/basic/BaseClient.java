@@ -1,14 +1,9 @@
-package gdwNetwork.basic;
+package de.hochschuletrier.gdw.ss14.networktest.gdwNetwork.basic;
 
-import gdwNetwork.data.Packet;
-import gdwNetwork.data.PacketFactory;
-import gdwNetwork.enums.Sockettypes;
-import gdwNetwork.enums.UnsaveSocketFlag;
-import gdwNetwork.tools.DisconnectHandler;
-import gdwNetwork.tools.HolderSocketDisconnectListener;
-import gdwNetwork.tools.HolderSocketListener;
-import gdwNetwork.tools.ReliablePackethandler;
-import gdwNetwork.tools.Tools;
+import de.hochschuletrier.gdw.ss14.networktest.gdwNetwork.data.*;
+import de.hochschuletrier.gdw.ss14.networktest.gdwNetwork.enums.*;
+import de.hochschuletrier.gdw.ss14.networktest.gdwNetwork.basic.*;
+import de.hochschuletrier.gdw.ss14.networktest.gdwNetwork.tools.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

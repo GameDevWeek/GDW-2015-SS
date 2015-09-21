@@ -1,4 +1,4 @@
-package gdwNetwork.tools;
+package de.hochschuletrier.gdw.ss14.networktest.gdwNetwork.tools;
 
 public class MyTimer
 {

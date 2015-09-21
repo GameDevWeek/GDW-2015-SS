@@ -1,4 +1,4 @@
-package gdwNetwork.data;
+package de.hochschuletrier.gdw.ss14.networktest.gdwNetwork.data;
 
 import java.util.HashMap;
 

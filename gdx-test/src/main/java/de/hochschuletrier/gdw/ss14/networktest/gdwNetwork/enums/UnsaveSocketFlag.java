@@ -1,4 +1,4 @@
-package gdwNetwork.enums;
+package de.hochschuletrier.gdw.ss14.networktest.gdwNetwork.enums;
 
 public enum UnsaveSocketFlag
 {

@@ -1,4 +1,4 @@
-package gdwNetwork;
+package de.hochschuletrier.gdw.ss14.networktest.gdwNetwork;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
@@ -14,13 +14,10 @@ import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import gdwNetwork.basic.UdpData;
-import gdwNetwork.basic.UdpSocket;
-import gdwNetwork.data.Packet;
-import gdwNetwork.enums.Sockettypes;
-import gdwNetwork.enums.UnsaveSocketFlag;
-import gdwNetwork.tools.MyTimer;
-import gdwNetwork.tools.Tools;
+import de.hochschuletrier.gdw.ss14.networktest.gdwNetwork.data.*;
+import de.hochschuletrier.gdw.ss14.networktest.gdwNetwork.enums.*;
+import de.hochschuletrier.gdw.ss14.networktest.gdwNetwork.basic.*;
+import de.hochschuletrier.gdw.ss14.networktest.gdwNetwork.tools.*;
 
 public class Serversocket implements Closeable
 {

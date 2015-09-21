@@ -1,6 +1,9 @@
-package gdwNetwork.tools;
+package de.hochschuletrier.gdw.ss14.networktest.gdwNetwork.tools;
 
-import gdwNetwork.basic.SocketDisconnectListener;
+import de.hochschuletrier.gdw.ss14.networktest.gdwNetwork.data.*;
+import de.hochschuletrier.gdw.ss14.networktest.gdwNetwork.enums.*;
+import de.hochschuletrier.gdw.ss14.networktest.gdwNetwork.basic.*;
+import de.hochschuletrier.gdw.ss14.networktest.gdwNetwork.tools.*;
 
 import java.lang.ref.WeakReference;
 
