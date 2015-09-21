@@ -31,6 +31,7 @@ import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.ImpactSoundListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.TriggerListener;
 import de.hochschuletrier.gdw.ss15.game.systems.AnimationRenderSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.TextureSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ss15.game.utils.PhysixUtil;
 import java.util.function.Consumer;
@@ -77,6 +78,7 @@ public class Game extends InputAdapter {
     }
 
     private void addSystems() {
+        engine.addSystem(new TextureSystem());
         engine.addSystem(physixSystem);
         engine.addSystem(physixDebugRenderSystem);
         engine.addSystem(animationRenderSystem);

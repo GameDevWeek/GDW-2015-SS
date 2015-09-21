@@ -22,6 +22,8 @@ public class TextureComponent extends Component implements Pool.Poolable{
     public int srcY;
     public float scaleX;
     public float scaleY;
+    public boolean flipX;
+    public boolean flipY;
     public int layer;
     
     @Override
@@ -33,5 +35,7 @@ public class TextureComponent extends Component implements Pool.Poolable{
         srcY = 0;
         scaleX = 1;
         scaleY = 1;
+        flipX = false;
+        flipY = false;
     }
 }

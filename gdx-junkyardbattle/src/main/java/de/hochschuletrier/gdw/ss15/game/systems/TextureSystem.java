@@ -38,18 +38,24 @@ public class TextureSystem extends EntitySystem{
         for (Entity entity : entities) {
             TextureComponent texture = ComponentMappers.texture.get(entity);
             PositionComponent position = ComponentMappers.position.get(entity);
-            
-            DrawUtil.draw(
+
+            DrawUtil.batch.draw(
                     texture.texture, 
-                    position.x - texture.width * 0.5f, 
-                    position.y - texture.height * 0.5f, 
-                    texture.srcX, 
-                    texture.srcY, 
+                    position.x - (float)texture.width * 0.5f, 
+                    position.y - (float)texture.height * 0.5f, 
+                    (float)texture.width * 0.5f,
+                    (float)texture.height * 0.5f,
                     texture.width, 
-                    texture.height, 
+                    texture.height,
                     texture.scaleX, 
                     texture.scaleY, 
-                    position.rotation
+                    position.rotation,
+                    texture.srcX, 
+                    texture.srcY,
+                    texture.width,
+                    texture.height,
+                    false,
+                    false
             );
         }
     }
