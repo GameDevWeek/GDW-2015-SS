@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.ComponentMapper;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.*;
 import de.hochschuletrier.gdw.ss15.game.components.*;
 import de.hochschuletrier.gdw.ss15.game.components.animation.AnimatorComponent;
+import de.hochschuletrier.gdw.ss15.game.components.texture.TextureComponent;
 
 public class ComponentMappers {
     public static final ComponentMapper<PositionComponent> position = ComponentMapper.getFor(PositionComponent.class);
@@ -13,4 +14,5 @@ public class ComponentMappers {
     public static final ComponentMapper<ImpactSoundComponent> impactSound = ComponentMapper.getFor(ImpactSoundComponent.class);
     public static final ComponentMapper<AnimationComponent> animation = ComponentMapper.getFor(AnimationComponent.class);
     public static final ComponentMapper<AnimatorComponent> animator = ComponentMapper.getFor(AnimatorComponent.class);
+    public static final ComponentMapper<TextureComponent> texture = ComponentMapper.getFor(TextureComponent.class);
 }

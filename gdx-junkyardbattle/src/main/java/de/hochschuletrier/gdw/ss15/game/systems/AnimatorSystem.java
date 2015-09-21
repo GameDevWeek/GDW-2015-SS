@@ -14,7 +14,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import de.hochschuletrier.gdw.commons.gdx.ashley.SortedSubIteratingSystem;
 import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
-import de.hochschuletrier.gdw.ss15.game.components.AnimationComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.components.animation.AnimatorComponent;
 import java.util.ArrayList;
