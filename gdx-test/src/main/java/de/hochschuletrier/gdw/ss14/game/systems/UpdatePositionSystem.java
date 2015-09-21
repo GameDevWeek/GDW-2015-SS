@@ -7,9 +7,11 @@ import com.badlogic.gdx.math.MathUtils;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.ss14.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss14.game.components.PositionComponent;
+import de.hochschuletrier.gdw.ss14.game.input.PlayerInputManager;
 
 public class UpdatePositionSystem extends IteratingSystem {
 
+    PlayerInputManager inputManager;
     public UpdatePositionSystem() {
         this(0);
     }
