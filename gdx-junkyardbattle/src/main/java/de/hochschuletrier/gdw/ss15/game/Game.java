@@ -139,7 +139,7 @@ public class Game extends InputAdapter {
     }
 
     public Entity createEntity(String name, float x, float y) {
-        factoryParam.game = this;
+        //factoryParam.game = this;
         factoryParam.x = x;
         factoryParam.y = y;
         Entity entity = entityFactory.createEntity(name, factoryParam);

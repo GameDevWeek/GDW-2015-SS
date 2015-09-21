@@ -49,11 +49,11 @@ public class ClientConnection implements SocketConnectListener {
     {
         if(clientSocket!=null) {
             clientSocket.callListeners();
-        }
-        if(clientSocket.isConnected())
-        {
-            clientSocket.close();
-            clientSocket=null;
+            if(clientSocket.isConnected())
+            {
+                clientSocket.close();
+                clientSocket=null;
+            }
         }
     }
 

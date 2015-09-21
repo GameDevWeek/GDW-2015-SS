@@ -129,6 +129,7 @@ public class Main extends StateBasedGame {
         loadAssetLists();
         setupGdx();
         SoundInstance.init();
+        clientConnection.init();
 
         consoleSkin = new Skin(Gdx.files.internal("data/skins/basic.json"));
         consoleView.init(consoleSkin);
@@ -144,7 +145,6 @@ public class Main extends StateBasedGame {
         this.console.register(emitterMode);
         emitterMode.addListener(this::onEmitterModeChanged);
 
-        clientConnection.init();
     }
 
     private void onLoadComplete() {
