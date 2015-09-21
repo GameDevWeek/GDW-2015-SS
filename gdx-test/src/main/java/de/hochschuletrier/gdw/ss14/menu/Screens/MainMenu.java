@@ -1,12 +1,51 @@
 package de.hochschuletrier.gdw.ss14.menu.Screens;
 
-import org.lwjgl.opengl.XRandR.Screen;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 
-public class MainMenu extends Screen {
+public class MainMenu implements Screen {
 
-	MainMenu(String name, int width, int height, int freq, int xPos, int yPos) {
-		super(name, width, height, freq, xPos, yPos);
-		// TODO Auto-generated constructor stub
+	@Override
+	public void show() {
+		// TODO Auto-generated method stub
+		
 	}
+
+	@Override
+	public void render(float delta) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void resize(int width, int height) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void pause() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void resume() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void hide() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void dispose() {
+		// TODO Auto-generated method stub
+		
+	}
+
 
 }
