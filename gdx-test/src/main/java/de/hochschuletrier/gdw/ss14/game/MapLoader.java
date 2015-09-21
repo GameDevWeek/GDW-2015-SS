@@ -1,4 +1,7 @@
-package de.hochschuletrier.gdw.ss14.sandbox.maptest;
+package de.hochschuletrier.gdw.ss14.game;
+
+import java.util.HashMap;
+import java.util.function.Consumer;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
@@ -7,22 +10,27 @@ import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.commons.tiled.Layer;
 import de.hochschuletrier.gdw.commons.tiled.LayerObject;
 import de.hochschuletrier.gdw.commons.tiled.TiledMap;
-import de.hochschuletrier.gdw.ss14.game.Game;
 
 /**
  * 
- * @author Tobias Gepp
+ * @author tobidot (Tobias Gepp)
  *
  */
 
 
 public class MapLoader
 {    
+    private TiledMap tiledMap;
     /**
      * Standard Konstruktor
      */
     public MapLoader()
     {
+    }
+    
+    public TiledMap getTiledMap()
+    {
+        return tiledMap;
     }
 
     /**
@@ -32,7 +40,6 @@ public class MapLoader
      */
     public void run(Game game, String filename)
     {     
-        TiledMap tiledMap;
         /// Datei auslesen und in tiledMap packen
         try
         {
@@ -44,7 +51,6 @@ public class MapLoader
         
         /// Objekte aus tiledMap laden und per Entitycreator im Game erstellen 
         loadObjectsFromMap( game,tiledMap );
-        
     }
 
     /** 
@@ -68,17 +74,11 @@ public class MapLoader
                     resultEnt = game.createEntity(objectName, xPos, yPos);
                     
                     
-                    // Einwaende vorhanden moeglicherweise durch Listener ersetzen 
-                    switch( objectName )
-                    {
-                    //
-                    case "Dummy":  // ein Object zum testen
-                        loadEntityDummy( resultEnt,obj );
-                        break;
-                    default:    
-                        /// nichts tun da einfache Objekte per 'createEntity' bereits vollstaendig erstellt werden
-                        break;
-                    }
+                    Consumer<MapSpecialEntities.CreatorInfo> creator = MapSpecialEntities.specialEntities.get( objectName );
+                    if ( creator != null )
+                    {   /// eine Spezialbehandlung gefunden
+                        creator.accept( new MapSpecialEntities.CreatorInfo(resultEnt,obj) );
+                    }                        
                 }
             } else
             {   /// Tiles
@@ -87,26 +87,4 @@ public class MapLoader
         }
     }
     
-    /**
-     * Lade die Entity 'Dummy'
-     * Dummy besitzt KEINE Components 
-     * @param name
-     * @param x
-     * @param y
-     * @param obj
-     * @return
-     */
-    private Entity loadEntityDummy( Entity ent, LayerObject obj)
-    { 
-        /*
-        // eine Componente herraussuchen und mit den Richtigen Werten besetzen 
-        TestComponent body = ComponentMapper.test.get( ent );
-        if ( test != null )
-        {
-            boolean flag = obj.getBooleanProperty("TestFlag", false);
-            body.flag = flag;
-        }
-        */
-        return ent;
-    }
 }
