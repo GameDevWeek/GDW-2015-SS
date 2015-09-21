@@ -8,6 +8,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+
+import de.hochschuletrier.gdw.commons.devcon.cvar.CVar;
+import de.hochschuletrier.gdw.commons.devcon.cvar.CVarFloat;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.input.hotkey.Hotkey;
 import de.hochschuletrier.gdw.commons.gdx.input.hotkey.HotkeyModifier;
@@ -27,12 +30,14 @@ import de.hochschuletrier.gdw.commons.tiled.TiledMap;
 import de.hochschuletrier.gdw.commons.tiled.tmx.TmxImage;
 import de.hochschuletrier.gdw.commons.tiled.utils.RectangleGenerator;
 import de.hochschuletrier.gdw.commons.utils.Rectangle;
+import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.game.GameConstants;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.sandbox.SandboxGame;
 import de.hochschuletrier.gdw.ss15.sandbox.maptest.MapTest;
 
 import java.util.HashMap;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,6 +51,7 @@ public class CameraTest extends SandboxGame {
     private static final Logger logger = LoggerFactory.getLogger(MapTest.class);
 
     private final Hotkey hkey = new Hotkey(this::addEntity, Input.Keys.E, HotkeyModifier.SHIFT);
+    private CVarFloat followFactor = new CVarFloat("camFollow", 1.0f, 0.25f, 30.f, 0, "Camera spring dist factor");
     
     public static final int POSITION_ITERATIONS = 3;
     public static final int VELOCITY_ITERATIONS = 8;
@@ -120,6 +126,13 @@ public class CameraTest extends SandboxGame {
         totalMapWidth = map.getWidth() * map.getTileWidth();
         totalMapHeight = map.getHeight() * map.getTileHeight();
         cameraSystem.setCameraBounds(0, 0, totalMapWidth, totalMapHeight);
+        
+        followFactor.addListener((CVar cvar)-> {
+            cameraSystem.getCamera().setSpringFollowFactor(followFactor.get());
+        });
+        
+        Main.getInstance().console.register(followFactor);
+        
     }
 
     private void addShape(Rectangle rect, int tileWidth, int tileHeight) {

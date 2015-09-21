@@ -11,7 +11,4 @@ public class PlayerComponent extends Component implements Poolable {
     public void reset() {
         placeholder = 0;
     }
-
-    
-    
 }

@@ -1,8 +1,5 @@
 package de.hochschuletrier.gdw.ss15.sandbox.camera;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntityListener;
@@ -10,7 +7,6 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.Gdx;
 
-import de.hochschuletrier.gdw.commons.gdx.cameras.orthogonal.LimitedSmoothCamera;
 import de.hochschuletrier.gdw.commons.utils.Assert;
 import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
@@ -18,8 +14,7 @@ import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 
 public class CameraSystem extends EntitySystem implements EntityListener {
 
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    private LimitedSmoothCamera camera = new LimitedSmoothCamera();
+    private BoundedCamera camera = new BoundedCamera();
     
     private Entity player;
     // TODO: fehlenden Player handlen?
@@ -36,7 +31,7 @@ public class CameraSystem extends EntitySystem implements EntityListener {
         camera.bind();
     }
     
-    public final LimitedSmoothCamera getCamera(){
+    public final BoundedCamera getCamera(){
         return camera;
     }
     
@@ -55,13 +50,12 @@ public class CameraSystem extends EntitySystem implements EntityListener {
         PositionComponent posComp = ComponentMappers.position.get(player);
         if(posComp != null){
             camera.setDestination(posComp.x, posComp.y);  
-        }
-        
+        }        
     }
 
     @Override
     public void entityAdded(Entity entity) {
-        logger.debug("Entity with PlayerComponent added to Engine!");
+        //logger.debug("Entity with PlayerComponent added to Engine!");
         Assert.that(player == null, "Only one Entity with PlayerComponent allowed at same time!");
         if(entity != null){
             player = entity;    
