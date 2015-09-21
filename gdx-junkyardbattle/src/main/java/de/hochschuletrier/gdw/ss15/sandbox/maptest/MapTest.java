@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import de.hochschuletrier.gdw.commons.gdx.ashley.EntityFactory;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.cameras.orthogonal.LimitedSmoothCamera;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixBodyDef;
@@ -27,7 +28,16 @@ import de.hochschuletrier.gdw.commons.tiled.tmx.TmxImage;
 import de.hochschuletrier.gdw.commons.tiled.utils.RectangleGenerator;
 import de.hochschuletrier.gdw.commons.utils.Rectangle;
 import de.hochschuletrier.gdw.ss15.Main;
+import de.hochschuletrier.gdw.ss15.game.Game;
 import de.hochschuletrier.gdw.ss15.game.GameConstants;
+import de.hochschuletrier.gdw.ss15.game.components.AnimationComponent;
+import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
+import de.hochschuletrier.gdw.ss15.game.components.animation.AnimationState;
+import de.hochschuletrier.gdw.ss15.game.components.animation.AnimatorComponent;
+import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
+import de.hochschuletrier.gdw.ss15.game.systems.AnimationRenderSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.AnimatorSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ss15.sandbox.SandboxGame;
 import java.util.HashMap;
 import org.slf4j.Logger;
@@ -47,6 +57,9 @@ public class MapTest extends SandboxGame {
     public static final int GRAVITY = 0;
     public static final int BOX2D_SCALE = 40;
 
+    private final AnimatorSystem animatorSystem = new AnimatorSystem();
+    private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem();
+    
     private final PooledEngine engine = new PooledEngine(
             GameConstants.ENTITY_POOL_INITIAL_SIZE, GameConstants.ENTITY_POOL_MAX_SIZE,
             GameConstants.COMPONENT_POOL_INITIAL_SIZE, GameConstants.COMPONENT_POOL_MAX_SIZE
@@ -62,8 +75,13 @@ public class MapTest extends SandboxGame {
     private TiledMapRendererGdx mapRenderer;
     private PhysixBodyComponent playerBody;
     private final HashMap<TileSet, Texture> tilesetImages = new HashMap();
-
+    
+    private AnimatorComponent animatorComponent;
+    
     public MapTest() {
+       
+        engine.addSystem(animatorSystem);
+        engine.addSystem(updatePositionSystem);
         engine.addSystem(physixSystem);
         engine.addSystem(physixDebugRenderSystem);
     }
@@ -90,6 +108,17 @@ public class MapTest extends SandboxGame {
         Entity player = engine.createEntity();
         PhysixModifierComponent modifyComponent = engine.createComponent(PhysixModifierComponent.class);
         player.add(modifyComponent);
+        
+        
+        PositionComponent positionComponent = engine.createComponent(PositionComponent.class);
+        
+        animatorComponent = engine.createComponent(AnimatorComponent.class);
+        animatorComponent.animationStates.put(AnimationState.IDLE, assetManager.getAnimation("box"));
+        animatorComponent.animationStates.put(AnimationState.WALK, assetManager.getAnimation("walking"));
+        animatorComponent.animationStates.put(AnimationState.FIRE, assetManager.getAnimation("ball"));
+        
+        player.add(animatorComponent);
+        player.add(positionComponent);
 
         modifyComponent.schedule(() -> {
             playerBody = engine.createComponent(PhysixBodyComponent.class);
@@ -151,19 +180,38 @@ public class MapTest extends SandboxGame {
         if(playerBody != null) {
             float speed = 10000.0f;
             float velX = 0, velY = 0;
+            boolean nothingPressed = true;
+            
             if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
                 velX -= delta * speed;
+                animatorComponent.currentAnimationState = AnimationState.WALK;
+                nothingPressed = false;
             }
             if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
                 velX += delta * speed;
+                animatorComponent.currentAnimationState = AnimationState.WALK;
+                nothingPressed = false;
             }
             if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
                 velY -= delta * speed;
+                animatorComponent.currentAnimationState = AnimationState.WALK;
+                nothingPressed = false;
             }
             if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
                 velY += delta * speed;
+                animatorComponent.currentAnimationState = AnimationState.WALK;
+                nothingPressed = false;
             }
-
+            if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+                animatorComponent.currentAnimationState = AnimationState.FIRE;
+                nothingPressed = false;
+            }
+            
+            if(nothingPressed)
+            {
+                animatorComponent.currentAnimationState = AnimationState.IDLE;
+            }
+           
             playerBody.setLinearVelocity(velX, velY);
             camera.setDestination(playerBody.getPosition());
         }
