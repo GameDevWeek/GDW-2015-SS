@@ -1,3 +1,4 @@
+
 package de.hochschuletrier.gdw.commons.gdx.input;
 
 import com.badlogic.gdx.InputProcessor;
