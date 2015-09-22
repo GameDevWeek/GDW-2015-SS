@@ -11,10 +11,10 @@ import de.hochschuletrier.gdw.ss15.game.network.PacketIds;
 
 public class EntityPacket extends Packet {
 
-    private float xPos;
-    private float yPos;
-    private float rotation;
-    private long entityID;
+    public float xPos;
+    public float yPos;
+    public float rotation;
+    public long entityID;
 
     public EntityPacket(){
         super(PacketIds.Position.getValue());
