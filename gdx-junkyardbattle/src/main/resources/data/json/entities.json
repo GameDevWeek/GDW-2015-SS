@@ -53,7 +53,19 @@
                 "density": 10,
                 "friction": 0.5,
                 "restitution": 0.1
-            }
+            },
+            "Player": {
+                "name": "New Player"
+            },
+            "Health": {
+                "health": 100,
+                "spawningDuration" : 4000
+            },
+            "Move": {}
         }
+    },
+
+    "metal": {
+
     }
 }

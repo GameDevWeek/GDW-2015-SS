@@ -11,6 +11,8 @@ import com.badlogic.gdx.utils.Pool.Poolable;
 
 public class PlayerComponent extends Component implements Poolable
 {
+    public static int playerIDCounter = 0;
+    public static int teamIDCounter = 0;
     public          int     playerID, teamID; //Wie soll Id im Netzwerk übergeben werden int oder String?
     public final    Vector2 spawningPosition = new Vector2();
     public          Entity  killer; //name of Enemy
@@ -21,8 +23,8 @@ public class PlayerComponent extends Component implements Poolable
     @Override
     public void reset()
     {
-        playerID = 0;
-        teamID = 0;
+        playerID = playerIDCounter++;
+        teamID = teamIDCounter++;
         isLocalPlayer = false;
         lastSequenceId = 0;
         name = "";

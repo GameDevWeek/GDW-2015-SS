@@ -4,8 +4,6 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.math.Vector2;
-import de.hochschuletrier.gdw.commons.gdx.ashley.EntityFactory;
-import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.components.*;
 
@@ -29,7 +27,7 @@ public class WeaponSystem extends IteratingSystem {
         if(! plc.isLocalPlayer) return;
 
         HealthComponent hc = ComponentMappers.health.get(entity);
-        if(hc.health != HealthComponent.healthState.ALIVE) return;
+        if(hc.healthState != HealthComponent.HealthState.ALIVE) return;
 
         WeaponComponent wpc = ComponentMappers.weapon.get(entity);
         PositionComponent psc = ComponentMappers.position.get(entity);
