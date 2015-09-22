@@ -13,4 +13,14 @@ public class InputMovPaket {
     public InputMovPaket() {
         this.up = this.down = this.left = this.right = false;
     }
+
+    @Override
+    public String toString() {
+        String tempString = "";
+        tempString += "up: " + this.up + "\n";
+        tempString += "down: " + this.down + "\n";
+        tempString += "left: " + this.left + "\n";
+        tempString += "right: " + this.right + "\n";
+        return tempString;
+    }
 }
