@@ -52,7 +52,7 @@ public class NetworkServerSystem extends EntitySystem implements EntityListener 
             Entity entity = createClient();
             PositionSynchComponent comp = ComponentMappers.positionSynch.get(entity);
             InitEntityPacket packet = new InitEntityPacket(ComponentMappers.positionSynch.get(entity).networkID,
-                                                            "clientPlayer");
+                                                            "clientPlayer", 0, 0, 0);
             sendPacketToAllSave(packet, ComponentMappers.positionSynch.get(entity).networkID);
             packet.name = "clientOwnPlayer";
             ComponentMappers.client.get(entity).client.sendPacketSave(packet);
