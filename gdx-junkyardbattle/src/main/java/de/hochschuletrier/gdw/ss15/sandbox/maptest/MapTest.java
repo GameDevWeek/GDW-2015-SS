@@ -179,36 +179,6 @@ public class MapTest extends SandboxGame {
         
         mapRenderer.update(delta);
         camera.update(delta);
-        
-                                                                                                                    
-        boolean nothingPressed = true;
-            
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            ChangeAnimationEvent.emit(AnimationState.WALK, player);
-            nothingPressed = false;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            ChangeAnimationEvent.emit(AnimationState.WALK, player);             
-            nothingPressed = false;                                                                                                                                                                                                             
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            ChangeAnimationEvent.emit(AnimationState.WALK, player);
-            nothingPressed = false;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            ChangeAnimationEvent.emit(AnimationState.WALK, player);
-            nothingPressed = false;
-        }
-        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-            ChangeAnimationEvent.emit(AnimationState.FIRE, player);
-            nothingPressed = false;
-        }
-        
-        if(nothingPressed)
-        {
-            ChangeAnimationEvent.emit(AnimationState.IDLE, player);
-        }
-
  		camera.setDestination(positionComponent.x, positionComponent.y);
     }
 }
