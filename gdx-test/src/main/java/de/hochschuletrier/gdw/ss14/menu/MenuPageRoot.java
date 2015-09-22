@@ -24,6 +24,7 @@ public class MenuPageRoot extends MenuPage {
         int i = 0;
         int y = 370;
        // addUIActor(new MouseCursorActor());
+     
         if (type == Type.MAINMENU) {
             addLeftAlignedButton(x, y - YSTEP_BUTTON * (i++), WIDTH_BUTTON, HEIGHT_BUTTON, "Spiel starten", this::startGame);
             addPageEntry(menuManager, x, y - YSTEP_BUTTON * (i++), "Optionen", new MenuPageOptions(skin,menuManager,Type.INGAME));
