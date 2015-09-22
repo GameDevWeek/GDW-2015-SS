@@ -145,6 +145,10 @@ public class Main extends StateBasedGame {
         this.console.register(emitterMode);
         emitterMode.addListener(this::onEmitterModeChanged);
 
+
+        server = new Server();
+        server.start();
+        logger.info("Server wurde gestartet");
     }
 
     private void onLoadComplete() {
@@ -167,6 +171,11 @@ public class Main extends StateBasedGame {
         consoleView.dispose();
         consoleSkin.dispose();
         SoundEmitter.disposeGlobal();
+
+        if(server!=null)
+        {
+            server.stop();
+        }
     }
 
     protected void preRender() {

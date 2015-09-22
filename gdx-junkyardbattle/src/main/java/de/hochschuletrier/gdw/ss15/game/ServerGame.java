@@ -81,6 +81,7 @@ public class ServerGame{
     public void update(float delta) {
         //Main.getInstance().screenCamera.bind();
         engine.update(delta);
+        //System.out.println("rennt");
     }
 
     public void createTrigger(float x, float y, float width, float height, Consumer<Entity> consumer) {

@@ -3,6 +3,7 @@ package de.hochschuletrier.gdw.ss15.game.network;
 import de.hochschuletrier.gdw.commons.devcon.ConsoleCmd;
 import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Clientsocket;
+import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serverclientsocket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.basic.SocketConnectListener;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.enums.ConnectStatus;
 import org.slf4j.Logger;
@@ -48,13 +49,18 @@ public class ClientConnection implements SocketConnectListener {
     public void update()
     {
         if(clientSocket!=null) {
-            clientSocket.callListeners();
+            clientSocket.justCallDisconnectHandler();
             if(clientSocket.isConnected())
             {
                 clientSocket.close();
                 clientSocket=null;
             }
         }
+    }
+
+    public Clientsocket getSocket()
+    {
+        return clientSocket;
     }
 
     public void connect(String ip,int port)
