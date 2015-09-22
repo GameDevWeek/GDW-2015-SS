@@ -28,17 +28,22 @@ public class InputMoveSystem extends EntitySystem {
 
     public void update(float deltaTime)
     {
-
+        for (Entity e: playerEntities)
+        {
+            updateMoveVector(e);
+        }
     }
 
     private void updateMoveVector(Entity e)
     {
         vectorToAdd.setZero();
-        if (leftPressed) vectorToAdd.add(-move.get(e).speed, 0);
-        if (rightPressed) vectorToAdd.add(move.get(e).speed, 0);
-        if (upPressed) vectorToAdd.add(0, move.get(e).speed);
-        if (downPressed) vectorToAdd.add(0, -move.get(e).speed);
+        if (leftPressed) vectorToAdd.add(-1, 0);
+        if (rightPressed) vectorToAdd.add(1, 0);
+        if (upPressed) vectorToAdd.add(0, 1);
+        if (downPressed) vectorToAdd.add(0, -1);
         vectorToAdd.nor();
+        vectorToAdd.scl(move.get(e).speed);
+        move.get(e).velocity.set(vectorToAdd);
     }
 
 
