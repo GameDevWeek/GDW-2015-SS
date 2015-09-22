@@ -1,5 +1,4 @@
 package  de.hochschuletrier.gdw.ss14.menu.Screens;
-
 import java.util.Iterator;
 
 import com.badlogic.gdx.Game;

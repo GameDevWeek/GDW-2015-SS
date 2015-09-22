@@ -1,4 +1,4 @@
-package com.mygdx.screens;
+package de.hochschuletrier.gdw.ss14.menu.Screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
