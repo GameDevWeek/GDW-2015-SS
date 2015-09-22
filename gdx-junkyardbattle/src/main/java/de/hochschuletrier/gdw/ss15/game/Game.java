@@ -8,6 +8,11 @@ import de.hochschuletrier.gdw.commons.gdx.ashley.EntityFactory;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
+
+import de.hochschuletrier.gdw.ss15.game.systems.NetworkClientSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.InputSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
+
 import de.hochschuletrier.gdw.ss15.game.systems.*;
 
 import java.util.function.Consumer;
@@ -134,5 +139,8 @@ public class Game extends InputAdapter {
         return this;
     }
 
+    public InputSystem getInputSystem(){
+        return inputSystem;
+    }
 
 }
