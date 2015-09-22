@@ -26,13 +26,13 @@ public class MapSpecialEntities
      */
     public static class CreatorInfo
     {
-        int posX;
-        int posY;
-        Entity entity;
-        TileInfo asTile;
-        LayerObject asObject;
-        Layer layer;            /// Layer fuer Renderer
-        TiledMap tiledMap;
+        public int posX;
+        public int posY;
+        public Entity entity;
+        public TileInfo asTile;
+        public LayerObject asObject;
+        public Layer layer;            /// Layer fuer Renderer
+        public TiledMap tiledMap;
         public CreatorInfo(Entity ent,TiledMap tm,LayerObject lo,Layer layer)
         {
             posX = 0;posY = 0;     /// x und y sind bei Objecten = 0  ->  erhalte Position ueber PositionComponent     
@@ -41,9 +41,11 @@ public class MapSpecialEntities
             entity = ent;
             asObject = lo;
             this.layer = layer;
+            tiledMap = tm;
         }
         public CreatorInfo(int x,int y,TiledMap tm,TileInfo ti,Layer layer)
         {
+            tiledMap = tm;
             posX = x;
             posY = y;
             tiledMap = tm;

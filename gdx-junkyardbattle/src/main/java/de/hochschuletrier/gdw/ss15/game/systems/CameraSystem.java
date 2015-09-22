@@ -1,5 +1,8 @@
 package de.hochschuletrier.gdw.ss15.game.systems;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntityListener;
@@ -12,9 +15,12 @@ import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.rendering.BoundedCamera;
+import de.hochschuletrier.gdw.ss15.events.WeaponCharging;
+import de.hochschuletrier.gdw.ss15.events.WeaponUncharged;
 
-public class CameraSystem extends EntitySystem implements EntityListener {
+public class CameraSystem extends EntitySystem implements EntityListener, WeaponCharging.Listener, WeaponUncharged.Listener {
 
+    private final Logger logger = LoggerFactory.getLogger(getClass());
     private BoundedCamera camera = new BoundedCamera();
     
     private Entity player;
@@ -23,6 +29,8 @@ public class CameraSystem extends EntitySystem implements EntityListener {
         // Resizing Camera to match window dimensions
         camera.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         // Registering camering for resize-Events
+        WeaponCharging.register(this);
+        WeaponUncharged.register(this);
         Main.getInstance().addScreenListener(camera);
         camera.updateForced();
     }
@@ -54,7 +62,7 @@ public class CameraSystem extends EntitySystem implements EntityListener {
         }                
 
         camera.update(deltaTime);
-        camera.bind();        
+        //camera.bind();        
     }
 
     @Override
@@ -71,8 +79,29 @@ public class CameraSystem extends EntitySystem implements EntityListener {
         engine.addEntityListener(family, this);
     }
     
+    private void zoomOut(){
+        camera.zoomOut(true);
+    }
+    
+    private void resetZoom(){
+        camera.zoomOut(false);
+    }
+    
     @Override
     public void entityRemoved(Entity entity) {}
+
+    @Override
+    public void onWeaponCharging() {
+        // TODO Auto-generated method stub
+        logger.debug("Weapon is charging");        
+        zoomOut();
+    }
+
+    @Override
+    public void onWeaponUncharged() {
+        // TODO Auto-generated method stub
+        resetZoom();        
+    }
     
     
     

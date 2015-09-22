@@ -2,23 +2,20 @@ package de.hochschuletrier.gdw.ss15.events;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.utils.SnapshotArray;
+import de.hochschuletrier.gdw.ss15.game.components.animation.AnimationState;
 
-/**
- * Created by Martin on 21.09.2015.
- */
-public class GatherDownEvent {
+public class WeaponCharging {
 
     public static interface Listener {
-        void onGatherDownEvent(int xPos, int yPos);
+        void onWeaponCharging();
     }
 
     private static final SnapshotArray<Listener> listeners = new SnapshotArray();
 
-    // name ändern???
-    public static void emit(int xPos, int yPos) {
+    public static void emit() {
         Object[] items = listeners.begin();
         for (int i = 0, n = listeners.size; i < n; i++) {
-            ((Listener)items[i]).onGatherDownEvent(xPos,yPos);
+            ((Listener)items[i]).onWeaponCharging();
         }
         listeners.end();
     }
@@ -34,6 +31,4 @@ public class GatherDownEvent {
     public static void unregisterAll() {
         listeners.clear();
     }
-
-
 }

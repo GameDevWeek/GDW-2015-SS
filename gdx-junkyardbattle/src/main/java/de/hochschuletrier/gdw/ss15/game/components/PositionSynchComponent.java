@@ -20,7 +20,8 @@ public class PositionSynchComponent extends Component implements Pool.Poolable {
         was_moved = false;
     }
 
-   /*@Override
+    /*
+    @Override
     public void pack(DataOutputStream dataOutput) throws IOException {
         dataOutput.writeLong(networkID);
         dataOutput.writeBoolean(was_moved);
@@ -30,5 +31,6 @@ public class PositionSynchComponent extends Component implements Pool.Poolable {
     public void unpack(DataInputStream input) throws IOException {
         networkID = input.readLong();
         was_moved = input.readBoolean();
-    }*/
+    }
+    */
 }

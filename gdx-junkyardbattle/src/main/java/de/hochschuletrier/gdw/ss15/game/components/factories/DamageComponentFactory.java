@@ -6,6 +6,7 @@ import de.hochschuletrier.gdw.commons.gdx.ashley.ComponentFactory;
 import de.hochschuletrier.gdw.commons.utils.SafeProperties;
 import de.hochschuletrier.gdw.ss15.game.components.DamageComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
+import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
 
 public class DamageComponentFactory extends ComponentFactory<EntityFactoryParam>{
 

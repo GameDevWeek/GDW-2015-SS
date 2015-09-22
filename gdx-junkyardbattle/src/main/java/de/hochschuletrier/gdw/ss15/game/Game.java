@@ -1,17 +1,19 @@
 ﻿package de.hochschuletrier.gdw.ss15.game;
 
-import box2dLight.RayHandler;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
-
 import de.hochschuletrier.gdw.commons.gdx.ashley.EntityFactory;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
+
+import de.hochschuletrier.gdw.ss15.game.systems.NetworkClientSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.InputSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.*;
 
 import java.util.function.Consumer;
@@ -20,17 +22,15 @@ public class Game extends InputAdapter {
 
     //private final CVarBool physixDebug = new CVarBool("physix_debug", true, 0, "Draw physix debug");
     //private final Hotkey togglePhysixDebug = new Hotkey(() -> physixDebug.toggle(false), Input.Keys.F1, HotkeyModifier.CTRL);
-    
-    private final CameraSystem cameraSystem = new CameraSystem();
 
     private final PooledEngine engine = new PooledEngine(
             GameConstants.ENTITY_POOL_INITIAL_SIZE, GameConstants.ENTITY_POOL_MAX_SIZE,
             GameConstants.COMPONENT_POOL_INITIAL_SIZE, GameConstants.COMPONENT_POOL_MAX_SIZE
     );
 
-    private final PhysixSystem physixSystem = new PhysixSystem(GameConstants.BOX2D_SCALE,
-            GameConstants.VELOCITY_ITERATIONS, GameConstants.POSITION_ITERATIONS, GameConstants.PRIORITY_PHYSIX
-    );
+   // private final PhysixSystem physixSystem = new PhysixSystem(GameConstants.BOX2D_SCALE,
+           // GameConstants.VELOCITY_ITERATIONS, GameConstants.POSITION_ITERATIONS, GameConstants.PRIORITY_PHYSIX
+   // );
    // private final PhysixDebugRenderSystem physixDebugRenderSystem = new PhysixDebugRenderSystem(GameConstants.PRIORITY_DEBUG_WORLD);
     
     private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem(GameConstants.PRIORITY_PHYSIX + 1);
@@ -64,10 +64,6 @@ public class Game extends InputAdapter {
         addContactListeners();
         setupPhysixWorld();
         entityFactory.init(engine, assetManager);
-        
-        /// @author tobidot(Tobias Gepp)
-        mapLoader.run( ( String name, float x, float y ) -> { return this.createEntity(name,  x, y); }, "data/maps/demo.tmx",null );
-    
     }
 
     private void addSystems() {
@@ -99,7 +95,7 @@ public class Game extends InputAdapter {
     }
 
     public void update(float delta) {
-        //Main.getInstance().screenCamera.bind();
+        Main.getInstance().screenCamera.bind();
         engine.update(delta);
     }
 
@@ -146,5 +142,8 @@ public class Game extends InputAdapter {
         return this;
     }
 
+    public InputSystem getInputSystem(){
+        return inputSystem;
+    }
 
 }
