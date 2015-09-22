@@ -36,7 +36,7 @@ public class ServerGame{
     private final NetworkServerSystem networkSystem = new NetworkServerSystem(this,GameConstants.PRIORITY_PHYSIX + 2);
     private final LineOfSightSystem lineOfSightSystem = new LineOfSightSystem(); // hier müssen noch Team-Listen übergeben werden
                                                                                  // (+ LineOfSightSystem-Konstruktor anpassen!)
-    
+
     private final EntityFactoryParam factoryParam = new EntityFactoryParam();
     private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json", ServerGame.class);
 
