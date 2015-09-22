@@ -24,8 +24,8 @@ public class MenuPageRoot extends MenuPage {
         int y = 370;
         
         if (type == Type.MAINMENU) {
-            addLeftAlignedButton(x, y - YSTEP_BUTTON * (i++), WIDTH_BUTTON, HEIGHT_BUTTON, "Spiel Starten", this::startGame);
-            addPageEntry(menuManager, x, y - YSTEP_BUTTON * (i++), "Optionen", new MenuPageRoot(skin,menuManager,Type.INGAME));
+            addLeftAlignedButton(x, y - YSTEP_BUTTON * (i++), WIDTH_BUTTON, HEIGHT_BUTTON, "Spiel starten", this::startGame);
+            addPageEntry(menuManager, x, y - YSTEP_BUTTON * (i++), "Optionen", new MenuPageOptions(skin,menuManager,Type.INGAME));
         } else {
             addLeftAlignedButton(x, y - YSTEP_BUTTON * (i++), WIDTH_BUTTON, HEIGHT_BUTTON, "Fortsetzen", () -> menuManager.popPage());
             addLeftAlignedButton(x, y - YSTEP_BUTTON * (i++), WIDTH_BUTTON, HEIGHT_BUTTON, "Spiel verlassen", this::stopGame);

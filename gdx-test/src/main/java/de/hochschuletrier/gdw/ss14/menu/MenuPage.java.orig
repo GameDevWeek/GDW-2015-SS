@@ -1,4 +1,4 @@
-﻿package de.hochschuletrier.gdw.ss14.menu;
+package de.hochschuletrier.gdw.ss14.menu;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -64,7 +64,22 @@ public class MenuPage extends Group {
         button.getLabel().setAlignment(Align.center);
     }
 
+<<<<<<< HEAD
+    protected final HorizontalGroup addSlider(String stylename, String text, Runnable runnable) {
+       
+    	HorizontalGroup hg = new HorizontalGroup();
+    	Label option = new Label(text, skin, stylename);
+    	Slider sl = new Slider(0, 100, 1, false, skin, stylename);
+        hg.addActor(option);
+        hg.addActor(sl);
+        addActor(hg);
+    	return hg;
+    	
+    }
+    protected final 
+=======
    
+>>>>>>> 7b0778bb3976dd929078db561b82a505ec20d48b
     
     protected final TextButton addButton(int x, int y, int width, int height, String text, Runnable runnable, String style) {
         TextButton button = new TextButton(text, skin, style);

@@ -1,14 +1,20 @@
-﻿package de.hochschuletrier.gdw.ss14.menu;
+package de.hochschuletrier.gdw.ss14.menu;
 
+<<<<<<< HEAD
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+=======
 import java.util.ArrayList;
 
+>>>>>>> 7b0778bb3976dd929078db561b82a505ec20d48b
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
+<<<<<<< HEAD
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+=======
+>>>>>>> 7b0778bb3976dd929078db561b82a505ec20d48b
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
@@ -25,12 +31,38 @@ public class MenuPageOptions extends MenuPage {
 		//Skin für die Optionsseite wird übergeben
 		super(skin, "menu_bg");
 		
-		VerticalGroup vg = new VerticalGroup();
+<<<<<<< HEAD
+=======
+
+    	HorizontalGroup hg = new HorizontalGroup();    	
+    	Label option = new Label("Option1", skin);
+    	Slider sl = new Slider(0, 100, 1, false, skin);
+    	
+    	
+    	
+        hg.addActor(option);
+        hg.addActor(sl);     
+        hg.setBounds(0,0, 600, 600);
+    	optionen.add(hg);
+    	
+    	CheckBox cb = new CheckBox("Option2", skin);
+    	option.setText("Option2");
+    	hg.addActor(cb);
+    	hg.addActor(option);
+    	optionen.add(hg);
+    	
+    	
+        VerticalGroup vg = new VerticalGroup();
+		vg.setBounds(0,0, 600,600);
+		for(HorizontalGroup bla: optionen)
+		{
+			vg.addActor(bla);
+			
+		}
+    	
+		addVerticalGroup(vg);    	
 		
-		HorizontalGroup option = addSlider(stylename, text, runnable);
-		vg.addActor(option);
-		
-		
+>>>>>>> 7b0778bb3976dd929078db561b82a505ec20d48b
 	}
 
 	
