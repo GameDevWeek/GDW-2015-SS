@@ -11,12 +11,18 @@ import de.hochschuletrier.gdw.ss15.game.components.network.server.PositionSynchC
 import de.hochschuletrier.gdw.ss15.game.network.ClientConnection;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.EntityPacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.InitEntityPacket;
+import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serverclientsocket;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Created by hherm on 22/09/2015.
  */
 public class PositionSynchSystem extends EntitySystem implements EntityListener {
+
+
+    private static final Logger logger = LoggerFactory.getLogger(ClientConnection.class);
 
     private ImmutableArray<Entity> entities;
     ServerGame game;
@@ -74,7 +80,7 @@ public class PositionSynchSystem extends EntitySystem implements EntityListener 
         Entity exept = null;
         if(ComponentMappers.client.has(entity))
         {//es ist ein neuer client -> diese alle bestehenden sync objects senden
-            System.out.println("Send all enteties to new Player");
+            //System.out.println("Send all enteties to new Player");
             Serverclientsocket client = ComponentMappers.client.get(entity).client;
             InitEntityPacket initPacket = new InitEntityPacket(0,"",0,0,0);
             for(int i=0;i<entities.size();i++)
@@ -86,13 +92,13 @@ public class PositionSynchSystem extends EntitySystem implements EntityListener 
                 initPacket.yPos = sendComp.lastY;
                 initPacket.rotation = sendComp.lastRot;
                 if(sendEnd == entity) {//eigener spieler
-                    System.out.println("Send own player to client");
+                    //System.out.println("Send own player to client");
                     initPacket.name = "clientOwnPlayer";
                     exept=entity;
                 }
                 else
                 {
-                    System.out.println("Send other player to client");
+                    //System.out.println("Send other player to client");
                     initPacket.name = sendComp.clientName;
                 }
                 client.sendPacketSave(initPacket,true);
@@ -101,14 +107,23 @@ public class PositionSynchSystem extends EntitySystem implements EntityListener 
 
         }
 
+        PositionComponent comp = ComponentMappers.position.get(entity);
+        if(comp == null)
+        {
+            logger.error("Sync component zu entity one position hinzugefuegt");
+            return;
+        }
         //allen speielern neue entit mitteilen
         InitEntityPacket packet = new InitEntityPacket(ComponentMappers.positionSynch.get(entity).networkID,
-                ComponentMappers.positionSynch.get(entity).clientName, 100, 100, 0);
-        SendPacketServerEvent.emit(packet, true,exept);
+                ComponentMappers.positionSynch.get(entity).clientName, comp.x, comp.y, comp.rotation);
+        SendPacketServerEvent.emit(packet, true, exept);
     }
 
     @Override
     public void entityRemoved(Entity entity) {
+        //System.out.println("Position sync component removed");
+        SimplePacket spacket = new SimplePacket(SimplePacket.SimplePacketId.RemoveEntity.getValue(),ComponentMappers.positionSynch.get(entity).networkID);
+        SendPacketServerEvent.emit(spacket, true,entity);
 
     }
 }

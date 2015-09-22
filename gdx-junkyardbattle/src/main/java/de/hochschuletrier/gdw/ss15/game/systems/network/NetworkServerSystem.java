@@ -3,6 +3,7 @@ package de.hochschuletrier.gdw.ss15.game.systems.network;
 import com.badlogic.ashley.core.*;
 
 import com.badlogic.ashley.utils.ImmutableArray;
+import de.hochschuletrier.gdw.commons.gdx.sceneanimator.Queue;
 import de.hochschuletrier.gdw.ss15.events.network.server.SendPacketServerEvent;
 import de.hochschuletrier.gdw.ss15.game.ServerGame;
 import de.hochschuletrier.gdw.ss15.game.components.network.server.ClientComponent;
@@ -14,6 +15,8 @@ import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serverclientsocket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serversocket;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
+
+import java.util.LinkedList;
 
 public class NetworkServerSystem extends EntitySystem implements SendPacketServerEvent.Listener{
 
@@ -56,14 +59,27 @@ public class NetworkServerSystem extends EntitySystem implements SendPacketServe
             game.createEntity("player", 0, 0);
         }
 
+        LinkedList<Entity> toDelete = new LinkedList<>();
         for(Entity client:clients)
         {
             Serverclientsocket sock = ComponentMappers.client.get(client).client;
+            if(!sock.isConnected())
+            {//client lost connection
+                game.get_Engine().removeEntity(client);
+                toDelete.addLast(client);
+                continue;
+            }
+
             if(sock.isPacketAvaliable())
             {
                 ReceivedPacket(sock.getReceivedPacket(),client);
-                //todo set position in sync component
             }
+        }
+
+        while(!toDelete.isEmpty())
+        {
+            System.out.println("Client lost connection");
+            game.get_Engine().removeEntity(toDelete.poll());
         }
     }
 
