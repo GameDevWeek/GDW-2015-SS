@@ -42,5 +42,11 @@
                 "restitution": 0.1
             }
         }
+    },
+    "player":{
+        "components":{
+            "ClientComponent":{},
+            "PositionSynchComponent":{}
+        }
     }
 }

@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import de.hochschuletrier.gdw.commons.devcon.ConsoleCmd;
 import de.hochschuletrier.gdw.commons.devcon.DevConsole;
 import de.hochschuletrier.gdw.commons.devcon.cvar.CVar;
 import de.hochschuletrier.gdw.commons.devcon.cvar.CVarEnum;
@@ -31,6 +32,10 @@ import de.hochschuletrier.gdw.commons.gdx.utils.GdxResourceLocator;
 import de.hochschuletrier.gdw.commons.gdx.utils.KeyUtil;
 import de.hochschuletrier.gdw.commons.resourcelocator.CurrentResourceLocator;
 import de.hochschuletrier.gdw.commons.utils.ClassUtils;
+import de.hochschuletrier.gdw.ss15.game.Game;
+import de.hochschuletrier.gdw.ss15.game.Server;
+import de.hochschuletrier.gdw.ss15.game.network.ClientConnection;
+import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serversocket;
 import de.hochschuletrier.gdw.ss15.sandbox.SandboxCommand;
 import de.hochschuletrier.gdw.ss15.states.LoadGameState;
 import de.hochschuletrier.gdw.ss15.states.MainMenuState;
@@ -39,6 +44,10 @@ import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.OptionBuilder;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.PosixParser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 /**
  *
@@ -62,6 +71,11 @@ public class Main extends StateBasedGame {
     public static final InputMultiplexer inputMultiplexer = new InputMultiplexer();
     private final CVarEnum<SoundDistanceModel> distanceModel = new CVarEnum("snd_distanceModel", SoundDistanceModel.INVERSE, SoundDistanceModel.class, 0, "sound distance model");
     private final CVarEnum<SoundEmitter.Mode> emitterMode = new CVarEnum("snd_mode", SoundEmitter.Mode.STEREO, SoundEmitter.Mode.class, 0, "sound mode");
+
+    //------------netowrk------------
+    private Server server = null;
+    private final ClientConnection clientConnection = new ClientConnection();
+    public ClientConnection getClientConnection(){return clientConnection;}
 
     public Main() {
         super(new BaseGameState());
@@ -115,6 +129,7 @@ public class Main extends StateBasedGame {
         loadAssetLists();
         setupGdx();
         SoundInstance.init();
+        clientConnection.init();
 
         consoleSkin = new Skin(Gdx.files.internal("data/skins/basic.json"));
         consoleView.init(consoleSkin);
@@ -129,6 +144,11 @@ public class Main extends StateBasedGame {
 
         this.console.register(emitterMode);
         emitterMode.addListener(this::onEmitterModeChanged);
+
+
+        server = new Server();
+        server.start();
+        logger.info("Server wurde gestartet");
     }
 
     private void onLoadComplete() {
@@ -140,6 +160,8 @@ public class Main extends StateBasedGame {
         if (cmdLine.hasOption("sandbox")) {
             SandboxCommand.runSandbox(cmdLine.getOptionValue("sandbox"));
         }
+
+        Main.getInstance().console.register(serverCommand);
     }
 
     @Override
@@ -149,6 +171,11 @@ public class Main extends StateBasedGame {
         consoleView.dispose();
         consoleSkin.dispose();
         SoundEmitter.disposeGlobal();
+
+        if(server!=null)
+        {
+            server.stop();
+        }
     }
 
     protected void preRender() {
@@ -233,4 +260,55 @@ public class Main extends StateBasedGame {
             e.printStackTrace();
         }
     }
+
+
+
+    //----------------------------------------server stuff---------------------------------------
+
+    //Server stuff
+    private static final Logger logger = LoggerFactory.getLogger(Main.class);
+    Serversocket serverSocket = null;
+
+    ConsoleCmd serverCommand = new ConsoleCmd("server", 0, "startet oder beendet server", 1) {
+        @Override
+        public void execute(List<String> list) {
+
+            String info = list.get(1);
+            if(info.equals("start")) {
+                if(server == null){
+                    server = new Server();
+                    if(server.start())
+                    {
+                        logger.info("Server gestartet");
+                    }
+                    else
+                    {
+                        logger.error("Server konnte nicht gestartet werden");
+                    }
+                }
+                else {
+                    logger.error("Server läuft bereits");
+                }
+            }
+            else if(info.equals("stop"))
+            {
+                if(server==null)
+                {
+                    logger.error("Server läuft nicht");
+                }
+                else
+                {
+                    logger.info("Server wird beendet ...");
+                    server.stop();
+                    logger.info("Server wurde beendet");
+                    server=null;
+                }
+            }
+            else
+            {
+                logger.error(info+" falsches parameter für command server");
+            }
+        }
+    };
+
 }
