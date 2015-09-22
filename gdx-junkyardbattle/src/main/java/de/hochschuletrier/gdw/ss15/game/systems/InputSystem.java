@@ -9,9 +9,7 @@ import com.badlogic.gdx.InputProcessor;
 import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.events.*;
 import de.hochschuletrier.gdw.ss15.game.components.InputComponent;
-import de.hochschuletrier.gdw.ss15.game.input.InputMovPaket;
-
-import java.util.LinkedList;
+import de.hochschuletrier.gdw.ss15.game.network.Packets.InputMovPaket;
 
 /**
  * Created by David Siepen on 21.09.2015.
