@@ -8,28 +8,17 @@ import com.badlogic.gdx.utils.SnapshotArray;
  */
 public class GatherUpEvent {
 
-    int xPos;
-    int yPos;
-    int timeStamp;
-
-    public GatherUpEvent(int xPos, int yPos, int timeStamp) {
-        this.xPos = xPos;
-        this.yPos = yPos;
-        this.timeStamp = timeStamp;
-        //System.out.println("GatherUpEvent\nxPos: " + this.xPos + " yPos: " + this.yPos + " timeStamp: " + this.timeStamp);
-    }
-
     public static interface Listener{
-        void onGatherUpEvent(Entity entity);
+        void onGatherUpEvent(int xPos, int yPos);
     }
 
     private static final SnapshotArray<Listener> listeners = new SnapshotArray();
 
     // name ändern???
-    public static void emit(int xPos, int yPos, int timeStamp) {
+    public static void emit(int xPos, int yPos) {
         Object[] items = listeners.begin();
         for (int i = 0, n = listeners.size; i < n; i++) {
-            ((Listener)items[i]).onGatherUpEvent(null);
+            ((Listener)items[i]).onGatherUpEvent(xPos,yPos);
         }
         listeners.end();
     }

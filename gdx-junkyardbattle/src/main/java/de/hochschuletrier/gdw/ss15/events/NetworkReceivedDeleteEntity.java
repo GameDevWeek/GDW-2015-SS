@@ -6,17 +6,17 @@ import com.badlogic.gdx.utils.SnapshotArray;
 /**
  * Created by lukas on 22.09.15.
  */
-public class NetworkServerEvent {
+public class NetworkReceivedDeleteEntity{
     public static interface Listener {
-        void onNetworkEvent(String event, Entity entity);
+        void onNetworkReceivedDeleteEntity(Entity entity);
     }
 
     private static final SnapshotArray<Listener> listeners = new SnapshotArray();
 
-    public static void emit(String sound, Entity entity) {
+    public static void emit(Entity entity) {
         Object[] items = listeners.begin();
         for (int i = 0, n = listeners.size; i < n; i++) {
-            ((Listener)items[i]).onNetworkEvent(sound, entity);
+            ((Listener)items[i]).onNetworkReceivedDeleteEntity(entity);
         }
         listeners.end();
     }

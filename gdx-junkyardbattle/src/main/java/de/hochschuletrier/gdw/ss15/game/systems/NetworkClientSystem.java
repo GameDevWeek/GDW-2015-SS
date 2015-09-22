@@ -5,14 +5,19 @@ import com.badlogic.gdx.Input;
 import de.hochschuletrier.gdw.commons.devcon.ConsoleCmd;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.ss15.Main;
+import de.hochschuletrier.gdw.ss15.events.NetworkPositionEvent;
+import de.hochschuletrier.gdw.ss15.events.NetworkReceivedDeleteEntity;
+import de.hochschuletrier.gdw.ss15.events.NetworkReceivedNewEntity;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.Game;
 import de.hochschuletrier.gdw.ss15.game.components.NetworkIDComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.network.ClientConnection;
 import de.hochschuletrier.gdw.ss15.game.network.PacketIds;
+import de.hochschuletrier.gdw.ss15.game.network.Packets.EntityPacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.InitEntityPacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.InputMovPaket;
+import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Clientsocket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.basic.SocketConnectListener;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.basic.SocketDisconnectListener;
@@ -22,6 +27,7 @@ import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.DisconnectHandler;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.MyTimer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import de.hochschuletrier.gdw.ss15.events.GatherUpEvent;
 
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +35,8 @@ import java.util.List;
 /**
  * Created by lukas on 21.09.15.
  */
-public class NetworkClientSystem extends EntitySystem implements SocketDisconnectListener, EntityListener {
+
+public class NetworkClientSystem extends EntitySystem implements EntityListener {
 
     private MyTimer timer = new MyTimer(true);
     private long lastAddedEntityID = 0;
@@ -37,6 +44,7 @@ public class NetworkClientSystem extends EntitySystem implements SocketDisconnec
 
     Game game = null;
     ClientConnection connection = Main.getInstance().getClientConnection();
+    long lastNetworkTimestamp = 0;
 
     private static final Logger logger = LoggerFactory.getLogger(NetworkClientSystem.class);
 
@@ -85,14 +93,42 @@ public class NetworkClientSystem extends EntitySystem implements SocketDisconnec
         {
             InitEntityPacket iPacket = (InitEntityPacket) pack;
             logger.info("Spawned entitiy with name: "+iPacket.name);
+
+
             lastAddedEntityID = iPacket.entityID;
-            game.createEntity(iPacket.name,0,0);
+            Entity ent = game.createEntity(iPacket.name,0,0);
+            NetworkReceivedNewEntity.emit(ent);
+        }
+        else if(pack.getPacketId() == PacketIds.Position.getValue())
+        {//positino update packet
+            if(pack.getTimestamp()>lastNetworkTimestamp)
+            {//synccompoent
+                lastNetworkTimestamp = pack.getTimestamp();
+                EntityPacket ePacket = (EntityPacket) pack;
+
+                Entity ent = hashMap.get(ePacket.entityID);
+                if(ent!=null) {
+                    NetworkPositionEvent.emit(ent, ePacket.xPos, ePacket.yPos, ePacket.rotation, false);
+                }
+            }
+        }
+        else if(pack.getPacketId()==PacketIds.Simple.getValue())
+        {
+            SimplePacket sPacket = (SimplePacket)pack;
+            if(sPacket.m_SimplePacketId == SimplePacket.SimplePacketId.RemoveEntity.getValue())
+            {
+                Entity ent = hashMap.get(sPacket.m_Moredata);
+                if(ent!=null) {
+                    NetworkReceivedDeleteEntity.emit(ent);
+                }
+            }
         }
     }
 
 
     public void dispose(){
     }
+
 
     @Override
     public void addedToEngine(Engine engine){
