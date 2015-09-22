@@ -109,6 +109,9 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener 
                 Entity ent = hashMap.get(ePacket.entityID);
                 if(ent!=null) {
                     NetworkPositionEvent.emit(ent, ePacket.xPos, ePacket.yPos, ePacket.rotation, false);
+                    ComponentMappers.position.get(hashMap.get(ePacket.entityID)).x = ePacket.xPos;
+                    ComponentMappers.position.get(hashMap.get(ePacket.entityID)).y = ePacket.yPos;
+                    ComponentMappers.position.get(hashMap.get(ePacket.entityID)).rotation = ePacket.rotation;
                 }
             }
         }
