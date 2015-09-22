@@ -1,17 +1,19 @@
 package de.hochschuletrier.gdw.ss15.game.systems;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntityListener;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+
 import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.components.AnimationComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
-import java.util.ArrayList;
-import java.util.Comparator;
 
 public class AnimationRenderSystem extends EntitySystem implements EntityListener {
 
