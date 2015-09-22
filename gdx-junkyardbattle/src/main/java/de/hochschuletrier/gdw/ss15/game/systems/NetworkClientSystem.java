@@ -53,8 +53,6 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener 
 
     }
 
-
-
     public NetworkClientSystem(Game game,int priority) {
 
         super(priority);
