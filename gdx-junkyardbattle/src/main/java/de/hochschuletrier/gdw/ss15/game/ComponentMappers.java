@@ -36,7 +36,7 @@ public class ComponentMappers {
     public static final ComponentMapper<DamageComponent> damage = ComponentMapper.getFor(DamageComponent.class);
     public static final ComponentMapper<DeathComponent> death = ComponentMapper.getFor(DeathComponent.class);
     public static final ComponentMapper<BulletComponent> bullet = ComponentMapper.getFor(BulletComponent.class);
-    public static final ComponentMapper<MetalComponent> metal = ComponentMapper.getFor(MetalComponent.class);
+    public static final ComponentMapper<PickableComponent> pickable = ComponentMapper.getFor(PickableComponent.class);
     public static final ComponentMapper<MoveComponent> move = ComponentMapper.getFor(MoveComponent.class);
     public static final ComponentMapper<PlayerComponent> player = ComponentMapper.getFor(PlayerComponent.class);
     public static final ComponentMapper<TimerComponent> timer = ComponentMapper.getFor(TimerComponent.class);
@@ -45,4 +45,5 @@ public class ComponentMappers {
     public static final ComponentMapper<PositionSynchComponent> positionSynch = ComponentMapper.getFor(PositionSynchComponent.class);
     //public static final ComponentMapper<PositionSynchComponent> positionSynch = ComponentMapper.getFor(PositionSynchComponent.class);
     public static final ComponentMapper<SoundEmitterComponent> soundEmitter = ComponentMapper.getFor(SoundEmitterComponent.class);
+    public static final ComponentMapper<LineOfSightComponent> lineOfSight = ComponentMapper.getFor(LineOfSightComponent.class);
 }

@@ -4,50 +4,14 @@ import box2dLight.RayHandler;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-
-import de.hochschuletrier.gdw.commons.devcon.ConsoleCmd;
-import de.hochschuletrier.gdw.commons.devcon.cvar.CVarBool;
 import de.hochschuletrier.gdw.commons.gdx.ashley.EntityFactory;
-import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
-import de.hochschuletrier.gdw.commons.gdx.input.hotkey.Hotkey;
-import de.hochschuletrier.gdw.commons.gdx.input.hotkey.HotkeyModifier;
-import de.hochschuletrier.gdw.commons.gdx.physix.PhysixBodyDef;
-import de.hochschuletrier.gdw.commons.gdx.physix.PhysixComponentAwareContactListener;
-import de.hochschuletrier.gdw.commons.gdx.physix.PhysixFixtureDef;
-import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
-import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixModifierComponent;
-import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixDebugRenderSystem;
-import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.ss15.Main;
-import de.hochschuletrier.gdw.ss15.game.components.ImpactSoundComponent;
-import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
-import de.hochschuletrier.gdw.ss15.game.components.TriggerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
-import de.hochschuletrier.gdw.ss15.game.contactlisteners.ImpactSoundListener;
-import de.hochschuletrier.gdw.ss15.game.contactlisteners.TriggerListener;
-import de.hochschuletrier.gdw.ss15.game.systems.LineOfSightSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.CameraSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.RenderSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.TextureRenderer;
-import de.hochschuletrier.gdw.ss15.game.systems.NetworkClientSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.InputSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
-import de.hochschuletrier.gdw.ss15.game.utils.PhysixUtil;
-import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Clientsocket;
-import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serversocket;
+import de.hochschuletrier.gdw.ss15.game.systems.*;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.List;
 import java.util.function.Consumer;
 
 public class Game extends InputAdapter {
@@ -66,8 +30,7 @@ public class Game extends InputAdapter {
             GameConstants.VELOCITY_ITERATIONS, GameConstants.POSITION_ITERATIONS, GameConstants.PRIORITY_PHYSIX
     );
    // private final PhysixDebugRenderSystem physixDebugRenderSystem = new PhysixDebugRenderSystem(GameConstants.PRIORITY_DEBUG_WORLD);
-    private final RenderSystem renderSystem = new RenderSystem(new RayHandler(physixSystem.getWorld()),
-            cameraSystem.getCamera().getOrthographicCamera());
+    
     private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem(GameConstants.PRIORITY_PHYSIX + 1);
     private final NetworkClientSystem networksystem = new NetworkClientSystem(this,GameConstants.PRIORITY_PHYSIX+2);
 
@@ -76,6 +39,8 @@ public class Game extends InputAdapter {
 
     private final MapLoader mapLoader = new MapLoader(); /// @author tobidot
     
+    private final WeaponSystem weaponSystem = new WeaponSystem();
+
     private final InputSystem inputSystem = new InputSystem();
 
     public Game() {
@@ -106,11 +71,10 @@ public class Game extends InputAdapter {
     private void addSystems() {
         //engine.addSystem(physixSystem);
         //engine.addSystem(physixDebugRenderSystem);
-        engine.addSystem(cameraSystem);
-        engine.addSystem(renderSystem);
         engine.addSystem(updatePositionSystem);
         engine.addSystem(networksystem);
         engine.addSystem(inputSystem);
+        engine.addSystem(weaponSystem);
     }
 
     private void addContactListeners() {

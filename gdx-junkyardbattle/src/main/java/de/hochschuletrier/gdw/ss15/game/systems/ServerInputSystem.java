@@ -25,7 +25,7 @@ public class ServerInputSystem extends IteratingSystem {
 
     }
 
-    public void onWasWeißIchEvent(Entity entity, InputMovPaket inputMovPaket){
+    public void onWasWeisIchEvent(Entity entity, InputMovPaket inputMovPaket){
         entity.getComponent(InputComponent.class).update(inputMovPaket);
     }
 }

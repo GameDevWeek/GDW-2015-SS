@@ -21,9 +21,8 @@ public class WeaponSystem extends IteratingSystem {
 	
 	private EntityFactory factory;
 
-    public WeaponSystem(Family family, EntityFactory factory) {
+    public WeaponSystem() {
         super(Family.all(WeaponComponent.class).get());
-        this.factory = factory;
     }
 
     @Override
@@ -37,7 +36,7 @@ public class WeaponSystem extends IteratingSystem {
         if(! plc.isLocalPlayer) return;
 
         HealthComponent hc = ComponentMappers.health.get(entity);
-        if(hc.health != HealthComponent.healthState.ALIVE) return;
+        if(hc.healthState != HealthComponent.HealthState.ALIVE) return;
 
         WeaponComponent wpc = ComponentMappers.weapon.get(entity);
         PositionComponent psc = ComponentMappers.position.get(entity);
