@@ -16,6 +16,7 @@ public class ShootUpEvent {
         this.xPos = xPos;
         this.yPos = yPos;
         this.timeStamp = timeStamp;
+        System.out.println("xPos: " + this.xPos + " yPos: " + this.yPos + " timeStamp: " + this.timeStamp);
     }
 
     public static interface Listener{
