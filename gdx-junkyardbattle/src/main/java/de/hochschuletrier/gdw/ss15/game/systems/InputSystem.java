@@ -6,9 +6,9 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import de.hochschuletrier.gdw.ss15.events.SoundEvent;
+import de.hochschuletrier.gdw.ss15.Main;
+import de.hochschuletrier.gdw.ss15.events.*;
 import de.hochschuletrier.gdw.ss15.game.components.InputComponent;
-import de.hochschuletrier.gdw.ss15.events.ShootDownEvent;
 import de.hochschuletrier.gdw.ss15.game.input.InputMovPaket;
 
 import java.util.LinkedList;
@@ -51,7 +51,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor {
                 inputPaket.left = true;
                 break;
         }
-
+        System.out.println(inputPaket);
         return true;
     }
 
@@ -72,7 +72,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor {
                 inputPaket.left = false;
                 break;
         }
-
+        System.out.println(inputPaket);
         return true;
     }
 
@@ -83,12 +83,31 @@ public class InputSystem extends IteratingSystem implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return false;
+        // touchDown = mouseClick
+        switch (button){
+            case Input.Buttons.LEFT:
+                new ShootDownEvent(screenX,screenY,99);
+                break;
+            case Input.Buttons.RIGHT:
+                new GatherDownEvent(screenX,screenY,99);
+                break;
+        }
+        return true;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        return false;
+        // touchUp = mouseClick
+        switch (button){
+            case Input.Buttons.LEFT:
+                new ShootUpEvent(screenX,screenY,99);
+                break;
+            case Input.Buttons.RIGHT:
+                new GatherUpEvent(screenX,screenY,99);
+                break;
+        }
+        return true;
+
     }
 
     @Override
@@ -111,6 +130,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor {
     @Override
     public void addedToEngine(Engine engine) {
         super.addedToEngine(engine);
+        Main.getInstance().inputMultiplexer.addProcessor(this);
         inputPaket = new InputMovPaket();
     }
 
