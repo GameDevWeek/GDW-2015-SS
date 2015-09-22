@@ -71,8 +71,8 @@ public class ServerGame{
 
     private void addSystems() {
        // engine.addSystem(physixSystem);
-        engine.addSystem(updatePositionSystem);
         engine.addSystem(networkSystem);
+        engine.addSystem(updatePositionSystem);
         engine.addSystem(lineOfSightSystem);
         engine.addSystem(syncPositionSystem);
     }

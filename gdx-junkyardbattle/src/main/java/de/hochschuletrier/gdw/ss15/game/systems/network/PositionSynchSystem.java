@@ -20,12 +20,13 @@ public class PositionSynchSystem extends EntitySystem implements EntityListener 
 
     private ImmutableArray<Entity> entities;
     ServerGame game;
+    private Family family;
 
     public PositionSynchSystem(ServerGame game,int priotity){
         super(priotity);
         this.game = game;
-        Family moveFamily = Family.all(ClientComponent.class).get();
-        entities = game.get_Engine().getEntitiesFor(moveFamily);
+        family = Family.all(PositionSynchComponent.class).get();
+        entities = game.get_Engine().getEntitiesFor(family);
     }
 
     @Override
@@ -59,7 +60,7 @@ public class PositionSynchSystem extends EntitySystem implements EntityListener 
 
     @Override
     public void addedToEngine(Engine engine){
-
+        engine.addEntityListener(family, this);
     }
 
     @Override
@@ -69,27 +70,41 @@ public class PositionSynchSystem extends EntitySystem implements EntityListener 
 
     @Override
     public void entityAdded(Entity entity) {
-        //allen speielern neue entit mitteilen
-        InitEntityPacket packet = new InitEntityPacket(ComponentMappers.positionSynch.get(entity).networkID,
-                ComponentMappers.positionSynch.get(entity).clientName, 100, 100, 0);
-        SendPacketServerEvent.emit(packet, true);
 
+        Entity exept = null;
         if(ComponentMappers.client.has(entity))
         {//es ist ein neuer client -> diese alle bestehenden sync objects senden
-            System.out.print("Send all enteties to new Player");
+            System.out.println("Send all enteties to new Player");
             Serverclientsocket client = ComponentMappers.client.get(entity).client;
             InitEntityPacket initPacket = new InitEntityPacket(0,"",0,0,0);
             for(int i=0;i<entities.size();i++)
             {
-                //Entity sendEnd = entities.get(i);
-                PositionSynchComponent sendComp = ComponentMappers.positionSynch.get(entities.get(i));
+                Entity sendEnd = entities.get(i);
+                PositionSynchComponent sendComp = ComponentMappers.positionSynch.get(sendEnd);
                 initPacket.entityID = sendComp.networkID;
                 initPacket.xPos = sendComp.lastX;
                 initPacket.yPos = sendComp.lastY;
                 initPacket.rotation = sendComp.lastRot;
+                if(sendEnd == entity) {//eigener spieler
+                    System.out.println("Send own player to client");
+                    initPacket.name = "clientOwnPlayer";
+                    exept=entity;
+                }
+                else
+                {
+                    System.out.println("Send other player to client");
+                    initPacket.name = sendComp.clientName;
+                }
                 client.sendPacketSave(initPacket,true);
             }
+
+
         }
+
+        //allen speielern neue entit mitteilen
+        InitEntityPacket packet = new InitEntityPacket(ComponentMappers.positionSynch.get(entity).networkID,
+                ComponentMappers.positionSynch.get(entity).clientName, 100, 100, 0);
+        SendPacketServerEvent.emit(packet, true,exept);
     }
 
     @Override

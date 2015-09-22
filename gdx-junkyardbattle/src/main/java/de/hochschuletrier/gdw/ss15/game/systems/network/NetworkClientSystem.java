@@ -32,6 +32,7 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener 
     private long lastAddedEntityID = 0;
     private HashMap<Long, Entity> hashMap = new HashMap();
     private ImmutableArray<Entity> entities;
+    private Family family;
 
     Game game = null;
     ClientConnection connection = Main.getInstance().getClientConnection();
@@ -48,8 +49,8 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener 
 
         super(priority);
         this.game=game;
-        Family fam = Family.all(NetworkIDComponent.class).get();
-        entities = game.getEngine().getEntitiesFor(fam);
+        family = Family.all(NetworkIDComponent.class).get();
+        entities = game.getEngine().getEntitiesFor(family);
 
     }
 
@@ -130,7 +131,6 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener 
 
     @Override
     public void addedToEngine(Engine engine){
-        Family family = Family.all(NetworkIDComponent.class).get();
         engine.addEntityListener(family, this);
     }
 

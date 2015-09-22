@@ -87,8 +87,9 @@
         "meta": {},
         "components": {
             "Position": {},
+            "NetworkID": {},
             "Texture":{
-                "texture": "box",
+                "texture": "ball",
                 "width": 60,
                 "height": 60,
                 "srcX": 0,

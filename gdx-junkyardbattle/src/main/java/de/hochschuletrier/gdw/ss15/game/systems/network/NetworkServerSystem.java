@@ -53,7 +53,7 @@ public class NetworkServerSystem extends EntitySystem implements SendPacketServe
     public void update(float deltaTime) {
         //System.out.println("jfsdklfjsdaöklfjsdöklf rennt");
         while (serverSocket.isNewClientAvaliable()) {
-            addClient();
+            game.createEntity("player", 0, 0);
         }
 
         for(Entity client:clients)
@@ -81,12 +81,6 @@ public class NetworkServerSystem extends EntitySystem implements SendPacketServe
         }
     }
 
-    public void addClient(){
-        Entity entity = game.createEntity("player", 0, 0);
-        InitEntityPacket packet = new InitEntityPacket(ComponentMappers.positionSynch.get(entity).networkID,
-                "clientOwnPlayer", 0, 0, 0);
-        ComponentMappers.client.get(entity).client.sendPacketSave(packet);
-    }
 
     /**
      * Packet an alle Senden
