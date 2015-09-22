@@ -46,6 +46,7 @@ public class MapSpecialEntities
         {
             posX = x;
             posY = y;
+            tiledMap = tm;
             entity = null;
             asObject = null;
             asTile = ti;
