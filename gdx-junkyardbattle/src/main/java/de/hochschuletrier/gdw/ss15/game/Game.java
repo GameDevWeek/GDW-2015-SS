@@ -1,5 +1,6 @@
 package de.hochschuletrier.gdw.ss15.game;
 
+import box2dLight.RayHandler;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Input;
@@ -30,6 +31,7 @@ import de.hochschuletrier.gdw.ss15.game.components.TriggerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.ImpactSoundListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.TriggerListener;
+import de.hochschuletrier.gdw.ss15.game.systems.CameraSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.TextureRenderer;
 import de.hochschuletrier.gdw.ss15.game.systems.NetworkClientSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.RenderSystem;
@@ -48,17 +50,20 @@ public class Game extends InputAdapter {
 
     //private final CVarBool physixDebug = new CVarBool("physix_debug", true, 0, "Draw physix debug");
     //private final Hotkey togglePhysixDebug = new Hotkey(() -> physixDebug.toggle(false), Input.Keys.F1, HotkeyModifier.CTRL);
+    
+    private final CameraSystem cameraSystem = new CameraSystem();
 
     private final PooledEngine engine = new PooledEngine(
             GameConstants.ENTITY_POOL_INITIAL_SIZE, GameConstants.ENTITY_POOL_MAX_SIZE,
             GameConstants.COMPONENT_POOL_INITIAL_SIZE, GameConstants.COMPONENT_POOL_MAX_SIZE
     );
 
-   // private final PhysixSystem physixSystem = new PhysixSystem(GameConstants.BOX2D_SCALE,
-           // GameConstants.VELOCITY_ITERATIONS, GameConstants.POSITION_ITERATIONS, GameConstants.PRIORITY_PHYSIX
-   // );
+    private final PhysixSystem physixSystem = new PhysixSystem(GameConstants.BOX2D_SCALE,
+            GameConstants.VELOCITY_ITERATIONS, GameConstants.POSITION_ITERATIONS, GameConstants.PRIORITY_PHYSIX
+    );
    // private final PhysixDebugRenderSystem physixDebugRenderSystem = new PhysixDebugRenderSystem(GameConstants.PRIORITY_DEBUG_WORLD);
-    private final RenderSystem renderSystem = new RenderSystem();
+    private final RenderSystem renderSystem = new RenderSystem(new RayHandler(physixSystem.getWorld()),
+            cameraSystem.getCamera().getOrthographicCamera());
     private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem(GameConstants.PRIORITY_PHYSIX + 1);
     private final NetworkClientSystem networksystem = new NetworkClientSystem(GameConstants.PRIORITY_PHYSIX+2);
 
@@ -89,7 +94,8 @@ public class Game extends InputAdapter {
     private void addSystems() {
         //engine.addSystem(physixSystem);
         //engine.addSystem(physixDebugRenderSystem);
-        engine.addSystem(animationRenderSystem);
+        engine.addSystem(cameraSystem);
+        engine.addSystem(renderSystem);
         engine.addSystem(updatePositionSystem);
         engine.addSystem(networksystem);
     }
@@ -114,7 +120,7 @@ public class Game extends InputAdapter {
     }
 
     public void update(float delta) {
-        Main.getInstance().screenCamera.bind();
+        //Main.getInstance().screenCamera.bind();
         engine.update(delta);
     }
 
