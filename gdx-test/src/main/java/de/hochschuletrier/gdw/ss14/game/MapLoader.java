@@ -38,6 +38,11 @@ public class MapLoader
      * Standard Konstruktor
      */
     
+    public interface EntityCreator
+    {
+        Entity createEntity(String name, float x, float y);
+    }
+    
     public interface TileCreationListener
     {
         public void onTileCreate( MapSpecialEntities.CreatorInfo info );
@@ -65,7 +70,7 @@ public class MapLoader
      * @param game Spielstand fuer das die Entities geladen werden sollen
      * @param filename Name der Mapdatei die geladen werden soll
      */
-    public void run(Game game, String filename,PhysixSystem pSystem)
+    public void run(EntityCreator creator, String filename,PhysixSystem pSystem)
     {     
         /// Datei auslesen und in tiledMap packen
         try
@@ -77,7 +82,7 @@ public class MapLoader
         }
         
         /// Objekte aus tiledMap laden und per Entitycreator im Game erstellen 
-        loadObjectsFromMap( pSystem,game,tiledMap );
+        loadObjectsFromMap( pSystem,creator,tiledMap );
     }
 
     /**
@@ -103,7 +108,7 @@ public class MapLoader
      * @param game Spiel das gefuellt werden soll
      * @param tiledMap Map die geladen wird
      */     
-    private void loadObjectsFromMap(PhysixSystem pSystem,Game game,TiledMap tiledMap)
+    private void loadObjectsFromMap(PhysixSystem pSystem,EntityCreator entCreator,TiledMap tiledMap)
     {
         
         
@@ -131,7 +136,7 @@ public class MapLoader
                     String objectName = obj.getName();
                     float xPos = obj.getX();
                     float yPos = obj.getY();
-                    resultEnt = game.createEntity(objectName, xPos, yPos);
+                    resultEnt = entCreator.createEntity(objectName, xPos, yPos);
 
                     MapSpecialEntities.CreatorInfo info = new MapSpecialEntities.CreatorInfo(resultEnt,tiledMap,obj,layer);
                     
@@ -181,7 +186,6 @@ public class MapLoader
                 }
             }
         }
-        System.out.println("Map Loaded Succsesful");
     }
     
 }
