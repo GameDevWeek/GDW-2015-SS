@@ -6,7 +6,7 @@ import com.badlogic.gdx.utils.Pool.Poolable;
 public class DeathComponent extends Component implements Poolable
 {
    
-    public float dyingDuration = 3000;
+    public float dyingDuration = 30000;
     public float stateTime = 0;
     
     

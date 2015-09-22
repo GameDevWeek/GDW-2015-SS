@@ -1,4 +1,4 @@
-﻿{
+{
     "ball": {
         "meta": {},
         "components": {
@@ -78,6 +78,7 @@
                 "friction": 0.5,
                 "restitution": 0.1
             },
+<<<<<<< HEAD
             "Player": {
                 "name": "New Player"
             },
@@ -86,9 +87,10 @@
                 "spawningDuration" : 4000
             },
             "Move": {}
-             },
+=======
             "Client":{},
-                "PositionSynch":{}
+            "PositionSynch":{}
+        }
     },
 
     "clientPlayer": {
@@ -120,10 +122,14 @@
             	"damageValue": 10,
             	"damageToPlayer": true,
             	"damageToTile": true
+            }
+>>>>>>> develop
         }
     },
 
     "metal": {
 
     }
+
+
 }
