@@ -73,7 +73,7 @@ public class RenderSystemTest extends SandboxGame {
     private final PhysixDebugRenderSystem physixDebugRenderSystem = new PhysixDebugRenderSystem(GameConstants.PRIORITY_DEBUG_WORLD);
     private final CameraSystem cameraSystem = new CameraSystem();
     private final RenderSystem renderSystem = new RenderSystem(new RayHandler(physixSystem.getWorld()),
-            GameConstants.PRIORITY_RENDER_SYSTEM, cameraSystem.getCamera().getOrthographicCamera());
+            cameraSystem.getCamera().getOrthographicCamera());
     private final UpdatePositionSystem updatePosSystem = new UpdatePositionSystem();
     private float totalMapWidth, totalMapHeight;
 
@@ -134,6 +134,7 @@ public class RenderSystemTest extends SandboxGame {
 
         createEntity("greenPointLight", 50.f, 50.f);
         createEntity("blueConeLight", 500.f, 100.f);
+        createEntity("ball", 50.f, 50.f);
         
         // Setup camera
         totalMapWidth = map.getWidth() * map.getTileWidth();

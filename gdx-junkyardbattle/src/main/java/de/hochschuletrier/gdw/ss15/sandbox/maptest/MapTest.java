@@ -1,5 +1,12 @@
 package de.hochschuletrier.gdw.ss15.sandbox.maptest;
 
+import java.util.HashMap;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import box2dLight.RayHandler;
+
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
@@ -35,13 +42,9 @@ import de.hochschuletrier.gdw.ss15.game.components.animation.AnimationState;
 import de.hochschuletrier.gdw.ss15.game.components.animation.AnimatorComponent;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
 import de.hochschuletrier.gdw.ss15.game.components.texture.TextureComponent;
-import de.hochschuletrier.gdw.ss15.game.systems.AnimatorSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.TextureSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.RenderSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ss15.sandbox.SandboxGame;
-import java.util.HashMap;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -77,17 +80,15 @@ public class MapTest extends SandboxGame {
     
     private AnimatorComponent animatorComponent;
     
-    private final TextureSystem textureSystem = new TextureSystem();
-    private final AnimatorSystem animatorSystem = new AnimatorSystem();
+    private final RenderSystem renderSystem = new RenderSystem(new RayHandler(physixSystem.getWorld()), 
+            camera.getOrthographicCamera());
     private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem();
     
     private final EntityFactoryParam factoryParam = new EntityFactoryParam();
     private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json", Game.class);
     
     public MapTest() {
-       
-        engine.addSystem(textureSystem);
-        engine.addSystem(animatorSystem);
+        engine.addSystem(renderSystem);
         engine.addSystem(updatePositionSystem);
         engine.addSystem(physixSystem);
         engine.addSystem(physixDebugRenderSystem);
@@ -126,28 +127,6 @@ public class MapTest extends SandboxGame {
         // create a simple player ball
         Entity player = createEntity("ball", 100, 100);
         animatorComponent = player.getComponent(AnimatorComponent.class);
-        //PhysixModifierComponent modifyComponent = engine.createComponent(PhysixModifierComponent.class);
-        //player.add(modifyComponent);
-        /*
-        PositionComponent positionComponent = engine.createComponent(PositionComponent.class);
-        TextureComponent textureComponent = engine.createComponent(TextureComponent.class);
-               
-        animatorComponent = engine.createComponent(AnimatorComponent.class);
-        animatorComponent.animationStates.put(AnimationState.IDLE, assetManager.getAnimation("box"));
-        animatorComponent.animationStates.put(AnimationState.WALK, assetManager.getAnimation("walking"));
-        animatorComponent.animationStates.put(AnimationState.FIRE, assetManager.getAnimation("ball"));
-        
-        player.add(animatorComponent);
-        player.add(positionComponent);*/
-
-        /*modifyComponent.schedule(() -> {
-            playerBody = engine.createComponent(PhysixBodyComponent.class);
-            PhysixBodyDef bodyDef = new PhysixBodyDef(BodyType.DynamicBody, physixSystem).position(100, 100).fixedRotation(true);
-            playerBody.init(bodyDef, physixSystem, player);
-            PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem).density(5).friction(0.2f).restitution(0.4f).shapeCircle(30);
-            playerBody.createFixture(fixtureDef);
-            player.add(playerBody);
-        });*/
 
         engine.addEntity(player);
 
@@ -222,9 +201,15 @@ public class MapTest extends SandboxGame {
             nothingPressed = false;
         }
 
+        camera.setDestination(playerBody.getPosition());
+
         if(nothingPressed)
         {
             animatorComponent.currentAnimationState = AnimationState.IDLE;
+
+           
         }
+
+ 		camera.setDestination(playerBody.getPosition());
     }
 }

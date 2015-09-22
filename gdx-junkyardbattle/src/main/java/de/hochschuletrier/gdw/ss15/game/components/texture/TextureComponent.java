@@ -7,6 +7,7 @@ package de.hochschuletrier.gdw.ss15.game.components.texture;
 
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Pool;
 
 /**
