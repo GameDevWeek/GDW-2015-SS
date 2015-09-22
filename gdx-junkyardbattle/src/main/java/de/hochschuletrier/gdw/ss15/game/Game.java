@@ -64,7 +64,7 @@ public class Game extends InputAdapter {
     private final NetworkClientSystem networksystem = new NetworkClientSystem(GameConstants.PRIORITY_PHYSIX+2);
 
     private final EntityFactoryParam factoryParam = new EntityFactoryParam();
-    private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json", null);
+    private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json", Game.class);
 
     public Game() {
         // If this is a build jar file, disable hotkeys

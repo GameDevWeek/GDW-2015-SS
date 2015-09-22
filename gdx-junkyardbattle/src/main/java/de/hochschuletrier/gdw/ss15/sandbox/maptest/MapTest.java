@@ -96,7 +96,7 @@ public class MapTest extends SandboxGame {
     }
     
     public Entity createEntity(String name, float x, float y) {
-        factoryParam.game = null;
+        //factoryParam.game = null;
         factoryParam.x = x;
         factoryParam.y = y;
         Entity entity = entityFactory.createEntity(name, factoryParam);

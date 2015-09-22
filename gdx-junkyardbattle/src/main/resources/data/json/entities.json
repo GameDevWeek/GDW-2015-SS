@@ -66,6 +66,7 @@
 				"degree": 45
 			}
         }
+    },
     "player": {
         "meta": {},
         "components": {
@@ -76,8 +77,7 @@
                 "density": 10,
                 "friction": 0.5,
                 "restitution": 0.1
+                }
             }
         }
-    }
-	
 }
