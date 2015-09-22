@@ -64,17 +64,7 @@ public class MenuPage extends Group {
         button.getLabel().setAlignment(Align.center);
     }
 
-    protected final HorizontalGroup addSlider(String stylename, String text, Runnable runnable) {
-       
-    	HorizontalGroup hg = new HorizontalGroup();
-    	Label option = new Label(text, skin, stylename);
-    	Slider sl = new Slider(0, 100, 1, false, skin, stylename);
-        hg.addActor(option);
-        hg.addActor(sl);
-        addActor(hg);
-    	return hg;
-    	
-    }
+   
     
     protected final TextButton addButton(int x, int y, int width, int height, String text, Runnable runnable, String style) {
         TextButton button = new TextButton(text, skin, style);
