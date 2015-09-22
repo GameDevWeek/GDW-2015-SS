@@ -54,7 +54,7 @@ public class LineOfSightSystem extends EntitySystem {
                 // component angefügt ==> ist sichtbar (für anderes Team)
                 if(team1.get(0).getComponent(LineOfSightComponent.class) == null)
                     team1.get(0).add(new LineOfSightComponent());
-                if(team1.get(j).getComponent(LineOfSightComponent.class) == null)
+                if(team2.get(j).getComponent(LineOfSightComponent.class) == null)
                     team2.get(j).add(new LineOfSightComponent());
             }
             else
