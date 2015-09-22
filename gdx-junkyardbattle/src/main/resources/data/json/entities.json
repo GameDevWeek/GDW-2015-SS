@@ -9,14 +9,8 @@
                 "minSpeed": 20,
                 "minDelay": 100
             },
-            "Texture": {
-                "texture": "ball",
-                "width": 60,
-                "height": 60,
-                "srcX": 0,
-                "srcY": 0,
-                "scaleX": 1,
-                "scaleY": 1
+            "Animator": {
+                "animation_IDLE": "ball"
             },
             "PhysixBody": {
                 "type": "circle",
@@ -37,8 +31,8 @@
                 "minSpeed": 20,
                 "minDelay": 100
             },
-            "Animation": {
-                "animation": "box"
+            "Animator": {
+                "animation_IDLE": "box"
             },
             "PhysixBody": {
                 "type": "box",
@@ -70,6 +64,18 @@
 				"degree": 45
 			}
         }
-    }
-	
+    },
+    "player": {
+        "meta": {},
+        "components": {
+            "Position": {},
+            "PhysixBody": {
+                "type": "box",
+                "size": 60,
+                "density": 10,
+                "friction": 0.5,
+                "restitution": 0.1
+                }
+            }
+        }
 }

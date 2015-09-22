@@ -15,7 +15,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-
+import de.hochschuletrier.gdw.commons.gdx.ashley.EntityFactory;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.cameras.orthogonal.LimitedSmoothCamera;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixBodyDef;
@@ -35,12 +35,16 @@ import de.hochschuletrier.gdw.commons.tiled.tmx.TmxImage;
 import de.hochschuletrier.gdw.commons.tiled.utils.RectangleGenerator;
 import de.hochschuletrier.gdw.commons.utils.Rectangle;
 import de.hochschuletrier.gdw.ss15.Main;
+import de.hochschuletrier.gdw.ss15.events.ChangeAnimationEvent;
+import de.hochschuletrier.gdw.ss15.game.Game;
 import de.hochschuletrier.gdw.ss15.game.GameConstants;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.components.animation.AnimationState;
 import de.hochschuletrier.gdw.ss15.game.components.animation.AnimatorComponent;
+import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
 import de.hochschuletrier.gdw.ss15.game.components.texture.TextureComponent;
-import de.hochschuletrier.gdw.ss15.game.systems.RenderSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.renderers.AnimatorRenderer;
+import de.hochschuletrier.gdw.ss15.game.systems.renderers.RenderSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ss15.sandbox.SandboxGame;
 
@@ -77,16 +81,31 @@ public class MapTest extends SandboxGame {
     private final HashMap<TileSet, Texture> tilesetImages = new HashMap();
     
     private AnimatorComponent animatorComponent;
+    private PositionComponent positionComponent;
     
     private final RenderSystem renderSystem = new RenderSystem(new RayHandler(physixSystem.getWorld()), 
             camera.getOrthographicCamera());
     private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem();
     
+    private final EntityFactoryParam factoryParam = new EntityFactoryParam();
+    private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json", Game.class);
+    
+    private Entity player;
     public MapTest() {
         engine.addSystem(renderSystem);
         engine.addSystem(updatePositionSystem);
         engine.addSystem(physixSystem);
         engine.addSystem(physixDebugRenderSystem);
+    }
+    
+    public Entity createEntity(String name, float x, float y) {
+        //factoryParam.game = null;
+        factoryParam.x = x;
+        factoryParam.y = y;
+        Entity entity = entityFactory.createEntity(name, factoryParam);
+
+        engine.addEntity(entity);
+        return entity;
     }
 
     @Override
@@ -98,6 +117,7 @@ public class MapTest extends SandboxGame {
             tilesetImages.put(tileset, new Texture(filename));
         }
         mapRenderer = new TiledMapRendererGdx(map, tilesetImages);
+        entityFactory.init(engine, assetManager);
 
         // Generate static world
         int tileWidth = map.getTileWidth();
@@ -108,35 +128,8 @@ public class MapTest extends SandboxGame {
                 (Rectangle rect) -> addShape(rect, tileWidth, tileHeight));
 
         // create a simple player ball
-        Entity player = engine.createEntity();
-        PhysixModifierComponent modifyComponent = engine.createComponent(PhysixModifierComponent.class);
-        player.add(modifyComponent);
-        
-        
-        PositionComponent positionComponent = engine.createComponent(PositionComponent.class);
-        TextureComponent textureComponent = engine.createComponent(TextureComponent.class);
-        
-        textureComponent.reset();
-        textureComponent.texture = assetManager.getTexture("ball");
-        
-        
-        animatorComponent = engine.createComponent(AnimatorComponent.class);
-        animatorComponent.animationStates.put(AnimationState.IDLE, assetManager.getAnimation("box"));
-        animatorComponent.animationStates.put(AnimationState.WALK, assetManager.getAnimation("walking"));
-        animatorComponent.animationStates.put(AnimationState.FIRE, assetManager.getAnimation("ball"));
-        
-        player.add(animatorComponent);
-        //player.add(textureComponent);
-        player.add(positionComponent);
-
-        modifyComponent.schedule(() -> {
-            playerBody = engine.createComponent(PhysixBodyComponent.class);
-            PhysixBodyDef bodyDef = new PhysixBodyDef(BodyType.DynamicBody, physixSystem).position(100, 100).fixedRotation(true);
-            playerBody.init(bodyDef, physixSystem, player);
-            PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem).density(5).friction(0.2f).restitution(0.4f).shapeCircle(30);
-            playerBody.createFixture(fixtureDef);
-            player.add(playerBody);
-        });
+        player = createEntity("ball", 100, 100);
+        positionComponent = player.getComponent(PositionComponent.class);
         engine.addEntity(player);
 
         // Setup camera
@@ -185,44 +178,6 @@ public class MapTest extends SandboxGame {
         
         mapRenderer.update(delta);
         camera.update(delta);
-
-        if(playerBody != null) {
-            float speed = 10000.0f;
-            float velX = 0, velY = 0;
-            boolean nothingPressed = true;
-            
-            if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-                velX -= delta * speed;
-                animatorComponent.currentAnimationState = AnimationState.WALK;
-                nothingPressed = false;
-            }
-            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-                velX += delta * speed;
-                animatorComponent.currentAnimationState = AnimationState.WALK;
-                nothingPressed = false;
-            }
-            if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-                velY -= delta * speed;
-                animatorComponent.currentAnimationState = AnimationState.WALK;
-                nothingPressed = false;
-            }
-            if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-                velY += delta * speed;
-                animatorComponent.currentAnimationState = AnimationState.WALK;
-                nothingPressed = false;
-            }
-            if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-                animatorComponent.currentAnimationState = AnimationState.FIRE;
-                nothingPressed = false;
-            }
-            
-            if(nothingPressed)
-            {
-                animatorComponent.currentAnimationState = AnimationState.IDLE;
-            }
-           
-            playerBody.setLinearVelocity(velX, velY);
-            camera.setDestination(playerBody.getPosition());
-        }
+ 		camera.setDestination(positionComponent.x, positionComponent.y);
     }
 }

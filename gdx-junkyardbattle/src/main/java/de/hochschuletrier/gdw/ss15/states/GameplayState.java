@@ -75,6 +75,7 @@ public class GameplayState extends BaseGameState {
 
     @Override
     public void update(float delta) {
+        Main.getInstance().getClientConnection().update();
         game.update(delta);
         if (inputForwarder.get() == menuInputProcessor) {
             menuManager.update(delta);
