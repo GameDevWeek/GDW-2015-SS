@@ -74,6 +74,7 @@ public class Server implements Runnable
             Tools.Sleep(10);
             timer.Update();
             runningGame.update((float)timer.get_FrameSeconds());
+            //runningGame.update(0);
             //System.out.println("runn");
             //engine.update();
         }

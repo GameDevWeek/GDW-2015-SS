@@ -1,6 +1,7 @@
 package de.hochschuletrier.gdw.ss15.game.systems;
 
 import com.badlogic.ashley.core.*;
+import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Input;
 import de.hochschuletrier.gdw.commons.devcon.ConsoleCmd;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
@@ -10,6 +11,7 @@ import de.hochschuletrier.gdw.ss15.events.NetworkReceivedDeleteEntity;
 import de.hochschuletrier.gdw.ss15.events.NetworkReceivedNewEntity;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.Game;
+import de.hochschuletrier.gdw.ss15.game.components.ClientComponent;
 import de.hochschuletrier.gdw.ss15.game.components.NetworkIDComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.network.ClientConnection;
@@ -41,6 +43,7 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener 
     private MyTimer timer = new MyTimer(true);
     private long lastAddedEntityID = 0;
     private HashMap<Long, Entity> hashMap = new HashMap();
+    private ImmutableArray<Entity> entities;
 
     Game game = null;
     ClientConnection connection = Main.getInstance().getClientConnection();
@@ -57,6 +60,9 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener 
 
         super(priority);
         this.game=game;
+        Family fam = Family.all(NetworkIDComponent.class).get();
+        entities = game.getEngine().getEntitiesFor(fam);
+
     }
 
     @Override
@@ -80,7 +86,7 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener 
         {
             while(socket.isPacketAvaliable())
             {
-                System.out.println("Received packet");
+                //System.out.println("Received packet");
                 ReceivedPacket(socket.getReceivedPacket());
             }
         }
@@ -109,9 +115,10 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener 
                 Entity ent = hashMap.get(ePacket.entityID);
                 if(ent!=null) {
                     NetworkPositionEvent.emit(ent, ePacket.xPos, ePacket.yPos, ePacket.rotation, false);
-                    ComponentMappers.position.get(hashMap.get(ePacket.entityID)).x = ePacket.xPos;
-                    ComponentMappers.position.get(hashMap.get(ePacket.entityID)).y = ePacket.yPos;
-                    ComponentMappers.position.get(hashMap.get(ePacket.entityID)).rotation = ePacket.rotation;
+
+                    ComponentMappers.position.get(ent).x = ePacket.xPos;
+                    ComponentMappers.position.get(ent).y = ePacket.yPos;
+                    ComponentMappers.position.get(ent).rotation = ePacket.rotation;
                 }
             }
         }
@@ -146,6 +153,7 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener 
 
     @Override
     public void entityAdded(Entity entity) {
+        //System.out.print("Super epic entity id:"+ lastAddedEntityID);
         ComponentMappers.networkID.get(entity).networkID = lastAddedEntityID;
         hashMap.put(lastAddedEntityID, entity);
     }

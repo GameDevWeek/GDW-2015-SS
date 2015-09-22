@@ -94,6 +94,7 @@
         "meta": {},
         "components": {
             "Position": {},
+            "NetworkID": {},
             "Texture":{
                 "texture": "ball",
                 "width": 60,
