@@ -20,6 +20,11 @@ public class ClientComponentFactory extends ComponentFactory<EntityFactoryParam>
     public void run(Entity entity, SafeProperties safeProperties, SafeProperties safeProperties1, EntityFactoryParam entityFactoryParam) {
         ClientComponent component = engine.createComponent(ClientComponent.class);
         component.reset();
+        /**
+         * I don't even know if it
+         * fits, don't try anything stupid
+         * like i did, when i wrote this methods!
+         */
         component.client = Main.getInstance().getServer().getServersocket().getNewClient();
     }
 }

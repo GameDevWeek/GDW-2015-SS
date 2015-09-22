@@ -74,7 +74,7 @@ public class NetworkServerSystem extends EntitySystem implements EntityListener 
 
     @Override
     public void entityAdded(Entity entity) {
-        ComponentMappers.client.get(entity).client = m_Serversocket.getNewClient();
+        //ComponentMappers.client.get(entity).client = m_Serversocket.getNewClient();
         clients.add(entity);
     }
 

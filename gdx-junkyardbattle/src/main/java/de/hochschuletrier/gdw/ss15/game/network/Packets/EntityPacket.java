@@ -11,29 +11,41 @@ import de.hochschuletrier.gdw.ss15.game.network.PacketIds;
 
 public class EntityPacket extends Packet {
 
-    Entity m_entity;
+    private float xPos;
+    private float yPos;
+    private float rotation;
+    private long entityID;
 
     public EntityPacket(){
         super(PacketIds.Position.getValue());
     }
 
-    public EntityPacket(Entity entity){
+    public EntityPacket(long entityID, float xPos, float yPos, float rotation){
         super(PacketIds.Position.getValue());
-        this.m_entity = entity;
+        this.entityID = entityID;
+        this.xPos = xPos;
+        this.yPos = yPos;
+        this.rotation = rotation;
     }
 
     @Override
     protected void pack(DataOutputStream dataOutput) throws IOException {
-
+        dataOutput.writeLong(entityID);
+        dataOutput.writeFloat(xPos);
+        dataOutput.writeFloat(yPos);
+        dataOutput.writeFloat(rotation);
     }
 
     @Override
     protected void unpack(DataInputStream input) throws IOException {
-
+        entityID = input.readLong();
+        xPos = input.readFloat();
+        yPos = input.readFloat();
+        rotation = input.readFloat();
     }
 
     @Override
     public int getSize() {
-        return 0;
+        return ((Long.SIZE+(3*Float.SIZE))/8);
     }
 }
