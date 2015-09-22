@@ -70,7 +70,7 @@
         "meta": {},
         "components": {
             "Position": {},
-            "InputComponent": {}
+            "Input": {}
         }
     }
 
