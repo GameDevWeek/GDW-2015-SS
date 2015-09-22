@@ -7,7 +7,7 @@ import com.badlogic.gdx.utils.Pool.Poolable;
  * Created by Ricardo on 21.09.2015.
  */
 
-public class MetalComponent extends Component implements Poolable
+public class PickableComponent extends Component implements Poolable
 {
 
     @Override

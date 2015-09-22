@@ -32,10 +32,11 @@ import de.hochschuletrier.gdw.commons.gdx.utils.GdxResourceLocator;
 import de.hochschuletrier.gdw.commons.gdx.utils.KeyUtil;
 import de.hochschuletrier.gdw.commons.resourcelocator.CurrentResourceLocator;
 import de.hochschuletrier.gdw.commons.utils.ClassUtils;
-import de.hochschuletrier.gdw.ss15.game.Game;
 import de.hochschuletrier.gdw.ss15.game.Server;
 import de.hochschuletrier.gdw.ss15.game.network.ClientConnection;
+import de.hochschuletrier.gdw.ss15.game.network.PacketIds;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serversocket;
+import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.PacketFactory;
 import de.hochschuletrier.gdw.ss15.sandbox.SandboxCommand;
 import de.hochschuletrier.gdw.ss15.states.LoadGameState;
 import de.hochschuletrier.gdw.ss15.states.MainMenuState;
@@ -241,6 +242,7 @@ public class Main extends StateBasedGame {
 
         parseOptions(args);
         new LwjglApplication(getInstance(), cfg);
+        PacketIds.RegisterPackets();
     }
 
     private static void parseOptions(String[] args) throws IllegalArgumentException {
@@ -310,5 +312,11 @@ public class Main extends StateBasedGame {
             }
         }
     };
+
+    // Get Server
+
+    public Server getServer(){
+        return server;
+    }
 
 }

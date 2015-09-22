@@ -8,6 +8,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+
 import de.hochschuletrier.gdw.commons.devcon.cvar.CVarBool;
 import de.hochschuletrier.gdw.commons.gdx.ashley.EntityFactory;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
@@ -30,6 +31,7 @@ import de.hochschuletrier.gdw.ss14.game.systems.AnimationRenderSystem;
 import de.hochschuletrier.gdw.ss14.game.systems.ClientSystem;
 import de.hochschuletrier.gdw.ss14.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ss14.game.utils.PhysixUtil;
+
 import java.util.function.Consumer;
 
 public class Game extends InputAdapter {
@@ -53,8 +55,6 @@ public class Game extends InputAdapter {
     private final EntityFactoryParam factoryParam = new EntityFactoryParam();
     private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json", Game.class);
 
-    /// @author tobidot
-    private final MapLoader mapLoader = new MapLoader();
     
     public Game() {
         // If this is a build jar file, disable hotkeys
@@ -75,9 +75,6 @@ public class Game extends InputAdapter {
         addContactListeners();
         setupPhysixWorld();
         entityFactory.init(engine, assetManager);
-        
-        /// @author tobidot(Tobias Gepp)
-        mapLoader.run( this, "data/maps/demo.tmx" );
     }
 
     private void addSystems() {

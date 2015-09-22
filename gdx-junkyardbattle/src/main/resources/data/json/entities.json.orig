@@ -1,4 +1,4 @@
-﻿{
+{
     "ball": {
         "meta": {},
         "components": {
@@ -10,7 +10,9 @@
                 "minDelay": 100
             },
             "Animator": {
-                "animation_IDLE": "ball"
+                "animation_IDLE": "box",
+                "animation_FIRE": "ball",
+                "animation_WALK": "walking"
             },
             "PhysixBody": {
                 "type": "circle",
@@ -31,8 +33,8 @@
                 "minSpeed": 20,
                 "minDelay": 100
             },
-            "Animator": {
-                "animation_IDLE": "box"
+            "Animation": {
+                "animation": "box"
             },
             "PhysixBody": {
                 "type": "box",
@@ -76,6 +78,7 @@
                 "friction": 0.5,
                 "restitution": 0.1
             },
+<<<<<<< HEAD
             "Player": {
                 "name": "New Player"
             },
@@ -84,9 +87,10 @@
                 "spawningDuration" : 4000
             },
             "Move": {}
-             },
+=======
             "Client":{},
-                "PositionSynch":{}
+            "PositionSynch":{}
+        }
     },
 
     "clientPlayer": {
@@ -118,10 +122,14 @@
             	"damageValue": 10,
             	"damageToPlayer": true,
             	"damageToTile": true
+            }
+>>>>>>> develop
         }
     },
 
     "metal": {
 
     }
+
+
 }

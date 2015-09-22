@@ -1,21 +1,29 @@
-package de.hochschuletrier.gdw.ss15.game.systems;
+﻿package de.hochschuletrier.gdw.ss15.game.systems;
 
+import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.math.Vector2;
 import de.hochschuletrier.gdw.commons.gdx.ashley.EntityFactory;
+import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
+import de.hochschuletrier.gdw.ss15.game.Game;
+import de.hochschuletrier.gdw.ss15.game.ServerGame;
 import de.hochschuletrier.gdw.ss15.game.components.*;
+import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
 
 /**
  * Created by oliver on 21.09.15.
  */
 public class WeaponSystem extends IteratingSystem {
+	
+	private EntityFactory factory;
 
-    public WeaponSystem(Family family) {
+    public WeaponSystem(Family family, EntityFactory factory) {
         super(Family.all(WeaponComponent.class).get());
+        this.factory = factory;
     }
 
     @Override
@@ -29,7 +37,7 @@ public class WeaponSystem extends IteratingSystem {
         if(! plc.isLocalPlayer) return;
 
         HealthComponent hc = ComponentMappers.health.get(entity);
-        if(hc.health != HealthComponent.healthState.ALIVE) return;
+        if(hc.healthState != HealthComponent.HealthState.ALIVE) return;
 
         WeaponComponent wpc = ComponentMappers.weapon.get(entity);
         PositionComponent psc = ComponentMappers.position.get(entity);
@@ -58,6 +66,17 @@ public class WeaponSystem extends IteratingSystem {
                             (float)Math.sin((Math.random() - 0.5f) * scatter));
                     dir.add((float)Math.cos(psc.rotation), (float)Math.sin(psc.rotation));
                     // create projectile
+                    //Components: Bullet, Damage, Physix
+                    //physix component
+                    float projectPlayerDistance = 5.f;
+                    float power = 50.f;
+                    EntityFactoryParam param = new EntityFactoryParam();
+                    Vector2 startPosition = entity.getComponent(PhysixBodyComponent.class).getBody().getPosition().add(dir.setLength(projectPlayerDistance));
+                    param.x = startPosition.x;
+                    param.y = startPosition.y;
+                    
+                    Entity projectile = factory.createEntity("Projectile", param);
+                    projectile.getComponent(PhysixBodyComponent.class).applyImpulse(dir.setLength(power));
                 }
             }
         //} else // ask for right click

@@ -36,6 +36,8 @@ import de.hochschuletrier.gdw.commons.tiled.tmx.TmxImage;
 import de.hochschuletrier.gdw.commons.tiled.utils.RectangleGenerator;
 import de.hochschuletrier.gdw.commons.utils.Rectangle;
 import de.hochschuletrier.gdw.ss15.Main;
+import de.hochschuletrier.gdw.ss15.events.WeaponCharging;
+import de.hochschuletrier.gdw.ss15.events.WeaponUncharged;
 import de.hochschuletrier.gdw.ss15.game.GameConstants;
 import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
@@ -100,7 +102,7 @@ public class CameraTest extends SandboxGame {
             TmxImage img = tileset.getImage();
             String filename = CurrentResourceLocator.combinePaths(tileset.getFilename(), img.getSource());
             Texture tex = new Texture(filename);
-            tex.setFilter(TextureFilter.Linear, TextureFilter.MipMapLinearLinear);
+            tex.setFilter(TextureFilter.Linear, TextureFilter.Linear);
             tilesetImages.put(tileset, tex);
         }
         mapRenderer = new TiledMapRendererGdx(map, tilesetImages);
@@ -149,7 +151,7 @@ public class CameraTest extends SandboxGame {
         
         totalMapWidth = map.getWidth() * map.getTileWidth();
         totalMapHeight = map.getHeight() * map.getTileHeight();
-        cameraSystem.setCameraBounds(0, 0, totalMapWidth, totalMapHeight);
+        //cameraSystem.setCameraBounds(0, 0, totalMapWidth, totalMapHeight);
         
         followFactor.addListener((CVar cvar)-> {
             cameraSystem.getCamera().setSpringFollowFactor(followFactor.get());
@@ -192,7 +194,7 @@ public class CameraTest extends SandboxGame {
     public void update(float delta) {
     
         // TODO: andere Implementierung? Bind woander aufrufen? z.B. innerhalb der CameraSystem-Klasse?        
-        //cameraSystem.bind();
+        cameraSystem.getCamera().bind();
         
         for (Layer layer : map.getLayers()) {
             mapRenderer.render(0, 0, layer);
@@ -221,6 +223,12 @@ public class CameraTest extends SandboxGame {
             posComp.x = playerBody.getX();
             posComp.y = playerBody.getY();
             
+            if(Gdx.input.isButtonPressed(Buttons.LEFT)){
+                WeaponCharging.emit();
+            } else if(Gdx.input.isButtonPressed(Buttons.RIGHT)){
+                WeaponUncharged.emit();
+            }
+            
             playerBody.setLinearVelocity(velX, velY);
             
         }
@@ -235,7 +243,7 @@ public class CameraTest extends SandboxGame {
     
     private void zoomCam(){
         logger.debug("zooming");
-        cameraSystem.getCamera().zoom(camZoom);
+        //TODO: cameraSystem.zoom(camZoom);
     }
     
 }
