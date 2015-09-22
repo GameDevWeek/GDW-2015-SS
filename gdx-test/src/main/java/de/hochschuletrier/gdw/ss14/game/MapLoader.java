@@ -84,7 +84,7 @@ public class MapLoader
                     Consumer<MapSpecialEntities.CreatorInfo> creator = MapSpecialEntities.specialEntities.get( objectName );
                     if ( creator != null )
                     {   /// eine Spezialbehandlung gefunden
-                        creator.accept( new MapSpecialEntities.CreatorInfo(resultEnt,obj) );
+                        creator.accept( new MapSpecialEntities.CreatorInfo(resultEnt,obj,layer) );
                     }                        
                 }
             } else
@@ -110,7 +110,7 @@ public class MapLoader
                             if ( creator != null )
                             {   /// eine Spezialbehandlung gefunden
                                 resultEnt = game.createEntity(objectName, xPos, yPos);
-                                creator.accept( new MapSpecialEntities.CreatorInfo(resultEnt, tileInfo.getProperties() ) );
+                                creator.accept( new MapSpecialEntities.CreatorInfo(resultEnt, tileInfo ,layer ) );
                             } 
                         }
                     }
