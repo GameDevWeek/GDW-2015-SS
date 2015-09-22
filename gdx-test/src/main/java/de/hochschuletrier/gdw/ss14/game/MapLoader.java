@@ -10,6 +10,7 @@ import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.commons.tiled.Layer;
 import de.hochschuletrier.gdw.commons.tiled.LayerObject;
 import de.hochschuletrier.gdw.commons.tiled.TileInfo;
+import de.hochschuletrier.gdw.commons.tiled.TileSet;
 import de.hochschuletrier.gdw.commons.tiled.TiledMap;
 
 /**
@@ -63,6 +64,8 @@ public class MapLoader
     {
         int mapWidth = tiledMap.getWidth();
         int mapHeight = tiledMap.getHeight();
+        int tileWidth = tiledMap.getTileWidth();
+        int tileHeight = tiledMap.getTileHeight(); 
         /// fuer alles Layers 
         for (Layer layer : tiledMap.getLayers() )
         {
@@ -93,6 +96,23 @@ public class MapLoader
                     for( int y = 0; y < mapHeight; y++ )
                     {
                         TileInfo tileInfo = tiles[x][y];
+                        if ( tileInfo != null )
+                        {
+                            /// Name des Tiles bekommen
+                            TileSet ts = tiledMap.findTileSet( tileInfo.globalId );
+                            String objectName = ts.getName();
+                            
+                            Entity resultEnt;
+                            float xPos = x * tileWidth;
+                            float yPos = y * tileHeight;
+                            
+                            Consumer<MapSpecialEntities.CreatorInfo> creator = MapSpecialEntities.specialEntities.get( objectName );
+                            if ( creator != null )
+                            {   /// eine Spezialbehandlung gefunden
+                                resultEnt = game.createEntity(objectName, xPos, yPos);
+                                creator.accept( new MapSpecialEntities.CreatorInfo(resultEnt, tileInfo.getProperties() ) );
+                            } 
+                        }
                     }
                 }
             }
