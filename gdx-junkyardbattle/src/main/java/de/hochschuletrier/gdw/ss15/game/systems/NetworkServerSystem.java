@@ -53,16 +53,7 @@ public class NetworkServerSystem extends EntitySystem implements EntityListener 
 
     private void sendPacketToAll(){
         for(Entity entity : clients){
-            /**
-             *
-             * Hier muessen noch
-             * daten gesendet werden
-             * - Paket erstellen
-             * - Paket packen (mehrere Komponenten in 1 Paket?
-             *                 und welche Komponenten?
-             * - Packet senden
-             *
-             */
+            
         }
     }
 
