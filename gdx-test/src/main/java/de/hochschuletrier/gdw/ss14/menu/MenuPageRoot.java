@@ -22,14 +22,15 @@ public class MenuPageRoot extends MenuPage {
         int x = 100;
         int i = 0;
         int y = 370;
-        int yStep = 55;
+        
         if (type == Type.MAINMENU) {
-            addLeftAlignedButton(x, y - yStep * (i++), 400, 50, "Spiel Starten", this::startGame);
+            addLeftAlignedButton(x, y - YSTEP_BUTTON * (i++), WIDTH_BUTTON, HEIGHT_BUTTON, "Spiel Starten", this::startGame);
+            addPageEntry(menuManager, x, y - YSTEP_BUTTON * (i++), "Optionen", new MenuPageRoot(skin,menuManager,Type.INGAME));
         } else {
-            addLeftAlignedButton(x, y - yStep * (i++), 400, 50, "Fortsetzen", () -> menuManager.popPage());
-            addLeftAlignedButton(x, y - yStep * (i++), 400, 50, "Spiel verlassen", this::stopGame);
+            addLeftAlignedButton(x, y - YSTEP_BUTTON * (i++), WIDTH_BUTTON, HEIGHT_BUTTON, "Fortsetzen", () -> menuManager.popPage());
+            addLeftAlignedButton(x, y - YSTEP_BUTTON * (i++), WIDTH_BUTTON, HEIGHT_BUTTON, "Spiel verlassen", this::stopGame);
         }
-        addPageEntry(menuManager, x, y - yStep * (i++), "Credits", new MenuPageCredits(skin, menuManager));
+        addPageEntry(menuManager, x, y - YSTEP_BUTTON * (i++), "Credits", new MenuPageCredits(skin, menuManager));
         addCenteredButton(menuManager.getWidth() - 80, 54, 100, 40, "Exit", () -> System.exit(-1));
     }
 

@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
@@ -20,7 +21,10 @@ public class MenuPage extends Group {
     protected Main main = Main.getInstance();
     protected AssetManagerX assetManager = main.getAssetManager();
     protected final Skin skin;
-
+    protected final int WIDTH_BUTTON=400;
+    protected final int HEIGHT_BUTTON=50;
+    protected final int YSTEP_BUTTON = 55;
+    
     public MenuPage(Skin skin, String background) {
         super();
         this.skin = skin;
@@ -48,6 +52,11 @@ public class MenuPage extends Group {
     protected final void addLeftAlignedButton(int x, int y, int width, int height, String text, Runnable runnable) {
         TextButton button = addButton(x, y, width, height, text, runnable, "default");
         button.getLabel().setAlignment(Align.left);
+    }
+    protected final VerticalGroup addVerticalGroup(VerticalGroup group)
+    {
+    	addActor(group);
+    	return group;
     }
 
     protected final void addCenteredButton(int x, int y, int width, int height, String text, Runnable runnable) {
