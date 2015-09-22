@@ -69,7 +69,6 @@ public class Server implements Runnable
 
     public void run()
     {
-        runningGame.createEntity("player", 10, 10);
         while(isRunning.get())
         {
             Tools.Sleep(10);
@@ -78,5 +77,9 @@ public class Server implements Runnable
             //System.out.println("runn");
             //engine.update();
         }
+    }
+
+    public Serversocket getServersocket(){
+        return serversocket;
     }
 }

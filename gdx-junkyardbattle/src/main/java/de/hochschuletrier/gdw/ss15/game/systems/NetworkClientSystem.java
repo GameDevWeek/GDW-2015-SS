@@ -6,8 +6,11 @@ import com.badlogic.ashley.core.Family;
 import de.hochschuletrier.gdw.commons.devcon.ConsoleCmd;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.ss15.Main;
+import de.hochschuletrier.gdw.ss15.game.Game;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.network.ClientConnection;
+import de.hochschuletrier.gdw.ss15.game.network.PacketIds;
+import de.hochschuletrier.gdw.ss15.game.network.Packets.InitEntityPacket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Clientsocket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.basic.SocketConnectListener;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.basic.SocketDisconnectListener;
@@ -25,7 +28,10 @@ import java.util.List;
 public class NetworkClientSystem extends EntitySystem implements SocketDisconnectListener {
 
 
+    Game game = null;
     ClientConnection connection = Main.getInstance().getClientConnection();
+
+    private static final Logger logger = LoggerFactory.getLogger(NetworkClientSystem.class);
 
     public void socketDisconnected()
     {
@@ -34,8 +40,10 @@ public class NetworkClientSystem extends EntitySystem implements SocketDisconnec
 
 
 
-    public NetworkClientSystem(int priority) {
+    public NetworkClientSystem(Game game,int priority) {
+
         super(priority);
+        this.game=game;
     }
 
 
@@ -50,6 +58,7 @@ public class NetworkClientSystem extends EntitySystem implements SocketDisconnec
         {
             while(socket.isPacketAvaliable())
             {
+                System.out.println("Received packet");
                 ReceivedPacket(socket.getReceivedPacket());
             }
         }
@@ -58,6 +67,12 @@ public class NetworkClientSystem extends EntitySystem implements SocketDisconnec
     private void ReceivedPacket(Packet pack)
     {
         System.out.println("received packet");
+        if(pack.getPacketId()== PacketIds.InitEntity.getValue())
+        {
+            InitEntityPacket iPacket = (InitEntityPacket) pack;
+            logger.info("Spawned entitiy with name: "+iPacket.name);
+            game.createEntity(iPacket.name,0,0);
+        }
     }
 
 
