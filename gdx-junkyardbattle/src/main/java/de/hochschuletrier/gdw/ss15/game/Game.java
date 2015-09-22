@@ -24,16 +24,15 @@ import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixModifierCompon
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixDebugRenderSystem;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.ss15.Main;
-import de.hochschuletrier.gdw.ss15.game.components.AnimationComponent;
 import de.hochschuletrier.gdw.ss15.game.components.ImpactSoundComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.components.TriggerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.ImpactSoundListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.TriggerListener;
-import de.hochschuletrier.gdw.ss15.game.systems.AnimationRenderSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.TextureRenderer;
 import de.hochschuletrier.gdw.ss15.game.systems.NetworkClientSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.RenderSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ss15.game.utils.PhysixUtil;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Clientsocket;
@@ -59,7 +58,7 @@ public class Game extends InputAdapter {
            // GameConstants.VELOCITY_ITERATIONS, GameConstants.POSITION_ITERATIONS, GameConstants.PRIORITY_PHYSIX
    // );
    // private final PhysixDebugRenderSystem physixDebugRenderSystem = new PhysixDebugRenderSystem(GameConstants.PRIORITY_DEBUG_WORLD);
-    private final AnimationRenderSystem animationRenderSystem = new AnimationRenderSystem(GameConstants.PRIORITY_ANIMATIONS);
+    private final RenderSystem renderSystem = new RenderSystem();
     private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem(GameConstants.PRIORITY_PHYSIX + 1);
     private final NetworkClientSystem networksystem = new NetworkClientSystem(GameConstants.PRIORITY_PHYSIX+2);
 
