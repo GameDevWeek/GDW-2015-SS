@@ -16,9 +16,11 @@ public class PositionSynchComponentFactory extends ComponentFactory<EntityFactor
     }
 
     @Override
-    public void run(Entity entity, SafeProperties safeProperties, SafeProperties safeProperties1, EntityFactoryParam entityFactoryParam) {
+    public void run(Entity entity, SafeProperties meta, SafeProperties properties, EntityFactoryParam param) {
         PositionSynchComponent component = engine.createComponent(PositionSynchComponent.class);
         component.reset(); // sollte funktionieren
+        component.clientName=properties.getString("clientname");
+        //System.out.println("Gelesen: "+ component.clientName);
         entity.add(component);
     }
 }
