@@ -15,6 +15,19 @@ import de.hochschuletrier.gdw.ss15.game.rendering.BoundedCamera;
 import de.hochschuletrier.gdw.ss15.events.WeaponCharging;
 import de.hochschuletrier.gdw.ss15.events.WeaponUncharged;
 
+/**
+ *
+ * <p>
+ * The camera-system coordinates the camera and any interaction with it.
+ * To connect the camera to a player entity this entity needs a <i>PlayerComponent</i>
+ * with its attribute <i>isLocalPlayer</i> set to true.
+ * </p>
+ * @see {@link BoundedCamera}
+ * @version 0.2
+ * @author Sebastian Schalow
+ * 
+ */
+
 public class CameraSystem extends EntitySystem implements EntityListener, WeaponCharging.Listener, WeaponUncharged.Listener {
 
     private BoundedCamera camera = new BoundedCamera();    
