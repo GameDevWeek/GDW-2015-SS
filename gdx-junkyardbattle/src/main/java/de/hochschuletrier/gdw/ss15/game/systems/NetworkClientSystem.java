@@ -61,6 +61,7 @@ public class NetworkClientSystem extends EntitySystem implements SocketDisconnec
                     game.getInputSystem().keyDown(Input.Keys.A),
                     game.getInputSystem().keyDown(Input.Keys.D));
             connection.getSocket().sendPacketUnsave(inputPacket);
+            timer.ResetTimer();
         }
 
         Clientsocket socket = connection.getSocket();
