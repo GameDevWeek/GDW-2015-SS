@@ -57,7 +57,7 @@ public class HighscoreScreen implements Screen {
          table.setFillParent(true);
          table.add(listHighscore).expand().row();
          table.add(buttonBack).row();
-         table.add(new MyActor());
+         table.add(new MouseCursorActor());
          table.setDebug(false);
          stage= new Stage();
          stage.addActor(table);

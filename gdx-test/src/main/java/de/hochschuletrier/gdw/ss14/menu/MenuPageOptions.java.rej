@@ -1,0 +1,14 @@
+diff a/gdx-test/src/main/java/de/hochschuletrier/gdw/ss14/menu/MenuPageOptions.java b/gdx-test/src/main/java/de/hochschuletrier/gdw/ss14/menu/MenuPageOptions.java	(rejected hunks)
+@@ -18,12 +18,6 @@
+ 		//Skin für die Optionsseite wird übergeben
+ 		super(skin, "menu_bg");
+ 		
+-		VerticalGroup vg = new VerticalGroup();
+-		
+-		HorizontalGroup option = addSlider(stylename, text, runnable);
+-		vg.addActor(option);
+-		
+-		
+ 	}
+ 
+ 	public static void main(String[] args) {
