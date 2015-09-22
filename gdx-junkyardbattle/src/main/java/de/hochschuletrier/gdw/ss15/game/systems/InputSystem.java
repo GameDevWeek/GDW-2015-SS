@@ -6,6 +6,7 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.events.*;
 import de.hochschuletrier.gdw.ss15.game.components.InputComponent;
 import de.hochschuletrier.gdw.ss15.game.input.InputMovPaket;
@@ -129,6 +130,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor {
     @Override
     public void addedToEngine(Engine engine) {
         super.addedToEngine(engine);
+        Main.getInstance().inputMultiplexer.addProcessor(this);
         inputPaket = new InputMovPaket();
     }
 
