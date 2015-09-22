@@ -5,6 +5,8 @@ package de.hochschuletrier.gdw.ss15.game.network;
  */
 
 import de.hochschuletrier.gdw.ss15.game.network.Packets.EntityPacket;
+import de.hochschuletrier.gdw.ss15.game.network.Packets.InitEntityPacket;
+import de.hochschuletrier.gdw.ss15.game.network.Packets.Inputpacket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.PacketFactory;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
 
@@ -12,7 +14,9 @@ public enum PacketIds
 {
     Position((short)0),
     Simple((short)1),
-    Input((short)2);
+    InitEntity((short)2),
+    Input((short)3);
+
 
     private final short m_Value;
     private PacketIds(short value)
@@ -29,5 +33,7 @@ public enum PacketIds
     {
         PacketFactory.registerPacket(Position.getValue(), EntityPacket.class);
         PacketFactory.registerPacket(Simple.getValue(), SimplePacket.class);
+        PacketFactory.registerPacket(InitEntity.getValue(), InitEntityPacket.class);
+        PacketFactory.registerPacket(Input.getValue(), Inputpacket.class);
     }
 }

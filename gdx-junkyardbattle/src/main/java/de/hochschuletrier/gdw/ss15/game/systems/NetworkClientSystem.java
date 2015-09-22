@@ -9,6 +9,8 @@ import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.game.Game;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.network.ClientConnection;
+import de.hochschuletrier.gdw.ss15.game.network.PacketIds;
+import de.hochschuletrier.gdw.ss15.game.network.Packets.InitEntityPacket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Clientsocket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.basic.SocketConnectListener;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.basic.SocketDisconnectListener;
@@ -28,6 +30,8 @@ public class NetworkClientSystem extends EntitySystem implements SocketDisconnec
 
     Game game = null;
     ClientConnection connection = Main.getInstance().getClientConnection();
+
+    private static final Logger logger = LoggerFactory.getLogger(NetworkClientSystem.class);
 
     public void socketDisconnected()
     {
@@ -54,6 +58,7 @@ public class NetworkClientSystem extends EntitySystem implements SocketDisconnec
         {
             while(socket.isPacketAvaliable())
             {
+                System.out.println("Received packet");
                 ReceivedPacket(socket.getReceivedPacket());
             }
         }
@@ -62,13 +67,12 @@ public class NetworkClientSystem extends EntitySystem implements SocketDisconnec
     private void ReceivedPacket(Packet pack)
     {
         System.out.println("received packet");
-        /*if(pacet.getPacketId()==PacketIds.EntityInitPacket.getValue()
+        if(pack.getPacketId()== PacketIds.InitEntity.getValue())
         {
-            EntityInitPacket iPacket = (EntityInitPacket) pack;
+            InitEntityPacket iPacket = (InitEntityPacket) pack;
+            logger.info("Spawned entitiy with name: "+iPacket.name);
             game.createEntity(iPacket.name,0,0);
         }
-
-        */
     }
 
 

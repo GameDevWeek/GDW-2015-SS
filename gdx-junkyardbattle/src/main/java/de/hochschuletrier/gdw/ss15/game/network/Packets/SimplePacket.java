@@ -17,9 +17,7 @@ public class SimplePacket extends Packet
 
     public enum SimplePacketId
     {
-        Input((short)0),
-        NewEntity((short)1),
-        RemoveEntity((short)3);
+        RemoveEntity((short)0);
 
         private final short m_Value;
         private SimplePacketId(short value)
