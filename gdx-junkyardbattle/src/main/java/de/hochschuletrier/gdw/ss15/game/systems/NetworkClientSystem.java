@@ -1,15 +1,16 @@
 package de.hochschuletrier.gdw.ss15.game.systems;
 
-import com.badlogic.ashley.core.Entity;
-import com.badlogic.ashley.core.EntityListener;
-import com.badlogic.ashley.core.EntitySystem;
-import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.core.*;
 import com.badlogic.gdx.Input;
 import de.hochschuletrier.gdw.commons.devcon.ConsoleCmd;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.events.NetworkPositionEvent;
+import de.hochschuletrier.gdw.ss15.events.NetworkReceivedDeleteEntity;
+import de.hochschuletrier.gdw.ss15.events.NetworkReceivedNewEntity;
+import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.Game;
+import de.hochschuletrier.gdw.ss15.game.components.NetworkIDComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.network.ClientConnection;
 import de.hochschuletrier.gdw.ss15.game.network.PacketIds;
@@ -28,14 +29,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import de.hochschuletrier.gdw.ss15.events.GatherUpEvent;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
  * Created by lukas on 21.09.15.
  */
-public class NetworkClientSystem extends EntitySystem {
+
+public class NetworkClientSystem extends EntitySystem implements EntityListener {
 
     private MyTimer timer = new MyTimer(true);
+    private long lastAddedEntityID = 0;
+    private HashMap<Long, Entity> hashMap = new HashMap();
 
     Game game = null;
     ClientConnection connection = Main.getInstance().getClientConnection();
@@ -91,9 +96,10 @@ public class NetworkClientSystem extends EntitySystem {
             InitEntityPacket iPacket = (InitEntityPacket) pack;
             logger.info("Spawned entitiy with name: "+iPacket.name);
 
-            //Spawn entity
 
-            game.createEntity(iPacket.name,0,0);
+            lastAddedEntityID = iPacket.entityID;
+            Entity ent = game.createEntity(iPacket.name,0,0);
+            NetworkReceivedNewEntity.emit(ent);
         }
         else if(pack.getPacketId() == PacketIds.Position.getValue())
         {//positino update packet
@@ -102,8 +108,10 @@ public class NetworkClientSystem extends EntitySystem {
                 lastNetworkTimestamp = pack.getTimestamp();
                 EntityPacket ePacket = (EntityPacket) pack;
 
-                //update entity
-                NetworkPositionEvent.emit(null,ePacket.xPos,ePacket.yPos,ePacket.rotation,false);
+                Entity ent = hashMap.get(ePacket.entityID);
+                if(ent!=null) {
+                    NetworkPositionEvent.emit(ent, ePacket.xPos, ePacket.yPos, ePacket.rotation, false);
+                }
             }
         }
         else if(pack.getPacketId()==PacketIds.Simple.getValue())
@@ -111,7 +119,10 @@ public class NetworkClientSystem extends EntitySystem {
             SimplePacket sPacket = (SimplePacket)pack;
             if(sPacket.m_SimplePacketId == SimplePacket.SimplePacketId.RemoveEntity.getValue())
             {
-                //Remove entity
+                Entity ent = hashMap.get(sPacket.m_Moredata);
+                if(ent!=null) {
+                    NetworkReceivedDeleteEntity.emit(ent);
+                }
             }
         }
     }
@@ -121,5 +132,26 @@ public class NetworkClientSystem extends EntitySystem {
     }
 
 
+    @Override
+    public void addedToEngine(Engine engine){
+        Family family = Family.all(NetworkIDComponent.class).get();
+        engine.addEntityListener(family, this);
+    }
+
+    @Override
+    public void removedFromEngine(Engine engine){
+        engine.removeEntityListener(this);
+    }
+
+    @Override
+    public void entityAdded(Entity entity) {
+        ComponentMappers.networkID.get(entity).networkID = lastAddedEntityID;
+        hashMap.put(lastAddedEntityID, entity);
+    }
+
+    @Override
+    public void entityRemoved(Entity entity) {
+        hashMap.remove(ComponentMappers.networkID.get(entity).networkID);
+    }
 }
 
