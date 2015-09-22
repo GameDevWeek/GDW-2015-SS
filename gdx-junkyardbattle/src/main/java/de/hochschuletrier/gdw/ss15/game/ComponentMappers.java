@@ -19,4 +19,5 @@ public class ComponentMappers {
     public static final ComponentMapper<MoveComponent> move = ComponentMapper.getFor(MoveComponent.class);
     public static final ComponentMapper<PlayerComponent> player = ComponentMapper.getFor(PlayerComponent.class);
     public static final ComponentMapper<TimerComponent> timer = ComponentMapper.getFor(TimerComponent.class);
+    public static final ComponentMapper<WeaponComponent> weapon = ComponentMapper.getFor(WeaponComponent.class);
 }
