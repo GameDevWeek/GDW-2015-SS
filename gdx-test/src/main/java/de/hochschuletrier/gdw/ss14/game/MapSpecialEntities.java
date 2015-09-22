@@ -28,25 +28,25 @@ public class MapSpecialEntities
     {
         int posX;
         int posY;
-        TiledMap tiledMap;
         Entity entity;
         TileInfo asTile;
         LayerObject asObject;
         Layer layer;            /// Layer fuer Renderer
+        TiledMap tiledMap;
         public CreatorInfo(Entity ent,TiledMap tm,LayerObject lo,Layer layer)
         {
-            posX = 0;posY = 0;
+            posX = 0;posY = 0;     /// x und y sind bei Objecten = 0  ->  erhalte Position ueber PositionComponent     
             tiledMap = null;
+            asTile = null;
             entity = ent;
             asObject = lo;
-            asTile = null;
             this.layer = layer;
         }
-        public CreatorInfo(Entity ent,int x,int y,TiledMap tm,TileInfo ti,Layer layer)
+        public CreatorInfo(int x,int y,TiledMap tm,TileInfo ti,Layer layer)
         {
             posX = x;
             posY = y;
-            entity = ent;
+            entity = null;
             asObject = null;
             asTile = ti;
             this.layer = layer;            
@@ -54,24 +54,58 @@ public class MapSpecialEntities
     }
     public static HashMap< String,Consumer<CreatorInfo> > specialEntities;
     
+    
+    
+    
+    
     /**
      * Klasse zum laden eines 'Dummy' Objects
+     * Diese Klasse kopieren um ein Object zu veraendern
      */
     public static class DummyEntity implements Consumer<CreatorInfo>
     {
         public void accept(CreatorInfo info)
         {
-            /*
-            // eine Componente herraussuchen und mit den 'gelesenen' Werten besetzen 
-            TestComponent body = ComponentMapper.test.get( info.entity );
-            if ( test != null )
-            {
-                boolean flag = info.data.getBooleanProperty("TestFlag", false);
-                body.flag = flag;
-            }
-            */
+            
+            /// eine Componente herraussuchen 
+            /// TestComponent body = ComponentMapper.test.get( info.entity );
+            
+            /// if ( test != null ) {
+                /// erhaltenen Wert lesen 
+                /// boolean flag = info.data.getBooleanProperty("TestFlag", false);
+            
+                /// Komponente mit diesem Wert besetzten
+                /// body.flag = flag;
+            /// }
         }
     }
+    
+    
+    /**
+     * Klasse zum laden eines 'Dummy' Tile
+     * Diese Klasse kopieren um ein Object Oder ein Tile zu erstellen/veraendern
+     */
+    public static class DummyTile implements Consumer<CreatorInfo>
+    {
+        public void accept(CreatorInfo info)
+        {
+            
+            /// eine Componente herraussuchen 
+            /// TestComponent body = ComponentMapper.test.get( info.entity );
+            
+            /// if ( test != null ) {
+                /// erhaltenen Wert lesen 
+                /// boolean flag = info.data.getBooleanProperty("TestFlag", false);
+            
+                /// Komponente mit diesem Wert besetzten
+                /// body.flag = flag;
+            /// }
+        }
+    }
+    
+    
+    
+    
     
     static
     {
@@ -80,11 +114,11 @@ public class MapSpecialEntities
         for ( Class c : allClasses ) 
         {
             /// nur alle Klassen, die von Consumer abgeleitet sind
-            if ( c.isAssignableFrom( Consumer.class ) )
+            if ( Consumer.class.isAssignableFrom( c ) )
             {
                 try
                 {   /// zu den Speziellen Entity-Creator hinzufuegen
-                    specialEntities.put( c.toString(), (Consumer<CreatorInfo>)c.newInstance() );
+                    specialEntities.put( c.getSimpleName(), (Consumer<CreatorInfo>)c.newInstance() );
                 } catch (InstantiationException | IllegalAccessException e)
                 {
                     // TODO 
