@@ -64,7 +64,6 @@ public class Game extends InputAdapter {
     private final AnimationRenderSystem animationRenderSystem = new AnimationRenderSystem(GameConstants.PRIORITY_ANIMATIONS);
     private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem(GameConstants.PRIORITY_PHYSIX + 1);
     private final NetworkClientSystem networksystem = new NetworkClientSystem(GameConstants.PRIORITY_PHYSIX+2);
-    private final LineOfSightSystem lineOfSightSystem = new LineOfSightSystem();
     
     private final EntityFactoryParam factoryParam = new EntityFactoryParam();
     private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json", Game.class);
@@ -96,7 +95,6 @@ public class Game extends InputAdapter {
         engine.addSystem(animationRenderSystem);
         engine.addSystem(updatePositionSystem);
         engine.addSystem(networksystem);
-        engine.addSystem(lineOfSightSystem);
     }
 
     private void addContactListeners() {
