@@ -28,7 +28,6 @@ public class TextureComponent extends Component implements Pool.Poolable{
     
     @Override
     public void reset() {
-        texture.dispose();
         width = 24;
         height = 24;
         srcX = 0;
