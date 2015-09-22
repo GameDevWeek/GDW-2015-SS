@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.hochschuletrier.gdw.ss15.game.network;
+package de.hochschuletrier.gdw.ss15.game.systems.renderers;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
