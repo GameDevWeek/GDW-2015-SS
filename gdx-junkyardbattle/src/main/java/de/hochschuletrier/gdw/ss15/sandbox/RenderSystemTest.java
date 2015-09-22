@@ -24,22 +24,25 @@ import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixModifierComponent;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixDebugRenderSystem;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
+import de.hochschuletrier.gdw.commons.gdx.tiled.TiledMapRendererGdx;
+import de.hochschuletrier.gdw.commons.resourcelocator.CurrentResourceLocator;
+import de.hochschuletrier.gdw.commons.tiled.Layer;
 import de.hochschuletrier.gdw.commons.tiled.LayerObject;
+import de.hochschuletrier.gdw.commons.tiled.TileInfo;
 import de.hochschuletrier.gdw.commons.tiled.TileSet;
 import de.hochschuletrier.gdw.commons.tiled.TiledMap;
+import de.hochschuletrier.gdw.commons.tiled.tmx.TmxImage;
+import de.hochschuletrier.gdw.commons.tiled.utils.RectangleGenerator;
 import de.hochschuletrier.gdw.commons.utils.Rectangle;
 import de.hochschuletrier.gdw.ss15.Main;
-import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.Game;
 import de.hochschuletrier.gdw.ss15.game.GameConstants;
-import de.hochschuletrier.gdw.ss15.game.MapLoader;
 import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
 import de.hochschuletrier.gdw.ss15.game.systems.CameraSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.renderers.RenderSystem;
-import de.hochschuletrier.gdw.ss15.game.utils.TileRenderLoader;
 
 /**
  *
@@ -68,10 +71,9 @@ public class RenderSystemTest extends SandboxGame {
             cameraSystem.getCamera().getOrthographicCamera());
     private final UpdatePositionSystem updatePosSystem = new UpdatePositionSystem();
     private float totalMapWidth, totalMapHeight;
-    private TileRenderLoader tileRenderLoader = new TileRenderLoader();
-    
+
     private TiledMap map;
-//    private TiledMapRendererGdx mapRenderer;
+    private TiledMapRendererGdx mapRenderer;
     private PhysixBodyComponent playerBody;
     private final HashMap<TileSet, Texture> tilesetImages = new HashMap();
 
@@ -88,16 +90,22 @@ public class RenderSystemTest extends SandboxGame {
 
     @Override
     public void init(AssetManagerX assetManager) {
-        MapLoader mapLoader = new MapLoader();
-        
-        tileRenderLoader.init(engine);
-        mapLoader.listen(tileRenderLoader);
-        
-        mapLoader.run((String n, float x, float y) -> createEntity(n, x, y), "data/maps/demo.tmx", physixSystem);
-//        mapRenderer = new TiledMapRendererGdx(map, tilesetImages);
-        map = mapLoader.getTiledMap();
-
+        map = loadMap("data/maps/demo.tmx");
+        for (TileSet tileset : map.getTileSets()) {
+            TmxImage img = tileset.getImage();
+            String filename = CurrentResourceLocator.combinePaths(tileset.getFilename(), img.getSource());
+            tilesetImages.put(tileset, new Texture(filename));
+        }
+        mapRenderer = new TiledMapRendererGdx(map, tilesetImages);
         entityFactory.init(engine, assetManager);
+        
+        // Generate static world
+        int tileWidth = map.getTileWidth();
+        int tileHeight = map.getTileHeight();
+        RectangleGenerator generator = new RectangleGenerator();
+        generator.generate(map,
+                (Layer layer, TileInfo info) -> info.getBooleanProperty("blocked", false),
+                (Rectangle rect) -> addShape(rect, tileWidth, tileHeight));
 
         // create a simple player ball
         Entity player = engine.createEntity();
@@ -108,7 +116,6 @@ public class RenderSystemTest extends SandboxGame {
         player.add(posComponent);
         
         player.add(engine.createComponent(PlayerComponent.class));
-        ComponentMappers.player.get(player).isLocalPlayer = true;
         
         modifyComponent.schedule(() -> {
             playerBody = engine.createComponent(PhysixBodyComponent.class);
@@ -159,6 +166,7 @@ public class RenderSystemTest extends SandboxGame {
     }
     
     public Entity createEntity(String name, float x, float y) {
+        //factoryParam.game = null;
         factoryParam.x = x;
         factoryParam.y = y;
         Entity entity = entityFactory.createEntity(name, factoryParam);
@@ -170,12 +178,12 @@ public class RenderSystemTest extends SandboxGame {
     @Override
     public void update(float delta) {
         cameraSystem.getCamera().bind();
-//        for (Layer layer : map.getLayers()) {
-//            mapRenderer.render(0, 0, layer);
-//        }
+        for (Layer layer : map.getLayers()) {
+            mapRenderer.render(0, 0, layer);
+        }
         engine.update(delta);
         
-//        mapRenderer.update(delta);
+        mapRenderer.update(delta);
 //        cameraSystem.getCamera().update(delta);
 
         if(playerBody != null) {
