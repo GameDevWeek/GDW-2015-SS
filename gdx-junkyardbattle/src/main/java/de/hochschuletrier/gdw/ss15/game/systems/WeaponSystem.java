@@ -21,9 +21,8 @@ public class WeaponSystem extends IteratingSystem {
 	
 	private EntityFactory factory;
 
-    public WeaponSystem(Family family, EntityFactory factory) {
+    public WeaponSystem() {
         super(Family.all(WeaponComponent.class).get());
-        this.factory = factory;
     }
 
     @Override
