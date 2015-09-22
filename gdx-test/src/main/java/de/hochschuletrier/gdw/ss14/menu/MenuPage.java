@@ -1,9 +1,12 @@
-﻿package de.hochschuletrier.gdw.ss14.menu;
+package de.hochschuletrier.gdw.ss14.menu;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -29,7 +32,9 @@ public class MenuPage extends Group {
     public MenuPage(Skin skin, String background) {
         super();
         this.skin = skin;
-
+        
+        Gdx.input.setCursorImage(new Pixmap(Gdx.files.internal("data/ui/menu/MagnetMouse.png")), 0, 0);
+        
         addActor(new DecoImage(assetManager.getTexture(background)));
 
         setVisible(false);
@@ -60,43 +65,28 @@ public class MenuPage extends Group {
     	return group;
     }
 
-    protected final HorizontalGroup addSlider(int x, int y, int width, int height, String text, Runnable runnable) {
-    	Slider sl = new Slider(0, 100, 1, false, skin);
-    	Label l = new Label(text, skin);
-    	
-    	HorizontalGroup hg = new HorizontalGroup();
-    	hg.setBounds(0,0, 600, 600);
-    	
-    	hg.addActor(l);
-    	hg.addActor(sl);
-    	
-    	//addActor(hg);
-    	return hg;
-    	
-    }
-    
-    protected final HorizontalGroup addCheckBox(int x, int y, int width, int height, String text, Runnable runnable) {
-    	CheckBox cb = new CheckBox(text, skin);
-    	Label l = new Label(text, skin);
-    	
-    	
-    	HorizontalGroup hg = new HorizontalGroup();
-    	hg.setBounds(0,0, 600, 600);
-    	
-    	hg.addActor(cb);
-    	hg.addActor(l);
-    	
-    	//addActor(hg);
-    	return hg;
-    }
-    
-    
     protected final void addCenteredButton(int x, int y, int width, int height, String text, Runnable runnable) {
         TextButton button = addButton(x - width / 2, y - height / 2, width, height, text, runnable, "default");
         button.getLabel().setAlignment(Align.center);
     }
 
-   
+    protected final HorizontalGroup addSlider(String stylename, String text, Runnable runnable) {
+       
+    	HorizontalGroup hg = new HorizontalGroup();
+    	Label option = new Label(text, skin, stylename);
+    	Slider sl = new Slider(0, 100, 1, false, skin, stylename);
+        hg.addActor(option);
+        hg.addActor(sl);
+        addActor(hg);
+    	return hg;
+    	
+    }
+    
+    protected final Actor addUIActor(Actor actor)
+    {
+    	addActor(actor);
+    	return actor;
+    }
     
     protected final TextButton addButton(int x, int y, int width, int height, String text, Runnable runnable, String style) {
         TextButton button = new TextButton(text, skin, style);
