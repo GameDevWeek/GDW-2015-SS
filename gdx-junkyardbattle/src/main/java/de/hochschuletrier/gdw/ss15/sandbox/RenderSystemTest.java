@@ -13,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
+import de.hochschuletrier.gdw.commons.gdx.ashley.EntityFactory;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.cameras.orthogonal.LimitedSmoothCamera;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixBodyDef;
@@ -32,8 +33,10 @@ import de.hochschuletrier.gdw.commons.tiled.tmx.TmxImage;
 import de.hochschuletrier.gdw.commons.tiled.utils.RectangleGenerator;
 import de.hochschuletrier.gdw.commons.utils.Rectangle;
 import de.hochschuletrier.gdw.ss15.Main;
+import de.hochschuletrier.gdw.ss15.game.Game;
 import de.hochschuletrier.gdw.ss15.game.GameConstants;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
+import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
 import de.hochschuletrier.gdw.ss15.game.components.light.PointLightComponent;
 import de.hochschuletrier.gdw.ss15.game.systems.RenderSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
@@ -79,25 +82,15 @@ public class RenderSystemTest extends SandboxGame {
     private PhysixBodyComponent playerBody;
     private final HashMap<TileSet, Texture> tilesetImages = new HashMap();
 
+    private final EntityFactoryParam factoryParam = new EntityFactoryParam();
+    private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json", Game.class);
+
     public RenderSystemTest() {
         engine.addSystem(physixSystem);
         engine.addSystem(physixDebugRenderSystem);
         engine.addSystem(cameraSystem);
         engine.addSystem(renderSystem);
         engine.addSystem(updatePosSystem);
-    }
-    
-    private PointLightComponent pointLight(float x, float y, Color color, float distance, float offsetX, float offsetY, boolean isStatic, boolean active) {
-        PointLightComponent pointLightComponent = engine.createComponent(PointLightComponent.class);
-
-        pointLightComponent.pointLight = new PointLight(engine.getSystem(RenderSystem.class).getRayHandler(), 
-                GameConstants.LIGHT_RAYS, color, distance, 0.f, 0.f);
-        pointLightComponent.pointLight.setPosition(x, y);
-        pointLightComponent.pointLight.setActive(active);
-        pointLightComponent.offsetX = offsetX;
-        pointLightComponent.offsetY = offsetY;
-        
-        return pointLightComponent;
     }
 
     @Override
@@ -109,7 +102,8 @@ public class RenderSystemTest extends SandboxGame {
             tilesetImages.put(tileset, new Texture(filename));
         }
         mapRenderer = new TiledMapRendererGdx(map, tilesetImages);
-
+        entityFactory.init(engine, assetManager);
+        
         // Generate static world
         int tileWidth = map.getTileWidth();
         int tileHeight = map.getTileHeight();
@@ -138,10 +132,8 @@ public class RenderSystemTest extends SandboxGame {
         });
         engine.addEntity(player);
 
-        Entity pointLight = engine.createEntity();
-        pointLight.add(engine.createComponent(PositionComponent.class));
-        pointLight.add(pointLight(0.f, 0.f, Color.RED, 10.f, 0.f, 0.f, true, true));
-        engine.addEntity(pointLight);
+        createEntity("greenPointLight", 50.f, 50.f);
+        createEntity("blueConeLight", 500.f, 100.f);
         
         // Setup camera
         totalMapWidth = map.getWidth() * map.getTileWidth();
@@ -176,6 +168,16 @@ public class RenderSystemTest extends SandboxGame {
                     "Map konnte nicht geladen werden: " + filename);
         }
     }
+    
+    public Entity createEntity(String name, float x, float y) {
+        factoryParam.game = null;
+        factoryParam.x = x;
+        factoryParam.y = y;
+        Entity entity = entityFactory.createEntity(name, factoryParam);
+
+        engine.addEntity(entity);
+        return entity;
+    }
 
     @Override
     public void update(float delta) {
@@ -186,7 +188,7 @@ public class RenderSystemTest extends SandboxGame {
         engine.update(delta);
         
         mapRenderer.update(delta);
-        cameraSystem.getCamera().update(delta);
+//        cameraSystem.getCamera().update(delta);
 
         if(playerBody != null) {
             float speed = 10000.0f;

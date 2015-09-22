@@ -42,5 +42,28 @@
                 "restitution": 0.1
             }
         }
+    },
+    "greenPointLight": {
+        "meta": {},
+        "components": {
+            "Position": {},
+			"PointLight": {
+				"color": "0, 1, 0",
+				"distance": 10
+			}
+        }
+    },
+    "blueConeLight": {
+        "meta": {},
+        "components": {
+            "Position": {},
+			"ConeLight": {
+				"color": "0, 0, 1",
+				"distance": 10,
+				"coneDegree": 45,
+				"degree": 45
+			}
+        }
     }
+	
 }

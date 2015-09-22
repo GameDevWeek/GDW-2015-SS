@@ -23,7 +23,7 @@ public class GameConstants {
     public static final int BOX2D_SCALE = 40;
     
     // Light parameters
-    public static final int LIGHT_RAYS = 90;
+    public static final int LIGHT_RAYS = 360;
     public static final float LIGHT_AMBIENT = 0.4f;
     public static final boolean LIGHT_BLUR = true;
     public static final int LIGHT_BLURNUM = 2;

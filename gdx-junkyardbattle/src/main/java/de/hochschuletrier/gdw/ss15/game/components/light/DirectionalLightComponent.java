@@ -5,22 +5,21 @@ import box2dLight.DirectionalLight;
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.utils.Pool;
 
-public class DirectionalLightComponent extends Component implements Pool.Poolable
-{ 
-    public DirectionalLight directionalLight;
+import de.hochschuletrier.gdw.ss15.game.GameConstants;
+import de.hochschuletrier.gdw.ss15.game.systems.renderers.LightRenderer;
+
+public class DirectionalLightComponent extends Component implements Pool.Poolable { 
+    public DirectionalLight directionalLight = new DirectionalLight(LightRenderer.rayHandler, 
+            GameConstants.LIGHT_RAYS, null, 0.f);
     public float offsetX = 0;
     public float offsetY = 0;
 
     @Override
-    public void reset()
-    {
-    	if(directionalLight != null) {
-            directionalLight.remove();
-            directionalLight.dispose();
-            directionalLight = null;
-    	}
-
-        offsetX = 0;
-        offsetY = 0;
+    public void reset() {
+        offsetX = offsetY = 0;
+        
+        directionalLight.setActive(false);
+        directionalLight.setStaticLight(false);
+        directionalLight.setXray(false);
     }
 }
