@@ -11,7 +11,9 @@ import de.hochschuletrier.gdw.ss15.game.components.TriggerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.ImpactSoundListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.TriggerListener;
+import de.hochschuletrier.gdw.ss15.game.systems.NetworkServerSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
+import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serversocket;
 
 import java.util.function.Consumer;
 
@@ -29,9 +31,17 @@ public class ServerGame{
             GameConstants.VELOCITY_ITERATIONS, GameConstants.POSITION_ITERATIONS, GameConstants.PRIORITY_PHYSIX
     );
     private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem(GameConstants.PRIORITY_PHYSIX + 1);
+    private final NetworkServerSystem networkSystem = new NetworkServerSystem(this,GameConstants.PRIORITY_PHYSIX + 2);
 
     private final EntityFactoryParam factoryParam = new EntityFactoryParam();
     private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json", ServerGame.class);
+
+    private Serversocket serverSocket;
+
+    public ServerGame(Serversocket socket)
+    {
+        serverSocket = socket;
+    }
 
     public void init(AssetManagerX assetManager) {
         // Main.getInstance().console.register(physixDebug);
@@ -39,12 +49,14 @@ public class ServerGame{
         addSystems();
         addContactListeners();
         setupPhysixWorld();
+        networkSystem.init(serverSocket);
         entityFactory.init(engine, assetManager);
     }
 
     private void addSystems() {
         engine.addSystem(physixSystem);
         engine.addSystem(updatePositionSystem);
+        engine.addSystem(networkSystem);
     }
 
     private void addContactListeners() {

@@ -23,7 +23,7 @@ public class Server implements Runnable
 
     private static final Logger logger = LoggerFactory.getLogger(Server.class);
 
-    ServerGame runningGame = new ServerGame();
+    ServerGame runningGame = new ServerGame(serversocket);
     MyTimer timer = new MyTimer();
 
     public Server()

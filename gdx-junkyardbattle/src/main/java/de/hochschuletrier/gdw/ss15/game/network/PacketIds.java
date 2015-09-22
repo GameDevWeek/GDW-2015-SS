@@ -9,7 +9,7 @@ import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
 
 public enum PacketIds
 {
-    //Position((short)0),
+    Position((short)0),
     Simple((short)1);
 
     private final short m_Value;
