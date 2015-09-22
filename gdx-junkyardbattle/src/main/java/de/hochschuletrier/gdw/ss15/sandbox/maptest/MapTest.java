@@ -79,6 +79,7 @@ public class MapTest extends SandboxGame {
     private final HashMap<TileSet, Texture> tilesetImages = new HashMap();
     
     private AnimatorComponent animatorComponent;
+    private PositionComponent positionComponent;
     
     private final RenderSystem renderSystem = new RenderSystem(new RayHandler(physixSystem.getWorld()), 
             camera.getOrthographicCamera());
@@ -127,7 +128,7 @@ public class MapTest extends SandboxGame {
         // create a simple player ball
         Entity player = createEntity("ball", 100, 100);
         animatorComponent = player.getComponent(AnimatorComponent.class);
-
+        positionComponent = player.getComponent(PositionComponent.class);
         engine.addEntity(player);
 
         // Setup camera
@@ -197,19 +198,15 @@ public class MapTest extends SandboxGame {
             nothingPressed = false;
         }
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-            animatorComponent.currentAnimationState = AnimationState.DEATH;
+            animatorComponent.currentAnimationState = AnimationState.FIRE;
             nothingPressed = false;
         }
-
-        camera.setDestination(playerBody.getPosition());
-
+        
         if(nothingPressed)
         {
             animatorComponent.currentAnimationState = AnimationState.IDLE;
-
-           
         }
 
- 		camera.setDestination(playerBody.getPosition());
+ 		camera.setDestination(positionComponent.x, positionComponent.y);
     }
 }
