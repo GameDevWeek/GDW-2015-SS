@@ -35,13 +35,13 @@ public class MapSpecialEntities
      */
     public static class CreatorInfo
     {
-        int posX;
-        int posY;
-        TiledMap tiledMap;
-        Entity entity;
-        TileInfo asTile;
-        LayerObject asObject;
-        Layer layer;            /// Layer fuer Renderer
+        public int posX;
+        public int posY;
+        public TiledMap tiledMap;
+        public Entity entity;
+        public TileInfo asTile;
+        public LayerObject asObject;
+        public Layer layer;            /// Layer fuer Renderer
         public CreatorInfo(Entity ent,TiledMap tm,LayerObject lo,Layer layer)
         {
             posX = 0;posY = 0;
@@ -50,15 +50,17 @@ public class MapSpecialEntities
             asObject = lo;
             asTile = null;
             this.layer = layer;
+            tiledMap = tm;
         }
-        public CreatorInfo(Entity ent,int x,int y,TiledMap tm,TileInfo ti,Layer layer)
+        public CreatorInfo(int x,int y,TiledMap tm,TileInfo ti,Layer layer)
         {
             posX = x;
             posY = y;
-            entity = ent;
+            entity = null;
             asObject = null;
             asTile = ti;
-            this.layer = layer;            
+            this.layer = layer;     
+            tiledMap = tm;
         }
     }
     public static HashMap< String,Consumer<CreatorInfo> > specialEntities;
@@ -81,160 +83,6 @@ public class MapSpecialEntities
             */
         }
     }
-    
-    /**** Rendering ****/
-    public static class animationtest implements Consumer<CreatorInfo> {
-        public void accept(CreatorInfo info) {
-            System.out.println("Creating texture entity.");
-            boolean isTile = info.asTile != null;
-            if(isTile) {
-                TileSet tileset = info.tiledMap.findTileSet(info.asTile.globalId);
-                int frames = tileset.getIntProperty("animationFrames", 1);
-                if(frames > 0) {
-                    AnimatorComponent animComp = ComponentMappers.animator.get(info.entity);
-                    AnimationExtended anim = animComp.animationStates.get(animComp.currentAnimationState);
-                    setRenderComponents(info.entity, info.tiledMap, info.layer, info.asTile, 
-                            info.posX, info.posY, anim == null ? PlayMode.LOOP : anim.getPlayMode());
-                } else {
-                    setRenderComponents(info.entity, info.tiledMap, info.layer, 
-                            info.asTile, info.posX, info.posY);
-                }
-            }
-        }
-    }
-    
-    static void setRenderComponents(Entity entity, TiledMap map, Layer layer, TileInfo info, float tileX, float tileY, float offsetX, float offsetY) {
-        TileSet tileset = map.findTileSet(info.globalId);
-        Texture texture = (Texture) tileset.getAttachment();
-
-        int sheetX = tileset.getTileX(info.localId);
-        int sheetY = tileset.getTileY(info.localId);
-
-        int mapTileWidth = map.getTileWidth();
-        int mapTileHeight = map.getTileHeight();
-
-        float px = (tileX * mapTileWidth)  + offsetX;
-        float py = (tileY * mapTileHeight) + offsetY;
-        
-        int coordX = (int) (sheetX * tileset.getTileWidth()); 
-        coordX += tileset.getTileMargin() + sheetX * tileset.getTileSpacing();
-        int coordY = ((int) sheetY * tileset.getTileHeight());
-        coordY += tileset.getTileMargin() + sheetY * tileset.getTileSpacing();                
-        
-        TextureRegion region = new TextureRegion(texture);
-        region.setRegion(coordX, coordY, tileset.getTileWidth(), tileset.getTileHeight());
-        
-//        String filename = "data/normal_maps/" + tileset.getImage().getSource();
-//        FileHandle fh = Gdx.files.internal(filename);
-
-//        if(fh.exists()) {
-//            Texture normalMap = assetManager.getTexture(fh.nameWithoutExtension() + "_n");
-//            if(normalMap != null) {
-//                NormalMapComponent normalMapComponent = engine.createComponent(NormalMapComponent.class);
-//                normalMapComponent.normalMap = normalMap;
-//                entity.add(normalMapComponent);
-//            }
-//        }
-        
-        setRenderComponents(entity, px, py, layer.getIndex(), texture, region);
-    }
-    
-    static void setRenderComponents(Entity entity, TiledMap map, Layer layer, TileInfo info, float tileX, float tileY) {
-        TileSet tileset = map.findTileSet(info.globalId);
-        
-        int mapTileWidth = map.getTileWidth();
-        int mapTileHeight = map.getTileHeight();
-        int tileOffsetY = tileset.getTileHeight() - mapTileHeight;
-      
-        setRenderComponents(entity, map, layer, info, tileX, tileY, mapTileWidth*0.5f, mapTileHeight*0.5f - tileOffsetY);
-    }
-    
-    /**
-     * Extracts information from the map and tile info to add components to the the given entity.
-     * Make sure the property "animationFrames" of the TileSet is set to greater than 1.
-     */
-    static void setRenderComponents(Entity entity, TiledMap map, Layer layer, TileInfo info, float tileX, float tileY, PlayMode playMode) {
-        TileSet tileset = map.findTileSet(info.globalId);
-        int frames = tileset.getIntProperty("animationFrames", 1);
-        
-        assert(frames > 1);
-
-        Texture image = (Texture) tileset.getAttachment();
-        
-        TileSetAnimation animation = new TileSetAnimation(
-                frames,
-                tileset.getFloatProperty("animationDuration", 0),
-                tileset.getIntProperty("animationOffset", 0));
-        
-        TextureRegion[] regions = new TextureRegion[frames];
-        float[] frameDurations = new float[frames];
-        
-        int tileOffsetY = tileset.getTileHeight() - map.getTileHeight();
-        
-        float px = (tileX * map.getTileWidth()) + map.getTileWidth()*0.5f;
-        float py = (tileY * map.getTileHeight()) - tileOffsetY + map.getTileHeight()*0.5f;
-        
-        float stateTime = tileset.getTileX(info.localId) * animation.frameDuration;
-        
-        for(int i=0; i<frames; i++) {
-            tileset.updateAnimation(animation.frameDuration*i);
-
-            int sheetX = tileset.getTileX(0);
-            int sheetY = tileset.getTileY(info.localId);
-            
-            int coordX = (int) (sheetX * tileset.getTileWidth()); 
-            coordX += tileset.getTileMargin() + sheetX * tileset.getTileSpacing();
-            int coordY = (int) (sheetY * tileset.getTileHeight());
-            coordY += tileset.getTileMargin() + sheetY * tileset.getTileSpacing();  
-            
-            regions[i] = new TextureRegion(image);
-            regions[i].setRegion(coordX, coordY, tileset.getTileWidth(), tileset.getTileHeight());
-            frameDurations[i] = animation.frameDuration;
-        }
-
-        tileset.updateAnimation(0f);
-        AnimationExtended anim = new AnimationExtended(playMode, frameDurations, regions);
-        
-//        String filename = "data/normal_maps/" + tileset.getImage().getSource();
-//        FileHandle fh = Gdx.files.internal(filename);
-//
-//        if(fh.exists()) {
-//            Texture normalMap = assetManager.getTexture(fh.nameWithoutExtension() + "_n");
-//            NormalMapComponent normalMapComponent = engine.createComponent(NormalMapComponent.class);
-//            normalMapComponent.normalMap = normalMap;
-//            entity.add(normalMapComponent);
-//        }
-        
-        setRenderComponents(entity, px, py, layer.getIndex(), anim, stateTime);
-    }
-    
-    private static void setRenderComponents(Entity entity, float x, float y, int layer, Texture texture, TextureRegion region) {
-        PositionComponent posComp = ComponentMappers.position.get(entity);
-        posComp.layer = layer;
-        posComp.x = x;
-        posComp.y = y;
-        
-        TextureComponent texComp = ComponentMappers.texture.get(entity);
-        texComp.texture = texture;
-        texComp.srcX = region.getRegionX();
-        texComp.srcX = region.getRegionY();
-        texComp.width = region.getRegionWidth();
-        texComp.height = region.getRegionHeight();
-    }
-    
-    private static void setRenderComponents(Entity entity, float x, float y, int layer, 
-            AnimationExtended animation, float stateTime) {
-
-        PositionComponent posComp = ComponentMappers.position.get(entity);
-        posComp.layer = layer;
-        posComp.x = x;
-        posComp.y = y;
-        AnimatorComponent animComp = ComponentMappers.animator.get(entity);
-        animComp.animationStates.put(AnimationState.IDLE, animation);
-        animComp.stateTime = stateTime;
-    }
-    
-    /**** Rendering end ****/
     
     static
     {

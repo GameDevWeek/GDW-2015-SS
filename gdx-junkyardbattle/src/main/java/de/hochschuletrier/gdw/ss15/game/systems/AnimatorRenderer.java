@@ -48,6 +48,7 @@ public class AnimatorRenderer extends SortedSubIteratingSystem.SubSystem {
         int w = keyFrame.getRegionWidth();
         int h = keyFrame.getRegionHeight();
         
-        DrawUtil.batch.draw(keyFrame, position.x - w * 0.5f, position.y - h * 0.5f, w * 0.5f, h * 0.5f, w, h, 1, 1, position.rotation);
+        DrawUtil.batch.draw(keyFrame, position.x - w * 0.5f, position.y - h * 0.5f, 
+                w * 0.5f, h * 0.5f, w, h, 1, 1, position.rotation);
     }
 }

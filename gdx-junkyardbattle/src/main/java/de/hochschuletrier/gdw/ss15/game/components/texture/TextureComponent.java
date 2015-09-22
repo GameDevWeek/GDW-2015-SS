@@ -37,6 +37,6 @@ public class TextureComponent extends Component implements Pool.Poolable{
         scaleX = 1;
         scaleY = 1;
         flipX = false;
-        flipY = false;
+        flipY = true;
     }
 }

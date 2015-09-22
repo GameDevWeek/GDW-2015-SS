@@ -1,10 +1,12 @@
 package de.hochschuletrier.gdw.ss15.game;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.function.Consumer;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 
@@ -12,11 +14,13 @@ import de.hochschuletrier.gdw.commons.gdx.physix.PhysixBodyDef;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixFixtureDef;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
+import de.hochschuletrier.gdw.commons.resourcelocator.CurrentResourceLocator;
 import de.hochschuletrier.gdw.commons.tiled.Layer;
 import de.hochschuletrier.gdw.commons.tiled.LayerObject;
 import de.hochschuletrier.gdw.commons.tiled.TileInfo;
 import de.hochschuletrier.gdw.commons.tiled.TileSet;
 import de.hochschuletrier.gdw.commons.tiled.TiledMap;
+import de.hochschuletrier.gdw.commons.tiled.tmx.TmxImage;
 import de.hochschuletrier.gdw.commons.tiled.utils.RectangleGenerator;
 import de.hochschuletrier.gdw.commons.utils.Rectangle;
 
@@ -29,10 +33,31 @@ import de.hochschuletrier.gdw.commons.utils.Rectangle;
 
 public class MapLoader
 {    
+    private static ArrayList<TileCreationListener> tileListeners = new ArrayList<TileCreationListener>();
+    
+    
     private TiledMap tiledMap;
     /**
      * Standard Konstruktor
      */
+    
+    public interface EntityCreator {
+        public Entity createEntity(String name, float x, float y);
+    }
+    
+    public interface TileCreationListener
+    {
+        public void onTileCreate( MapSpecialEntities.CreatorInfo info );
+    } 
+    public void listen( TileCreationListener listener )
+    {
+        tileListeners.add( listener );
+    }
+    public void stopListening( TileCreationListener listener )
+    {
+        tileListeners.remove( listener );
+    }
+    
     public MapLoader()
     {
     }
@@ -40,10 +65,6 @@ public class MapLoader
     public TiledMap getTiledMap()
     {
         return tiledMap;
-    }
-    
-    public interface EntityCreator {
-        public Entity createEntity(String name, float x, float y);
     }
 
     /**
@@ -57,6 +78,17 @@ public class MapLoader
         try
         {
             tiledMap = new TiledMap( filename );
+            
+            // Attach textures to the tilesets
+            HashMap<TileSet, Texture> tilesetImages = new HashMap<>();
+            for (TileSet tileset : tiledMap.getTileSets()) {
+                TmxImage img = tileset.getImage();
+                String fn = CurrentResourceLocator.combinePaths(tileset.getFilename(), img.getSource());
+                tilesetImages.put(tileset, new Texture(fn));
+            }
+            for (TileSet tileset : tiledMap.getTileSets()) {
+                tileset.setAttachment(tilesetImages.get(tileset));
+            }
         }  catch (Exception ex) 
         {
             throw new IllegalArgumentException( "Map konnte nicht geladen werden: " + filename);
@@ -119,11 +151,17 @@ public class MapLoader
                     float yPos = obj.getY();
                     resultEnt = entityCreator.createEntity(objectName, xPos, yPos);
 
+                    MapSpecialEntities.CreatorInfo info = new MapSpecialEntities.CreatorInfo(resultEnt,tiledMap,obj,layer);
+                    
+                    for( TileCreationListener l :tileListeners )  {
+                        l.onTileCreate(info);
+                    }
                     
                     Consumer<MapSpecialEntities.CreatorInfo> creator = MapSpecialEntities.specialEntities.get( objectName );
                     if ( creator != null )
                     {   /// eine Spezialbehandlung gefunden
-                        creator.accept( new MapSpecialEntities.CreatorInfo(resultEnt,tiledMap,obj,layer) );
+                        
+                        creator.accept( info );
                     }                        
                 }
             } else
@@ -135,28 +173,32 @@ public class MapLoader
                     for( int y = 0; y < mapHeight; y++ )
                     {
                         TileInfo tileInfo = tiles[x][y];
+                        MapSpecialEntities.CreatorInfo info = new MapSpecialEntities.CreatorInfo( x,y,tiledMap, tileInfo ,layer );
+                        
+                        for( TileCreationListener l :tileListeners )  {
+                            l.onTileCreate(info);
+                        }
+                        
                         if ( tileInfo != null )
                         {
                             /// Name des Tiles bekommen
                             TileSet ts = tiledMap.findTileSet( tileInfo.globalId );
                             String objectName = ts.getName();
                             
-                            Entity resultEnt;
                             float xPos = x * tileWidth;
                             float yPos = y * tileHeight;
-                            
+  
                             Consumer<MapSpecialEntities.CreatorInfo> creator = MapSpecialEntities.specialEntities.get( objectName );
                             if ( creator != null )
                             {   /// eine Spezialbehandlung gefunden
-                                System.out.println("Creator not null");
-                                resultEnt = entityCreator.createEntity(objectName, xPos, yPos);
-                                creator.accept( new MapSpecialEntities.CreatorInfo(resultEnt,x,y,tiledMap, tileInfo ,layer ) );
+                                creator.accept( info );                                
                             } 
                         }
                     }
                 }
             }
         }
+        System.out.println("Map Loaded Succsesful");
     }
     
 }

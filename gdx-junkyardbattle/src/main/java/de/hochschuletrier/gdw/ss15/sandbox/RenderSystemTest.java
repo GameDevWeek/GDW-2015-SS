@@ -41,6 +41,7 @@ import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
 import de.hochschuletrier.gdw.ss15.game.components.light.PointLightComponent;
 import de.hochschuletrier.gdw.ss15.game.systems.RenderSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
+import de.hochschuletrier.gdw.ss15.game.utils.TileRenderLoader;
 import de.hochschuletrier.gdw.ss15.sandbox.SandboxGame;
 import de.hochschuletrier.gdw.ss15.sandbox.camera.CameraSystem;
 import de.hochschuletrier.gdw.ss15.sandbox.camera.PlayerComponent;
@@ -77,7 +78,8 @@ public class RenderSystemTest extends SandboxGame {
             cameraSystem.getCamera().getOrthographicCamera());
     private final UpdatePositionSystem updatePosSystem = new UpdatePositionSystem();
     private float totalMapWidth, totalMapHeight;
-
+    private TileRenderLoader tileRenderLoader = new TileRenderLoader();
+    
     private TiledMap map;
 //    private TiledMapRendererGdx mapRenderer;
     private PhysixBodyComponent playerBody;
@@ -98,9 +100,13 @@ public class RenderSystemTest extends SandboxGame {
     public void init(AssetManagerX assetManager) {
         MapLoader mapLoader = new MapLoader();
         
+        tileRenderLoader.init(engine);
+        mapLoader.listen(tileRenderLoader);
+        
         mapLoader.run((String n, float x, float y) -> createEntity(n, x, y), "data/maps/demo.tmx", physixSystem);
 //        mapRenderer = new TiledMapRendererGdx(map, tilesetImages);
         map = mapLoader.getTiledMap();
+
         entityFactory.init(engine, assetManager);
 
         // create a simple player ball
