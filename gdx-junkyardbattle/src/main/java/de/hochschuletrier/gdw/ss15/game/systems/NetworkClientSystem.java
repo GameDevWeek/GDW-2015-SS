@@ -16,6 +16,7 @@ import de.hochschuletrier.gdw.ss15.game.network.PacketIds;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.EntityPacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.InitEntityPacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.InputMovPaket;
+import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Clientsocket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.basic.SocketConnectListener;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.basic.SocketDisconnectListener;
@@ -89,6 +90,9 @@ public class NetworkClientSystem extends EntitySystem {
         {
             InitEntityPacket iPacket = (InitEntityPacket) pack;
             logger.info("Spawned entitiy with name: "+iPacket.name);
+
+            //Spawn entity
+
             game.createEntity(iPacket.name,0,0);
         }
         else if(pack.getPacketId() == PacketIds.Position.getValue())
@@ -98,8 +102,16 @@ public class NetworkClientSystem extends EntitySystem {
                 lastNetworkTimestamp = pack.getTimestamp();
                 EntityPacket ePacket = (EntityPacket) pack;
 
-
+                //update entity
                 NetworkPositionEvent.emit(null,ePacket.xPos,ePacket.yPos,ePacket.rotation,false);
+            }
+        }
+        else if(pack.getPacketId()==PacketIds.Simple.getValue())
+        {
+            SimplePacket sPacket = (SimplePacket)pack;
+            if(sPacket.m_SimplePacketId == SimplePacket.SimplePacketId.RemoveEntity.getValue())
+            {
+                //Remove entity
             }
         }
     }
