@@ -92,7 +92,7 @@ public class Game extends InputAdapter {
         entityFactory.init(engine, assetManager);
         
         /// @author tobidot(Tobias Gepp)
-        // mapLoader.run( ( String name, float x, float y ) -> { return this.createEntity(name,  x, y); }, "data/maps/demo.tmx",physixSystem );
+        mapLoader.run( ( String name, float x, float y ) -> { return this.createEntity(name,  x, y); }, "data/maps/demo.tmx",null );
     
     }
 

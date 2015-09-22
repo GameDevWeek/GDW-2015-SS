@@ -2,6 +2,7 @@ package de.hochschuletrier.gdw.ss15.game;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
+
 import de.hochschuletrier.gdw.commons.gdx.ashley.EntityFactory;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixComponentAwareContactListener;
@@ -37,6 +38,8 @@ public class ServerGame{
     private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json", ServerGame.class);
 
     private Serversocket serverSocket;
+    
+    private final MapLoader mapLoader = new MapLoader(); /// @author tobidot
 
     public ServerGame(Serversocket socket)
     {
@@ -51,6 +54,10 @@ public class ServerGame{
         setupPhysixWorld();
         networkSystem.init(serverSocket);
         entityFactory.init(engine, assetManager);
+        
+        /// @author tobidot(Tobias Gepp)
+        mapLoader.run( ( String name, float x, float y ) -> { return this.createEntity(name,  x, y); }, "data/maps/demo.tmx",physixSystem );
+    
     }
 
     private void addSystems() {

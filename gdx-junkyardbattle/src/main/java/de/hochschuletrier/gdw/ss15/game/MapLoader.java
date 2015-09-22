@@ -118,11 +118,13 @@ public class MapLoader
         int tileHeight = tiledMap.getTileHeight();
         
         /// Santomagic
-        RectangleGenerator generator = new RectangleGenerator();
-        generator.generate( tiledMap,
-                (Layer layer, TileInfo info) -> info.getBooleanProperty("blocked", false),
-                (Rectangle rect) -> addShape(pSystem,rect, tileWidth, tileHeight) );
-        
+        if ( pSystem != null )  /// Auf dem Server werden die PhysixsSystem nihct erstellt
+        {
+            RectangleGenerator generator = new RectangleGenerator();
+            generator.generate( tiledMap,
+                    (Layer layer, TileInfo info) -> info.getBooleanProperty("blocked", false),
+                    (Rectangle rect) -> addShape(pSystem,rect, tileWidth, tileHeight) );
+        }
         
         /// fuer alles Layers 
         for (Layer layer : tiledMap.getLayers() )
