@@ -40,7 +40,7 @@ import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
 import de.hochschuletrier.gdw.ss15.game.components.light.PointLightComponent;
 import de.hochschuletrier.gdw.ss15.game.systems.CameraSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.RenderSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.renderers.RenderSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ss15.sandbox.SandboxGame;
 

@@ -43,8 +43,8 @@ import de.hochschuletrier.gdw.ss15.game.components.animation.AnimationState;
 import de.hochschuletrier.gdw.ss15.game.components.animation.AnimatorComponent;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
 import de.hochschuletrier.gdw.ss15.game.components.texture.TextureComponent;
-import de.hochschuletrier.gdw.ss15.game.systems.AnimatorRenderer;
-import de.hochschuletrier.gdw.ss15.game.systems.RenderSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.renderers.AnimatorRenderer;
+import de.hochschuletrier.gdw.ss15.game.systems.renderers.RenderSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ss15.sandbox.SandboxGame;
 
@@ -117,7 +117,6 @@ public class MapTest extends SandboxGame {
             tilesetImages.put(tileset, new Texture(filename));
         }
         mapRenderer = new TiledMapRendererGdx(map, tilesetImages);
-        
         entityFactory.init(engine, assetManager);
 
         // Generate static world

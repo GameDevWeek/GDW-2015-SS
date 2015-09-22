@@ -1,5 +1,7 @@
-package de.hochschuletrier.gdw.ss15.game.systems;
+package de.hochschuletrier.gdw.ss15.game.systems.renderers;
 
+import de.hochschuletrier.gdw.ss15.game.systems.renderers.AnimatorRenderer;
+import de.hochschuletrier.gdw.ss15.game.systems.renderers.TextureRenderer;
 import java.util.Comparator;
 
 import box2dLight.RayHandler;

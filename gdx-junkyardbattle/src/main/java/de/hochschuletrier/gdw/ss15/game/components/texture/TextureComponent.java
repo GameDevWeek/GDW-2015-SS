@@ -16,16 +16,15 @@ import com.badlogic.gdx.utils.Pool;
  */
 public class TextureComponent extends Component implements Pool.Poolable{
     
-    public Texture texture;
-    public int width;
-    public int height;
-    public int srcX;
-    public int srcY;
-    public float scaleX;
-    public float scaleY;
-    public boolean flipX;
-    public boolean flipY;
-    public int layer;
+    public Texture texture = null;
+    public int width = 24;
+    public int height = 24;
+    public int srcX = 0;
+    public int srcY = 0;
+    public float scaleX = 1;
+    public float scaleY = 1;
+    public boolean flipX = false;
+    public boolean flipY = false;
     
     @Override
     public void reset() {
