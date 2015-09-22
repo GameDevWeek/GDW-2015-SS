@@ -25,6 +25,8 @@ public class InputMovPaket {
         tempString += "down: " + this.down + "\n";
         tempString += "left: " + this.left + "\n";
         tempString += "right: " + this.right + "\n";
+        tempString += "posX: " + this.posX + "\n";
+        tempString += "posY: " + this.posY + "\n";
         return tempString;
     }
 }
