@@ -48,7 +48,7 @@ public class SettingsScreen implements Screen {
          
          table.add(scrollPane).expandX().row();
          table.add(buttonBack).expandX().row();
-         table.add(new MyActor());
+         table.add(new MouseCursorActor());
          table.setDebug(true);
          stage= new Stage();
          stage.addActor(table);

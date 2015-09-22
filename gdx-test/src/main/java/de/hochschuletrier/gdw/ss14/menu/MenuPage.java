@@ -75,6 +75,7 @@ public class MenuPage extends Group {
     	return hg;
     	
     }
+    protected final 
     
     protected final TextButton addButton(int x, int y, int width, int height, String text, Runnable runnable, String style) {
         TextButton button = new TextButton(text, skin, style);
