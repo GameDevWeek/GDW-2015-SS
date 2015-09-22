@@ -54,7 +54,7 @@ public class Game extends InputAdapter {
     private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem(GameConstants.PRIORITY_PHYSIX + 1);
 
     private final EntityFactoryParam factoryParam = new EntityFactoryParam();
-    private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json", Game.class);
+    private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json", null);
 
     public Game() {
         // If this is a build jar file, disable hotkeys
@@ -78,7 +78,6 @@ public class Game extends InputAdapter {
     }
 
     private void addSystems() {
-        engine.addSystem(new TextureSystem());
         engine.addSystem(physixSystem);
         engine.addSystem(physixDebugRenderSystem);
         engine.addSystem(animationRenderSystem);
@@ -130,7 +129,7 @@ public class Game extends InputAdapter {
     }
 
     public Entity createEntity(String name, float x, float y) {
-        factoryParam.game = this;
+        factoryParam.game = null;
         factoryParam.x = x;
         factoryParam.y = y;
         Entity entity = entityFactory.createEntity(name, factoryParam);

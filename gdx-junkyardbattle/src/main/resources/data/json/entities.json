@@ -9,14 +9,10 @@
                 "minSpeed": 20,
                 "minDelay": 100
             },
-            "Texture": {
-                "texture": "ball",
-                "width": 60,
-                "height": 60,
-                "srcX": 0,
-                "srcY": 0,
-                "scaleX": 1,
-                "scaleY": 1
+            "Animator": {
+                "animation_IDLE": "box",
+                "animation_FIRE": "ball",
+                "animation_WALK": "walking"
             },
             "PhysixBody": {
                 "type": "circle",

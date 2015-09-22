@@ -45,7 +45,7 @@ public class RenderSystem extends SortedSubIteratingSystem {
         
         lightRenderer = new LightRenderer(rayHandler);
         
-        // Order of adding = order of renderer selection for the entity
+        // Order of adding = order of renderer selection for the entitys
         addSubSystem(new NormalMapRenderer());
         addSubSystem(lightRenderer);
     }
