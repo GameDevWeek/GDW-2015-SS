@@ -13,11 +13,13 @@ public class PositionSynchComponent extends Component implements Pool.Poolable {
     public static long currentID = 0;
     public long networkID = currentID++;
     public boolean was_moved;
+    public String clientName;
 
     @Override
     public void reset() {
         networkID = currentID++;
         was_moved = false;
+        clientName=null;
     }
 
     /*

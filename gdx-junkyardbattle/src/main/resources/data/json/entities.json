@@ -79,7 +79,9 @@
                 "restitution": 0.1
             },
             "Client":{},
-            "PositionSynch":{}
+            "PositionSynch":{
+                "clientname": "clientPlayer"
+            }
         }
     },
 
