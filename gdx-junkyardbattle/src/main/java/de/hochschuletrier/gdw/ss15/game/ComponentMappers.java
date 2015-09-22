@@ -1,9 +1,6 @@
 package de.hochschuletrier.gdw.ss15.game;
 
 import com.badlogic.ashley.core.ComponentMapper;
-import de.hochschuletrier.gdw.commons.gdx.physix.components.*;
-import de.hochschuletrier.gdw.ss15.game.components.*;
-import de.hochschuletrier.gdw.commons.gdx.physix.components.*;
 import de.hochschuletrier.gdw.ss15.game.components.*;
 import de.hochschuletrier.gdw.ss15.game.components.animation.AnimatorComponent;
 import de.hochschuletrier.gdw.ss15.game.components.texture.TextureComponent;
@@ -13,6 +10,7 @@ import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixModifierCompon
 import de.hochschuletrier.gdw.ss15.game.components.ImpactSoundComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.components.TriggerComponent;
+import de.hochschuletrier.gdw.ss15.game.components.effects.ParticleEffectComponent;
 import de.hochschuletrier.gdw.ss15.game.components.light.ChainLightComponent;
 import de.hochschuletrier.gdw.ss15.game.components.light.ConeLightComponent;
 import de.hochschuletrier.gdw.ss15.game.components.light.DirectionalLightComponent;
@@ -43,8 +41,8 @@ public class ComponentMappers {
     public static final ComponentMapper<WeaponComponent> weapon = ComponentMapper.getFor(WeaponComponent.class);
     public static final ComponentMapper<ClientComponent> client = ComponentMapper.getFor(ClientComponent.class);
     public static final ComponentMapper<PositionSynchComponent> positionSynch = ComponentMapper.getFor(PositionSynchComponent.class);
-    //public static final ComponentMapper<PositionSynchComponent> positionSynch = ComponentMapper.getFor(PositionSynchComponent.class);
     public static final ComponentMapper<SoundEmitterComponent> soundEmitter = ComponentMapper.getFor(SoundEmitterComponent.class);
     public static final ComponentMapper<NetworkIDComponent> networkID = ComponentMapper.getFor(NetworkIDComponent.class);
     public static final ComponentMapper<LineOfSightComponent> lineOfSight = ComponentMapper.getFor(LineOfSightComponent.class);
+    public static final ComponentMapper<ParticleEffectComponent> particleEffect = ComponentMapper.getFor(ParticleEffectComponent.class);
 }

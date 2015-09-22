@@ -44,7 +44,7 @@ public class RenderSystem extends SortedSubIteratingSystem {
     private final LightRenderer lightRenderer;
     
     @SuppressWarnings("unchecked")
-	public RenderSystem(RayHandler rayHandler, OrthographicCamera camera) {
+	public RenderSystem(RayHandler rayHandler, OrthographicCamera camera, Engine engine) {
         super(Family.all(PositionComponent.class).get(), renderComparator, GameConstants.PRIORITY_RENDER_SYSTEM);
 
         this.camera = camera;
@@ -55,6 +55,7 @@ public class RenderSystem extends SortedSubIteratingSystem {
         addSubSystem(new TextureRenderer());
         addSubSystem(new AnimatorRenderer());
         addSubSystem(new NormalMapRenderer());
+        addSubSystem(new ParticleEffectRenderer(engine));
         addSubSystem(lightRenderer);
     }
 

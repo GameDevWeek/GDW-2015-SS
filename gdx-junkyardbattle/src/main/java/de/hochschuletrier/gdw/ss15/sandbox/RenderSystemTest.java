@@ -40,6 +40,7 @@ import de.hochschuletrier.gdw.ss15.game.Game;
 import de.hochschuletrier.gdw.ss15.game.GameConstants;
 import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
+import de.hochschuletrier.gdw.ss15.game.components.effects.ParticleEffectComponent;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
 import de.hochschuletrier.gdw.ss15.game.systems.CameraSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
@@ -69,7 +70,7 @@ public class RenderSystemTest extends SandboxGame {
     private final PhysixDebugRenderSystem physixDebugRenderSystem = new PhysixDebugRenderSystem(GameConstants.PRIORITY_DEBUG_WORLD);
     private final CameraSystem cameraSystem = new CameraSystem();
     private final RenderSystem renderSystem = new RenderSystem(new RayHandler(physixSystem.getWorld()),
-            cameraSystem.getCamera().getOrthographicCamera());
+            cameraSystem.getCamera().getOrthographicCamera(), engine);
     private final UpdatePositionSystem updatePosSystem = new UpdatePositionSystem();
     private float totalMapWidth, totalMapHeight;
 
@@ -114,6 +115,11 @@ public class RenderSystemTest extends SandboxGame {
         player.add(modifyComponent);
 
         PositionComponent posComponent = engine.createComponent(PositionComponent.class);
+        ParticleEffectComponent particleEffect = engine.createComponent(ParticleEffectComponent.class);
+        
+        particleEffect.particleEffect = assetManager.getParticleEffect("particle");
+        
+        player.add(particleEffect);
         player.add(posComponent);
         
         player.add(engine.createComponent(PlayerComponent.class));

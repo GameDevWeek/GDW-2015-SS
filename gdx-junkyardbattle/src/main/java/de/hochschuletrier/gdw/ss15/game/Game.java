@@ -43,7 +43,7 @@ public class Game extends InputAdapter {
 
     private final CameraSystem cameraSystem = new CameraSystem();
 
-    private final RenderSystem renderSystem = new RenderSystem(new RayHandler(physixSystem.getWorld()),cameraSystem.getCamera().getOrthographicCamera());
+    private final RenderSystem renderSystem = new RenderSystem(new RayHandler(physixSystem.getWorld()),cameraSystem.getCamera().getOrthographicCamera(), engine);
 
     private final WeaponSystem weaponSystem = new WeaponSystem();
 
