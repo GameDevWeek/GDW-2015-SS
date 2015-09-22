@@ -1,28 +1,65 @@
 package de.hochschuletrier.gdw.ss15.game.rendering;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Interpolation;
-import com.jcraft.jorbis.DspState;
 
+import de.hochschuletrier.gdw.commons.devcon.cvar.CVar;
+import de.hochschuletrier.gdw.commons.devcon.cvar.CVarFloat;
 import de.hochschuletrier.gdw.commons.gdx.cameras.orthogonal.SmoothCamera;
+import de.hochschuletrier.gdw.ss15.Main;
 
 public class BoundedCamera extends SmoothCamera {
     
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    
     float xMin, yMin, xMax, yMax;
-    private boolean resetZoom = true;
-    private float curDelta = 0.f;
-    private final float zoomSpeed = 1.f;
-    private final float maxZoomOut = 2.f, maxZoomIn = 1.f;
-    private float srcZoom = 1.f, dstZoom = 2.f, curZoom = 1.f;
-    float zoomProgress = 0.f;
-    // factor < 1 slow follow || factor > 1 fast follow
-    protected float followFactor = 10.f;
+    // use setBounds to use bounding
     boolean useBounds = false;
+    
+    // setting initial state
+    private boolean resetZoom = true;
+
+    // Camera zoom settings
+    private float srcZoom = 1.f, dstZoom = 2.f, curZoom = 1.f, zoomSpeed = 1.f, zoomProgress = 0.f;
+    
+    // < 1 slow follow || > 1 fast follow
+    protected float followFactor = 1.f;
+    
+    // stores deltatime of update() for private methods
+    private float curDelta;
+    
+    private CVarFloat followFactCVAR = new CVarFloat("camFollow", followFactor, 0.1f, 20.f, 0, "sets camera following speed");
+    private CVarFloat zoomSpeedCVAR = new CVarFloat("camZoomSpd", zoomSpeed, 0.1f, 5.f, 0, "sets camera zooming speed");
+    private CVarFloat maxZoomOutCVAR = new CVarFloat("camZoomOut", dstZoom, 0.1f, 2.f, 0, "sets camera maxmimum zoom-out");
+    
+    //private final Logger logger = LoggerFactory.getLogger(getClass());
+    
+    public BoundedCamera() {
+        // registering CVARs
+        Main.getInstance().console.register(followFactCVAR);
+        Main.getInstance().console.register(zoomSpeedCVAR);
+        Main.getInstance().console.register(maxZoomOutCVAR);
+        
+        // attach listeners
+        followFactCVAR.addListener((CVar cvar) -> {
+            followFactor = followFactCVAR.get();
+        });
+        
+        zoomSpeedCVAR.addListener((CVar cvar) -> {
+            zoomSpeed = zoomSpeedCVAR.get();
+        });
+
+        maxZoomOutCVAR.addListener((CVar cvar) -> {
+            dstZoom = maxZoomOutCVAR.get();
+        });
+        
+    }
+    
+    @Override
+    public void finalize(){
+        // unregistering CVars
+        Main.getInstance().console.unregister(followFactCVAR);
+        Main.getInstance().console.unregister(zoomSpeedCVAR);
+        Main.getInstance().console.unregister(maxZoomOutCVAR);
+    }
     
     @Override
     public void update(float delta) {
@@ -30,7 +67,7 @@ public class BoundedCamera extends SmoothCamera {
         moveDir.set(destination).sub(position);
 
         float distance = moveDir.len();
-        if (distance < 2.f * followFactor) {
+        if (distance < 1.f * followFactor) {
             setCameraPosition(destination);
             position.set(destination);
         } else {
@@ -39,15 +76,19 @@ public class BoundedCamera extends SmoothCamera {
             setCameraPosition(position);
         }
         
-        setZoom(Interpolation.fade.apply(srcZoom, dstZoom, zoomProgress));
-        
-        if(resetZoom){
+        if(resetZoom)
             zoomProgress -= zoomSpeed * curDelta;
-        }
+        checkProgressBounds();
+        
+        // change interpolation type for camera
+        setZoom(Interpolation.exp5In.apply(srcZoom, dstZoom, zoomProgress));        
         
         camera.update(true);
     }
     
+    // needs to be used continously for zooming out
+    // e.g. using chargingWeapon-Event in camera System
+    // with parameter true for zooming out mode
     public void zoomOut(boolean out){
         if(out){
             resetZoom = false;
@@ -55,18 +96,18 @@ public class BoundedCamera extends SmoothCamera {
                 zoomProgress += zoomSpeed * curDelta;
             }
         } else {
+            // activates zoom-reset in update-method
             resetZoom = true;
-            if(zoomProgress > 0.f){
-                zoomProgress -= zoomSpeed * curDelta;
-            }
-        }
+        }   
+    }
+    
+    // Check if zoomProgress variable is out of bounds
+    private void checkProgressBounds(){
         if(zoomProgress > 1.f){
             zoomProgress = 1.f;
         } else if (zoomProgress < 0.f){
             zoomProgress = 0.f;
         }
-        logger.info("progress: {}", zoomProgress);
-        
     }
     
     @Override
