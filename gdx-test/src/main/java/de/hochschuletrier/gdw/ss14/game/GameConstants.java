@@ -10,6 +10,9 @@ public class GameConstants {
     public static final int PRIORITY_HUD = 40;
     public static final int PRIORITY_REMOVE_ENTITIES = 1000;
 
+    // Network constants
+    public static final int PRIORITY_NETWORK = 10;
+
     // PooledEngine parameters
     public static final int ENTITY_POOL_INITIAL_SIZE = 32;
     public static final int ENTITY_POOL_MAX_SIZE = 256;
