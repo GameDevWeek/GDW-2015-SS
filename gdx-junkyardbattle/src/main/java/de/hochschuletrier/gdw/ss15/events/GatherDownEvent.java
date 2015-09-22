@@ -16,7 +16,7 @@ public class GatherDownEvent {
         this.xPos = xPos;
         this.yPos = yPos;
         this.timeStamp = timeStamp;
-        System.out.println("GatherDownEvent\nxPos: " + this.xPos + " yPos: " + this.yPos + " timeStamp: " + this.timeStamp);
+        //System.out.println("GatherDownEvent\nxPos: " + this.xPos + " yPos: " + this.yPos + " timeStamp: " + this.timeStamp);
     }
 
     public static interface Listener{

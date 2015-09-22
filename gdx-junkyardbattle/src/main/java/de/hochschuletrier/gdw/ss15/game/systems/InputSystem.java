@@ -55,7 +55,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor {
                 inputPaket.left = true;
                 break;
         }
-        System.out.println(inputPaket);
+        //System.out.println(inputPaket);
         return true;
     }
 
@@ -76,7 +76,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor {
                 inputPaket.left = false;
                 break;
         }
-        System.out.println(inputPaket);
+        //System.out.println(inputPaket);
         return true;
     }
 
