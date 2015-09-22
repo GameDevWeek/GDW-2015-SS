@@ -4,7 +4,9 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -12,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import de.hochschuletrier.gdw.commons.devcon.cvar.CVar;
 import de.hochschuletrier.gdw.commons.devcon.cvar.CVarFloat;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
+import de.hochschuletrier.gdw.commons.gdx.audio.SoundEmitter.Mode;
 import de.hochschuletrier.gdw.commons.gdx.input.hotkey.Hotkey;
 import de.hochschuletrier.gdw.commons.gdx.input.hotkey.HotkeyModifier;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixBodyDef;
@@ -21,6 +24,8 @@ import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixModifierCompon
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixDebugRenderSystem;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.commons.gdx.tiled.TiledMapRendererGdx;
+import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
+import de.hochschuletrier.gdw.commons.gdx.utils.ScreenUtil;
 import de.hochschuletrier.gdw.commons.resourcelocator.CurrentResourceLocator;
 import de.hochschuletrier.gdw.commons.tiled.Layer;
 import de.hochschuletrier.gdw.commons.tiled.LayerObject;
@@ -33,11 +38,13 @@ import de.hochschuletrier.gdw.commons.utils.Rectangle;
 import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.game.GameConstants;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
+import de.hochschuletrier.gdw.ss15.game.systems.CameraSystem;
 import de.hochschuletrier.gdw.ss15.sandbox.SandboxGame;
 import de.hochschuletrier.gdw.ss15.sandbox.maptest.MapTest;
 
 import java.util.HashMap;
 
+import org.lwjgl.input.Mouse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -48,9 +55,13 @@ import org.slf4j.LoggerFactory;
 
 public class CameraTest extends SandboxGame {
 
+    private float camZoom = 1.0f;
+    
     private static final Logger logger = LoggerFactory.getLogger(MapTest.class);
 
     private final Hotkey hkey = new Hotkey(this::addEntity, Input.Keys.E, HotkeyModifier.SHIFT);
+    private final Hotkey camOut = new Hotkey(() -> {camZoom += 1f; zoomCam();}, Input.Keys.Q);
+    private final Hotkey camIn = new Hotkey(() -> {camZoom -= 1f; zoomCam();}, Input.Keys.A);
     private CVarFloat followFactor = new CVarFloat("camFollow", 1.0f, 0.25f, 30.f, 0, "Camera spring dist factor");
     
     public static final int POSITION_ITERATIONS = 3;
@@ -87,7 +98,9 @@ public class CameraTest extends SandboxGame {
         for (TileSet tileset : map.getTileSets()) {
             TmxImage img = tileset.getImage();
             String filename = CurrentResourceLocator.combinePaths(tileset.getFilename(), img.getSource());
-            tilesetImages.put(tileset, new Texture(filename));
+            Texture tex = new Texture(filename);
+            tex.setFilter(TextureFilter.Linear, TextureFilter.MipMapLinearLinear);
+            tilesetImages.put(tileset, tex);
         }
         mapRenderer = new TiledMapRendererGdx(map, tilesetImages);
 
@@ -101,16 +114,24 @@ public class CameraTest extends SandboxGame {
         
         // create a simple player ball
         Entity player = engine.createEntity();
+        Entity temp = engine.createEntity();
         
         // Registering Entity components
         PlayerComponent playerComponent = engine.createComponent(PlayerComponent.class);
+        PlayerComponent tempComp = engine.createComponent(PlayerComponent.class);
+        playerComponent.isLocalPlayer = true;
+        tempComp.isLocalPlayer = false;
+        temp.add(tempComp);
         player.add(playerComponent);
+
         
         PositionComponent positionComponent = engine.createComponent(PositionComponent.class);
         player.add(positionComponent);
+        temp.add(positionComponent);
          
         PhysixModifierComponent modifyComponent = engine.createComponent(PhysixModifierComponent.class);
         player.add(modifyComponent);
+        temp.add(modifyComponent);
 
         modifyComponent.schedule(() -> {
             playerBody = engine.createComponent(PhysixBodyComponent.class);
@@ -122,6 +143,8 @@ public class CameraTest extends SandboxGame {
         });
         engine.addEntity(player);
         hkey.register();
+        camOut.register();
+        camIn.register();
         
         totalMapWidth = map.getWidth() * map.getTileWidth();
         totalMapHeight = map.getHeight() * map.getTileHeight();
@@ -150,6 +173,8 @@ public class CameraTest extends SandboxGame {
     @Override
     public void dispose() {
         hkey.unregister();
+        camOut.unregister();
+        camIn.unregister();
         cameraSystem.dispose();
         tilesetImages.values().forEach(Texture::dispose);
     }
@@ -167,17 +192,17 @@ public class CameraTest extends SandboxGame {
     public void update(float delta) {
     
         // TODO: andere Implementierung? Bind woander aufrufen? z.B. innerhalb der CameraSystem-Klasse?        
-        cameraSystem.bind();
+        //cameraSystem.bind();
         
         for (Layer layer : map.getLayers()) {
             mapRenderer.render(0, 0, layer);
         }
         
-        engine.update(delta);        
         mapRenderer.update(delta);
+        engine.update(delta);    
 
         if(playerBody != null) {
-            float speed = 30000.0f;
+            float speed = 15000.0f;
             float velX = 0, velY = 0;
             if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
                 velX -= delta * speed;
@@ -197,6 +222,7 @@ public class CameraTest extends SandboxGame {
             posComp.y = playerBody.getY();
             
             playerBody.setLinearVelocity(velX, velY);
+            
         }
     }
     
@@ -205,6 +231,11 @@ public class CameraTest extends SandboxGame {
         engine.addEntity(newEnt);
         newEnt.add(new PlayerComponent());
         logger.debug("added new entity");
+    }
+    
+    private void zoomCam(){
+        logger.debug("zooming");
+        cameraSystem.getCamera().zoom(camZoom);
     }
     
 }
