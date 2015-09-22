@@ -35,6 +35,7 @@ import de.hochschuletrier.gdw.commons.tiled.tmx.TmxImage;
 import de.hochschuletrier.gdw.commons.tiled.utils.RectangleGenerator;
 import de.hochschuletrier.gdw.commons.utils.Rectangle;
 import de.hochschuletrier.gdw.ss15.Main;
+import de.hochschuletrier.gdw.ss15.events.ChangeAnimationEvent;
 import de.hochschuletrier.gdw.ss15.game.Game;
 import de.hochschuletrier.gdw.ss15.game.GameConstants;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
@@ -42,6 +43,7 @@ import de.hochschuletrier.gdw.ss15.game.components.animation.AnimationState;
 import de.hochschuletrier.gdw.ss15.game.components.animation.AnimatorComponent;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
 import de.hochschuletrier.gdw.ss15.game.components.texture.TextureComponent;
+import de.hochschuletrier.gdw.ss15.game.systems.AnimatorRenderer;
 import de.hochschuletrier.gdw.ss15.game.systems.RenderSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ss15.sandbox.SandboxGame;
@@ -88,6 +90,7 @@ public class MapTest extends SandboxGame {
     private final EntityFactoryParam factoryParam = new EntityFactoryParam();
     private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json", Game.class);
     
+    private Entity player;
     public MapTest() {
         engine.addSystem(renderSystem);
         engine.addSystem(updatePositionSystem);
@@ -126,8 +129,7 @@ public class MapTest extends SandboxGame {
                 (Rectangle rect) -> addShape(rect, tileWidth, tileHeight));
 
         // create a simple player ball
-        Entity player = createEntity("ball", 100, 100);
-        animatorComponent = player.getComponent(AnimatorComponent.class);
+        player = createEntity("ball", 100, 100);
         positionComponent = player.getComponent(PositionComponent.class);
         engine.addEntity(player);
 
@@ -182,29 +184,29 @@ public class MapTest extends SandboxGame {
         boolean nothingPressed = true;
             
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            animatorComponent.currentAnimationState = AnimationState.WALK;
+            ChangeAnimationEvent.emit(AnimationState.WALK, player);
             nothingPressed = false;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            animatorComponent.currentAnimationState = AnimationState.WALK;              
+            ChangeAnimationEvent.emit(AnimationState.WALK, player);             
             nothingPressed = false;                                                                                                                                                                                                             
         }
         if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            animatorComponent.currentAnimationState = AnimationState.WALK;
+            ChangeAnimationEvent.emit(AnimationState.WALK, player);
             nothingPressed = false;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            animatorComponent.currentAnimationState = AnimationState.WALK;
+            ChangeAnimationEvent.emit(AnimationState.WALK, player);
             nothingPressed = false;
         }
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-            animatorComponent.currentAnimationState = AnimationState.FIRE;
+            ChangeAnimationEvent.emit(AnimationState.FIRE, player);
             nothingPressed = false;
         }
         
         if(nothingPressed)
         {
-            animatorComponent.currentAnimationState = AnimationState.IDLE;
+            ChangeAnimationEvent.emit(AnimationState.IDLE, player);
         }
 
  		camera.setDestination(positionComponent.x, positionComponent.y);
