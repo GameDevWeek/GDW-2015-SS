@@ -53,6 +53,7 @@ public class NetworkClientSystem extends EntitySystem implements SocketDisconnec
     @Override
     public void update(float deltaTime)
     {
+        /*
         //TODO check all input components
         timer.Update();
         if(timer.get_CounterMilliseconds() > 200){
@@ -63,6 +64,7 @@ public class NetworkClientSystem extends EntitySystem implements SocketDisconnec
             connection.getSocket().sendPacketUnsave(inputPacket);
             timer.ResetTimer();
         }
+        */
 
         Clientsocket socket = connection.getSocket();
         if(socket != null)
