@@ -35,20 +35,26 @@ public class MapSpecialEntities
      */
     public static class CreatorInfo
     {
+        int posX;
+        int posY;
+        TiledMap tiledMap;
         Entity entity;
         TileInfo asTile;
         LayerObject asObject;
         Layer layer;            /// Layer fuer Renderer
-        public CreatorInfo(Entity ent,LayerObject lo,Layer layer)
+        public CreatorInfo(Entity ent,TiledMap tm,LayerObject lo,Layer layer)
         {
+            posX = 0;posY = 0;
+            tiledMap = null;
             entity = ent;
             asObject = lo;
             asTile = null;
             this.layer = layer;
-            
         }
-        public CreatorInfo(Entity ent,TileInfo ti,Layer layer)
+        public CreatorInfo(Entity ent,int x,int y,TiledMap tm,TileInfo ti,Layer layer)
         {
+            posX = x;
+            posY = y;
             entity = ent;
             asObject = null;
             asTile = ti;
@@ -76,13 +82,28 @@ public class MapSpecialEntities
         }
     }
     
-    /*** Rendering ****/
-    public static class TextureEntity implements Consumer<CreatorInfo> {
+    /**** Rendering ****/
+    public static class animationtest implements Consumer<CreatorInfo> {
         public void accept(CreatorInfo info) {
+            System.out.println("Creating texture entity.");
+            boolean isTile = info.asTile != null;
+            if(isTile) {
+                TileSet tileset = info.tiledMap.findTileSet(info.asTile.globalId);
+                int frames = tileset.getIntProperty("animationFrames", 1);
+                if(frames > 0) {
+                    AnimatorComponent animComp = ComponentMappers.animator.get(info.entity);
+                    AnimationExtended anim = animComp.animationStates.get(animComp.currentAnimationState);
+                    setRenderComponents(info.entity, info.tiledMap, info.layer, info.asTile, 
+                            info.posX, info.posY, anim == null ? PlayMode.LOOP : anim.getPlayMode());
+                } else {
+                    setRenderComponents(info.entity, info.tiledMap, info.layer, 
+                            info.asTile, info.posX, info.posY);
+                }
+            }
         }
     }
     
-    static void addRenderComponents(Entity entity, TiledMap map, Layer layer, TileInfo info, float tileX, float tileY, float offsetX, float offsetY) {
+    static void setRenderComponents(Entity entity, TiledMap map, Layer layer, TileInfo info, float tileX, float tileY, float offsetX, float offsetY) {
         TileSet tileset = map.findTileSet(info.globalId);
         Texture texture = (Texture) tileset.getAttachment();
 
@@ -115,24 +136,24 @@ public class MapSpecialEntities
 //            }
 //        }
         
-        addRenderComponents(entity, px, py, layer.getIndex(), texture, region);
+        setRenderComponents(entity, px, py, layer.getIndex(), texture, region);
     }
     
-    static void addRenderComponents(Entity entity, TiledMap map, Layer layer, TileInfo info, float tileX, float tileY) {
+    static void setRenderComponents(Entity entity, TiledMap map, Layer layer, TileInfo info, float tileX, float tileY) {
         TileSet tileset = map.findTileSet(info.globalId);
         
         int mapTileWidth = map.getTileWidth();
         int mapTileHeight = map.getTileHeight();
         int tileOffsetY = tileset.getTileHeight() - mapTileHeight;
       
-        addRenderComponents(entity, map, layer, info, tileX, tileY, mapTileWidth*0.5f, mapTileHeight*0.5f - tileOffsetY);
+        setRenderComponents(entity, map, layer, info, tileX, tileY, mapTileWidth*0.5f, mapTileHeight*0.5f - tileOffsetY);
     }
     
     /**
      * Extracts information from the map and tile info to add components to the the given entity.
      * Make sure the property "animationFrames" of the TileSet is set to greater than 1.
      */
-    static void addRenderComponents(Entity entity, TiledMap map, Layer layer, TileInfo info, float tileX, float tileY, PlayMode playMode, boolean start) {
+    static void setRenderComponents(Entity entity, TiledMap map, Layer layer, TileInfo info, float tileX, float tileY, PlayMode playMode) {
         TileSet tileset = map.findTileSet(info.globalId);
         int frames = tileset.getIntProperty("animationFrames", 1);
         
@@ -184,10 +205,10 @@ public class MapSpecialEntities
 //            entity.add(normalMapComponent);
 //        }
         
-        addRenderComponents(entity, px, py, layer.getIndex(), anim, start, stateTime);
+        setRenderComponents(entity, px, py, layer.getIndex(), anim, stateTime);
     }
     
-    private static void addRenderComponents(Entity entity, float x, float y, int layer, Texture texture, TextureRegion region) {
+    private static void setRenderComponents(Entity entity, float x, float y, int layer, Texture texture, TextureRegion region) {
         PositionComponent posComp = ComponentMappers.position.get(entity);
         posComp.layer = layer;
         posComp.x = x;
@@ -201,8 +222,8 @@ public class MapSpecialEntities
         texComp.height = region.getRegionHeight();
     }
     
-    private static void addRenderComponents(Entity entity, float x, float y, int layer, 
-            AnimationExtended animation, boolean start, float stateTime) {
+    private static void setRenderComponents(Entity entity, float x, float y, int layer, 
+            AnimationExtended animation, float stateTime) {
 
         PositionComponent posComp = ComponentMappers.position.get(entity);
         posComp.layer = layer;
@@ -213,7 +234,7 @@ public class MapSpecialEntities
         animComp.stateTime = stateTime;
     }
     
-    /*** Rendering end ****/
+    /**** Rendering end ****/
     
     static
     {
@@ -222,11 +243,12 @@ public class MapSpecialEntities
         for ( Class c : allClasses ) 
         {
             /// nur alle Klassen, die von Consumer abgeleitet sind
-            if ( c.isAssignableFrom( Consumer.class ) )
+            if ( Consumer.class.isAssignableFrom( c ) )
             {
                 try
                 {   /// zu den Speziellen Entity-Creator hinzufuegen
-                    specialEntities.put( c.toString(), (Consumer<CreatorInfo>)c.newInstance() );
+                    System.out.println("Creating texture entity.");
+                    specialEntities.put( c.getSimpleName(), (Consumer<CreatorInfo>)c.newInstance() );
                 } catch (InstantiationException | IllegalAccessException e)
                 {
                     // TODO 

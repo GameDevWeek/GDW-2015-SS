@@ -35,6 +35,7 @@ import de.hochschuletrier.gdw.commons.utils.Rectangle;
 import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.game.Game;
 import de.hochschuletrier.gdw.ss15.game.GameConstants;
+import de.hochschuletrier.gdw.ss15.game.MapLoader;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
 import de.hochschuletrier.gdw.ss15.game.components.light.PointLightComponent;
@@ -78,7 +79,7 @@ public class RenderSystemTest extends SandboxGame {
     private float totalMapWidth, totalMapHeight;
 
     private TiledMap map;
-    private TiledMapRendererGdx mapRenderer;
+//    private TiledMapRendererGdx mapRenderer;
     private PhysixBodyComponent playerBody;
     private final HashMap<TileSet, Texture> tilesetImages = new HashMap();
 
@@ -95,22 +96,12 @@ public class RenderSystemTest extends SandboxGame {
 
     @Override
     public void init(AssetManagerX assetManager) {
-        map = loadMap("data/maps/demo.tmx");
-        for (TileSet tileset : map.getTileSets()) {
-            TmxImage img = tileset.getImage();
-            String filename = CurrentResourceLocator.combinePaths(tileset.getFilename(), img.getSource());
-            tilesetImages.put(tileset, new Texture(filename));
-        }
-        mapRenderer = new TiledMapRendererGdx(map, tilesetImages);
-        entityFactory.init(engine, assetManager);
+        MapLoader mapLoader = new MapLoader();
         
-        // Generate static world
-        int tileWidth = map.getTileWidth();
-        int tileHeight = map.getTileHeight();
-        RectangleGenerator generator = new RectangleGenerator();
-        generator.generate(map,
-                (Layer layer, TileInfo info) -> info.getBooleanProperty("blocked", false),
-                (Rectangle rect) -> addShape(rect, tileWidth, tileHeight));
+        mapLoader.run((String n, float x, float y) -> createEntity(n, x, y), "data/maps/demo.tmx", physixSystem);
+//        mapRenderer = new TiledMapRendererGdx(map, tilesetImages);
+        map = mapLoader.getTiledMap();
+        entityFactory.init(engine, assetManager);
 
         // create a simple player ball
         Entity player = engine.createEntity();
@@ -183,12 +174,12 @@ public class RenderSystemTest extends SandboxGame {
     @Override
     public void update(float delta) {
         cameraSystem.getCamera().bind();
-        for (Layer layer : map.getLayers()) {
-            mapRenderer.render(0, 0, layer);
-        }
+//        for (Layer layer : map.getLayers()) {
+//            mapRenderer.render(0, 0, layer);
+//        }
         engine.update(delta);
         
-        mapRenderer.update(delta);
+//        mapRenderer.update(delta);
 //        cameraSystem.getCamera().update(delta);
 
         if(playerBody != null) {
