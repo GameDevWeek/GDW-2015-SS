@@ -14,8 +14,12 @@ import de.hochschuletrier.gdw.ss15.game.input.InputMovPaket;
 import java.util.LinkedList;
 
 /**
- * Created by glumbatsch on 21.09.2015.
- * KameHameHAH!
+ * Created by David Siepen on 21.09.2015.
+ *
+ * Das InputSystem ist ein InputProcessor, der beim Spiel angemeldet wird.
+ * Wenn eine Taste gedrueckt wird, wird die entsprechende methode mit dem
+ * zugehoerigen keycode aufgerufen.
+ *
  */
 public class InputSystem extends IteratingSystem implements InputProcessor {
 
@@ -84,12 +88,12 @@ public class InputSystem extends IteratingSystem implements InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         // touchDown = mouseClick
-        switch (button){
+        switch (button) {
             case Input.Buttons.LEFT:
-                new ShootDownEvent(screenX,screenY,99);
+                new ShootDownEvent(screenX, screenY, 99);
                 break;
             case Input.Buttons.RIGHT:
-                new GatherDownEvent(screenX,screenY,99);
+                new GatherDownEvent(screenX, screenY, 99);
                 break;
         }
         return true;
@@ -98,12 +102,12 @@ public class InputSystem extends IteratingSystem implements InputProcessor {
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         // touchUp = mouseClick
-        switch (button){
+        switch (button) {
             case Input.Buttons.LEFT:
-                new ShootUpEvent(screenX,screenY,99);
+                new ShootUpEvent(screenX, screenY, 99);
                 break;
             case Input.Buttons.RIGHT:
-                new GatherUpEvent(screenX,screenY,99);
+                new GatherUpEvent(screenX, screenY, 99);
                 break;
         }
         return true;
@@ -129,8 +133,11 @@ public class InputSystem extends IteratingSystem implements InputProcessor {
 
     @Override
     public void addedToEngine(Engine engine) {
+        // Das System wird zur Engine hinzugefuegt
         super.addedToEngine(engine);
+        // Der InputProcessor wird beim Spiel angemeldet
         Main.getInstance().inputMultiplexer.addProcessor(this);
+        // Das InputPaket fuer den Server wird initialisiert
         inputPaket = new InputMovPaket();
     }
 
