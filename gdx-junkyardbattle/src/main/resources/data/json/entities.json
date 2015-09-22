@@ -77,7 +77,26 @@
                 "density": 10,
                 "friction": 0.5,
                 "restitution": 0.1
-                }
-            }
+            },
+            "Client":{},
+            "PositionSynch":{}
         }
+    },
+
+    "clientPlayer": {
+        "meta": {},
+        "components": {
+            "Position": {}
+        }
+    },
+
+    "clientOwnPlayer": {
+        "meta": {},
+        "components": {
+            "Position": {},
+            "Input": {}
+        }
+    }
+
+
 }
