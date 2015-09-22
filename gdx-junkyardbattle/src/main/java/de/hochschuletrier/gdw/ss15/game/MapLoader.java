@@ -1,4 +1,4 @@
-package de.hochschuletrier.gdw.ss14.game;
+package de.hochschuletrier.gdw.ss15.game;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -140,6 +140,8 @@ public class MapLoader
 
                     MapSpecialEntities.CreatorInfo info = new MapSpecialEntities.CreatorInfo(resultEnt,tiledMap,obj,layer);
                     
+                    
+                    /// koente hier ueberfluessig sein  @author tobidot
                     for( TileCreationListener l :tileListeners )  {
                         l.onTileCreate(info);
                     }
