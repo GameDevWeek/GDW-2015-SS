@@ -5,13 +5,20 @@ import java.util.function.Consumer;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 
+import de.hochschuletrier.gdw.commons.gdx.physix.PhysixBodyDef;
+import de.hochschuletrier.gdw.commons.gdx.physix.PhysixFixtureDef;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
+import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.commons.tiled.Layer;
 import de.hochschuletrier.gdw.commons.tiled.LayerObject;
 import de.hochschuletrier.gdw.commons.tiled.TileInfo;
 import de.hochschuletrier.gdw.commons.tiled.TileSet;
 import de.hochschuletrier.gdw.commons.tiled.TiledMap;
+import de.hochschuletrier.gdw.commons.tiled.utils.RectangleGenerator;
+import de.hochschuletrier.gdw.commons.utils.Rectangle;
 
 /**
  * 
@@ -40,7 +47,7 @@ public class MapLoader
      * @param game Spielstand fuer das die Entities geladen werden sollen
      * @param filename Name der Mapdatei die geladen werden soll
      */
-    public void run(Game game, String filename)
+    public void run(Game game, String filename,PhysixSystem pSystem)
     {     
         /// Datei auslesen und in tiledMap packen
         try
@@ -52,20 +59,48 @@ public class MapLoader
         }
         
         /// Objekte aus tiledMap laden und per Entitycreator im Game erstellen 
-        loadObjectsFromMap( game,tiledMap );
+        loadObjectsFromMap( pSystem,game,tiledMap );
     }
 
+    /**
+     * Ein Shape zur Physik hinzufuegen
+     * @param rect  zu erstellendes Rechteck
+     * @param tileWidth breite eines tile
+     * @param tileHeight hoehe eines tile
+     */
+    private void addShape(PhysixSystem pSystem,Rectangle rect, int tileWidth, int tileHeight) {
+        float width = rect.width * tileWidth;
+        float height = rect.height * tileHeight;
+        float x = rect.x * tileWidth + width / 2;
+        float y = rect.y * tileHeight + height / 2;
+
+        
+        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody, pSystem).position(x, y).fixedRotation(false);
+        Body body = pSystem.getWorld().createBody(bodyDef);
+        body.createFixture(new PhysixFixtureDef(pSystem).density(1).friction(0.5f).shapeBox(width, height));
+    }
+    
     /** 
      * Objekte aus tiledMap laden und per Entitycreator im Game erstellen
      * @param game Spiel das gefuellt werden soll
      * @param tiledMap Map die geladen wird
      */     
-    private void loadObjectsFromMap(Game game,TiledMap tiledMap)
+    private void loadObjectsFromMap(PhysixSystem pSystem,Game game,TiledMap tiledMap)
     {
+        
+        
         int mapWidth = tiledMap.getWidth();
         int mapHeight = tiledMap.getHeight();
         int tileWidth = tiledMap.getTileWidth();
-        int tileHeight = tiledMap.getTileHeight(); 
+        int tileHeight = tiledMap.getTileHeight();
+        
+        /// Santomagic
+        RectangleGenerator generator = new RectangleGenerator();
+        generator.generate( tiledMap,
+                (Layer layer, TileInfo info) -> info.getBooleanProperty("blocked", false),
+                (Rectangle rect) -> addShape(pSystem,rect, tileWidth, tileHeight) );
+        
+        
         /// fuer alles Layers 
         for (Layer layer : tiledMap.getLayers() )
         {
@@ -84,7 +119,7 @@ public class MapLoader
                     Consumer<MapSpecialEntities.CreatorInfo> creator = MapSpecialEntities.specialEntities.get( objectName );
                     if ( creator != null )
                     {   /// eine Spezialbehandlung gefunden
-                        creator.accept( new MapSpecialEntities.CreatorInfo(resultEnt,obj,layer) );
+                        creator.accept( new MapSpecialEntities.CreatorInfo(resultEnt,tiledMap,obj,layer) );
                     }                        
                 }
             } else
@@ -110,7 +145,7 @@ public class MapLoader
                             if ( creator != null )
                             {   /// eine Spezialbehandlung gefunden
                                 resultEnt = game.createEntity(objectName, xPos, yPos);
-                                creator.accept( new MapSpecialEntities.CreatorInfo(resultEnt, tileInfo ,layer ) );
+                                creator.accept( new MapSpecialEntities.CreatorInfo(resultEnt,x,y,tiledMap, tileInfo ,layer ) );
                             } 
                         }
                     }

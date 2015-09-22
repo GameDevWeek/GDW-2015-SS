@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.Entity;
 import de.hochschuletrier.gdw.commons.tiled.Layer;
 import de.hochschuletrier.gdw.commons.tiled.LayerObject;
 import de.hochschuletrier.gdw.commons.tiled.TileInfo;
+import de.hochschuletrier.gdw.commons.tiled.TiledMap;
 import de.hochschuletrier.gdw.commons.utils.SafeProperties;
 
 import java.util.HashMap;
@@ -25,20 +26,26 @@ public class MapSpecialEntities
      */
     public static class CreatorInfo
     {
+        int posX;
+        int posY;
+        TiledMap tiledMap;
         Entity entity;
         TileInfo asTile;
         LayerObject asObject;
         Layer layer;            /// Layer fuer Renderer
-        public CreatorInfo(Entity ent,LayerObject lo,Layer layer)
+        public CreatorInfo(Entity ent,TiledMap tm,LayerObject lo,Layer layer)
         {
+            posX = 0;posY = 0;
+            tiledMap = null;
             entity = ent;
             asObject = lo;
             asTile = null;
             this.layer = layer;
-            
         }
-        public CreatorInfo(Entity ent,TileInfo ti,Layer layer)
+        public CreatorInfo(Entity ent,int x,int y,TiledMap tm,TileInfo ti,Layer layer)
         {
+            posX = x;
+            posY = y;
             entity = ent;
             asObject = null;
             asTile = ti;
