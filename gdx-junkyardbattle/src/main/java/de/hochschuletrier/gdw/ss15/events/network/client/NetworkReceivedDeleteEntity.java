@@ -1,38 +1,35 @@
-package de.hochschuletrier.gdw.ss15.events;
-
-/**
- * Created by lukas on 22.09.15.
- */
+package de.hochschuletrier.gdw.ss15.events.network.client;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.utils.SnapshotArray;
-import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
 
 /**
  * Created by lukas on 22.09.15.
  */
-public class SendPacketClientEvent{
+public class NetworkReceivedDeleteEntity{
     public static interface Listener {
-        void onSendSClientPacket(Packet pack,boolean save);
+        void onNetworkReceivedDeleteEntity(Entity entity);
     }
 
     private static final SnapshotArray<Listener> listeners = new SnapshotArray();
 
-
-    public static void emit(Packet pack,boolean save) {
+    public static void emit(Entity entity) {
         Object[] items = listeners.begin();
         for (int i = 0, n = listeners.size; i < n; i++) {
-            ((Listener) items[i]).onSendSClientPacket(pack,save);
+            ((Listener)items[i]).onNetworkReceivedDeleteEntity(entity);
         }
         listeners.end();
     }
 
-    public static void registerListener(Listener listener){
+    public static void register(Listener listener) {
         listeners.add(listener);
     }
 
-    public static void unregisterListener(Listener listener){
+    public static void unregister(Listener listener) {
         listeners.removeValue(listener, true);
     }
 
+    public static void unregisterAll() {
+        listeners.clear();
+    }
 }

@@ -1,4 +1,4 @@
-package de.hochschuletrier.gdw.ss15.events;
+package de.hochschuletrier.gdw.ss15.events.network;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.utils.SnapshotArray;

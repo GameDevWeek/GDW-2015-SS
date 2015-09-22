@@ -1,38 +1,26 @@
-package de.hochschuletrier.gdw.ss15.game.systems;
+package de.hochschuletrier.gdw.ss15.game.systems.network;
 
 import com.badlogic.ashley.core.*;
 import com.badlogic.ashley.utils.ImmutableArray;
-import com.badlogic.gdx.Input;
-import de.hochschuletrier.gdw.commons.devcon.ConsoleCmd;
-import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.ss15.Main;
-import de.hochschuletrier.gdw.ss15.events.NetworkPositionEvent;
-import de.hochschuletrier.gdw.ss15.events.NetworkReceivedDeleteEntity;
-import de.hochschuletrier.gdw.ss15.events.NetworkReceivedNewEntity;
+import de.hochschuletrier.gdw.ss15.events.network.NetworkPositionEvent;
+import de.hochschuletrier.gdw.ss15.events.network.client.NetworkReceivedDeleteEntity;
+import de.hochschuletrier.gdw.ss15.events.network.client.NetworkReceivedNewEntity;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.Game;
-import de.hochschuletrier.gdw.ss15.game.components.ClientComponent;
-import de.hochschuletrier.gdw.ss15.game.components.NetworkIDComponent;
-import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
+import de.hochschuletrier.gdw.ss15.game.components.network.client.NetworkIDComponent;
 import de.hochschuletrier.gdw.ss15.game.network.ClientConnection;
 import de.hochschuletrier.gdw.ss15.game.network.PacketIds;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.EntityPacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.InitEntityPacket;
-import de.hochschuletrier.gdw.ss15.game.network.Packets.InputMovPaket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Clientsocket;
-import de.hochschuletrier.gdw.ss15.network.gdwNetwork.basic.SocketConnectListener;
-import de.hochschuletrier.gdw.ss15.network.gdwNetwork.basic.SocketDisconnectListener;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
-import de.hochschuletrier.gdw.ss15.network.gdwNetwork.enums.ConnectStatus;
-import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.DisconnectHandler;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.MyTimer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import de.hochschuletrier.gdw.ss15.events.GatherUpEvent;
 
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created by lukas on 21.09.15.

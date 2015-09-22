@@ -97,7 +97,14 @@ public class Serversocket implements Closeable
 		
 		for(int i=0;i<3;i++)
 		{
-			m_Sockets[i]=null;
+			if(m_Sockets[i]!=null) {
+				try {
+					m_Sockets[i].close();
+				} catch (SocketException e) {
+					e.printStackTrace();
+				}
+				m_Sockets[i] = null;
+			}
 		}
 	}
 	

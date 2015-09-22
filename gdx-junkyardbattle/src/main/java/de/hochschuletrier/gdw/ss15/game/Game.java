@@ -12,10 +12,11 @@ import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
 
-import de.hochschuletrier.gdw.ss15.game.systems.NetworkClientSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.network.NetworkClientSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
 
 import de.hochschuletrier.gdw.ss15.game.systems.*;
+import de.hochschuletrier.gdw.ss15.game.systems.network.TestMovementSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.renderers.RenderSystem;
 
 import java.util.function.Consumer;

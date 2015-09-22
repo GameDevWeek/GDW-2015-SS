@@ -11,18 +11,16 @@ import de.hochschuletrier.gdw.commons.gdx.physix.PhysixComponentAwareContactList
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.ss15.game.components.ImpactSoundComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PickableComponent;
-import de.hochschuletrier.gdw.ss15.game.components.PositionSynchComponent;
 import de.hochschuletrier.gdw.ss15.game.components.TriggerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.ImpactSoundListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.PickupListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.TriggerListener;
 import de.hochschuletrier.gdw.ss15.game.systems.LineOfSightSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.NetworkServerSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.PositionSynchSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.network.NetworkServerSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.network.PositionSynchSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serversocket;
-import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
 
 /**
  * Created by lukas on 21.09.15.

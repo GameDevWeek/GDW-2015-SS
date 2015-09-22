@@ -86,7 +86,18 @@
     "clientPlayer": {
         "meta": {},
         "components": {
-            "Position": {}
+            "Position": {},
+            "Texture":{
+                "texture": "box",
+                "width": 60,
+                "height": 60,
+                "srcX": 0,
+                "srcY": 0,
+                "scaleX": 1,
+                "scaleY": 1,
+                "flipX": false,
+                "flipY": false
+            }
         }
     },
 
