@@ -2,7 +2,10 @@ package de.hochschuletrier.gdw.ss14.game;
 
 import com.badlogic.ashley.core.Entity;
 
+import de.hochschuletrier.gdw.commons.tiled.Layer;
 import de.hochschuletrier.gdw.commons.tiled.LayerObject;
+import de.hochschuletrier.gdw.commons.tiled.TileInfo;
+import de.hochschuletrier.gdw.commons.utils.SafeProperties;
 
 import java.util.HashMap;
 import java.util.function.Consumer;
@@ -17,14 +20,29 @@ import java.util.function.Consumer;
 public class MapSpecialEntities
 {
     private MapSpecialEntities() {};
+    /**
+     * CreatorInfo wird den Consumern ueberleifert die Entities mit besonderen Attributen erstellen
+     */
     public static class CreatorInfo
     {
         Entity entity;
-        LayerObject data;
-        public CreatorInfo(Entity ent,LayerObject lo)
+        TileInfo asTile;
+        LayerObject asObject;
+        Layer layer;            /// Layer fuer Renderer
+        public CreatorInfo(Entity ent,LayerObject lo,Layer layer)
         {
             entity = ent;
-            data = lo;
+            asObject = lo;
+            asTile = null;
+            this.layer = layer;
+            
+        }
+        public CreatorInfo(Entity ent,TileInfo ti,Layer layer)
+        {
+            entity = ent;
+            asObject = null;
+            asTile = ti;
+            this.layer = layer;            
         }
     }
     public static HashMap< String,Consumer<CreatorInfo> > specialEntities;
