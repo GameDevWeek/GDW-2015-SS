@@ -302,4 +302,10 @@ public class Main extends StateBasedGame {
         }
     };
 
+    // Get Server
+
+    public Server getServer(){
+        return server;
+    }
+
 }
