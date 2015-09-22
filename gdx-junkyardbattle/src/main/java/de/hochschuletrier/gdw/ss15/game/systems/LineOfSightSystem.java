@@ -26,8 +26,7 @@ public class LineOfSightSystem extends EntitySystem {
     private ArrayList<Entity> team1, team2; // Listen müssen noch aus dem Netcode hinzugefügt werden
     
     public LineOfSightSystem() {
-        team1 = new ArrayList<Entity>();
-        team2 = new ArrayList<Entity>();
+        
     }
 
     @Override
@@ -44,7 +43,7 @@ public class LineOfSightSystem extends EntitySystem {
     public void update(float deltaTime) {
         super.update(deltaTime);
         
-        if(team1.isEmpty() || team2.isEmpty()) // wenn Listen leer sind, wird nichts gemacht
+        if(team1 == null || team2 == null || team1.isEmpty() || team2.isEmpty()) // wenn Listen leer sind, wird nichts gemacht
             return;
         
         for(int j=0; j < team2.size(); ++j) // erster Durchlauf bei dem LineOfSight des 2. Teams
