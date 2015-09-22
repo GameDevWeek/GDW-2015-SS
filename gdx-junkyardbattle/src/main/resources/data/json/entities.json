@@ -95,9 +95,11 @@
     "clientOwnPlayer": {
         "meta": {},
         "components": {
-            "Position": {}
+            "Position": {},
+            "Texture"
         }
     },
+
     "projectile": {
         "meta": {},
         "components": {
