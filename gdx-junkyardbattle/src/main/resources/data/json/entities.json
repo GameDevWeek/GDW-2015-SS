@@ -9,8 +9,10 @@
                 "minSpeed": 20,
                 "minDelay": 100
             },
-            "Animation": {
-                "animation": "ball"
+            "Animator": {
+                "animation_IDLE": "box",
+                "animation_FIRE": "ball",
+                "animation_WALK": "walking"
             },
             "PhysixBody": {
                 "type": "circle",
@@ -43,6 +45,28 @@
             }
         }
     },
+    "greenPointLight": {
+        "meta": {},
+        "components": {
+            "Position": {},
+			"PointLight": {
+				"color": "0, 1, 0",
+				"distance": 10
+			}
+        }
+    },
+    "blueConeLight": {
+        "meta": {},
+        "components": {
+            "Position": {},
+			"ConeLight": {
+				"color": "0, 0, 1",
+				"distance": 10,
+				"coneDegree": 45,
+				"degree": 45
+			}
+        }
+    },
     "player": {
         "meta": {},
         "components": {
@@ -53,7 +77,7 @@
                 "density": 10,
                 "friction": 0.5,
                 "restitution": 0.1
+                }
             }
         }
-    }
 }

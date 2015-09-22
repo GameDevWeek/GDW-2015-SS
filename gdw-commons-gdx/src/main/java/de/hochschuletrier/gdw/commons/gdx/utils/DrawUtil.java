@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Pixmap.Format;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Matrix4;
 
 /**
@@ -23,6 +24,8 @@ public class DrawUtil {
     private static Texture white;
     private static final LinkedList<Matrix4> matrixStack = new LinkedList();
 
+    private static ShaderProgram currentShader = null;
+    
     public enum Mode {
 
         NORMAL,
@@ -59,6 +62,27 @@ public class DrawUtil {
                 x,
                 (int) (Gdx.graphics.getHeight() - (y + target.getHeight())),
                 target.getWidth(), target.getHeight(), 0);
+    }
+    
+    /**
+     * Sets the shader if it's new. <br>
+     * Use it to reduce flushes. <br>
+     */
+    public static void setShader(ShaderProgram shader) {
+        if(currentShader != shader) {
+            currentShader = shader;
+            batch.setShader(shader);
+        }
+    }
+    
+    public static void safeEnd() {
+        if(batch.isDrawing())
+            batch.end();
+    }
+    
+    public static void safeBegin() {
+        if(!batch.isDrawing())
+            batch.begin();
     }
 
     public static void setDrawMode(Mode mode) {
