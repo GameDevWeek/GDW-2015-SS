@@ -26,7 +26,8 @@ public class LineOfSightSystem extends EntitySystem {
     private ArrayList<Entity> team1, team2; // Listen müssen noch aus dem Netcode hinzugefügt werden
     
     public LineOfSightSystem() {
-        
+        team1 = new ArrayList<Entity>();
+        team2 = new ArrayList<Entity>();
     }
 
     @Override
