@@ -13,11 +13,10 @@ import de.hochschuletrier.gdw.ss15.game.network.Packets.InputMovPaket;
 
 /**
  * Created by David Siepen on 21.09.2015.
- *
+ * <p>
  * Das InputSystem ist ein InputProcessor, der beim Spiel angemeldet wird.
  * Wenn eine Taste gedrueckt wird, wird die entsprechende methode mit dem
  * zugehoerigen keycode aufgerufen.
- *
  */
 public class InputSystem extends IteratingSystem implements InputProcessor {
 
@@ -120,7 +119,9 @@ public class InputSystem extends IteratingSystem implements InputProcessor {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        // winkel
+        //inputPaket.posX = screenX;
+        //inputPaket.posY = screenY;
+
         return false;
     }
 

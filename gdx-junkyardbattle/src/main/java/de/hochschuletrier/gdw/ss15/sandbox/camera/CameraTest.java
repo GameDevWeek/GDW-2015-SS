@@ -1,11 +1,4 @@
-package de.hochschuletrier.gdw.ss15.sandbox.maptest;
-
-import java.util.HashMap;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import box2dLight.RayHandler;
+package de.hochschuletrier.gdw.ss15.sandbox.camera;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
@@ -15,9 +8,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import de.hochschuletrier.gdw.commons.gdx.ashley.EntityFactory;
+
+import de.hochschuletrier.gdw.commons.devcon.cvar.CVar;
+import de.hochschuletrier.gdw.commons.devcon.cvar.CVarFloat;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
-import de.hochschuletrier.gdw.commons.gdx.cameras.orthogonal.LimitedSmoothCamera;
+import de.hochschuletrier.gdw.commons.gdx.input.hotkey.Hotkey;
+import de.hochschuletrier.gdw.commons.gdx.input.hotkey.HotkeyModifier;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixBodyDef;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixFixtureDef;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
@@ -35,35 +31,34 @@ import de.hochschuletrier.gdw.commons.tiled.tmx.TmxImage;
 import de.hochschuletrier.gdw.commons.tiled.utils.RectangleGenerator;
 import de.hochschuletrier.gdw.commons.utils.Rectangle;
 import de.hochschuletrier.gdw.ss15.Main;
-import de.hochschuletrier.gdw.ss15.events.ChangeAnimationEvent;
-import de.hochschuletrier.gdw.ss15.game.Game;
 import de.hochschuletrier.gdw.ss15.game.GameConstants;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
-import de.hochschuletrier.gdw.ss15.game.components.animation.AnimationState;
-import de.hochschuletrier.gdw.ss15.game.components.animation.AnimatorComponent;
-import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
-import de.hochschuletrier.gdw.ss15.game.components.texture.TextureComponent;
-import de.hochschuletrier.gdw.ss15.game.systems.AnimatorRenderer;
-import de.hochschuletrier.gdw.ss15.game.systems.RenderSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ss15.sandbox.SandboxGame;
+import de.hochschuletrier.gdw.ss15.sandbox.maptest.MapTest;
+
+import java.util.HashMap;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author Santo Pfingsten
+ * @author Sebastian Schalow
  */
-public class MapTest extends SandboxGame {
+
+public class CameraTest extends SandboxGame {
 
     private static final Logger logger = LoggerFactory.getLogger(MapTest.class);
 
+    private final Hotkey hkey = new Hotkey(this::addEntity, Input.Keys.E, HotkeyModifier.SHIFT);
+    private CVarFloat followFactor = new CVarFloat("camFollow", 1.0f, 0.25f, 30.f, 0, "Camera spring dist factor");
+    
     public static final int POSITION_ITERATIONS = 3;
     public static final int VELOCITY_ITERATIONS = 8;
     public static final float STEP_SIZE = 1 / 30.0f;
     public static final int GRAVITY = 0;
     public static final int BOX2D_SCALE = 40;
 
-
-    
     private final PooledEngine engine = new PooledEngine(
             GameConstants.ENTITY_POOL_INITIAL_SIZE, GameConstants.ENTITY_POOL_MAX_SIZE,
             GameConstants.COMPONENT_POOL_INITIAL_SIZE, GameConstants.COMPONENT_POOL_MAX_SIZE
@@ -72,40 +67,18 @@ public class MapTest extends SandboxGame {
             GameConstants.VELOCITY_ITERATIONS, GameConstants.POSITION_ITERATIONS, GameConstants.PRIORITY_PHYSIX
     );
     private final PhysixDebugRenderSystem physixDebugRenderSystem = new PhysixDebugRenderSystem(GameConstants.PRIORITY_DEBUG_WORLD);
-    private final LimitedSmoothCamera camera = new LimitedSmoothCamera();
+    private final CameraSystem cameraSystem = new CameraSystem();
     private float totalMapWidth, totalMapHeight;
 
     private TiledMap map;
     private TiledMapRendererGdx mapRenderer;
     private PhysixBodyComponent playerBody;
     private final HashMap<TileSet, Texture> tilesetImages = new HashMap();
-    
-    private AnimatorComponent animatorComponent;
-    private PositionComponent positionComponent;
-    
-    private final RenderSystem renderSystem = new RenderSystem(new RayHandler(physixSystem.getWorld()), 
-            camera.getOrthographicCamera());
-    private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem();
-    
-    private final EntityFactoryParam factoryParam = new EntityFactoryParam();
-    private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json", Game.class);
-    
-    private Entity player;
-    public MapTest() {
-        engine.addSystem(renderSystem);
-        engine.addSystem(updatePositionSystem);
+
+    public CameraTest() {
+        engine.addSystem(cameraSystem);
         engine.addSystem(physixSystem);
         engine.addSystem(physixDebugRenderSystem);
-    }
-    
-    public Entity createEntity(String name, float x, float y) {
-        //factoryParam.game = null;
-        factoryParam.x = x;
-        factoryParam.y = y;
-        Entity entity = entityFactory.createEntity(name, factoryParam);
-
-        engine.addEntity(entity);
-        return entity;
     }
 
     @Override
@@ -117,8 +90,6 @@ public class MapTest extends SandboxGame {
             tilesetImages.put(tileset, new Texture(filename));
         }
         mapRenderer = new TiledMapRendererGdx(map, tilesetImages);
-        
-        entityFactory.init(engine, assetManager);
 
         // Generate static world
         int tileWidth = map.getTileWidth();
@@ -127,19 +98,41 @@ public class MapTest extends SandboxGame {
         generator.generate(map,
                 (Layer layer, TileInfo info) -> info.getBooleanProperty("blocked", false),
                 (Rectangle rect) -> addShape(rect, tileWidth, tileHeight));
-
+        
         // create a simple player ball
-        player = createEntity("ball", 100, 100);
-        positionComponent = player.getComponent(PositionComponent.class);
-        engine.addEntity(player);
+        Entity player = engine.createEntity();
+        
+        // Registering Entity components
+        PlayerComponent playerComponent = engine.createComponent(PlayerComponent.class);
+        player.add(playerComponent);
+        
+        PositionComponent positionComponent = engine.createComponent(PositionComponent.class);
+        player.add(positionComponent);
+         
+        PhysixModifierComponent modifyComponent = engine.createComponent(PhysixModifierComponent.class);
+        player.add(modifyComponent);
 
-        // Setup camera
-        camera.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        modifyComponent.schedule(() -> {
+            playerBody = engine.createComponent(PhysixBodyComponent.class);
+            PhysixBodyDef bodyDef = new PhysixBodyDef(BodyType.DynamicBody, physixSystem).position(100, 100).fixedRotation(true);
+            playerBody.init(bodyDef, physixSystem, player);
+            PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem).density(5).friction(0.2f).restitution(0.4f).shapeCircle(30);
+            playerBody.createFixture(fixtureDef);
+            player.add(playerBody);
+        });
+        engine.addEntity(player);
+        hkey.register();
+        
         totalMapWidth = map.getWidth() * map.getTileWidth();
         totalMapHeight = map.getHeight() * map.getTileHeight();
-        camera.setBounds(0, 0, totalMapWidth, totalMapHeight);
-        camera.updateForced();
-        Main.getInstance().addScreenListener(camera);
+        cameraSystem.setCameraBounds(0, 0, totalMapWidth, totalMapHeight);
+        
+        followFactor.addListener((CVar cvar)-> {
+            cameraSystem.getCamera().setSpringFollowFactor(followFactor.get());
+        });
+        
+        Main.getInstance().console.register(followFactor);
+        
     }
 
     private void addShape(Rectangle rect, int tileWidth, int tileHeight) {
@@ -156,7 +149,8 @@ public class MapTest extends SandboxGame {
 
     @Override
     public void dispose() {
-        Main.getInstance().removeScreenListener(camera);
+        hkey.unregister();
+        cameraSystem.dispose();
         tilesetImages.values().forEach(Texture::dispose);
     }
 
@@ -171,44 +165,46 @@ public class MapTest extends SandboxGame {
 
     @Override
     public void update(float delta) {
-        camera.bind();
+    
+        // TODO: andere Implementierung? Bind woander aufrufen? z.B. innerhalb der CameraSystem-Klasse?        
+        cameraSystem.bind();
+        
         for (Layer layer : map.getLayers()) {
             mapRenderer.render(0, 0, layer);
         }
-        engine.update(delta);
         
+        engine.update(delta);        
         mapRenderer.update(delta);
-        camera.update(delta);
-        
-                                                                                                                    
-        boolean nothingPressed = true;
-            
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            ChangeAnimationEvent.emit(AnimationState.WALK, player);
-            nothingPressed = false;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            ChangeAnimationEvent.emit(AnimationState.WALK, player);             
-            nothingPressed = false;                                                                                                                                                                                                             
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            ChangeAnimationEvent.emit(AnimationState.WALK, player);
-            nothingPressed = false;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            ChangeAnimationEvent.emit(AnimationState.WALK, player);
-            nothingPressed = false;
-        }
-        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-            ChangeAnimationEvent.emit(AnimationState.FIRE, player);
-            nothingPressed = false;
-        }
-        
-        if(nothingPressed)
-        {
-            ChangeAnimationEvent.emit(AnimationState.IDLE, player);
-        }
 
- 		camera.setDestination(positionComponent.x, positionComponent.y);
+        if(playerBody != null) {
+            float speed = 30000.0f;
+            float velX = 0, velY = 0;
+            if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+                velX -= delta * speed;
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+                velX += delta * speed;
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
+                velY -= delta * speed;
+            }
+            if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+                velY += delta * speed;
+            }
+
+            PositionComponent posComp = playerBody.getEntity().getComponent(PositionComponent.class);
+            posComp.x = playerBody.getX();
+            posComp.y = playerBody.getY();
+            
+            playerBody.setLinearVelocity(velX, velY);
+        }
     }
+    
+    private void addEntity(){
+        Entity newEnt = new Entity();
+        engine.addEntity(newEnt);
+        newEnt.add(new PlayerComponent());
+        logger.debug("added new entity");
+    }
+    
 }

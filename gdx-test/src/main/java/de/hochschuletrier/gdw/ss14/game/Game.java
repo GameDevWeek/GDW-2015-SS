@@ -53,6 +53,9 @@ public class Game extends InputAdapter {
     private final EntityFactoryParam factoryParam = new EntityFactoryParam();
     private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json", Game.class);
 
+    /// @author tobidot
+    private final MapLoader mapLoader = new MapLoader();
+    
     public Game() {
         // If this is a build jar file, disable hotkeys
         if (!Main.IS_RELEASE) {
@@ -72,6 +75,9 @@ public class Game extends InputAdapter {
         addContactListeners();
         setupPhysixWorld();
         entityFactory.init(engine, assetManager);
+        
+        /// @author tobidot(Tobias Gepp)
+        mapLoader.run( this, "data/maps/demo.tmx" );
     }
 
     private void addSystems() {
