@@ -1,12 +1,12 @@
-package de.hochschuletrier.gdw.ss14.game.systems;
+package de.hochschuletrier.gdw.ss15.game.systems;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import de.hochschuletrier.gdw.ss14.game.components.InputComponent;
-import de.hochschuletrier.gdw.ss14.game.input.InputAction;
+import de.hochschuletrier.gdw.ss15.game.components.InputComponent;
+import de.hochschuletrier.gdw.ss15.game.input.InputAction;
 
 import java.util.LinkedList;
 
