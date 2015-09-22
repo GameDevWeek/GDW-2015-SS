@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.hochschuletrier.gdw.ss15.game.systems;
+package de.hochschuletrier.gdw.ss15.game.systems.renderers;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
@@ -49,7 +49,8 @@ public class AnimatorRenderer extends SortedSubIteratingSystem.SubSystem impleme
         int w = keyFrame.getRegionWidth();
         int h = keyFrame.getRegionHeight();
         
-        DrawUtil.batch.draw(keyFrame, position.x - w * 0.5f, position.y - h * 0.5f, w * 0.5f, h * 0.5f, w, h, 1, 1, position.rotation);
+        DrawUtil.batch.draw(keyFrame, position.x - w * 0.5f, position.y - h * 0.5f, 
+                w * 0.5f, h * 0.5f, w, h, 1, 1, position.rotation);
     }
 
     @Override

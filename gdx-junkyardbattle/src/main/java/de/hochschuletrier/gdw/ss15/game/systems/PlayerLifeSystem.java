@@ -33,7 +33,7 @@ public class PlayerLifeSystem extends IteratingSystem {
             if (hCom.dyingTimer <= 0)
             {
                 hCom.healthState = HealthComponent.HealthState.DEAD;
-                inventory.metallShards = 0;
+                inventory.metalShards = 0;
                 hCom.deathTimer -= deltaTime;
                 hCom.dyingTimer = GameConstants.DYING_TIMER;
 

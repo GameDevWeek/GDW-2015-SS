@@ -4,21 +4,19 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.utils.SnapshotArray;
 
 /**
- * Created by Martin on 21.09.2015.
+ * Created by lukas on 22.09.15.
  */
-public class GatherDownEvent {
-
+public class NetworkReceivedDeleteEntity{
     public static interface Listener {
-        void onGatherDownEvent(int xPos, int yPos);
+        void onNetworkReceivedDeleteEntity(Entity entity);
     }
 
     private static final SnapshotArray<Listener> listeners = new SnapshotArray();
 
-    // name ändern???
-    public static void emit(int xPos, int yPos) {
+    public static void emit(Entity entity) {
         Object[] items = listeners.begin();
         for (int i = 0, n = listeners.size; i < n; i++) {
-            ((Listener)items[i]).onGatherDownEvent(xPos,yPos);
+            ((Listener)items[i]).onNetworkReceivedDeleteEntity(entity);
         }
         listeners.end();
     }
@@ -34,6 +32,4 @@ public class GatherDownEvent {
     public static void unregisterAll() {
         listeners.clear();
     }
-
-
 }

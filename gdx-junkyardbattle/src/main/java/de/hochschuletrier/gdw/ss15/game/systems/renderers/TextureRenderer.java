@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package de.hochschuletrier.gdw.ss15.game.systems;
+package de.hochschuletrier.gdw.ss15.game.systems.renderers;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
@@ -48,8 +48,9 @@ public class TextureRenderer extends SortedSubIteratingSystem.SubSystem {
                 texture.srcY,
                 texture.width,
                 texture.height,
-                false,
-                false
+                texture.flipX,
+                texture.flipY
+                
         );
     }
 }

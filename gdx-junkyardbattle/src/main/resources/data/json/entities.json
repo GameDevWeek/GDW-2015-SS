@@ -1,4 +1,4 @@
-﻿{
+{
     "ball": {
         "meta": {},
         "components": {
@@ -10,9 +10,7 @@
                 "minDelay": 100
             },
             "Animator": {
-                "animation_IDLE": "box",
-                "animation_FIRE": "ball",
-                "animation_WALK": "walking"
+                "animation_IDLE": "ball"
             },
             "PhysixBody": {
                 "type": "circle",
@@ -33,8 +31,8 @@
                 "minSpeed": 20,
                 "minDelay": 100
             },
-            "Animation": {
-                "animation": "box"
+            "Animator": {
+                "animation_IDLE": "box"
             },
             "PhysixBody": {
                 "type": "box",
@@ -49,22 +47,22 @@
         "meta": {},
         "components": {
             "Position": {},
-            "PointLight": {
-                "color": "0, 1, 0",
-                "distance": 10
-            }
+			"PointLight": {
+				"color": "0, 1, 0",
+				"distance": 10
+			}
         }
     },
     "blueConeLight": {
         "meta": {},
         "components": {
             "Position": {},
-            "ConeLight": {
-                "color": "0, 0, 1",
-                "distance": 10,
-                "coneDegree": 45,
-                "degree": 45
-            }
+			"ConeLight": {
+				"color": "0, 0, 1",
+				"distance": 10,
+				"coneDegree": 45,
+				"degree": 45
+			}
         }
     },
     "player": {
@@ -78,50 +76,60 @@
                 "friction": 0.5,
                 "restitution": 0.1
             },
-            "Player": {
-                "name": "New Player"
-            },
-            "Health": {
-                "health": 100,
-                "spawningDuration" : 4000
-            },
-            "Move": {},
             "Client":{},
-            "PositionSynch":{},
-            "InventoryComponent": 100
-        },
-
-        "clientPlayer": {
-            "meta": {},
-            "components": {
-                "Position": {}
-            }
-        },
-
-        "clientOwnPlayer": {
-            "meta": {},
-            "components": {
-                "Position": {},
-                "Input": {}
-            }
-        },
-        "projectile": {
-            "meta": {},
-            "components": {
-                "Position": {},
-                "PhysixBody": {
-                    "type": "circle",
-                    "size": 5,
-                    "density": 10,
-                    "friction": 0.5,
-                    "restitution": 0.1
-                },
-                "Damage": {
-                    "damageValue": 10,
-                    "damageToPlayer": true,
-                    "damageToTile": true
-                }
+            "PositionSynch":{
+                "clientname": "clientPlayer"
             }
         }
+    },
+
+    "clientPlayer": {
+        "meta": {},
+        "components": {
+            "Position": {}
+        }
+    },
+
+    "clientOwnPlayer": {
+        "meta": {},
+        "components": {
+            "Position": {},
+            "Texture":{
+                "texture": "ball",
+                "width": 60,
+                "height": 60,
+                "srcX": 0,
+                "srcY": 0,
+                "scaleX": 1,
+                "scaleY": 1,
+                "flipX": false,
+                "flipY": false
+            }
+        }
+    },
+
+    "projectile": {
+        "meta": {},
+        "components": {
+            "Position": {},
+            "PhysixBody": {
+                "type": "circle",
+                "size": 5,
+                "density": 10,
+                "friction": 0.5,
+                "restitution": 0.1
+            },
+            "Damage": {
+            	"damageValue": 10,
+            	"damageToPlayer": true,
+            	"damageToTile": true
+            }
+        }
+    },
+
+    "metal": {
+
     }
+
+
 }

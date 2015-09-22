@@ -14,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.RayCastCallback;
 import com.badlogic.gdx.physics.box2d.World;
 
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
+import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.ss15.game.components.LineOfSightComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 
@@ -25,8 +26,10 @@ public class LineOfSightSystem extends EntitySystem {
     
     private ArrayList<Entity> team1, team2; // Listen müssen noch aus dem Netcode hinzugefügt werden
     
-    public LineOfSightSystem() {
-        
+    private PhysixSystem physixSystem;
+    
+    public LineOfSightSystem(PhysixSystem physixSystem) {
+        this.physixSystem = physixSystem;
     }
 
     @Override
@@ -51,8 +54,11 @@ public class LineOfSightSystem extends EntitySystem {
         {
             if(checkLineOfSight(team1.get(0), team2.get(j)))
             {
-                team1.get(0).add(new LineOfSightComponent()); // component angefügt ==> ist sichtbar
-                team2.get(j).add(new LineOfSightComponent());
+                // component angefügt ==> ist sichtbar (für anderes Team)
+                if(team1.get(0).getComponent(LineOfSightComponent.class) == null)
+                    team1.get(0).add(new LineOfSightComponent());
+                if(team2.get(j).getComponent(LineOfSightComponent.class) == null)
+                    team2.get(j).add(new LineOfSightComponent());
             }
             else
             {
@@ -86,8 +92,6 @@ public class LineOfSightSystem extends EntitySystem {
     {
         // checkt ob von einer Entity zur anderen Entity Sichtkontakt besteht
         
-        World testWorld = new World(null, true);
-        
         AtomicBoolean successful = new AtomicBoolean(false);
         
         RayCastCallback lineOfSightCallback = new RayCastCallback() {
@@ -101,7 +105,7 @@ public class LineOfSightSystem extends EntitySystem {
         };
         
         
-        testWorld.rayCast(lineOfSightCallback,
+        physixSystem.getWorld().rayCast(lineOfSightCallback,
                 from.getComponent(PhysixBodyComponent.class).getPosition(),
                 to.getComponent(PhysixBodyComponent.class).getPosition());
         

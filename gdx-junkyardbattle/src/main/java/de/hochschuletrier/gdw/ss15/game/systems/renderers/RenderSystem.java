@@ -1,5 +1,7 @@
-package de.hochschuletrier.gdw.ss15.game.systems;
+package de.hochschuletrier.gdw.ss15.game.systems.renderers;
 
+import de.hochschuletrier.gdw.ss15.game.systems.renderers.AnimatorRenderer;
+import de.hochschuletrier.gdw.ss15.game.systems.renderers.TextureRenderer;
 import java.util.Comparator;
 
 import box2dLight.RayHandler;
@@ -14,8 +16,10 @@ import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.GameConstants;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
+import de.hochschuletrier.gdw.ss15.game.systems.renderers.AnimatorRenderer;
 import de.hochschuletrier.gdw.ss15.game.systems.renderers.LightRenderer;
 import de.hochschuletrier.gdw.ss15.game.systems.renderers.NormalMapRenderer;
+import de.hochschuletrier.gdw.ss15.game.systems.renderers.TextureRenderer;
 
 /**
  * 

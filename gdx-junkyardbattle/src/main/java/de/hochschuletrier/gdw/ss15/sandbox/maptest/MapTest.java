@@ -43,8 +43,8 @@ import de.hochschuletrier.gdw.ss15.game.components.animation.AnimationState;
 import de.hochschuletrier.gdw.ss15.game.components.animation.AnimatorComponent;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
 import de.hochschuletrier.gdw.ss15.game.components.texture.TextureComponent;
-import de.hochschuletrier.gdw.ss15.game.systems.AnimatorRenderer;
-import de.hochschuletrier.gdw.ss15.game.systems.RenderSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.renderers.AnimatorRenderer;
+import de.hochschuletrier.gdw.ss15.game.systems.renderers.RenderSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ss15.sandbox.SandboxGame;
 
@@ -117,7 +117,6 @@ public class MapTest extends SandboxGame {
             tilesetImages.put(tileset, new Texture(filename));
         }
         mapRenderer = new TiledMapRendererGdx(map, tilesetImages);
-        
         entityFactory.init(engine, assetManager);
 
         // Generate static world
@@ -179,36 +178,6 @@ public class MapTest extends SandboxGame {
         
         mapRenderer.update(delta);
         camera.update(delta);
-        
-                                                                                                                    
-        boolean nothingPressed = true;
-            
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            ChangeAnimationEvent.emit(AnimationState.WALK, player);
-            nothingPressed = false;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            ChangeAnimationEvent.emit(AnimationState.WALK, player);             
-            nothingPressed = false;                                                                                                                                                                                                             
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            ChangeAnimationEvent.emit(AnimationState.WALK, player);
-            nothingPressed = false;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            ChangeAnimationEvent.emit(AnimationState.WALK, player);
-            nothingPressed = false;
-        }
-        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-            ChangeAnimationEvent.emit(AnimationState.FIRE, player);
-            nothingPressed = false;
-        }
-        
-        if(nothingPressed)
-        {
-            ChangeAnimationEvent.emit(AnimationState.IDLE, player);
-        }
-
  		camera.setDestination(positionComponent.x, positionComponent.y);
     }
 }
