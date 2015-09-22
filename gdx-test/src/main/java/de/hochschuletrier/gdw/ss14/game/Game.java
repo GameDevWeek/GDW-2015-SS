@@ -79,7 +79,7 @@ public class Game extends InputAdapter {
         entityFactory.init(engine, assetManager);
         
         /// @author tobidot(Tobias Gepp)
-        mapLoader.run( this, "data/maps/demo.tmx" );
+        mapLoader.run( this, "data/maps/demo.tmx",physixSystem );
     }
 
     private void addSystems() {

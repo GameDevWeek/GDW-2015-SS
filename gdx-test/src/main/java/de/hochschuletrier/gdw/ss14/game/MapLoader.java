@@ -119,7 +119,7 @@ public class MapLoader
                     Consumer<MapSpecialEntities.CreatorInfo> creator = MapSpecialEntities.specialEntities.get( objectName );
                     if ( creator != null )
                     {   /// eine Spezialbehandlung gefunden
-                        creator.accept( new MapSpecialEntities.CreatorInfo(resultEnt,obj,layer) );
+                        creator.accept( new MapSpecialEntities.CreatorInfo(resultEnt,tiledMap,obj,layer) );
                     }                        
                 }
             } else
@@ -145,7 +145,7 @@ public class MapLoader
                             if ( creator != null )
                             {   /// eine Spezialbehandlung gefunden
                                 resultEnt = game.createEntity(objectName, xPos, yPos);
-                                creator.accept( new MapSpecialEntities.CreatorInfo(resultEnt, tileInfo ,layer ) );
+                                creator.accept( new MapSpecialEntities.CreatorInfo(resultEnt,x,y,tiledMap, tileInfo ,layer ) );
                             } 
                         }
                     }
