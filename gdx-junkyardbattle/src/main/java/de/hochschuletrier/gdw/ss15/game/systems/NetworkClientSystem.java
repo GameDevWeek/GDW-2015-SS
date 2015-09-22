@@ -45,8 +45,6 @@ public class NetworkClientSystem extends EntitySystem implements SocketDisconnec
 
     }
 
-
-
     public NetworkClientSystem(Game game,int priority) {
 
         super(priority);
