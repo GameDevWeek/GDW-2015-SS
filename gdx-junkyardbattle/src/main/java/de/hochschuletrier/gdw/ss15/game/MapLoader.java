@@ -4,20 +4,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.function.Consumer;
 
-import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixBodyDef;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixFixtureDef;
-import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
+import de.hochschuletrier.gdw.commons.resourcelocator.CurrentResourceLocator;
 import de.hochschuletrier.gdw.commons.tiled.Layer;
 import de.hochschuletrier.gdw.commons.tiled.LayerObject;
 import de.hochschuletrier.gdw.commons.tiled.TileInfo;
 import de.hochschuletrier.gdw.commons.tiled.TileSet;
 import de.hochschuletrier.gdw.commons.tiled.TiledMap;
+import de.hochschuletrier.gdw.commons.tiled.tmx.TmxImage;
 import de.hochschuletrier.gdw.commons.tiled.utils.RectangleGenerator;
 import de.hochschuletrier.gdw.commons.utils.Rectangle;
 
@@ -76,6 +77,16 @@ public class MapLoader
         try
         {
             tiledMap = new TiledMap( filename );
+            // Attach textures to the tilesets
+            HashMap<TileSet, Texture> tilesetImages = new HashMap<>();
+            for (TileSet tileset : tiledMap.getTileSets()) {
+                TmxImage img = tileset.getImage();
+                String fn = CurrentResourceLocator.combinePaths(tileset.getFilename(), img.getSource());
+                tilesetImages.put(tileset, new Texture(fn));
+            }
+            for (TileSet tileset : tiledMap.getTileSets()) {
+                tileset.setAttachment(tilesetImages.get(tileset));
+            }
         }  catch (Exception ex) 
         {
             throw new IllegalArgumentException( "Map konnte nicht geladen werden: " + filename);
@@ -164,6 +175,13 @@ public class MapLoader
                     for( int y = 0; y < mapHeight; y++ )
                     {
                         TileInfo tileInfo = tiles[x][y];
+                        
+                        MapSpecialEntities.CreatorInfo info = new MapSpecialEntities.CreatorInfo( x,y,tiledMap, tileInfo ,layer );
+                        
+                        for( TileCreationListener l :tileListeners )  {
+                            l.onTileCreate(info);
+                        }
+                        
                         if ( tileInfo != null )
                         {
                             /// Name des Tiles bekommen
@@ -173,12 +191,6 @@ public class MapLoader
                             
                             float xPos = x * tileWidth;
                             float yPos = y * tileHeight;
-                            
-                            MapSpecialEntities.CreatorInfo info = new MapSpecialEntities.CreatorInfo( x,y,tiledMap, tileInfo ,layer );
-                            
-                            for( TileCreationListener l :tileListeners )  {
-                                l.onTileCreate(info);
-                            }
                             
                             Consumer<MapSpecialEntities.CreatorInfo> creator = MapSpecialEntities.specialEntities.get( objectName );
                             if ( creator != null )
