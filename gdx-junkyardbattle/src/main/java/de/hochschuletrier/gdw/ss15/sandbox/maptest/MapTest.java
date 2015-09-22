@@ -1,5 +1,12 @@
 package de.hochschuletrier.gdw.ss15.sandbox.maptest;
 
+import java.util.HashMap;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import box2dLight.RayHandler;
+
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
@@ -8,6 +15,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.cameras.orthogonal.LimitedSmoothCamera;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixBodyDef;
@@ -32,13 +40,9 @@ import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.components.animation.AnimationState;
 import de.hochschuletrier.gdw.ss15.game.components.animation.AnimatorComponent;
 import de.hochschuletrier.gdw.ss15.game.components.texture.TextureComponent;
-import de.hochschuletrier.gdw.ss15.game.systems.AnimatorSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.TextureSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.RenderSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ss15.sandbox.SandboxGame;
-import java.util.HashMap;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -74,14 +78,12 @@ public class MapTest extends SandboxGame {
     
     private AnimatorComponent animatorComponent;
     
-    private final TextureSystem textureSystem = new TextureSystem();
-    private final AnimatorSystem animatorSystem = new AnimatorSystem();
+    private final RenderSystem renderSystem = new RenderSystem(new RayHandler(physixSystem.getWorld()), 
+            camera.getOrthographicCamera());
     private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem();
     
     public MapTest() {
-       
-        engine.addSystem(textureSystem);
-        engine.addSystem(animatorSystem);
+        engine.addSystem(renderSystem);
         engine.addSystem(updatePositionSystem);
         engine.addSystem(physixSystem);
         engine.addSystem(physixDebugRenderSystem);
@@ -117,14 +119,14 @@ public class MapTest extends SandboxGame {
         textureComponent.reset();
         textureComponent.texture = assetManager.getTexture("ball");
         
-        /*
+        
         animatorComponent = engine.createComponent(AnimatorComponent.class);
         animatorComponent.animationStates.put(AnimationState.IDLE, assetManager.getAnimation("box"));
         animatorComponent.animationStates.put(AnimationState.WALK, assetManager.getAnimation("walking"));
         animatorComponent.animationStates.put(AnimationState.FIRE, assetManager.getAnimation("ball"));
         
-        player.add(animatorComponent);*/
-        player.add(textureComponent);
+        player.add(animatorComponent);
+        //player.add(textureComponent);
         player.add(positionComponent);
 
         modifyComponent.schedule(() -> {
@@ -191,32 +193,32 @@ public class MapTest extends SandboxGame {
             
             if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
                 velX -= delta * speed;
-        //        animatorComponent.currentAnimationState = AnimationState.WALK;
+                animatorComponent.currentAnimationState = AnimationState.WALK;
                 nothingPressed = false;
             }
             if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
                 velX += delta * speed;
-      //          animatorComponent.currentAnimationState = AnimationState.WALK;
+                animatorComponent.currentAnimationState = AnimationState.WALK;
                 nothingPressed = false;
             }
             if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
                 velY -= delta * speed;
-    //            animatorComponent.currentAnimationState = AnimationState.WALK;
+                animatorComponent.currentAnimationState = AnimationState.WALK;
                 nothingPressed = false;
             }
             if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
                 velY += delta * speed;
-  //              animatorComponent.currentAnimationState = AnimationState.WALK;
+                animatorComponent.currentAnimationState = AnimationState.WALK;
                 nothingPressed = false;
             }
             if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-//                animatorComponent.currentAnimationState = AnimationState.FIRE;
+                animatorComponent.currentAnimationState = AnimationState.FIRE;
                 nothingPressed = false;
             }
             
             if(nothingPressed)
             {
-//                animatorComponent.currentAnimationState = AnimationState.IDLE;
+                animatorComponent.currentAnimationState = AnimationState.IDLE;
             }
            
             playerBody.setLinearVelocity(velX, velY);

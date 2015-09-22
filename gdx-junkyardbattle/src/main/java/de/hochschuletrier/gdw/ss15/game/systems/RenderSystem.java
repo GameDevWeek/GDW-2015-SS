@@ -8,9 +8,11 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+
 import de.hochschuletrier.gdw.commons.gdx.ashley.SortedSubIteratingSystem;
 import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
+import de.hochschuletrier.gdw.ss15.game.GameConstants;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.systems.renderers.LightRenderer;
 import de.hochschuletrier.gdw.ss15.game.systems.renderers.NormalMapRenderer;
@@ -38,14 +40,16 @@ public class RenderSystem extends SortedSubIteratingSystem {
     private final LightRenderer lightRenderer;
     
     @SuppressWarnings("unchecked")
-	public RenderSystem(RayHandler rayHandler, int priority, OrthographicCamera camera) {
-        super(Family.all(PositionComponent.class).get(), renderComparator, priority);
+	public RenderSystem(RayHandler rayHandler, OrthographicCamera camera) {
+        super(Family.all(PositionComponent.class).get(), renderComparator, GameConstants.PRIORITY_RENDER_SYSTEM);
 
         this.camera = camera;
         
         lightRenderer = new LightRenderer(rayHandler);
         
         // Order of adding = order of renderer selection for the entity
+        addSubSystem(new TextureRenderer());
+        addSubSystem(new AnimatorRenderer());
         addSubSystem(new NormalMapRenderer());
         addSubSystem(lightRenderer);
     }
