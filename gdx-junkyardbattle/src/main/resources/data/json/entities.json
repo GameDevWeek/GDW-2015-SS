@@ -10,9 +10,7 @@
                 "minDelay": 100
             },
             "Animator": {
-                "animation_IDLE": "box",
-                "animation_FIRE": "ball",
-                "animation_WALK": "walking"
+                "animation_IDLE": "ball"
             },
             "PhysixBody": {
                 "type": "circle",
@@ -33,8 +31,8 @@
                 "minSpeed": 20,
                 "minDelay": 100
             },
-            "Animation": {
-                "animation": "box"
+            "Animator": {
+                "animation_IDLE": "box"
             },
             "PhysixBody": {
                 "type": "box",
@@ -95,9 +93,21 @@
     "clientOwnPlayer": {
         "meta": {},
         "components": {
-            "Position": {}
+            "Position": {},
+            "Texture":{
+                "texture": "ball",
+                "width": 60,
+                "height": 60,
+                "srcX": 0,
+                "srcY": 0,
+                "scaleX": 1,
+                "scaleY": 1,
+                "flipX": false,
+                "flipY": false
+            }
         }
     },
+
     "projectile": {
         "meta": {},
         "components": {

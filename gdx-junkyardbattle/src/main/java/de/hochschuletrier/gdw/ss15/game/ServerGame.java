@@ -37,13 +37,15 @@ public class ServerGame{
     );
     private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem(GameConstants.PRIORITY_PHYSIX + 1);
     private final NetworkServerSystem networkSystem = new NetworkServerSystem(this,GameConstants.PRIORITY_PHYSIX + 2);
-    private final LineOfSightSystem lineOfSightSystem = new LineOfSightSystem(); // hier müssen noch Team-Listen übergeben werden
+    private final LineOfSightSystem lineOfSightSystem = new LineOfSightSystem(physixSystem); // hier müssen noch Team-Listen übergeben werden
                                                                                  // (+ LineOfSightSystem-Konstruktor anpassen!)
 
     private final EntityFactoryParam factoryParam = new EntityFactoryParam();
     private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json", ServerGame.class);
 
     private Serversocket serverSocket;
+    
+    private final MapLoader mapLoader = new MapLoader(); /// @author tobidot
 
     public ServerGame(Serversocket socket)
     {
@@ -58,6 +60,10 @@ public class ServerGame{
         setupPhysixWorld();
         networkSystem.init(serverSocket);
         entityFactory.init(engine, assetManager);
+        
+        /// @author tobidot(Tobias Gepp)
+        mapLoader.run( ( String name, float x, float y ) -> { return this.createEntity(name,  x, y); }, "data/maps/demo.tmx",physixSystem );
+    
     }
 
     private void addSystems() {
