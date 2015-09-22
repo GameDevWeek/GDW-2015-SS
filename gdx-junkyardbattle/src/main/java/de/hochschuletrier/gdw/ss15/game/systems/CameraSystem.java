@@ -1,4 +1,4 @@
-package de.hochschuletrier.gdw.ss15.sandbox.camera;
+package de.hochschuletrier.gdw.ss15.game.systems;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
@@ -7,17 +7,17 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.Gdx;
 
-import de.hochschuletrier.gdw.commons.utils.Assert;
 import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
+import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
+import de.hochschuletrier.gdw.ss15.game.rendering.BoundedCamera;
 
 public class CameraSystem extends EntitySystem implements EntityListener {
 
     private BoundedCamera camera = new BoundedCamera();
     
     private Entity player;
-    // TODO: fehlenden Player handlen?
         
     public CameraSystem() {
         // Resizing Camera to match window dimensions
@@ -26,9 +26,11 @@ public class CameraSystem extends EntitySystem implements EntityListener {
         Main.getInstance().addScreenListener(camera);
         camera.updateForced();
     }
-    
-    public void bind(){
-        camera.bind();
+
+    @Override
+    public void finalize(){
+        // Deregistering camera ScreenLister
+        Main.getInstance().removeScreenListener(camera);
     }
     
     public final BoundedCamera getCamera(){
@@ -43,22 +45,22 @@ public class CameraSystem extends EntitySystem implements EntityListener {
     
     @Override
     public void update(float deltaTime) {
-        super.update(deltaTime);
-        // TODO: Update der Superklasse ohne Effekt?
-        camera.update(deltaTime);
-
+        if(player == null)
+            return;
+        
         PositionComponent posComp = ComponentMappers.position.get(player);
         if(posComp != null){
             camera.setDestination(posComp.x, posComp.y);  
-        }        
+        }                
+
+        camera.update(deltaTime);
+        camera.bind();        
     }
 
     @Override
     public void entityAdded(Entity entity) {
-        //logger.debug("Entity with PlayerComponent added to Engine!");
-        Assert.that(player == null, "Only one Entity with PlayerComponent allowed at same time!");
-        if(entity != null){
-            player = entity;    
+        if(entity.getComponent(PlayerComponent.class).isLocalPlayer){
+            player = entity;
         }
     }
 
@@ -72,9 +74,6 @@ public class CameraSystem extends EntitySystem implements EntityListener {
     @Override
     public void entityRemoved(Entity entity) {}
     
-    // TODO: Abmeldung des Listeners benötigt? Wenn ja, dann hier mit custom dispose-Methode?
-    public void dispose(){
-        Main.getInstance().removeScreenListener(camera);
-    }
+    
     
 }

@@ -1,14 +1,23 @@
-package de.hochschuletrier.gdw.ss15.sandbox.camera;
+package de.hochschuletrier.gdw.ss15.game.rendering;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Interpolation;
 
 import de.hochschuletrier.gdw.commons.gdx.cameras.orthogonal.SmoothCamera;
 
 public class BoundedCamera extends SmoothCamera {
     
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    
     float xMin, yMin, xMax, yMax;
+    float newZoom = 1.0f;
+    float curZoom = 1.0f;
+    float zoomProgress = 0.f;
     // factor < 1 slow follow || factor > 1 fast follow
-    protected float factor = 0.3f;
+    protected float followFactor = 10.f;
     boolean useBounds = false;
     
     @Override
@@ -16,15 +25,26 @@ public class BoundedCamera extends SmoothCamera {
         moveDir.set(destination).sub(position);
 
         float distance = moveDir.len();
-        if (distance < 2.f * factor) {
+        if (distance < 2.f * followFactor) {
             setCameraPosition(destination);
             position.set(destination);
         } else {
-            moveDir.scl(delta * factor * 10);
+            moveDir.scl(delta * followFactor * 10);
             position.add(moveDir);
             setCameraPosition(position);
         }
+        
+        if(zoomProgress < 1.f){
+            curZoom = Interpolation.fade.apply(curZoom, newZoom, zoomProgress);
+            zoomProgress += 0.001f;
+            setZoom(curZoom);            
+        }
+        
         camera.update(true);
+    }
+    
+    public void zoom(float newZoom){           
+        this.newZoom += newZoom;
     }
     
     @Override
@@ -65,6 +85,8 @@ public class BoundedCamera extends SmoothCamera {
 
     @Override
     protected void onViewportChanged(float width, float height) {
+        camera.viewportWidth *= curZoom;
+        camera.viewportHeight *= curZoom;
         updateForced();
     }
     
@@ -77,7 +99,7 @@ public class BoundedCamera extends SmoothCamera {
     }
     
     public void setSpringFollowFactor(float fac){
-        factor = fac;
+        followFactor = fac;
     }
      
 }

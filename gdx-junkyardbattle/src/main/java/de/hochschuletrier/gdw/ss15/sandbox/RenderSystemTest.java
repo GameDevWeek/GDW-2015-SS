@@ -35,14 +35,14 @@ import de.hochschuletrier.gdw.commons.utils.Rectangle;
 import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.game.Game;
 import de.hochschuletrier.gdw.ss15.game.GameConstants;
+import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
 import de.hochschuletrier.gdw.ss15.game.components.light.PointLightComponent;
+import de.hochschuletrier.gdw.ss15.game.systems.CameraSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.RenderSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ss15.sandbox.SandboxGame;
-import de.hochschuletrier.gdw.ss15.sandbox.camera.CameraSystem;
-import de.hochschuletrier.gdw.ss15.sandbox.camera.PlayerComponent;
 
 import java.util.HashMap;
 

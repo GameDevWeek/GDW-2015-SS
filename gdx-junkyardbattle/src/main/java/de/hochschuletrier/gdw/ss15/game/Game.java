@@ -1,5 +1,6 @@
 ﻿package de.hochschuletrier.gdw.ss15.game;
 
+import box2dLight.RayHandler;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Input;
@@ -25,7 +26,6 @@ import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixModifierCompon
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixDebugRenderSystem;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.ss15.Main;
-import de.hochschuletrier.gdw.ss15.game.components.AnimationComponent;
 import de.hochschuletrier.gdw.ss15.game.components.ImpactSoundComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.components.TriggerComponent;
@@ -34,8 +34,10 @@ import de.hochschuletrier.gdw.ss15.game.contactlisteners.ImpactSoundListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.TriggerListener;
 import de.hochschuletrier.gdw.ss15.game.systems.AnimationRenderSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.LineOfSightSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.CameraSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.TextureRenderer;
 import de.hochschuletrier.gdw.ss15.game.systems.NetworkClientSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.RenderSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ss15.game.utils.PhysixUtil;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Clientsocket;
@@ -51,17 +53,20 @@ public class Game extends InputAdapter {
 
     //private final CVarBool physixDebug = new CVarBool("physix_debug", true, 0, "Draw physix debug");
     //private final Hotkey togglePhysixDebug = new Hotkey(() -> physixDebug.toggle(false), Input.Keys.F1, HotkeyModifier.CTRL);
+    
+    private final CameraSystem cameraSystem = new CameraSystem();
 
     private final PooledEngine engine = new PooledEngine(
             GameConstants.ENTITY_POOL_INITIAL_SIZE, GameConstants.ENTITY_POOL_MAX_SIZE,
             GameConstants.COMPONENT_POOL_INITIAL_SIZE, GameConstants.COMPONENT_POOL_MAX_SIZE
     );
 
-   // private final PhysixSystem physixSystem = new PhysixSystem(GameConstants.BOX2D_SCALE,
-           // GameConstants.VELOCITY_ITERATIONS, GameConstants.POSITION_ITERATIONS, GameConstants.PRIORITY_PHYSIX
-   // );
+    private final PhysixSystem physixSystem = new PhysixSystem(GameConstants.BOX2D_SCALE,
+            GameConstants.VELOCITY_ITERATIONS, GameConstants.POSITION_ITERATIONS, GameConstants.PRIORITY_PHYSIX
+    );
    // private final PhysixDebugRenderSystem physixDebugRenderSystem = new PhysixDebugRenderSystem(GameConstants.PRIORITY_DEBUG_WORLD);
-    private final AnimationRenderSystem animationRenderSystem = new AnimationRenderSystem(GameConstants.PRIORITY_ANIMATIONS);
+    private final RenderSystem renderSystem = new RenderSystem(new RayHandler(physixSystem.getWorld()),
+            cameraSystem.getCamera().getOrthographicCamera());
     private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem(GameConstants.PRIORITY_PHYSIX + 1);
     private final NetworkClientSystem networksystem = new NetworkClientSystem(GameConstants.PRIORITY_PHYSIX+2);
     
@@ -98,7 +103,8 @@ public class Game extends InputAdapter {
     private void addSystems() {
         //engine.addSystem(physixSystem);
         //engine.addSystem(physixDebugRenderSystem);
-        engine.addSystem(animationRenderSystem);
+        engine.addSystem(cameraSystem);
+        engine.addSystem(renderSystem);
         engine.addSystem(updatePositionSystem);
         engine.addSystem(networksystem);
     }
@@ -123,7 +129,7 @@ public class Game extends InputAdapter {
     }
 
     public void update(float delta) {
-        Main.getInstance().screenCamera.bind();
+        //Main.getInstance().screenCamera.bind();
         engine.update(delta);
     }
 
