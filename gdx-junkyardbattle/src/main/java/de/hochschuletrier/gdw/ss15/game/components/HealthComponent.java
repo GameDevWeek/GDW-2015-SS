@@ -2,12 +2,16 @@ package de.hochschuletrier.gdw.ss15.game.components;
 
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.utils.Pool.Poolable;
+import de.hochschuletrier.gdw.ss15.game.GameConstants;
 
 public class HealthComponent extends Component implements Poolable
 {
+    public static int startHealth;
 	public int health;
     public int decrementByValueNextFrame = 0;
     public float spawningDuration;
+    public float dyingTimer;
+    public float deathTimer;
     public enum HealthState
     {
         DEAD, DYING, ALIVE;
@@ -21,6 +25,8 @@ public class HealthComponent extends Component implements Poolable
         healthState = HealthState.DEAD;
         decrementByValueNextFrame = 0;
         spawningDuration = 0;
+        dyingTimer = GameConstants.DYING_TIMER;
+        deathTimer = GameConstants.DEATH_TIMER;
     }
 
 }

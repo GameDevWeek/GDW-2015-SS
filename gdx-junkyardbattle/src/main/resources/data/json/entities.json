@@ -49,22 +49,22 @@
         "meta": {},
         "components": {
             "Position": {},
-			"PointLight": {
-				"color": "0, 1, 0",
-				"distance": 10
-			}
+            "PointLight": {
+                "color": "0, 1, 0",
+                "distance": 10
+            }
         }
     },
     "blueConeLight": {
         "meta": {},
         "components": {
             "Position": {},
-			"ConeLight": {
-				"color": "0, 0, 1",
-				"distance": 10,
-				"coneDegree": 45,
-				"degree": 45
-			}
+            "ConeLight": {
+                "color": "0, 0, 1",
+                "distance": 10,
+                "coneDegree": 45,
+                "degree": 45
+            }
         }
     },
     "player": {
@@ -85,45 +85,43 @@
                 "health": 100,
                 "spawningDuration" : 4000
             },
-            "Move": {}
-             },
+            "Move": {},
             "Client":{},
-                "PositionSynch":{}
-    },
+            "PositionSynch":{},
+            "InventoryComponent": 100
+        },
 
-    "clientPlayer": {
-        "meta": {},
-        "components": {
-            "Position": {}
+        "clientPlayer": {
+            "meta": {},
+            "components": {
+                "Position": {}
+            }
+        },
+
+        "clientOwnPlayer": {
+            "meta": {},
+            "components": {
+                "Position": {},
+                "Input": {}
+            }
+        },
+        "projectile": {
+            "meta": {},
+            "components": {
+                "Position": {},
+                "PhysixBody": {
+                    "type": "circle",
+                    "size": 5,
+                    "density": 10,
+                    "friction": 0.5,
+                    "restitution": 0.1
+                },
+                "Damage": {
+                    "damageValue": 10,
+                    "damageToPlayer": true,
+                    "damageToTile": true
+                }
+            }
         }
-    },
-
-    "clientOwnPlayer": {
-        "meta": {},
-        "components": {
-            "Position": {},
-            "Input": {}
-        }
-    },
-    "projectile": {
-        "meta": {},
-        "components": {
-            "Position": {},
-            "PhysixBody": {
-                "type": "circle",
-                "size": 5,
-                "density": 10,
-                "friction": 0.5,
-                "restitution": 0.1
-            },
-            "Damage": {
-            	"damageValue": 10,
-            	"damageToPlayer": true,
-            	"damageToTile": true
-        }
-    },
-
-    "metal": {
-
     }
 }

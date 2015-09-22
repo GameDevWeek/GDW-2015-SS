@@ -47,5 +47,6 @@ public class ComponentMappers {
     public static final ComponentMapper<PositionSynchComponent> positionSynch = ComponentMapper.getFor(PositionSynchComponent.class);
     //public static final ComponentMapper<PositionSynchComponent> positionSynch = ComponentMapper.getFor(PositionSynchComponent.class);
     public static final ComponentMapper<SoundEmitterComponent> soundEmitter = ComponentMapper.getFor(SoundEmitterComponent.class);
+    public static final ComponentMapper<InventoryComponent> inventory = ComponentMapper.getFor(InventoryComponent.class);
     public static final ComponentMapper<LineOfSightComponent> lineOfSight = ComponentMapper.getFor(LineOfSightComponent.class);
 }
