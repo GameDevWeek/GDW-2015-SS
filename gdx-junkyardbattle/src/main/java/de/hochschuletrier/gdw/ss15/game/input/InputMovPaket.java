@@ -11,6 +11,9 @@ public class InputMovPaket {
     public boolean left;
     public boolean right;
 
+    public int posX;
+    public int posY;
+
     public InputMovPaket() {
         this.up = this.down = this.left = this.right = false;
     }
