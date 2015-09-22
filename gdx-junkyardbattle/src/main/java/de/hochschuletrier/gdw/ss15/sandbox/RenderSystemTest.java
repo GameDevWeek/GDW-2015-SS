@@ -78,7 +78,7 @@ public class RenderSystemTest extends SandboxGame {
     private final HashMap<TileSet, Texture> tilesetImages = new HashMap();
 
     private final EntityFactoryParam factoryParam = new EntityFactoryParam();
-    private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json.old", Game.class);
+    private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json", Game.class);
 
     public RenderSystemTest() {
         engine.addSystem(physixSystem);

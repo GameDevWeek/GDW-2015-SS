@@ -84,7 +84,7 @@ public class MapTest extends SandboxGame {
     private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem();
     
     private final EntityFactoryParam factoryParam = new EntityFactoryParam();
-    private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json.old", Game.class);
+    private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json", Game.class);
     
     private Entity player;
     public MapTest() {
