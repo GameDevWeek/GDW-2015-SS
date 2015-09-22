@@ -17,18 +17,20 @@ import java.util.HashMap;
 public class AnimatorComponent extends Component implements Pool.Poolable
 {
     public HashMap<AnimationState, AnimationExtended> animationStates = new HashMap<>();
-    public AnimationState currentAnimationState = AnimationState.IDLE;
-    public AnimationState previousAnimationState = AnimationState.IDLE;
+    public AnimationState animationState = AnimationState.IDLE;
     public float stateTime;
-    public int layer;
-
+    
+    public void changeAnimationState(AnimationState state)
+    {
+        animationState = state;
+        stateTime = 0;
+    }
+    
     @Override
     public void reset() 
     {
         animationStates.clear();
-        currentAnimationState = AnimationState.IDLE;
-        previousAnimationState = AnimationState.IDLE;
+        animationState = AnimationState.IDLE;
         stateTime = 0;
-        layer = 0;
     }
 }
