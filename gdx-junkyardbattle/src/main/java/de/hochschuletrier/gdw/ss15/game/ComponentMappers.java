@@ -15,4 +15,5 @@ public class ComponentMappers {
     public static final ComponentMapper<PositionSynchComponent> positionSynch = ComponentMapper.getFor(PositionSynchComponent.class);
     //public static final ComponentMapper<PositionSynchComponent> positionSynch = ComponentMapper.getFor(PositionSynchComponent.class);
     public static final ComponentMapper<SoundEmitterComponent> soundEmitter = ComponentMapper.getFor(SoundEmitterComponent.class);
+    public static final ComponentMapper<NetworkIDComponent> networkID = ComponentMapper.getFor(NetworkIDComponent.class);
 }
