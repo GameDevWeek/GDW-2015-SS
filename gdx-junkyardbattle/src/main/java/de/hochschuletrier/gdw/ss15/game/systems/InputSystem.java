@@ -6,7 +6,7 @@ import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import de.hochschuletrier.gdw.ss15.game.components.InputComponent;
-import de.hochschuletrier.gdw.ss15.events.InputEvent;
+import de.hochschuletrier.gdw.ss15.events.ShootDownEvent;
 
 import java.util.LinkedList;
 
@@ -16,7 +16,7 @@ import java.util.LinkedList;
  */
 public class InputSystem extends IteratingSystem implements InputProcessor {
 
-    private LinkedList<InputEvent> actions;
+    private LinkedList<ShootDownEvent> actions;
 
     public InputSystem(){
         this(0);

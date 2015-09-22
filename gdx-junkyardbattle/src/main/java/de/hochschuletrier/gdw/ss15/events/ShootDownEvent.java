@@ -6,40 +6,11 @@ import com.badlogic.gdx.utils.SnapshotArray;
 /**
  * Created by Martin on 21.09.2015.
  */
-public class InputEvent {
+public class ShootDownEvent {
 
     public static interface Listener{
         void onInputEvent(String action, Entity entity, int xPos, int yPos, int timestamp);
     }
-
-    /*
-
-    public String actionName;
-    public int timeStamp;
-    public int xPos;
-    public int yPos;
-
-
-    public InputEvent(String actionName, int timeStamp, int xPos, int yPos) {
-        this.actionName = actionName;
-        this.timeStamp = timeStamp;
-        this.xPos = xPos;
-        this.yPos = yPos;
-    }
-    public InputEvent() {
-        this.actionName = null;
-        this.timeStamp = 0;
-        this.xPos = 0;
-        this.yPos = 0;
-    }
-
-    public InputEvent(String actionName, int timeStamp) {
-        this.actionName = actionName;
-        this.timeStamp = timeStamp;
-        this.xPos = 0;
-        this.yPos = 0;
-    }
-    */
 
     private static final SnapshotArray<Listener> listeners = new SnapshotArray();
 
