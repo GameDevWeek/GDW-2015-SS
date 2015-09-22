@@ -1,4 +1,4 @@
-﻿package de.hochschuletrier.gdw.ss15.game.systems;
+package de.hochschuletrier.gdw.ss15.game.systems;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
@@ -21,9 +21,8 @@ public class WeaponSystem extends IteratingSystem {
 	
 	private EntityFactory factory;
 
-    public WeaponSystem(Family family, EntityFactory factory) {
+    public WeaponSystem() {
         super(Family.all(WeaponComponent.class).get());
-        this.factory = factory;
     }
 
     @Override

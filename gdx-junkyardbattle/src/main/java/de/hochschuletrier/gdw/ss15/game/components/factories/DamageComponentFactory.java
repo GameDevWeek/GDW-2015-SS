@@ -1,4 +1,4 @@
-﻿package de.hochschuletrier.gdw.ss15.game.components.factories;
+package de.hochschuletrier.gdw.ss15.game.components.factories;
 
 import com.badlogic.ashley.core.Entity;
 

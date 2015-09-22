@@ -14,6 +14,7 @@ import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.GameConstants;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
+import de.hochschuletrier.gdw.ss15.game.network.TextureRenderer;
 import de.hochschuletrier.gdw.ss15.game.systems.renderers.LightRenderer;
 import de.hochschuletrier.gdw.ss15.game.systems.renderers.NormalMapRenderer;
 
