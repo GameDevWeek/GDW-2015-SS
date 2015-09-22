@@ -48,8 +48,9 @@ public class TextureRenderer extends SortedSubIteratingSystem.SubSystem {
                 texture.srcY,
                 texture.width,
                 texture.height,
-                false,
-                false
+                texture.flipX,
+                texture.flipY
+                
         );
     }
 }
