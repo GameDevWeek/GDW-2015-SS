@@ -55,5 +55,22 @@
                 "restitution": 0.1
             }
         }
+    },
+
+    "clientPlayer": {
+        "meta": {},
+        "components": {
+            "Position": {}
+        }
+    },
+
+    "clientOwnPlayer": {
+        "meta": {},
+        "components": {
+            "Position": {},
+            "InputComponent": {}
+        }
     }
+
+
 }

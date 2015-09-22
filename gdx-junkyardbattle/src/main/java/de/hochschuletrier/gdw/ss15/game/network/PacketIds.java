@@ -11,7 +11,8 @@ import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
 public enum PacketIds
 {
     Position((short)0),
-    Simple((short)1);
+    Simple((short)1),
+    Input((short)2);
 
     private final short m_Value;
     private PacketIds(short value)

@@ -6,6 +6,7 @@ import com.badlogic.ashley.core.Family;
 import de.hochschuletrier.gdw.commons.devcon.ConsoleCmd;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.ss15.Main;
+import de.hochschuletrier.gdw.ss15.game.Game;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.network.ClientConnection;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Clientsocket;
@@ -25,6 +26,7 @@ import java.util.List;
 public class NetworkClientSystem extends EntitySystem implements SocketDisconnectListener {
 
 
+    Game game = null;
     ClientConnection connection = Main.getInstance().getClientConnection();
 
     public void socketDisconnected()
@@ -34,8 +36,10 @@ public class NetworkClientSystem extends EntitySystem implements SocketDisconnec
 
 
 
-    public NetworkClientSystem(int priority) {
+    public NetworkClientSystem(Game game,int priority) {
+
         super(priority);
+        this.game=game;
     }
 
 
@@ -58,6 +62,13 @@ public class NetworkClientSystem extends EntitySystem implements SocketDisconnec
     private void ReceivedPacket(Packet pack)
     {
         System.out.println("received packet");
+        /*if(pacet.getPacketId()==PacketIds.EntityInitPacket.getValue()
+        {
+            EntityInitPacket iPacket = (EntityInitPacket) pack;
+            game.createEntity(iPacket.name,0,0);
+        }
+
+        */
     }
 
 
