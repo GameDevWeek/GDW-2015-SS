@@ -9,7 +9,7 @@ public class HealthComponent extends Component implements Poolable
     public static int startHealth;
 	public int health;
     public int decrementByValueNextFrame = 0;
-    public float spawningDuration;
+    public float spawningTimer;
     public float dyingTimer;
     public float deathTimer;
     public enum HealthState
@@ -24,9 +24,9 @@ public class HealthComponent extends Component implements Poolable
         health = 0;
         healthState = HealthState.DEAD;
         decrementByValueNextFrame = 0;
-        spawningDuration = 0;
         dyingTimer = GameConstants.DYING_TIMER;
         deathTimer = GameConstants.DEATH_TIMER;
+        spawningTimer = GameConstants.SPAWNING_DURATION;
     }
 
 }

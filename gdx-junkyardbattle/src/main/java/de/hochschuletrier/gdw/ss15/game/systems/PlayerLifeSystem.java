@@ -27,6 +27,10 @@ public class PlayerLifeSystem extends IteratingSystem {
                 hCom.healthState = HealthComponent.HealthState.DYING;
                 hCom.dyingTimer -= deltaTime;
             }
+            if (hCom.spawningTimer > 0)
+            {
+                hCom.spawningTimer -= deltaTime;
+            }
         }
         if (hCom.healthState == HealthComponent.HealthState.DYING)
         {
@@ -47,6 +51,7 @@ public class PlayerLifeSystem extends IteratingSystem {
                 hCom.health = GameConstants.START_HEALTH;
                 hCom.deathTimer = GameConstants.DEATH_TIMER;
                 hCom.healthState = HealthComponent.HealthState.ALIVE;
+                hCom.spawningTimer = GameConstants.SPAWNING_DURATION;
                 position.x = GameConstants.START_X_POSITION;
                 position.y = GameConstants.START_Y_POSITION;
             }
