@@ -18,6 +18,8 @@ public class MenuPageOptions extends MenuPage {
 		//Skin für die Optionsseite wird übergeben
 		super(skin, "menu_bg");
 		
+		
+		
 	}
 
 
