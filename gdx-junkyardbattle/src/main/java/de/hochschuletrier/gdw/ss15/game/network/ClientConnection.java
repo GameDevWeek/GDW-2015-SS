@@ -50,8 +50,9 @@ public class ClientConnection implements SocketConnectListener {
     {
         if(clientSocket!=null) {
             clientSocket.justCallDisconnectHandler();
-            if(clientSocket.isConnected())
+            if(!clientSocket.isConnected() && !clientSocket.isByConnect())
             {
+                logger.warn("Lost connection to server");
                 clientSocket.close();
                 clientSocket=null;
             }
@@ -68,10 +69,12 @@ public class ClientConnection implements SocketConnectListener {
         if(clientSocket!=null && clientSocket.isConnected())
         {
             logger.warn("Client bereits verbunden");
+            return;
         }
         if(clientSocket!=null)
         {
             clientSocket.close();
+            clientSocket=null;
         }
         clientSocket = new Clientsocket(ip,port,true);
         clientSocket.registerConnectListner(this);

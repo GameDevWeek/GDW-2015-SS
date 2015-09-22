@@ -367,7 +367,7 @@ public class Clientsocket extends BaseClient implements Closeable
 						m_ByDisconned.set(true);
 						m_Connected.set(false);
 						m_DisconnectHandler = new DisconnectHandler(m_Sockets[Sockettypes.UnsaveSocket.getValue()],true);
-						m_ThreadPool.execute(()->RunReceiveDisconnect());
+						m_ThreadPool.execute(() -> RunReceiveDisconnect());
 					}
 				}
 				
@@ -386,7 +386,12 @@ public class Clientsocket extends BaseClient implements Closeable
 			m_ThreadPool.execute(()->RunReceiveUnsave());
 		}
 	}
-	
+
+	public boolean isByConnect()
+	{
+		return m_Connectstatus == ConnectStatus.ByConnect;
+	}
+
 	private boolean ClearSocketsAndThreads()
 	{
 		try
