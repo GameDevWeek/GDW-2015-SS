@@ -53,7 +53,9 @@ public class NetworkServerSystem extends EntitySystem implements EntityListener 
 
     private void sendPacketToAll(){
         for(Entity entity : clients){
-            
+            /**
+             *
+             */
         }
     }
 
