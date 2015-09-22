@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Interpolation;
+import com.jcraft.jorbis.DspState;
 
 import de.hochschuletrier.gdw.commons.gdx.cameras.orthogonal.SmoothCamera;
 
@@ -13,8 +14,11 @@ public class BoundedCamera extends SmoothCamera {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     
     float xMin, yMin, xMax, yMax;
-    float newZoom = 1.0f;
-    float curZoom = 1.0f;
+    private boolean resetZoom = true;
+    private float curDelta = 0.f;
+    private final float zoomSpeed = 1.f;
+    private final float maxZoomOut = 2.f, maxZoomIn = 1.f;
+    private float srcZoom = 1.f, dstZoom = 2.f, curZoom = 1.f;
     float zoomProgress = 0.f;
     // factor < 1 slow follow || factor > 1 fast follow
     protected float followFactor = 10.f;
@@ -22,6 +26,7 @@ public class BoundedCamera extends SmoothCamera {
     
     @Override
     public void update(float delta) {
+        curDelta = delta;
         moveDir.set(destination).sub(position);
 
         float distance = moveDir.len();
@@ -34,17 +39,34 @@ public class BoundedCamera extends SmoothCamera {
             setCameraPosition(position);
         }
         
-        if(zoomProgress < 1.f){
-            curZoom = Interpolation.fade.apply(curZoom, newZoom, zoomProgress);
-            zoomProgress += 0.001f;
-            setZoom(curZoom);            
+        setZoom(Interpolation.fade.apply(srcZoom, dstZoom, zoomProgress));
+        
+        if(resetZoom){
+            zoomProgress -= zoomSpeed * curDelta;
         }
         
         camera.update(true);
     }
     
-    public void zoom(float newZoom){           
-        this.newZoom += newZoom;
+    public void zoomOut(boolean out){
+        if(out){
+            resetZoom = false;
+            if(zoomProgress < 1.f){
+                zoomProgress += zoomSpeed * curDelta;
+            }
+        } else {
+            resetZoom = true;
+            if(zoomProgress > 0.f){
+                zoomProgress -= zoomSpeed * curDelta;
+            }
+        }
+        if(zoomProgress > 1.f){
+            zoomProgress = 1.f;
+        } else if (zoomProgress < 0.f){
+            zoomProgress = 0.f;
+        }
+        logger.info("progress: {}", zoomProgress);
+        
     }
     
     @Override
