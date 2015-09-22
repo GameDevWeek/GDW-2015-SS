@@ -37,7 +37,7 @@ import de.hochschuletrier.gdw.ss15.game.systems.LineOfSightSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.CameraSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.TextureRenderer;
 import de.hochschuletrier.gdw.ss15.game.systems.NetworkClientSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.RenderSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.InputSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ss15.game.utils.PhysixUtil;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Clientsocket;
@@ -68,13 +68,15 @@ public class Game extends InputAdapter {
     private final RenderSystem renderSystem = new RenderSystem(new RayHandler(physixSystem.getWorld()),
             cameraSystem.getCamera().getOrthographicCamera());
     private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem(GameConstants.PRIORITY_PHYSIX + 1);
-    private final NetworkClientSystem networksystem = new NetworkClientSystem(GameConstants.PRIORITY_PHYSIX+2);
-    
+    private final NetworkClientSystem networksystem = new NetworkClientSystem(this,GameConstants.PRIORITY_PHYSIX+2);
+
     private final EntityFactoryParam factoryParam = new EntityFactoryParam();
     private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json", Game.class);
 
     private final MapLoader mapLoader = new MapLoader(); /// @author tobidot
     
+    private final InputSystem inputSystem = new InputSystem();
+
     public Game() {
         // If this is a build jar file, disable hotkeys
         if (!Main.IS_RELEASE) {
@@ -107,6 +109,7 @@ public class Game extends InputAdapter {
         engine.addSystem(renderSystem);
         engine.addSystem(updatePositionSystem);
         engine.addSystem(networksystem);
+        engine.addSystem(inputSystem);
     }
 
     private void addContactListeners() {
