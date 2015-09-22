@@ -13,6 +13,9 @@ public class InputComponent extends Component implements Pool.Poolable {
     public boolean left;
     public boolean right;
 
+    public int posX;
+    public int posY;
+
     @Override
     public void reset()
     {
