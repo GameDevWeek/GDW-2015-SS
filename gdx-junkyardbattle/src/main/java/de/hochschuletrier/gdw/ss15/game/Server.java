@@ -79,4 +79,8 @@ public class Server implements Runnable
             //engine.update();
         }
     }
+
+    public Serversocket getServersocket(){
+        return serversocket;
+    }
 }

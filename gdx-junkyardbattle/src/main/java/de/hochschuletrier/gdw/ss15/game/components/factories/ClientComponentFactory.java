@@ -20,6 +20,6 @@ public class ClientComponentFactory extends ComponentFactory<EntityFactoryParam>
     public void run(Entity entity, SafeProperties safeProperties, SafeProperties safeProperties1, EntityFactoryParam entityFactoryParam) {
         ClientComponent component = engine.createComponent(ClientComponent.class);
         component.reset();
-        //component.client = Main.getInstance()
+        component.client = Main.getInstance().getServer().getServersocket().getNewClient();
     }
 }
