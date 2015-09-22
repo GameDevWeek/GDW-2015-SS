@@ -90,10 +90,10 @@ public class InputSystem extends IteratingSystem implements InputProcessor {
         // touchDown = mouseClick
         switch (button) {
             case Input.Buttons.LEFT:
-                new ShootDownEvent(screenX, screenY, 99);
+                GatherUpEvent.emit(screenX,screenY);
                 break;
             case Input.Buttons.RIGHT:
-                new GatherDownEvent(screenX, screenY, 99);
+                GatherUpEvent.emit(screenX,screenY);
                 break;
         }
         return true;
@@ -104,10 +104,10 @@ public class InputSystem extends IteratingSystem implements InputProcessor {
         // touchUp = mouseClick
         switch (button) {
             case Input.Buttons.LEFT:
-                new ShootUpEvent(screenX, screenY, 99);
+                GatherUpEvent.emit(screenX,screenY);
                 break;
             case Input.Buttons.RIGHT:
-                new GatherUpEvent(screenX, screenY, 99);
+                GatherUpEvent.emit(screenX,screenY);
                 break;
         }
         return true;
