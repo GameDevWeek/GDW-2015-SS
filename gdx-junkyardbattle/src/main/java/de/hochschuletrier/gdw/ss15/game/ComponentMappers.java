@@ -10,7 +10,6 @@ import de.hochschuletrier.gdw.ss15.game.components.texture.TextureComponent;
 
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixModifierComponent;
-import de.hochschuletrier.gdw.ss15.game.components.AnimationComponent;
 import de.hochschuletrier.gdw.ss15.game.components.ImpactSoundComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.components.TriggerComponent;
@@ -40,7 +39,6 @@ public class ComponentMappers {
     public static final ComponentMapper<PickableComponent> pickable = ComponentMapper.getFor(PickableComponent.class);
     public static final ComponentMapper<MoveComponent> move = ComponentMapper.getFor(MoveComponent.class);
     public static final ComponentMapper<PlayerComponent> player = ComponentMapper.getFor(PlayerComponent.class);
-    public static final ComponentMapper<TimerComponent> timer = ComponentMapper.getFor(TimerComponent.class);
     public static final ComponentMapper<WeaponComponent> weapon = ComponentMapper.getFor(WeaponComponent.class);
     public static final ComponentMapper<ClientComponent> client = ComponentMapper.getFor(ClientComponent.class);
     public static final ComponentMapper<PositionSynchComponent> positionSynch = ComponentMapper.getFor(PositionSynchComponent.class);
