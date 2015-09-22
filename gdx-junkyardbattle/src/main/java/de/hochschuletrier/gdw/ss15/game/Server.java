@@ -2,10 +2,14 @@ package de.hochschuletrier.gdw.ss15.game;
 
 import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serversocket;
+import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.MyTimer;
+
+import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.Tools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.concurrent.atomic.AtomicBoolean;
+
 
 /**
  * Created by lukas on 21.09.15.
@@ -20,13 +24,12 @@ public class Server implements Runnable
     private static final Logger logger = LoggerFactory.getLogger(Server.class);
 
     ServerGame runningGame = new ServerGame();
+    MyTimer timer = new MyTimer();
 
     public Server()
     {
-
+        timer.Update();
     }
-
-
 
     public boolean start()
     {
@@ -69,7 +72,9 @@ public class Server implements Runnable
         runningGame.createEntity("player", 10, 10);
         while(isRunning.get())
         {
-            runningGame.update(0);
+            Tools.Sleep(10);
+            timer.Update();
+            runningGame.update((float)timer.get_FrameSeconds());
             //System.out.println("runn");
             //engine.update();
         }
