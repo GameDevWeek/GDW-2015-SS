@@ -31,8 +31,8 @@ public class MoveSystem extends EntitySystem {
     {
         for (Entity e : moveEntities)
         {
-            pos.get(e).x += move.get(e).velocityX * deltaTime;
-            pos.get(e).y += move.get(e).velocityY * deltaTime;
+            pos.get(e).x += move.get(e).velocity.x * deltaTime;
+            pos.get(e).y += move.get(e).velocity.y * deltaTime;
         }
     }
 }
