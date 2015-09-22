@@ -7,12 +7,11 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.Gdx;
 
-import de.hochschuletrier.gdw.commons.utils.Assert;
 import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
+import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.rendering.BoundedCamera;
-import de.hochschuletrier.gdw.ss15.sandbox.camera.PlayerComponent;
 
 public class CameraSystem extends EntitySystem implements EntityListener {
 

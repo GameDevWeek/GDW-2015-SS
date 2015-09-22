@@ -37,6 +37,7 @@ import de.hochschuletrier.gdw.commons.tiled.utils.RectangleGenerator;
 import de.hochschuletrier.gdw.commons.utils.Rectangle;
 import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.game.GameConstants;
+import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.systems.CameraSystem;
 import de.hochschuletrier.gdw.ss15.sandbox.SandboxGame;
@@ -175,7 +176,6 @@ public class CameraTest extends SandboxGame {
         hkey.unregister();
         camOut.unregister();
         camIn.unregister();
-        cameraSystem.dispose();
         tilesetImages.values().forEach(Texture::dispose);
     }
 
