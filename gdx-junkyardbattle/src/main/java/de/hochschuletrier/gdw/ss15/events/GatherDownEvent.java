@@ -6,20 +6,20 @@ import com.badlogic.gdx.utils.SnapshotArray;
 /**
  * Created by Martin on 21.09.2015.
  */
-public class ShootDownEvent {
+public class GatherDownEvent {
 
     int xPos;
     int yPos;
     int timeStamp;
 
-    public ShootDownEvent(int xPos, int yPos, int timeStamp) {
+    public GatherDownEvent(int xPos, int yPos, int timeStamp) {
         this.xPos = xPos;
         this.yPos = yPos;
         this.timeStamp = timeStamp;
     }
 
     public static interface Listener{
-        void onShootDownEvent(Entity entity);
+        void onGatherDownEvent(Entity entity);
     }
 
     private static final SnapshotArray<Listener> listeners = new SnapshotArray();
@@ -28,7 +28,7 @@ public class ShootDownEvent {
     public static void emit(int xPos, int yPos, int timeStamp) {
         Object[] items = listeners.begin();
         for (int i = 0, n = listeners.size; i < n; i++) {
-            ((Listener)items[i]).onShootDownEvent(null);
+            ((Listener)items[i]).onGatherDownEvent(null);
         }
         listeners.end();
     }
