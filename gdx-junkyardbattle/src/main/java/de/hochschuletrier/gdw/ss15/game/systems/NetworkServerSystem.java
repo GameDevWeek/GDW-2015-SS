@@ -49,16 +49,17 @@ public class NetworkServerSystem extends EntitySystem implements EntityListener 
     public void update(float deltaTime) {
         //System.out.println("jfsdklfjsdaöklfjsdöklf rennt");
         while (m_Serversocket.isNewClientAvaliable()) {
-            sendClient();
+            addClient();
         }
     }
 
-    public void sendClient(){
+    public void addClient(){
         Entity entity = createClient();
+
+        clients.add(entity);
+
         InitEntityPacket packet = new InitEntityPacket(ComponentMappers.positionSynch.get(entity).networkID,
-                "clientPlayer", 0, 0, 0);
-        sendPacketToAllSave(packet, ComponentMappers.positionSynch.get(entity).networkID);
-        packet.name = "clientOwnPlayer";
+                "clientOwnPlayer", 0, 0, 0);
         ComponentMappers.client.get(entity).client.sendPacketSave(packet);
     }
 
@@ -89,7 +90,7 @@ public class NetworkServerSystem extends EntitySystem implements EntityListener 
 
     @Override
     public void addedToEngine(Engine engine) {
-        Family family = Family.all(ClientComponent.class, PositionSynchComponent.class).get();
+        Family family = Family.all(PositionSynchComponent.class).get();
         engine.addEntityListener(family, this);
     }
 
@@ -100,8 +101,9 @@ public class NetworkServerSystem extends EntitySystem implements EntityListener 
 
     @Override
     public void entityAdded(Entity entity) {
-        //ComponentMappers.client.get(entity).client = m_Serversocket.getNewClient();
-        clients.add(entity);
+        InitEntityPacket packet = new InitEntityPacket(ComponentMappers.positionSynch.get(entity).networkID,
+                ComponentMappers.positionSynch.get(entity).clientName, 100, 100, 0);
+        sendPacketToAllSave(packet);
     }
 
     @Override
