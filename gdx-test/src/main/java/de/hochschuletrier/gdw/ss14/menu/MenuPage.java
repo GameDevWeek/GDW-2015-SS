@@ -1,5 +1,4 @@
-package de.hochschuletrier.gdw.ss14.menu;
-
+﻿package de.hochschuletrier.gdw.ss14.menu;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Group;
