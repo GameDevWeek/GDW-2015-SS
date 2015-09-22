@@ -2,6 +2,7 @@ package de.hochschuletrier.gdw.ss15.game;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
+
 import de.hochschuletrier.gdw.commons.gdx.ashley.EntityFactory;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixComponentAwareContactListener;
@@ -11,6 +12,7 @@ import de.hochschuletrier.gdw.ss15.game.components.TriggerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.ImpactSoundListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.TriggerListener;
+import de.hochschuletrier.gdw.ss15.game.systems.LineOfSightSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.NetworkServerSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serversocket;
@@ -32,11 +34,15 @@ public class ServerGame{
     );
     private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem(GameConstants.PRIORITY_PHYSIX + 1);
     private final NetworkServerSystem networkSystem = new NetworkServerSystem(this,GameConstants.PRIORITY_PHYSIX + 2);
-
+    private final LineOfSightSystem lineOfSightSystem = new LineOfSightSystem(); // hier müssen noch Team-Listen übergeben werden
+                                                                                 // (+ LineOfSightSystem-Konstruktor anpassen!)
+    
     private final EntityFactoryParam factoryParam = new EntityFactoryParam();
     private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json", ServerGame.class);
 
     private Serversocket serverSocket;
+    
+    private final MapLoader mapLoader = new MapLoader(); /// @author tobidot
 
     public ServerGame(Serversocket socket)
     {
@@ -51,12 +57,17 @@ public class ServerGame{
         setupPhysixWorld();
         networkSystem.init(serverSocket);
         entityFactory.init(engine, assetManager);
+        
+        /// @author tobidot(Tobias Gepp)
+        mapLoader.run( ( String name, float x, float y ) -> { return this.createEntity(name,  x, y); }, "data/maps/demo.tmx",physixSystem );
+    
     }
 
     private void addSystems() {
         engine.addSystem(physixSystem);
         engine.addSystem(updatePositionSystem);
         engine.addSystem(networkSystem);
+        engine.addSystem(lineOfSightSystem);
     }
 
     private void addContactListeners() {

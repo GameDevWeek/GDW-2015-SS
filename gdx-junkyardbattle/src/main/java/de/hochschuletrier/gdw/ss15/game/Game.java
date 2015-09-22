@@ -1,4 +1,4 @@
-package de.hochschuletrier.gdw.ss15.game;
+﻿package de.hochschuletrier.gdw.ss15.game;
 
 import box2dLight.RayHandler;
 import com.badlogic.ashley.core.Entity;
@@ -10,6 +10,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+
 import de.hochschuletrier.gdw.commons.devcon.ConsoleCmd;
 import de.hochschuletrier.gdw.commons.devcon.cvar.CVarBool;
 import de.hochschuletrier.gdw.commons.gdx.ashley.EntityFactory;
@@ -31,10 +32,13 @@ import de.hochschuletrier.gdw.ss15.game.components.TriggerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.ImpactSoundListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.TriggerListener;
+import de.hochschuletrier.gdw.ss15.game.systems.AnimationRenderSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.LineOfSightSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.CameraSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.renderers.TextureRenderer;
 import de.hochschuletrier.gdw.ss15.game.systems.NetworkClientSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.renderers.RenderSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.InputSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ss15.game.utils.PhysixUtil;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Clientsocket;
@@ -65,10 +69,14 @@ public class Game extends InputAdapter {
     private final RenderSystem renderSystem = new RenderSystem(new RayHandler(physixSystem.getWorld()),
             cameraSystem.getCamera().getOrthographicCamera());
     private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem(GameConstants.PRIORITY_PHYSIX + 1);
-    private final NetworkClientSystem networksystem = new NetworkClientSystem(GameConstants.PRIORITY_PHYSIX+2);
+    private final NetworkClientSystem networksystem = new NetworkClientSystem(this,GameConstants.PRIORITY_PHYSIX+2);
 
     private final EntityFactoryParam factoryParam = new EntityFactoryParam();
     private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json", Game.class);
+
+    private final MapLoader mapLoader = new MapLoader(); /// @author tobidot
+    
+    private final InputSystem inputSystem = new InputSystem();
 
     public Game() {
         // If this is a build jar file, disable hotkeys
@@ -89,6 +97,10 @@ public class Game extends InputAdapter {
         addContactListeners();
         setupPhysixWorld();
         entityFactory.init(engine, assetManager);
+        
+        /// @author tobidot(Tobias Gepp)
+        mapLoader.run( ( String name, float x, float y ) -> { return this.createEntity(name,  x, y); }, "data/maps/demo.tmx",null );
+    
     }
 
     private void addSystems() {
@@ -98,6 +110,7 @@ public class Game extends InputAdapter {
         engine.addSystem(renderSystem);
         engine.addSystem(updatePositionSystem);
         engine.addSystem(networksystem);
+        engine.addSystem(inputSystem);
     }
 
     private void addContactListeners() {
