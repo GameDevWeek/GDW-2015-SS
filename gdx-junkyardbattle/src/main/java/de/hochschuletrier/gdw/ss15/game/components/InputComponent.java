@@ -2,7 +2,7 @@ package de.hochschuletrier.gdw.ss15.game.components;
 
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.utils.Pool;
-import de.hochschuletrier.gdw.ss15.game.input.InputAction;
+import de.hochschuletrier.gdw.ss15.events.InputEvent;
 
 import java.util.LinkedList;
 
@@ -11,10 +11,14 @@ import java.util.LinkedList;
  */
 public class InputComponent extends Component implements Pool.Poolable {
 
-    public LinkedList<InputAction> actions;
+    public boolean up;
+    public boolean down;
+    public boolean left;
+    public boolean right;
 
     @Override
-    public void reset() {
-        actions.clear();
+    public void reset()
+    {
+        up = down = left = right = false;
     }
 }

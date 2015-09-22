@@ -6,7 +6,7 @@ import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import de.hochschuletrier.gdw.ss15.game.components.InputComponent;
-import de.hochschuletrier.gdw.ss15.game.input.InputAction;
+import de.hochschuletrier.gdw.ss15.events.InputEvent;
 
 import java.util.LinkedList;
 
@@ -16,7 +16,7 @@ import java.util.LinkedList;
  */
 public class InputSystem extends IteratingSystem implements InputProcessor {
 
-    private LinkedList<InputAction> actions;
+    private LinkedList<InputEvent> actions;
 
     public InputSystem(){
         this(0);
@@ -34,13 +34,13 @@ public class InputSystem extends IteratingSystem implements InputProcessor {
     @Override
     public boolean keyDown(int keycode) {
         switch(keycode){
-            case Input.Keys.W: actions.add(new InputAction("upPressed",1)); //1 = Networksystem.getTimestamp();
+            case Input.Keys.W:
                 break;
-            case Input.Keys.S: actions.add(new InputAction("downPressed",1));
+            case Input.Keys.S:
                 break;
-            case Input.Keys.D: actions.add(new InputAction("rightPressed",1));
+            case Input.Keys.D:
                 break;
-            case Input.Keys.A: actions.add(new InputAction("leftPressed",1));
+            case Input.Keys.A:
                 break;
         }
 
@@ -50,13 +50,13 @@ public class InputSystem extends IteratingSystem implements InputProcessor {
     @Override
     public boolean keyUp(int keycode) {
         switch(keycode){
-            case Input.Keys.W: actions.add(new InputAction("upReleased",1));
+            case Input.Keys.W:
                 break;
-            case Input.Keys.S: actions.add(new InputAction("downReleased",1));
+            case Input.Keys.S:
                 break;
-            case Input.Keys.D: actions.add(new InputAction("rightReleased",1));
+            case Input.Keys.D:
                 break;
-            case Input.Keys.A: actions.add(new InputAction("leftReleased",1));
+            case Input.Keys.A:
                 break;
         }
 
@@ -70,24 +70,12 @@ public class InputSystem extends IteratingSystem implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        switch (button){
-            case Input.Buttons.LEFT: actions.add(new InputAction("leftMBPressed", 1, screenX,screenY));
-                break;
-            case Input.Buttons.RIGHT: actions.add(new InputAction("rightMBPressed", 1,screenX,screenY));
-                break;
-        }
-        return true;
+        return false;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        switch (button){
-            case Input.Buttons.LEFT: actions.add(new InputAction("leftMBReleased", 1,screenX,screenY));
-                break;
-            case Input.Buttons.RIGHT: actions.add(new InputAction("rightMBReleased", 1, screenX, screenY));
-                break;
-        }
-        return true;
+        return false;
     }
 
     @Override
@@ -98,12 +86,13 @@ public class InputSystem extends IteratingSystem implements InputProcessor {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        actions.add(new InputAction("mouseMoved", 1, screenX,screenY));
-        return true;
+        // winkel
+        return false;
     }
 
     @Override
     public boolean scrolled(int amount) {
         return false;
     }
+
 }
