@@ -16,7 +16,7 @@ public class InputMovPaket {
 
     @Override
     public String toString() {
-        String tempString = "";
+        String tempString = "MovementKeys:\n";
         tempString += "up: " + this.up + "\n";
         tempString += "down: " + this.down + "\n";
         tempString += "left: " + this.left + "\n";
