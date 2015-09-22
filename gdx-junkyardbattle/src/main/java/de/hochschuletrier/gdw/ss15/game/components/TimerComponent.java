@@ -5,12 +5,12 @@ import com.badlogic.gdx.utils.Pool.Poolable;
 
 public class TimerComponent extends Component implements Poolable
 {
-	public float deathTimer = 0.25f;
+	public int deathTimer = 1000;
 	public int spawnTimer = 1000;
 
 	@Override
 	public void reset() {
-        deathTimer = 0.25f;
+        deathTimer = 1000;
         spawnTimer = 1000;
 	}
 }
