@@ -5,10 +5,10 @@ package de.hochschuletrier.gdw.ss15.game.input;
  */
 public class InputMovPaket {
 
-    boolean up;
-    boolean down;
-    boolean left;
-    boolean right;
+    public boolean up;
+    public boolean down;
+    public boolean left;
+    public boolean right;
 
     public InputMovPaket() {
         this.up = this.down = this.left = this.right = false;

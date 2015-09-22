@@ -1,12 +1,15 @@
 package de.hochschuletrier.gdw.ss15.game.systems;
 
+import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+import de.hochschuletrier.gdw.ss15.events.SoundEvent;
 import de.hochschuletrier.gdw.ss15.game.components.InputComponent;
 import de.hochschuletrier.gdw.ss15.events.ShootDownEvent;
+import de.hochschuletrier.gdw.ss15.game.input.InputMovPaket;
 
 import java.util.LinkedList;
 
@@ -16,14 +19,14 @@ import java.util.LinkedList;
  */
 public class InputSystem extends IteratingSystem implements InputProcessor {
 
-    private LinkedList<ShootDownEvent> actions;
+    public InputMovPaket inputPaket;
 
-    public InputSystem(){
+    public InputSystem() {
         this(0);
     }
 
-    public InputSystem(int priority){
-        super(Family.one(InputComponent.class).get(),priority);
+    public InputSystem(int priority) {
+        super(Family.one(InputComponent.class).get(), priority);
     }
 
     @Override
@@ -33,14 +36,19 @@ public class InputSystem extends IteratingSystem implements InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
-        switch(keycode){
+        // keyDown = ein knopf wurde gedrückt
+        switch (keycode) {
             case Input.Keys.W:
+                inputPaket.up = true;
                 break;
             case Input.Keys.S:
+                inputPaket.down = true;
                 break;
             case Input.Keys.D:
+                inputPaket.right = true;
                 break;
             case Input.Keys.A:
+                inputPaket.left = true;
                 break;
         }
 
@@ -49,14 +57,19 @@ public class InputSystem extends IteratingSystem implements InputProcessor {
 
     @Override
     public boolean keyUp(int keycode) {
-        switch(keycode){
+        // keyUp = ein knopf wurde losgelassen
+        switch (keycode) {
             case Input.Keys.W:
+                inputPaket.up = false;
                 break;
             case Input.Keys.S:
+                inputPaket.down = false;
                 break;
             case Input.Keys.D:
+                inputPaket.right = false;
                 break;
             case Input.Keys.A:
+                inputPaket.left = false;
                 break;
         }
 
@@ -93,6 +106,17 @@ public class InputSystem extends IteratingSystem implements InputProcessor {
     @Override
     public boolean scrolled(int amount) {
         return false;
+    }
+
+    @Override
+    public void addedToEngine(Engine engine) {
+        super.addedToEngine(engine);
+        inputPaket = new InputMovPaket();
+    }
+
+    @Override
+    public void removedFromEngine(Engine engine) {
+        super.removedFromEngine(engine);
     }
 
 }
