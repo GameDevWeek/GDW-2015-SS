@@ -39,13 +39,13 @@ public class UpdatePhysixSystem extends IteratingSystem
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
         if(timer.isExpired()) {
-            PlayerComponent plc = ComponentMappers.player.get(entity);
+            /*PlayerComponent plc = ComponentMappers.player.get(entity);
             if(! plc.isLocalPlayer) return;
             PhysixBodyComponent phxc = ComponentMappers.physixBody.get(entity);
 //            System.out.println("velocity-x: " + phxc.getLinearVelocity().x + "velocity-y: " + phxc.getLinearVelocity().y);
             MovementPacket packet = new MovementPacket(phxc.getLinearVelocity().x, phxc.getLinearVelocity().y, phxc.getAngle());
             SendPacketClientEvent.emit(packet, true);
-            timer.restart();
+            timer.restart();*/
         }
     }
 
@@ -57,6 +57,7 @@ public class UpdatePhysixSystem extends IteratingSystem
             PhysixBodyComponent phxc = entity.getComponent(PhysixBodyComponent.class);
             phxc.setPosition(p.xPos, p.yPos);
             phxc.setAngle(p.rotation);
+            //System.out.println("used new position "+p.xPos+" "+ p.yPos);
         }catch(ClassCastException ex){}
 
     }
