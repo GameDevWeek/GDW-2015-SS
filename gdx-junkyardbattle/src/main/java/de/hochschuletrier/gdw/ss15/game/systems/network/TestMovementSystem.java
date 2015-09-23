@@ -18,6 +18,7 @@ import de.hochschuletrier.gdw.ss15.game.components.input.InputComponent;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.EntityUpdatePacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.MovementPacket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.MyTimer;
+import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.Tools;
 
 /**
  * Created by lukas on 22.09.15.
@@ -41,13 +42,13 @@ public class TestMovementSystem extends IteratingSystem{
 	protected void processEntity(Entity entity, float deltaTime) {
 		
 		timer.Update();
+		Tools.Sleep(100);
         if(timer.get_CounterMilliseconds()>100)
         {
             timer.StartCounter();
-
-        vectorToAdd.scl(move.get(entity).speed);
-        MovementPacket packet = new MovementPacket(vectorToAdd.x,vectorToAdd.y,0);
-        SendPacketClientEvent.emit(packet,true);
+            vectorToAdd.scl(move.get(entity).speed);
+        	MovementPacket packet = new MovementPacket(vectorToAdd.x,vectorToAdd.y,0);
+        	SendPacketClientEvent.emit(packet,true);
         
         vectorToAdd.setZero();
         }
