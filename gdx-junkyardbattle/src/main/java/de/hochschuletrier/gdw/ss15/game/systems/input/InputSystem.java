@@ -14,6 +14,7 @@ import com.badlogic.gdx.math.Vector3;
 import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.game.components.input.InputComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
+import de.hochschuletrier.gdw.ss15.game.input.XBox360KeyMap;
 
 /**
  * Created by David Siepen on 21.09.2015.
@@ -187,19 +188,63 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
 
     @Override
     public boolean buttonDown(Controller controller, int buttonCode) {
-        System.out.println(buttonCode);
-        return true;
+        switch (buttonCode) {
+            case XBox360KeyMap.X:
+                leftMBDown = true;
+                break;
+            case XBox360KeyMap.B:
+                rightMBDown = true;
+                break;
+            default:
+                rightMBDown = leftMBDown = false;
+        }
+        debug();
+        return false;
     }
 
     @Override
     public boolean buttonUp(Controller controller, int buttonCode) {
+        switch (buttonCode) {
+            case XBox360KeyMap.X:
+                leftMBDown = false;
+                break;
+            case XBox360KeyMap.B:
+                rightMBDown = false;
+                break;
+        }
+        debug();
         return false;
     }
 
     @Override
     public boolean axisMoved(Controller controller, int axisCode, float value) {
-        if (value > 0.2f || value < -0.2f)
-             System.out.println("axis: " + axisCode + " value: " + value);
+        switch (axisCode) {
+            case XBox360KeyMap.TRIGGER:
+                if (value < -0.1)
+                    leftMBDown = true;
+                else if (value > 0.1)
+                    rightMBDown = true;
+                else
+                    leftMBDown = rightMBDown = false;
+                break;
+            case XBox360KeyMap.L1X:
+                if (value > 0.25f)
+                    right = true;
+                else if (value < -0.25f)
+                    left = true;
+                else
+                    left = right = false;
+                break;
+            case XBox360KeyMap.L1Y:
+                if (value > 0.25f)
+                    down = true;
+                else if (value < -0.25)
+                    up = true;
+                else
+                    down = up = false;
+                break;
+        }
+        debug();
         return false;
     }
 

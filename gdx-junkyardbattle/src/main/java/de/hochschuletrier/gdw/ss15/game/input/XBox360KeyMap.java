@@ -6,7 +6,7 @@ import com.badlogic.gdx.Input;
  * Created by glumbatsch on 22.09.2015.
  * KameHameHAH!
  */
-public class KeyMap {
+public class XBox360KeyMap {
 
     final public static int UP = Input.Keys.W;
     final public static int DOWN = Input.Keys.S;
