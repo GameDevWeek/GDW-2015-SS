@@ -61,13 +61,6 @@ public class NetworkServerSystem extends EntitySystem implements SendPacketServe
         //System.out.println("jfsdklfjsdaöklfjsdöklf rennt");
         while (serverSocket.isNewClientAvaliable()) {
             Entity e = game.createEntity("player", -50, -50);
-            PhysixModifierComponent pmod = new PhysixModifierComponent();
-            pmod.runnables.add(() -> {
-                final PhysixBodyComponent p = e.getComponent(PhysixBodyComponent.class);
-                p.setLinearVelocity(0, 0);
-                p.setAngularVelocity(0);
-            });
-            e.add(pmod);
         }
 
         LinkedList<Entity> toDelete = new LinkedList<>();
