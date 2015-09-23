@@ -135,6 +135,9 @@
             	"damageValue": 10,
             	"damageToPlayer": true,
             	"damageToTile": true
+            },
+            "Bullet": {
+                "playerID": -1
             }
         }
     },
