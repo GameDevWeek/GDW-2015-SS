@@ -55,8 +55,6 @@ public class TestMovementSystem extends IteratingSystem{
         if(timer.get_CounterMilliseconds()>100)
         {
             timer.StartCounter();
-
-            double inv = inventory.get(entity).metalShards/100*0.75;
         
 	        vectorToAdd.scl(move.get(entity).speed);
 	        InputComponent input = ComponentMappers.input.get(entity);
