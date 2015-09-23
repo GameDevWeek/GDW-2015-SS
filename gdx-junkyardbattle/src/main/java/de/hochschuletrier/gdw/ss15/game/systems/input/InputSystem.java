@@ -12,6 +12,7 @@ import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
 import com.badlogic.gdx.math.Vector3;
 import de.hochschuletrier.gdw.ss15.Main;
+import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.components.input.InputComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ss15.game.input.XBox360KeyMap;
@@ -51,14 +52,21 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
         if (entity.getComponent(PlayerComponent.class).isLocalPlayer) {
-            entity.getComponent(InputComponent.class).horizontal = horizontal;
-            entity.getComponent(InputComponent.class).vertical = vertical;
+            InputComponent input = entity.getComponent(InputComponent.class);
+            PositionComponent position = entity.getComponent(PositionComponent.class);
 
-            entity.getComponent(InputComponent.class).shoot = leftMBDown;
-            entity.getComponent(InputComponent.class).gather = rightMBDown;
+            input.horizontal = horizontal;
+            input.vertical = vertical;
 
-            entity.getComponent(InputComponent.class).posX = posX;
-            entity.getComponent(InputComponent.class).posY = posY;
+            input.shoot = leftMBDown;
+            input.gather = rightMBDown;
+
+            posX = posX > position.x ? (int)position.x + posX : (int)position.x - posX;
+            posY = posY > position.y ? (int)position.y + posY : (int)position.y - posY;
+
+
+            input.posX = posX;
+            input.posY = posY;
         }
     }
 
@@ -252,14 +260,12 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
                     posX = (int) (RADIUS * Math.cos/*inan*/(winkel));
                     posY = (int) (RADIUS * Math.sin/*an*/(winkel));
                 }
-                System.out.println("posX: " + posX + " posY: " + posY);
                 break;
             case XBox360KeyMap.R1Y:
                 if (value > STICKDEADZONE || value < -STICKDEADZONE) {
                     winkel = Math.cosh(value / vertical);
                     posX = (int) (RADIUS * Math.cos/*inan*/(winkel));
                     posY = (int) (RADIUS * Math.sin/*an*/(winkel));
-                    System.out.println("posX: " + posX + " posY: " + posY);
                 }
                 break;
         }
