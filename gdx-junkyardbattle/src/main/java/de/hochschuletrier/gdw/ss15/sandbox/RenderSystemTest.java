@@ -85,7 +85,7 @@ public class RenderSystemTest extends SandboxGame {
     
     public RenderSystemTest() {
         engine.addSystem(physixSystem);
-//        engine.addSystem(physixDebugRenderSystem);
+        engine.addSystem(physixDebugRenderSystem);
         engine.addSystem(cameraSystem);
         engine.addSystem(renderSystem);
         engine.addSystem(updatePosSystem);
@@ -93,12 +93,13 @@ public class RenderSystemTest extends SandboxGame {
 
     @Override
     public void init(AssetManagerX assetManager) {
+        entityFactory.init(engine, assetManager);
         mapLoader.listen(renderSystem.getTileMapCreator());
         mapLoader.run((String name, float x, float y) -> createEntity(name, x, y), 
                 "data/maps/prototype.tmx", physixSystem);
 
         map = mapLoader.getTiledMap();
-        entityFactory.init(engine, assetManager);
+        
 
         // create a simple player ball
         player = engine.createEntity();
