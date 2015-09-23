@@ -2,12 +2,15 @@ package de.hochschuletrier.gdw.ss15.game.systems.renderers;
 
 import java.util.Comparator;
 
+import org.lwjgl.opengl.GL11;
+
 import box2dLight.RayHandler;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
 import de.hochschuletrier.gdw.commons.gdx.ashley.SortedSubIteratingSystem;
@@ -40,6 +43,7 @@ public class RenderSystem extends SortedSubIteratingSystem {
     private final OrthographicCamera camera;
     private final LightRenderer lightRenderer;
     private final TileMapCreator tileMapCreator = new TileMapCreator();
+    private final FogRenderer fogRenderer = new FogRenderer();
     
     @SuppressWarnings("unchecked")
 	public RenderSystem(PhysixSystem physixSystem, OrthographicCamera camera) {
@@ -87,9 +91,10 @@ public class RenderSystem extends SortedSubIteratingSystem {
     
     @Override
 	public void update (float deltaTime) {
-        super.update(deltaTime);
         
+        super.update(deltaTime);
         lightRenderer.render(camera);
+//        fogRenderer.preRender();
 	}
 }
 

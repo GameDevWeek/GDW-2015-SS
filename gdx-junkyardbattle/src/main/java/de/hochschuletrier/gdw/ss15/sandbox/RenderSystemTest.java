@@ -211,10 +211,14 @@ public class RenderSystemTest extends SandboxGame {
             target.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             cameraSystem.getCamera().getOrthographicCamera().unproject(target);
             
+
+            
             float angle = getAngle(posComp.x, posComp.y, target.x, target.y);
             ConeLightComponent coneLightComp = ComponentMappers.coneLight.get(player);
             
             coneLightComp.coneLight.setDirection(angle);
+            
+            coneLightComp.coneLight.setActive(Gdx.input.isButtonPressed(Input.Buttons.LEFT));
         }
     }
     
