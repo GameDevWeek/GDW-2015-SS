@@ -155,12 +155,6 @@ public class Main extends StateBasedGame {
         this.console.register(emitterMode);
         emitterMode.addListener(this::onEmitterModeChanged);
 
-
-        if(m_StartServerByGameStart) {
-            server = new Server();
-            server.start();
-            logger.info("Server wurde gestartet");
-        }
     }
 
     private void onLoadComplete() {
@@ -174,6 +168,12 @@ public class Main extends StateBasedGame {
         }
 
         Main.getInstance().console.register(serverCommand);
+
+        if(m_StartServerByGameStart) {
+            server = new Server();
+            server.start();
+            logger.info("Server wurde gestartet");
+        }
     }
 
     @Override
