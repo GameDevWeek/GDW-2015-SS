@@ -1,4 +1,4 @@
-package de.hochschuletrier.gdw.ss15.game.components;
+package de.hochschuletrier.gdw.ss15.game.components.input;
 
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.utils.Pool;
@@ -8,10 +8,8 @@ import com.badlogic.gdx.utils.Pool;
  */
 public class InputComponent extends Component implements Pool.Poolable {
 
-    public boolean up;
-    public boolean down;
-    public boolean left;
-    public boolean right;
+    public float horizontal;
+    public float vertical;
 
     public boolean shoot;
     public boolean gather;
@@ -22,7 +20,8 @@ public class InputComponent extends Component implements Pool.Poolable {
     @Override
     public void reset()
     {
-        up = down = left = right =shoot = gather = false;
+        shoot = gather = false;
         posX = posY = 0;
+        horizontal = vertical = 0.0f;
     }
 }
