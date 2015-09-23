@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="128" tileheight="128" nextobjectid="29">
- <tileset firstgid="1" source="Grundset_1.tsx"/>
+ <tileset firstgid="1" source="tilesets/Grundset_1.tsx"/>
  <layer name="Floor" width="30" height="30">
   <data>
    <tile gid="14"/>
