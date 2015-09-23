@@ -13,18 +13,18 @@ import java.util.HashMap;
 
 public class NetworkReceivedNewPacketClientEvent {
         public static interface Listener {
-            void onReceivedNewPacket(Packet pack);
+            void onReceivedNewPacket(Packet pack,Entity ent);
         }
 
         private static final HashMap<Short,SnapshotArray<Listener>> map = new HashMap<Short,SnapshotArray<Listener>>();
 
 
-        public static void emit(Packet pack) {
+        public static void emit(Packet pack, Entity ent) {
             SnapshotArray<Listener> liste = map.get(pack.getPacketId());
             if(liste != null) {
                 Object[] items = liste.begin();
                 for (int i = 0, n = liste.size; i < n; i++) {
-                    ((Listener) items[i]).onReceivedNewPacket(pack);
+                    ((Listener) items[i]).onReceivedNewPacket(pack,ent);
                 }
                 liste.end();
             }
