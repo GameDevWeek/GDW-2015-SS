@@ -91,7 +91,6 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener 
         }
         else if(pack.getPacketId() == PacketIds.EntityUpdate.getValue())
         {//positino update packet
-        //
             //System.out.println("update packet received");
             if(pack.getTimestamp()>lastNetworkTimestamp)
             {//synccompoent
