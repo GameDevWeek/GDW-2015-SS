@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -70,17 +71,33 @@ public class MenuPage extends Group {
         button.getLabel().setAlignment(Align.center);
     }
 
-    protected final HorizontalGroup addSlider(String stylename, String text, Runnable runnable) {
+    protected final HorizontalGroup addSlider(String text, Runnable runnable) {
        
     	HorizontalGroup hg = new HorizontalGroup();
-    	Label option = new Label(text, skin, stylename);
-    	Slider sl = new Slider(0, 100, 1, false, skin, stylename);
+    	Label option = new Label(text, skin);  	
+    	
+    	
+    	Slider sl = new Slider(0, 100, 1, false, skin);
         hg.addActor(option);
         hg.addActor(sl);
         addActor(hg);
     	return hg;
     	
     }
+    
+    protected final HorizontalGroup addCheckBox(String text, Runnable runnable) {
+        
+    	HorizontalGroup hg = new HorizontalGroup();
+    	CheckBox cb = new CheckBox(text, skin);
+    	Label option = new Label(text, skin);
+    	
+        hg.addActor(cb);
+        hg.addActor(option);
+        addActor(hg);
+    	return hg;
+    	
+    }
+    
     
     protected final Actor addUIActor(Actor actor)
     {
