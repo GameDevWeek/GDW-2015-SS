@@ -9,8 +9,8 @@
                 "minSpeed": 20,
                 "minDelay": 100
             },
-            "Animation": {
-                "animation": "ball"
+            "Animator": {
+                "animation_IDLE": "ball"
             },
             "PhysixBody": {
                 "type": "circle",
@@ -31,8 +31,8 @@
                 "minSpeed": 20,
                 "minDelay": 100
             },
-            "Animation": {
-                "animation": "box"
+            "Animator": {
+                "animation_IDLE": "box"
             },
             "PhysixBody": {
                 "type": "box",
@@ -42,5 +42,109 @@
                 "restitution": 0.1
             }
         }
+    },
+    "greenPointLight": {
+        "meta": {},
+        "components": {
+            "Position": {},
+			"PointLight": {
+				"color": "0, 1, 0",
+				"distance": 10
+			}
+        }
+    },
+    "blueConeLight": {
+        "meta": {},
+        "components": {
+            "Position": {},
+			"ConeLight": {
+				"color": "0, 0, 1",
+				"distance": 10,
+				"coneDegree": 45,
+				"degree": 45
+			}
+        }
+    },
+    "player": {
+        "meta": {},
+        "components": {
+            "Position": {},
+            "PhysixBody": {
+                "type": "box",
+                "size": 60,
+                "density": 10,
+                "friction": 0.5,
+                "restitution": 0.1
+            },
+            "Client":{},
+            "PositionSynch":{
+                "clientname": "clientPlayer"
+            }
+        }
+    },
+
+    "clientPlayer": {
+        "meta": {},
+        "components": {
+            "Position": {},
+            "NetworkID": {},
+            "Texture":{
+                "texture": "ball",
+                "width": 60,
+                "height": 60,
+                "srcX": 0,
+                "srcY": 0,
+                "scaleX": 1,
+                "scaleY": 1,
+                "flipX": false,
+                "flipY": false
+            }
+        }
+    },
+
+    "clientOwnPlayer": {
+        "meta": {},
+        "components": {
+            "Position": {},
+            "Texture":{
+                "texture": "ball",
+                "width": 60,
+                "height": 60,
+                "srcX": 0,
+                "srcY": 0,
+                "scaleX": 1,
+                "scaleY": 1,
+                "flipX": false,
+                "flipY": false
+            }
+        }
+    },
+
+    "projectile": {
+        "meta": {},
+        "components": {
+            "Position": {},
+            "PhysixBody": {
+                "type": "circle",
+                "size": 5,
+                "density": 10,
+                "friction": 0.5,
+                "restitution": 0.1
+            },
+            "Damage": {
+            	"damageValue": 10,
+            	"damageToPlayer": true,
+            	"damageToTile": true
+            },
+            "Bullet": {
+                "playerID": -1
+            }
+        }
+    },
+
+    "metal": {
+
     }
+
+
 }

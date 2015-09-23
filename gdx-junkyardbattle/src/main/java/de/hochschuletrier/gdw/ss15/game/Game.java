@@ -1,105 +1,117 @@
 package de.hochschuletrier.gdw.ss15.game;
 
+import box2dLight.RayHandler;
+
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import de.hochschuletrier.gdw.commons.devcon.cvar.CVarBool;
+
 import de.hochschuletrier.gdw.commons.gdx.ashley.EntityFactory;
-import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
-import de.hochschuletrier.gdw.commons.gdx.input.hotkey.Hotkey;
-import de.hochschuletrier.gdw.commons.gdx.input.hotkey.HotkeyModifier;
-import de.hochschuletrier.gdw.commons.gdx.physix.PhysixBodyDef;
-import de.hochschuletrier.gdw.commons.gdx.physix.PhysixComponentAwareContactListener;
-import de.hochschuletrier.gdw.commons.gdx.physix.PhysixFixtureDef;
-import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
-import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixModifierComponent;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixDebugRenderSystem;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.ss15.Main;
-import de.hochschuletrier.gdw.ss15.game.components.AnimationComponent;
-import de.hochschuletrier.gdw.ss15.game.components.ImpactSoundComponent;
-import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
-import de.hochschuletrier.gdw.ss15.game.components.TriggerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
-import de.hochschuletrier.gdw.ss15.game.contactlisteners.ImpactSoundListener;
-import de.hochschuletrier.gdw.ss15.game.contactlisteners.TriggerListener;
-import de.hochschuletrier.gdw.ss15.game.systems.AnimationRenderSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.network.NetworkClientSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
-import de.hochschuletrier.gdw.ss15.game.utils.PhysixUtil;
+import de.hochschuletrier.gdw.ss15.game.systems.*;
+import de.hochschuletrier.gdw.ss15.game.systems.network.TestMovementSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.renderers.RenderSystem;
+
 import java.util.function.Consumer;
 
 public class Game extends InputAdapter {
 
-    private final CVarBool physixDebug = new CVarBool("physix_debug", true, 0, "Draw physix debug");
-    private final Hotkey togglePhysixDebug = new Hotkey(() -> physixDebug.toggle(false), Input.Keys.F1, HotkeyModifier.CTRL);
+    //private final CVarBool physixDebug = new CVarBool("physix_debug", true, 0, "Draw physix debug");
+    //private final Hotkey togglePhysixDebug = new Hotkey(() -> physixDebug.toggle(false), Input.Keys.F1, HotkeyModifier.CTRL);
 
     private final PooledEngine engine = new PooledEngine(
             GameConstants.ENTITY_POOL_INITIAL_SIZE, GameConstants.ENTITY_POOL_MAX_SIZE,
             GameConstants.COMPONENT_POOL_INITIAL_SIZE, GameConstants.COMPONENT_POOL_MAX_SIZE
     );
 
-    private final PhysixSystem physixSystem = new PhysixSystem(GameConstants.BOX2D_SCALE,
-            GameConstants.VELOCITY_ITERATIONS, GameConstants.POSITION_ITERATIONS, GameConstants.PRIORITY_PHYSIX
-    );
-    private final PhysixDebugRenderSystem physixDebugRenderSystem = new PhysixDebugRenderSystem(GameConstants.PRIORITY_DEBUG_WORLD);
-    private final AnimationRenderSystem animationRenderSystem = new AnimationRenderSystem(GameConstants.PRIORITY_ANIMATIONS);
+   private final PhysixSystem physixSystem = new PhysixSystem(GameConstants.BOX2D_SCALE,
+           GameConstants.VELOCITY_ITERATIONS, GameConstants.POSITION_ITERATIONS, GameConstants.PRIORITY_PHYSIX
+   );
+   private final PhysixDebugRenderSystem physixDebugRenderSystem = new PhysixDebugRenderSystem(GameConstants.PRIORITY_DEBUG_WORLD);
+    
     private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem(GameConstants.PRIORITY_PHYSIX + 1);
+    private final NetworkClientSystem networksystem = new NetworkClientSystem(this,GameConstants.PRIORITY_PHYSIX+2);
+    private final TestMovementSystem testMovementSystem = new TestMovementSystem(this);
 
     private final EntityFactoryParam factoryParam = new EntityFactoryParam();
     private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json", Game.class);
 
+    private final CameraSystem cameraSystem = new CameraSystem();
+
+    private final RenderSystem renderSystem = new RenderSystem(physixSystem,cameraSystem.getCamera().getOrthographicCamera());
+
+    private final WeaponSystem weaponSystem = new WeaponSystem();
+
+    private final InputSystem inputSystem = new InputSystem();
+    private final MapLoader mapLoader = new MapLoader();
+
+    
     public Game() {
         // If this is a build jar file, disable hotkeys
         if (!Main.IS_RELEASE) {
-            togglePhysixDebug.register();
+            //togglePhysixDebug.register();
         }
     }
 
+    public PooledEngine getEngine()
+    {
+        return engine;
+    }
+
     public void dispose() {
-        togglePhysixDebug.unregister();
+        //togglePhysixDebug.unregister();
     }
 
     public void init(AssetManagerX assetManager) {
-        Main.getInstance().console.register(physixDebug);
-        physixDebug.addListener((CVar) -> physixDebugRenderSystem.setProcessing(physixDebug.get()));
+        //Main.getInstance().console.register(physixDebug);
+        //physixDebug.addListener((CVar) -> physixDebugRenderSystem.setProcessing(physixDebug.get()));
 
         addSystems();
         addContactListeners();
         setupPhysixWorld();
         entityFactory.init(engine, assetManager);
+        
+        mapLoader.listen(renderSystem.getTileMapCreator());
+        mapLoader.run((String name, float x, float y) -> createEntity(name, x, y), 
+                "data/maps/demo.tmx", physixSystem);
     }
 
     private void addSystems() {
-        engine.addSystem(physixSystem);
-        engine.addSystem(physixDebugRenderSystem);
-        engine.addSystem(animationRenderSystem);
-        engine.addSystem(updatePositionSystem);
+        //engine.addSystem(physixSystem);
+        //engine.addSystem(physixDebugRenderSystem);
+        //engine.addSystem(updatePositionSystem);
+        engine.addSystem(networksystem);
+        engine.addSystem(inputSystem);
+        engine.addSystem(weaponSystem);
+        engine.addSystem(cameraSystem);
+        engine.addSystem(renderSystem);
+        engine.addSystem(testMovementSystem);
     }
 
     private void addContactListeners() {
-        PhysixComponentAwareContactListener contactListener = new PhysixComponentAwareContactListener();
-        physixSystem.getWorld().setContactListener(contactListener);
-        contactListener.addListener(ImpactSoundComponent.class, new ImpactSoundListener());
-        contactListener.addListener(TriggerComponent.class, new TriggerListener());
+        //PhysixComponentAwareContactListener contactListener = new PhysixComponentAwareContactListener();
+        //physixSystem.getWorld().setContactListener(contactListener);
+        //contactListener.addListener(ImpactSoundComponent.class, new ImpactSoundListener());
+       // contactListener.addListener(TriggerComponent.class, new TriggerListener());
     }
 
     private void setupPhysixWorld() {
-        physixSystem.setGravity(0, 24);
-        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody, physixSystem).position(410, 500).fixedRotation(false);
-        Body body = physixSystem.getWorld().createBody(bodyDef);
-        body.createFixture(new PhysixFixtureDef(physixSystem).density(1).friction(0.5f).shapeBox(800, 20));
-        PhysixUtil.createHollowCircle(physixSystem, 180, 180, 150, 30, 6);
+        //physixSystem.setGravity(0, 24);
+        //PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody, physixSystem).position(410, 500).fixedRotation(false);
+        //Body body = physixSystem.getWorld().createBody(bodyDef);
+       // body.createFixture(new PhysixFixtureDef(physixSystem).density(1).friction(0.5f).shapeBox(800, 20));
+        //PhysixUtil.createHollowCircle(physixSystem, 180, 180, 150, 30, 6);
 
-        createTrigger(410, 600, 3200, 40, (Entity entity) -> {
-            engine.removeEntity(entity);
-        });
+        //createTrigger(410, 600, 3200, 40, (Entity entity) -> {
+          //  engine.removeEntity(entity);
+       // });
     }
 
     public void update(float delta) {
@@ -108,7 +120,7 @@ public class Game extends InputAdapter {
     }
 
     public void createTrigger(float x, float y, float width, float height, Consumer<Entity> consumer) {
-        Entity entity = engine.createEntity();
+        /*Entity entity = engine.createEntity();
         PhysixModifierComponent modifyComponent = engine.createComponent(PhysixModifierComponent.class);
         entity.add(modifyComponent);
 
@@ -124,11 +136,11 @@ public class Game extends InputAdapter {
             bodyComponent.createFixture(fixtureDef);
             entity.add(bodyComponent);
         });
-        engine.addEntity(entity);
+        engine.addEntity(entity);*/
     }
 
     public Entity createEntity(String name, float x, float y) {
-        factoryParam.game = this;
+        //factoryParam.game = this;
         factoryParam.x = x;
         factoryParam.y = y;
         Entity entity = entityFactory.createEntity(name, factoryParam);
@@ -137,16 +149,21 @@ public class Game extends InputAdapter {
         return entity;
     }
 
-    @Override
+    /*@Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if(button == 0)
             createEntity("ball", screenX, screenY);
         else
             createEntity("box", screenX, screenY);
         return true;
-    }
+    }*/
 
     public InputProcessor getInputProcessor() {
         return this;
     }
+
+    public InputSystem getInputSystem(){
+        return inputSystem;
+    }
+
 }

@@ -1,5 +1,12 @@
 package de.hochschuletrier.gdw.ss15.sandbox.maptest;
 
+import java.util.HashMap;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import box2dLight.RayHandler;
+
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
@@ -8,6 +15,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import de.hochschuletrier.gdw.commons.gdx.ashley.EntityFactory;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.cameras.orthogonal.LimitedSmoothCamera;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixBodyDef;
@@ -27,11 +35,18 @@ import de.hochschuletrier.gdw.commons.tiled.tmx.TmxImage;
 import de.hochschuletrier.gdw.commons.tiled.utils.RectangleGenerator;
 import de.hochschuletrier.gdw.commons.utils.Rectangle;
 import de.hochschuletrier.gdw.ss15.Main;
+import de.hochschuletrier.gdw.ss15.events.ChangeAnimationEvent;
+import de.hochschuletrier.gdw.ss15.game.Game;
 import de.hochschuletrier.gdw.ss15.game.GameConstants;
+import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
+import de.hochschuletrier.gdw.ss15.game.components.animation.AnimationState;
+import de.hochschuletrier.gdw.ss15.game.components.animation.AnimatorComponent;
+import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
+import de.hochschuletrier.gdw.ss15.game.components.texture.TextureComponent;
+import de.hochschuletrier.gdw.ss15.game.systems.renderers.AnimatorRenderer;
+import de.hochschuletrier.gdw.ss15.game.systems.renderers.RenderSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ss15.sandbox.SandboxGame;
-import java.util.HashMap;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *
@@ -47,6 +62,8 @@ public class MapTest extends SandboxGame {
     public static final int GRAVITY = 0;
     public static final int BOX2D_SCALE = 40;
 
+
+    
     private final PooledEngine engine = new PooledEngine(
             GameConstants.ENTITY_POOL_INITIAL_SIZE, GameConstants.ENTITY_POOL_MAX_SIZE,
             GameConstants.COMPONENT_POOL_INITIAL_SIZE, GameConstants.COMPONENT_POOL_MAX_SIZE
@@ -62,10 +79,33 @@ public class MapTest extends SandboxGame {
     private TiledMapRendererGdx mapRenderer;
     private PhysixBodyComponent playerBody;
     private final HashMap<TileSet, Texture> tilesetImages = new HashMap();
-
+    
+    private AnimatorComponent animatorComponent;
+    private PositionComponent positionComponent;
+    
+    private final RenderSystem renderSystem = new RenderSystem(physixSystem, 
+            camera.getOrthographicCamera());
+    private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem();
+    
+    private final EntityFactoryParam factoryParam = new EntityFactoryParam();
+    private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json", Game.class);
+    
+    private Entity player;
     public MapTest() {
+        engine.addSystem(renderSystem);
+        engine.addSystem(updatePositionSystem);
         engine.addSystem(physixSystem);
         engine.addSystem(physixDebugRenderSystem);
+    }
+    
+    public Entity createEntity(String name, float x, float y) {
+        //factoryParam.game = null;
+        factoryParam.x = x;
+        factoryParam.y = y;
+        Entity entity = entityFactory.createEntity(name, factoryParam);
+
+        engine.addEntity(entity);
+        return entity;
     }
 
     @Override
@@ -77,6 +117,7 @@ public class MapTest extends SandboxGame {
             tilesetImages.put(tileset, new Texture(filename));
         }
         mapRenderer = new TiledMapRendererGdx(map, tilesetImages);
+        entityFactory.init(engine, assetManager);
 
         // Generate static world
         int tileWidth = map.getTileWidth();
@@ -87,18 +128,8 @@ public class MapTest extends SandboxGame {
                 (Rectangle rect) -> addShape(rect, tileWidth, tileHeight));
 
         // create a simple player ball
-        Entity player = engine.createEntity();
-        PhysixModifierComponent modifyComponent = engine.createComponent(PhysixModifierComponent.class);
-        player.add(modifyComponent);
-
-        modifyComponent.schedule(() -> {
-            playerBody = engine.createComponent(PhysixBodyComponent.class);
-            PhysixBodyDef bodyDef = new PhysixBodyDef(BodyType.DynamicBody, physixSystem).position(100, 100).fixedRotation(true);
-            playerBody.init(bodyDef, physixSystem, player);
-            PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem).density(5).friction(0.2f).restitution(0.4f).shapeCircle(30);
-            playerBody.createFixture(fixtureDef);
-            player.add(playerBody);
-        });
+        player = createEntity("ball", 100, 100);
+        positionComponent = player.getComponent(PositionComponent.class);
         engine.addEntity(player);
 
         // Setup camera
@@ -147,25 +178,6 @@ public class MapTest extends SandboxGame {
         
         mapRenderer.update(delta);
         camera.update(delta);
-
-        if(playerBody != null) {
-            float speed = 10000.0f;
-            float velX = 0, velY = 0;
-            if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-                velX -= delta * speed;
-            }
-            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-                velX += delta * speed;
-            }
-            if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-                velY -= delta * speed;
-            }
-            if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-                velY += delta * speed;
-            }
-
-            playerBody.setLinearVelocity(velX, velY);
-            camera.setDestination(playerBody.getPosition());
-        }
+ 		camera.setDestination(positionComponent.x, positionComponent.y);
     }
 }
