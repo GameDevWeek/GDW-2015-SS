@@ -60,7 +60,7 @@ public class NetworkServerSystem extends EntitySystem implements SendPacketServe
     public void update(float deltaTime) {
         //System.out.println("jfsdklfjsdaöklfjsdöklf rennt");
         while (serverSocket.isNewClientAvaliable()) {
-            Entity e = game.createEntity("player", -50, -50);
+            Entity e = game.createEntity("player", 200, 200);
         }
 
         LinkedList<Entity> toDelete = new LinkedList<>();
@@ -91,6 +91,16 @@ public class NetworkServerSystem extends EntitySystem implements SendPacketServe
     {
         //System.out.println("Received packet server");
         NetworkReceivedNewPacketServerEvent.emit(pack,ent);
+        
+        if(pack.getPacketId()==PacketIds.Movement.getValue())
+        {
+        	System.out.println("received movment packet");
+        	MovementPacket mPacket = (MovementPacket) pack;
+        	PhysixBodyComponent comp = ComponentMappers.physixBody.get(ent);
+        	//comp.setPosition(mPacket.xPos, mPacket.yPos);
+        	comp.setLinearVelocity(mPacket.xPos, mPacket.yPos);
+        }
+        
     }
 
 

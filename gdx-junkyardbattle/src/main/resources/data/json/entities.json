@@ -89,11 +89,8 @@
             "Client":{},
             "PositionSynch":{
                 "clientname": "clientPlayer"
-            },
-            "Move":{
-                "speed": 120
-            },
-            "Input":{}
+            }
+            
 
         }
     },
@@ -150,7 +147,11 @@
                 "scaleY": 1,
                 "flipX": false,
                 "flipY": false
-            }
+            },
+            "Move":{
+                "speed": 10
+            },
+            "Input":{}
         }
     },
 
