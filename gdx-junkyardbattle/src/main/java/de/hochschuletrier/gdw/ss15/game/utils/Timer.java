@@ -30,9 +30,12 @@ public class Timer {
 
     public void update(float deltaTime){
         if(paused) return;
-        timeLeft -= deltaTime * 0.001f ;
+        timeLeft -= deltaTime * 1000;
         expired = timeLeft < 0;
-        if(expired) paused = true;
+        if(expired){
+            paused = true;
+            listeners.forEach((l)->l.onTimerExpired());
+        }
     }
 
     public boolean isExpired(){ return expired; }
@@ -49,6 +52,7 @@ public class Timer {
 
     public void restart(){
         timeLeft = startTime;
+        expired = false;
         paused = false;
     }
 

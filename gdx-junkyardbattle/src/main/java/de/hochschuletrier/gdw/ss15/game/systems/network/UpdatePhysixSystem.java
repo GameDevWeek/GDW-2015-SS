@@ -12,6 +12,7 @@ import de.hochschuletrier.gdw.ss15.game.network.PacketIds;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.EntityUpdatePacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.MovementPacket;
 import de.hochschuletrier.gdw.ss15.game.utils.Timer;
+import de.hochschuletrier.gdw.ss15.game.utils.TimerSystem;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
 
 /**
@@ -22,11 +23,14 @@ public class UpdatePhysixSystem extends IteratingSystem
 
     Timer timer = new Timer(200); // 200 ms timer
 
-    public UpdatePhysixSystem()
+    public UpdatePhysixSystem(TimerSystem timerSystem)
     {
         super(Family.all(PhysixBodyComponent.class, PlayerComponent.class).get());
         NetworkReceivedNewPacketClientEvent.registerListener(PacketIds.EntityUpdate, this);
-        timer.addListener(timer::restart); // timer is restarted after expired
+
+        //timer.addListener(timer::restart); // timer is restarted after expired
+        timerSystem.addTimer(timer);
+        timer.start();
     }
 
 
@@ -37,25 +41,22 @@ public class UpdatePhysixSystem extends IteratingSystem
         if(timer.isExpired()) {
             PlayerComponent plc = ComponentMappers.player.get(entity);
             if(! plc.isLocalPlayer) return;
-
             PhysixBodyComponent phxc = ComponentMappers.physixBody.get(entity);
             MovementPacket packet = new MovementPacket(phxc.getLinearVelocity().x, phxc.getLinearVelocity().y, phxc.getAngle());
             SendPacketClientEvent.emit(packet, true);
+            timer.restart();
         }
     }
 
     /////////////////// CLIENT
     @Override
-    public void onReceivedNewPacket(Packet pack) {
-        // TODO: get entity as parameter
-        Entity e = null;
+    public void onReceivedNewPacket(Packet pack, Entity entity) {
         try{
             EntityUpdatePacket p = (EntityUpdatePacket)pack;
-            PhysixBodyComponent phxc = e.getComponent(PhysixBodyComponent.class);
+            PhysixBodyComponent phxc = entity.getComponent(PhysixBodyComponent.class);
             phxc.setPosition(p.xPos, p.yPos);
             phxc.setAngle(p.rotation);
         }catch(ClassCastException ex){}
 
     }
-
 }

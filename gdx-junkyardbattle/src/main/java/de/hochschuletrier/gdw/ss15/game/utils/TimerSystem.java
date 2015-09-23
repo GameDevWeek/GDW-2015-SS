@@ -7,13 +7,15 @@ import java.util.ArrayList;
  */
 public class TimerSystem {
 
-    private static ArrayList<Timer> timers;
+    private static ArrayList<Timer> timers = new ArrayList<>();
 
-    public void Update(float deltaTime){
-
+    public void update(float deltaTime){
         timers.forEach((t)->t.update(deltaTime));
-
     }
 
+
+    public void addTimer(Timer t){
+        timers.add(t);
+    }
 
 }

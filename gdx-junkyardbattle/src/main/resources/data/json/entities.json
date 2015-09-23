@@ -75,6 +75,7 @@
         "meta": {},
         "components": {
             "Position": {},
+            "Player": {},
             "PhysixBody": {
                 "type": "circle",
                 "size": 60,
@@ -93,7 +94,7 @@
         "meta": {},
         "components": {
             "Position": {},
-            "player": {},
+            "Player": {},
             "PhysixBody": {
                 "type": "circle",
                 "size": 40,
@@ -119,7 +120,7 @@
     "clientOwnPlayer": {
         "meta": {},
         "components": {
-            "player": {
+            "Player": {
                 "isLocalPlayer": true
             },
             "Position": {},

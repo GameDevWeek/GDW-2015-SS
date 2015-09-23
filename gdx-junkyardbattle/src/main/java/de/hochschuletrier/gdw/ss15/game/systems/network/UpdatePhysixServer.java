@@ -10,6 +10,8 @@ import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
 
 /**
  * Created by oliver on 23.09.15.
+ *
+ * Receives Movement packets and updates physixbody
  */
 public class UpdatePhysixServer implements NetworkReceivedNewPacketServerEvent.Listener{
 
