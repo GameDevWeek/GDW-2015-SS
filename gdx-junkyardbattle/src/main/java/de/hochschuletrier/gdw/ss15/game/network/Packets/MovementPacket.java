@@ -32,6 +32,7 @@ public class MovementPacket extends Packet {
         dataOutput.writeFloat(xPos);
         dataOutput.writeFloat(yPos);
         dataOutput.writeFloat(rotation);
+       // dataOutput.writeChars();
     }
 
     @Override
@@ -39,6 +40,8 @@ public class MovementPacket extends Packet {
         xPos = input.readFloat();
         yPos = input.readFloat();
         rotation = input.readFloat();
+
+        //input.a
     }
 
     @Override

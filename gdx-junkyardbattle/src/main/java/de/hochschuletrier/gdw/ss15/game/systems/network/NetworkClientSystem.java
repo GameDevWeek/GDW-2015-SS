@@ -78,11 +78,12 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener 
         if(pack.getPacketId()== PacketIds.InitEntity.getValue())
         {
             InitEntityPacket iPacket = (InitEntityPacket) pack;
-            //logger.info("Spawned entitiy with name: "+iPacket.name);
+            logger.info("Spawned entitiy with name: "+iPacket.name);
 
 
             lastAddedEntityID = iPacket.entityID;
             Entity ent = game.createEntity(iPacket.name,0,0);
+
 
             ComponentMappers.position.get(ent).x = iPacket.xPos;
             ComponentMappers.position.get(ent).y = iPacket.yPos;
@@ -90,16 +91,19 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener 
         }
         else if(pack.getPacketId() == PacketIds.EntityUpdate.getValue())
         {//positino update packet
-            //System.out.print("update packet received");
+        //
+            //System.out.println("update packet received");
             if(pack.getTimestamp()>lastNetworkTimestamp)
             {//synccompoent
                 lastNetworkTimestamp = pack.getTimestamp();
                 EntityUpdatePacket ePacket = (EntityUpdatePacket) pack;
 
+               // System.out.println("avter timestamp check id: "+ePacket.entityID);
                 Entity ent = hashMap.get(ePacket.entityID);
                 if(ent!=null) {
                     NetworkPositionEvent.emit(ent, ePacket.xPos, ePacket.yPos, ePacket.rotation, false);
 
+                    //System.out.println(ePacket.xPos);
                     ComponentMappers.position.get(ent).x = ePacket.xPos;
                     ComponentMappers.position.get(ent).y = ePacket.yPos;
                     ComponentMappers.position.get(ent).rotation = ePacket.rotation;
