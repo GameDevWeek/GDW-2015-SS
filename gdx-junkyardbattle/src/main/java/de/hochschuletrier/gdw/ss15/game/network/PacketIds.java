@@ -4,11 +4,8 @@ package de.hochschuletrier.gdw.ss15.game.network;
  * Created by lukas on 22.09.15.
  */
 
-import de.hochschuletrier.gdw.ss15.game.network.Packets.EntityPacket;
-import de.hochschuletrier.gdw.ss15.game.network.Packets.InitEntityPacket;
-import de.hochschuletrier.gdw.ss15.game.network.Packets.Inputpacket;
+import de.hochschuletrier.gdw.ss15.game.network.Packets.*;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.PacketFactory;
-import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
 
 public enum PacketIds
 {
@@ -37,5 +34,7 @@ public enum PacketIds
         PacketFactory.registerPacket(Simple.getValue(), SimplePacket.class);
         PacketFactory.registerPacket(InitEntity.getValue(), InitEntityPacket.class);
         PacketFactory.registerPacket(Input.getValue(), Inputpacket.class);
+        PacketFactory.registerPacket(InputEvent.getValue(), InputEventPacket.class);
+        PacketFactory.registerPacket(Entity.getValue(), EntityPacket.class);
     }
 }
