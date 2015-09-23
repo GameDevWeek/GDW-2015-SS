@@ -10,18 +10,18 @@ import java.io.IOException;
 /**
  * Created by hherm on 23/09/2015.
  */
-public class PositionPacket extends Packet {
+public class MovementPacket extends Packet {
 
     public float xPos;
     public float yPos;
     public float rotation;
 
-    public PositionPacket(){
-        super(PacketIds.Position.getValue());
+    public MovementPacket(){
+        super(PacketIds.Movement.getValue());
     }
 
-    public PositionPacket(long entityID, float xPos, float yPos, float rotation){
-        super(PacketIds.Position.getValue());
+    public MovementPacket(long entityID, float xPos, float yPos, float rotation){
+        super(PacketIds.Movement.getValue());
         this.xPos = xPos;
         this.yPos = yPos;
         this.rotation = rotation;

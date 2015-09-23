@@ -9,19 +9,19 @@ import java.io.IOException;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
 import de.hochschuletrier.gdw.ss15.game.network.PacketIds;
 
-public class EntityPacket extends Packet {
+public class EntityUpdatePacket extends Packet {
 
     public float xPos;
     public float yPos;
     public float rotation;
     public long entityID;
 
-    public EntityPacket(){
-        super(PacketIds.Position.getValue());
+    public EntityUpdatePacket(){
+        super(PacketIds.EntityUpdate.getValue());
     }
 
-    public EntityPacket(long entityID, float xPos, float yPos, float rotation){
-        super(PacketIds.Entity.getValue());
+    public EntityUpdatePacket(long entityID, float xPos, float yPos, float rotation){
+        super(PacketIds.EntityUpdate.getValue());
         this.entityID = entityID;
         this.xPos = xPos;
         this.yPos = yPos;

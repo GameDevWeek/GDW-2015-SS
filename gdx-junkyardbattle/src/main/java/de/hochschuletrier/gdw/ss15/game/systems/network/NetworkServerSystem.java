@@ -3,14 +3,12 @@ package de.hochschuletrier.gdw.ss15.game.systems.network;
 import com.badlogic.ashley.core.*;
 
 import com.badlogic.ashley.utils.ImmutableArray;
-import de.hochschuletrier.gdw.commons.gdx.sceneanimator.Queue;
 import de.hochschuletrier.gdw.ss15.events.network.server.SendPacketServerEvent;
 import de.hochschuletrier.gdw.ss15.game.ServerGame;
 import de.hochschuletrier.gdw.ss15.game.components.network.server.ClientComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.network.PacketIds;
-import de.hochschuletrier.gdw.ss15.game.network.Packets.EntityPacket;
-import de.hochschuletrier.gdw.ss15.game.network.Packets.InitEntityPacket;
+import de.hochschuletrier.gdw.ss15.game.network.Packets.EntityUpdatePacket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serverclientsocket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serversocket;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
@@ -85,10 +83,10 @@ public class NetworkServerSystem extends EntitySystem implements SendPacketServe
 
     private void ReceivedPacket(Packet pack,Entity ent)
     {
-        if(pack.getPacketId() == PacketIds.Position.getValue())
+        if(pack.getPacketId() == PacketIds.Movement.getValue())
         {
             //System.out.println("Received position update");
-            EntityPacket ePacket = (EntityPacket)pack;
+            EntityUpdatePacket ePacket = (EntityUpdatePacket)pack;
             PositionComponent posComp = ComponentMappers.position.get(ent);
             //System.out.println("Received position: "+ePacket.xPos+" "+ePacket.yPos);
             posComp.x+=ePacket.xPos;

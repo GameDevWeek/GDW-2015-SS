@@ -11,7 +11,7 @@ import de.hochschuletrier.gdw.ss15.game.Game;
 import de.hochschuletrier.gdw.ss15.game.components.network.client.NetworkIDComponent;
 import de.hochschuletrier.gdw.ss15.game.network.ClientConnection;
 import de.hochschuletrier.gdw.ss15.game.network.PacketIds;
-import de.hochschuletrier.gdw.ss15.game.network.Packets.EntityPacket;
+import de.hochschuletrier.gdw.ss15.game.network.Packets.EntityUpdatePacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.InitEntityPacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Clientsocket;
@@ -88,12 +88,12 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener 
 
             NetworkReceivedNewEntity.emit(ent);
         }
-        else if(pack.getPacketId() == PacketIds.Position.getValue())
+        else if(pack.getPacketId() == PacketIds.Movement.getValue())
         {//positino update packet
             if(pack.getTimestamp()>lastNetworkTimestamp)
             {//synccompoent
                 lastNetworkTimestamp = pack.getTimestamp();
-                EntityPacket ePacket = (EntityPacket) pack;
+                EntityUpdatePacket ePacket = (EntityUpdatePacket) pack;
 
                 Entity ent = hashMap.get(ePacket.entityID);
                 if(ent!=null) {
