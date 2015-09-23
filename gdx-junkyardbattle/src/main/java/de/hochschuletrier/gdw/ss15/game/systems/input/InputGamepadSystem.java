@@ -1,4 +1,4 @@
-package de.hochschuletrier.gdw.ss15.game.systems;
+package de.hochschuletrier.gdw.ss15.game.systems.input;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
@@ -7,7 +7,7 @@ import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import de.hochschuletrier.gdw.ss15.Main;
-import de.hochschuletrier.gdw.ss15.game.components.InputComponent;
+import de.hochschuletrier.gdw.ss15.game.components.input.InputComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
 
 /**
@@ -17,7 +17,7 @@ import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
  * Wenn eine Taste gedrueckt wird, wird die entsprechende methode mit dem
  * zugehoerigen keycode aufgerufen.
  */
-public class InputSystem extends IteratingSystem implements InputProcessor {
+public class InputGamepadSystem extends IteratingSystem implements InputProcessor {
 
 
     private boolean up = false;
@@ -31,11 +31,11 @@ public class InputSystem extends IteratingSystem implements InputProcessor {
     private int posX;
     private int posY;
 
-    public InputSystem() {
+    public InputGamepadSystem() {
         this(0);
     }
 
-    public InputSystem(int priority) {
+    public InputGamepadSystem(int priority) {
         super(Family.all(InputComponent.class, PlayerComponent.class).get(), priority);
     }
 
