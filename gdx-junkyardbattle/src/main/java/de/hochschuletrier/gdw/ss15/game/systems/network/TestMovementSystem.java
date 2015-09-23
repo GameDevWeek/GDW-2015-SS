@@ -49,12 +49,10 @@ public class TestMovementSystem extends IteratingSystem{
 	protected void processEntity(Entity entity, float deltaTime) {
 		
 		timer.Update();
-		Tools.Sleep(100);
         if(timer.get_CounterMilliseconds()>100)
         {
             timer.StartCounter();
         
-	        vectorToAdd.nor();
 	        vectorToAdd.scl(move.get(entity).speed);
 	        InputComponent input = ComponentMappers.input.get(entity);
 	        PositionComponent posc = ComponentMappers.position.get(entity);
@@ -72,5 +70,6 @@ public class TestMovementSystem extends IteratingSystem{
         velVector.scl(deltaTime);
         vectorToAdd.add(velVector);
 		
+	}
 
-    }
+}
