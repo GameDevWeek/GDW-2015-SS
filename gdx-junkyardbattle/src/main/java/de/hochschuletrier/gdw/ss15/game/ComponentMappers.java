@@ -1,11 +1,11 @@
 package de.hochschuletrier.gdw.ss15.game;
 
 import com.badlogic.ashley.core.ComponentMapper;
-import de.hochschuletrier.gdw.commons.gdx.physix.components.*;
-import de.hochschuletrier.gdw.ss15.game.components.*;
-import de.hochschuletrier.gdw.commons.gdx.physix.components.*;
 import de.hochschuletrier.gdw.ss15.game.components.*;
 import de.hochschuletrier.gdw.ss15.game.components.animation.AnimatorComponent;
+import de.hochschuletrier.gdw.ss15.game.components.network.client.NetworkIDComponent;
+import de.hochschuletrier.gdw.ss15.game.components.network.server.ClientComponent;
+import de.hochschuletrier.gdw.ss15.game.components.network.server.PositionSynchComponent;
 import de.hochschuletrier.gdw.ss15.game.components.texture.TextureComponent;
 
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
@@ -45,6 +45,7 @@ public class ComponentMappers {
     public static final ComponentMapper<PositionSynchComponent> positionSynch = ComponentMapper.getFor(PositionSynchComponent.class);
     //public static final ComponentMapper<PositionSynchComponent> positionSynch = ComponentMapper.getFor(PositionSynchComponent.class);
     public static final ComponentMapper<SoundEmitterComponent> soundEmitter = ComponentMapper.getFor(SoundEmitterComponent.class);
+    public static final ComponentMapper<InventoryComponent> inventory = ComponentMapper.getFor(InventoryComponent.class);
     public static final ComponentMapper<NetworkIDComponent> networkID = ComponentMapper.getFor(NetworkIDComponent.class);
     public static final ComponentMapper<LineOfSightComponent> lineOfSight = ComponentMapper.getFor(LineOfSightComponent.class);
 }

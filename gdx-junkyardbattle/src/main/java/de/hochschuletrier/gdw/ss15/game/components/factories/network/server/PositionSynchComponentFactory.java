@@ -1,9 +1,11 @@
-package de.hochschuletrier.gdw.ss15.game.components.factories;
+package de.hochschuletrier.gdw.ss15.game.components.factories.network.server;
 
 import com.badlogic.ashley.core.Entity;
 import de.hochschuletrier.gdw.commons.gdx.ashley.ComponentFactory;
 import de.hochschuletrier.gdw.commons.utils.SafeProperties;
-import de.hochschuletrier.gdw.ss15.game.components.PositionSynchComponent;
+import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
+import de.hochschuletrier.gdw.ss15.game.components.network.server.PositionSynchComponent;
+import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.MyTimer;
 
 /**
  * Created by hherm on 22/09/2015.
@@ -20,6 +22,7 @@ public class PositionSynchComponentFactory extends ComponentFactory<EntityFactor
         PositionSynchComponent component = engine.createComponent(PositionSynchComponent.class);
         component.reset(); // sollte funktionieren
         component.clientName=properties.getString("clientname");
+        component.lastSendTimer = new MyTimer(true);
         //System.out.println("Gelesen: "+ component.clientName);
         entity.add(component);
     }
