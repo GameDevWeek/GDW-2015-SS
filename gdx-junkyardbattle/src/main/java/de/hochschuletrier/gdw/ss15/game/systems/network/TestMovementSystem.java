@@ -58,9 +58,18 @@ public class TestMovementSystem extends IteratingSystem{
 	        PositionComponent posc = ComponentMappers.position.get(entity);
 	        
 	        Vector3 mousepos = camera.unproject(new Vector3(input.posX, input.posY,0));
+	        Vector2 mousepos2 = new Vector2(mousepos.x, mousepos.y);
+	        
+	        mousepos2.sub(new Vector2(posc.x,posc.y));
+	        float angle = mousepos2.angle();
+	        System.out.println(angle);
+//	        System.out.println("X" + input.posX);
+//	        System.out.println("Y" + input.posY);
+	        System.out.println("Maus" + mousepos2);
 	
-	        float rotation = (float)Math.atan2(mousepos.y - posc.y,mousepos.x - posc.y);
-	        MovementPacket packet = new MovementPacket(vectorToAdd.x,vectorToAdd.y,rotation);
+//	        float rotation = (float)Math.atan2(mousepos2.y - posc.y,mousepos2.x - posc.x);
+	        
+	        MovementPacket packet = new MovementPacket(vectorToAdd.x,vectorToAdd.y,angle);
 	        SendPacketClientEvent.emit(packet,true);
 	        vectorToAdd.setZero();
         }

@@ -3,6 +3,8 @@ package de.hochschuletrier.gdw.ss15.game.systems.network;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
+import com.badlogic.gdx.math.MathUtils;
+
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.ss15.events.network.client.NetworkReceivedNewPacketClientEvent;
 import de.hochschuletrier.gdw.ss15.events.network.client.SendPacketClientEvent;
@@ -57,8 +59,9 @@ public class UpdatePhysixSystem extends IteratingSystem
             EntityUpdatePacket p = (EntityUpdatePacket)pack;
             PhysixBodyComponent phxc = entity.getComponent(PhysixBodyComponent.class);
             phxc.setPosition(p.xPos, p.yPos);
-            phxc.setAngle(p.rotation);
-            //System.out.println("used new position "+p.xPos+" "+ p.yPos);
+            phxc.setAngle(p.rotation*MathUtils.degreesToRadians);
+          
+            //System.out.println("used new rotation: "+p.rotation);
         }catch(ClassCastException ex){}
 
     }

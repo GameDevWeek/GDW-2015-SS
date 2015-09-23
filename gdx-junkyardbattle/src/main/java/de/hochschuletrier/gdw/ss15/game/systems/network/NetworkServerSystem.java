@@ -95,12 +95,12 @@ public class NetworkServerSystem extends EntitySystem implements SendPacketServe
         if(pack.getPacketId()==PacketIds.Movement.getValue())
         {
         	
-        	MovementPacket mPacket = (MovementPacket) pack;
-        	PhysixBodyComponent comp = ComponentMappers.physixBody.get(ent);
+        	//MovementPacket mPacket = (MovementPacket) pack;
+        	//PhysixBodyComponent comp = ComponentMappers.physixBody.get(ent);
         	//comp.setPosition(mPacket.xPos, mPacket.yPos);
-        	comp.setLinearVelocity(mPacket.xPos, mPacket.yPos);
-        	comp.setAngle(mPacket.rotation);
-        	System.out.println(mPacket.rotation);
+        	//comp.setLinearVelocity(mPacket.xPos, mPacket.yPos);
+        	//comp.setAngle(mPacket.rotation);
+        	//System.out.println(mPacket.rotation);
         }
         
     }
