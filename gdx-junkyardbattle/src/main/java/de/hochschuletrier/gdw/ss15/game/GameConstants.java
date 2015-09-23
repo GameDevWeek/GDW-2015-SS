@@ -4,6 +4,8 @@ public class GameConstants {
 
     // Priorities for entity systems
     public static final int PRIORITY_PHYSIX = 0;
+    public static final int PRIORITY_UPDATE_PHYSIX = 5;
+    public static final int PRIORITY_UPDATE_POSITION = 6;
     public static final int PRIORITY_ENTITIES = 10;
     public static final int PRIORITY_ANIMATIONS = 20;
     public static final int PRIORITY_RENDER_SYSTEM = 29;

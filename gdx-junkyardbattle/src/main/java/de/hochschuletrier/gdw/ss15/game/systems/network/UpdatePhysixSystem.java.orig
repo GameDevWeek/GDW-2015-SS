@@ -3,9 +3,12 @@
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
+<<<<<<< HEAD
 import com.badlogic.gdx.math.MathUtils;
+=======
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
+>>>>>>> 36278bcb0e414501ea860aa96bccbaef2aa17bfd
 
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.ss15.events.network.client.NetworkReceivedNewPacketClientEvent;
@@ -53,17 +56,18 @@ public class UpdatePhysixSystem extends IteratingSystem
     	
     }
 
-  
-            @Override
-            public void onReceivedNewPacket(Packet pack, Entity entity) {
-                try{
-                EntityUpdatePacket p = (EntityUpdatePacket)pack;
-                PhysixBodyComponent phxc = entity.getComponent(PhysixBodyComponent.class);
-                phxc.setPosition(p.xPos, p.yPos);
-                phxc.setAngle(p.rotation*MathUtils.degreesToRadians);
-             }catch(ClassCastException ex){}
+    /////////////////// CLIENT
+    @Override
+    public void onReceivedNewPacket(Packet pack, Entity entity) {
+        try{
+            EntityUpdatePacket p = (EntityUpdatePacket)pack;
+            PhysixBodyComponent phxc = entity.getComponent(PhysixBodyComponent.class);
+<<<<<<< HEAD
+            phxc.setPosition(p.xPos, p.yPos);
+            phxc.setAngle(p.rotation*MathUtils.degreesToRadians);
           
             //System.out.println("used new rotation: "+p.rotation);
+=======
             InterpolatePositionComponent interp = entity.getComponent(InterpolatePositionComponent.class);
             
             
@@ -97,6 +101,7 @@ public class UpdatePhysixSystem extends IteratingSystem
             	return;
             }
             
+>>>>>>> 36278bcb0e414501ea860aa96bccbaef2aa17bfd
         }catch(ClassCastException ex){}
 
     }

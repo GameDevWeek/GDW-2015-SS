@@ -81,7 +81,7 @@
             "Player": {},
             "PhysixBody": {
                 "type": "circle",
-                "size": 60,
+                "size": 40,
                 "density": 10,
                 "friction": 0.5,
                 "restitution": 0.1
@@ -89,7 +89,8 @@
             "Client":{},
             "PositionSynch":{
                 "clientname": "clientPlayer"
-            }
+            },
+            "Interpolate": {}
             
 
         }
@@ -118,7 +119,8 @@
                 "scaleY": 1,
                 "flipX": false,
                 "flipY": false
-            }
+            },
+            "Interpolate": {}
         }
     },
 
@@ -144,7 +146,8 @@
             "Move":{
                 "speed": 10
             },
-            "Input":{}
+            "Input":{},
+            "Interpolate": {}
         }
     },
 
