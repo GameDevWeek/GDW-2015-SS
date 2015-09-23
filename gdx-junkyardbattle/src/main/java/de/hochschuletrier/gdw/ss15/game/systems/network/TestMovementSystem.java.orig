@@ -1,4 +1,4 @@
-﻿package de.hochschuletrier.gdw.ss15.game.systems.network;
+package de.hochschuletrier.gdw.ss15.game.systems.network;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
@@ -46,6 +46,11 @@ public class TestMovementSystem extends IteratingSystem{
         input = ComponentMappers.input;
     }
 
+<<<<<<< Updated upstream
+=======
+
+	@Override
+>>>>>>> Stashed changes
 	protected void processEntity(Entity entity, float deltaTime) {
 		
 		timer.Update();
@@ -53,6 +58,19 @@ public class TestMovementSystem extends IteratingSystem{
         if(timer.get_CounterMilliseconds()>100)
         {
             timer.StartCounter();
+<<<<<<< Updated upstream
+            vectorToAdd.scl(move.get(entity).speed);
+        	MovementPacket packet = new MovementPacket(vectorToAdd.x,vectorToAdd.y,0);
+        	SendPacketClientEvent.emit(packet,true);
+        
+        vectorToAdd.setZero();
+        }
+        velVector.set(input.get(entity).horizontal, input.get(entity).vertical);
+        velVector.nor();
+        velVector.scl(deltaTime);
+        vectorToAdd.add(velVector);
+=======
+
         
 	        vectorToAdd.nor();
 	        vectorToAdd.scl(move.get(entity).speed);
@@ -67,10 +85,12 @@ public class TestMovementSystem extends IteratingSystem{
 	        vectorToAdd.setZero();
         }
         
-        velVector.set(input.get(entity).horizontal, input.get(entity).vertical);
-        velVector.nor();
-        velVector.scl(deltaTime);
-        vectorToAdd.add(velVector);
+        
+        vectorToAdd.add(input.get(entity).horizontal*deltaTime, input.get(entity).vertical*deltaTime);
+
+
+>>>>>>> Stashed changes
 		
+		}
 
     }
