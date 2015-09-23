@@ -1,4 +1,4 @@
-﻿package de.hochschuletrier.gdw.ss15.game;
+package de.hochschuletrier.gdw.ss15.game;
 
 import box2dLight.RayHandler;
 
@@ -115,19 +115,19 @@ public class Game extends InputAdapter {
 			@Override
 			public void preSolve(Contact contact, Manifold oldManifold) {
 				// TODO Auto-generated method stub
-				
+				contact.setEnabled(false);
 			}
 			
 			@Override
 			public void postSolve(Contact contact, ContactImpulse impulse) {
 				// TODO Auto-generated method stub
-				
+				contact.setEnabled(false);
 			}
 			
 			@Override
 			public void endContact(Contact contact) {
 				// TODO Auto-generated method stub
-				
+				contact.setEnabled(false);
 			}
 			
 			@Override

@@ -81,6 +81,7 @@ public class TestMovementSystem extends IteratingSystem{
 
         
 //        vectorToAdd.nor();
+<<<<<<< HEAD
 	        vectorToAdd.scl(move.get(entity).speed);
 	        MovementPacket packet = new MovementPacket(vectorToAdd.x,vectorToAdd.y,0);
 	        SendPacketClientEvent.emit(packet,true);
@@ -88,6 +89,15 @@ public class TestMovementSystem extends IteratingSystem{
 //	        System.out.println(vectorToAdd.x);
 //	        System.out.println(vectorToAdd.y);
 	        vectorToAdd.setZero();
+=======
+        vectorToAdd.scl(move.get(entity).speed);
+        MovementPacket packet = new MovementPacket(vectorToAdd.x,vectorToAdd.y,0);
+        SendPacketClientEvent.emit(packet,true);
+        
+        //System.out.println(vectorToAdd.x);
+        //System.out.println(vectorToAdd.y);
+        vectorToAdd.setZero();
+>>>>>>> develop
         }
         velVector.set(input.get(entity).horizontal, input.get(entity).vertical);
         velVector.nor();
