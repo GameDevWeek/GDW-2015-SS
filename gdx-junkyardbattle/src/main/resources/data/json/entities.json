@@ -12,6 +12,12 @@
             "Animator": {
                 "animation_IDLE": "ball"
             },
+            "ParticleEffect": {
+                "effectname": "particle",
+                "offsetX": 0,
+                "offsetY": 0,
+                "rotation": 0
+            },
             "PhysixBody": {
                 "type": "circle",
                 "size": 30,
@@ -106,6 +112,7 @@
         "meta": {},
         "components": {
             "Position": {},
+            "NetworkID": {},
             "Texture":{
                 "texture": "ball",
                 "width": 60,
@@ -135,6 +142,9 @@
             	"damageValue": 10,
             	"damageToPlayer": true,
             	"damageToTile": true
+            },
+            "Bullet": {
+                "playerID": -1
             }
         }
     },

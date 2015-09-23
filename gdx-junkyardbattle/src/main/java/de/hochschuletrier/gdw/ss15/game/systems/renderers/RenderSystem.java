@@ -46,7 +46,7 @@ public class RenderSystem extends SortedSubIteratingSystem {
     private final FogRenderer fogRenderer = new FogRenderer();
     
     @SuppressWarnings("unchecked")
-	public RenderSystem(PhysixSystem physixSystem, OrthographicCamera camera) {
+	public RenderSystem(PhysixSystem physixSystem, OrthographicCamera camera, Engine engine) {
         super(Family.all(PositionComponent.class).get(), renderComparator, GameConstants.PRIORITY_RENDER_SYSTEM);
 
         this.camera = camera;
@@ -57,6 +57,7 @@ public class RenderSystem extends SortedSubIteratingSystem {
         addSubSystem(new TextureRenderer());
         addSubSystem(new AnimatorRenderer());
         addSubSystem(new NormalMapRenderer());
+        addSubSystem(new ParticleEffectRenderer(engine));
         addSubSystem(lightRenderer);
     }
     

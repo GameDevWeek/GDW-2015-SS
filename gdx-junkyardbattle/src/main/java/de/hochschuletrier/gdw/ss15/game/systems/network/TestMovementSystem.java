@@ -5,7 +5,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import de.hochschuletrier.gdw.ss15.events.network.client.SendPacketClientEvent;
 import de.hochschuletrier.gdw.ss15.game.Game;
-import de.hochschuletrier.gdw.ss15.game.network.Packets.EntityPacket;
+import de.hochschuletrier.gdw.ss15.game.network.Packets.EntityUpdatePacket;
+import de.hochschuletrier.gdw.ss15.game.network.Packets.MovementPacket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.MyTimer;
 
 /**
@@ -50,7 +51,7 @@ public class TestMovementSystem extends EntitySystem{
                 x++;
             }
 
-            EntityPacket packet = new EntityPacket(0,x*10,y*10,0);
+            MovementPacket packet = new MovementPacket(x*10,y*10,0);
             SendPacketClientEvent.emit(packet,true);
         }
     }

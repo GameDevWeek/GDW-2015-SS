@@ -45,7 +45,7 @@ public class Game extends InputAdapter {
 
     private final CameraSystem cameraSystem = new CameraSystem();
 
-    private final RenderSystem renderSystem = new RenderSystem(physixSystem,cameraSystem.getCamera().getOrthographicCamera());
+    private final RenderSystem renderSystem = new RenderSystem(physixSystem, cameraSystem.getCamera().getOrthographicCamera(), engine);
 
     private final WeaponSystem weaponSystem = new WeaponSystem();
 
@@ -84,8 +84,8 @@ public class Game extends InputAdapter {
     }
 
     private void addSystems() {
-        engine.addSystem(physixSystem);
-        engine.addSystem(physixDebugRenderSystem);
+        //engine.addSystem(physixSystem);
+        //engine.addSystem(physixDebugRenderSystem);
         engine.addSystem(updatePositionSystem);
         engine.addSystem(networksystem);
         engine.addSystem(inputSystem);

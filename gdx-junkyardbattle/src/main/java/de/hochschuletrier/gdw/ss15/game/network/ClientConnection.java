@@ -116,6 +116,7 @@ public class ClientConnection implements SendPacketClientEvent.Listener {
 
     public void onSendSClientPacket(Packet pack,boolean save)
     {
+        //System.out.print("Packet send");
         if(clientSocket!=null && clientSocket.isConnected())
         {
             if(save == true)

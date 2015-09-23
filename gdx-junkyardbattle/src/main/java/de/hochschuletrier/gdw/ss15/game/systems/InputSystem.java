@@ -19,7 +19,6 @@ import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
  */
 public class InputSystem extends IteratingSystem implements InputProcessor {
 
-    //public InputMovPaket inputPaket;
 
     private boolean up = false;
     private boolean down = false;
@@ -158,7 +157,6 @@ public class InputSystem extends IteratingSystem implements InputProcessor {
         // Der InputProcessor wird beim Spiel angemeldet
         Main.getInstance().inputMultiplexer.addProcessor(this);
         // Das InputPaket fuer den Server wird initialisiert
-        //inputPaket = new InputMovPaket();
     }
 
     @Override
