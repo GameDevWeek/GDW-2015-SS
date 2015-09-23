@@ -2,18 +2,29 @@ package de.hochschuletrier.gdw.ss15.game.network;
 
 import de.hochschuletrier.gdw.commons.devcon.ConsoleCmd;
 import de.hochschuletrier.gdw.ss15.Main;
+import de.hochschuletrier.gdw.ss15.events.network.Base.DoNotTouchPacketEvent;
 import de.hochschuletrier.gdw.ss15.events.network.client.SendPacketClientEvent;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Clientsocket;
+import de.hochschuletrier.gdw.ss15.network.gdwNetwork.basic.SocketConnectListener;
+import de.hochschuletrier.gdw.ss15.network.gdwNetwork.basic.SocketDisconnectListener;
+import de.hochschuletrier.gdw.ss15.network.gdwNetwork.basic.SocketListener;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
+import de.hochschuletrier.gdw.ss15.network.gdwNetwork.enums.ConnectStatus;
+import de.hochschuletrier.gdw.ss15.states.GameplayState;
+import de.hochschuletrier.gdw.ss15.states.MainMenuState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.sql.ConnectionEventListener;
 import java.util.List;
 
 /**
  * Created by lukas on 21.09.15.
  */
-public class ClientConnection implements SendPacketClientEvent.Listener {
+public class ClientConnection implements SendPacketClientEvent.Listener,
+                                         SocketConnectListener,
+                                         SocketDisconnectListener,
+                                         SocketListener {
     private Clientsocket clientSocket = null;
 
     public ClientConnection()
@@ -54,7 +65,8 @@ public class ClientConnection implements SendPacketClientEvent.Listener {
     public void update()
     {
         if(clientSocket!=null) {
-            clientSocket.justCallDisconnectHandler();
+            //clientSocket.justCallDisconnectHandler();
+            clientSocket.callListeners();
             if(!clientSocket.isConnected() && !clientSocket.isByConnect())
             {
                 logger.warn("Lost connection to server");
@@ -82,7 +94,11 @@ public class ClientConnection implements SendPacketClientEvent.Listener {
             clientSocket=null;
         }
         clientSocket = new Clientsocket(ip,port,true);
-       // clientSocket.registerConnectListner(this);
+        // Listener registrieren
+        clientSocket.registerConnectListner(this);
+        clientSocket.registerDisconnectListener(this);
+        clientSocket.registerListener(this);
+
         clientSocket.connect();
         SendPacketClientEvent.registerListener(this);
     }
@@ -130,4 +146,18 @@ public class ClientConnection implements SendPacketClientEvent.Listener {
         }
     }
 
+    @Override
+    public void loginFinished(ConnectStatus status) {
+
+    }
+
+    @Override
+    public void socketDisconnected() {
+        Main.getInstance().changeState(new MainMenuState(Main.getInstance().getAssetManager()));
+    }
+
+    @Override
+    public void receivedPacket(Packet packet, boolean receivedSave) {
+        DoNotTouchPacketEvent.emit(packet);
+    }
 }
