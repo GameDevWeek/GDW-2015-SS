@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector2;
 import de.hochschuletrier.gdw.ss15.events.network.client.SendPacketClientEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.Game;
+import de.hochschuletrier.gdw.ss15.game.components.InventoryComponent;
 import de.hochschuletrier.gdw.ss15.game.components.MoveComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.input.InputComponent;
@@ -30,12 +31,14 @@ public class TestMovementSystem extends IteratingSystem{
     Vector2 vectorToAdd = new Vector2(0,0);
     private ComponentMapper<MoveComponent> move;
     private ComponentMapper<InputComponent> input;
+    private ComponentMapper<InventoryComponent> inventory;
     public TestMovementSystem(Game game)
     {
         super(Family.all(InputComponent.class, MoveComponent.class).get());
         this.game = game;
         move = ComponentMappers.move;
         input = ComponentMappers.input;
+        inventory = ComponentMappers.inventory;
     }
 
 	protected void processEntity(Entity entity, float deltaTime) {
@@ -44,8 +47,8 @@ public class TestMovementSystem extends IteratingSystem{
         if(timer.get_CounterMilliseconds()>100)
         {
             timer.StartCounter();
-
-        vectorToAdd.scl(move.get(entity).speed);
+            double inv = inventory.get(entity).metalShards/100*0.75;
+        vectorToAdd.scl( (move.get(entity).speed));
         MovementPacket packet = new MovementPacket(vectorToAdd.x,vectorToAdd.y,0);
         SendPacketClientEvent.emit(packet,true);
         

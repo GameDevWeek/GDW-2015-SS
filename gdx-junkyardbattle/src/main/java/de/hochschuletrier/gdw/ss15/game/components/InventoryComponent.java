@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.Pool;
  */
 public class InventoryComponent extends Component implements Pool.Poolable {
 
-    public int metalShards = 0;
+    public int metalShards = 700;
 
 
     @Override
@@ -20,9 +20,9 @@ public class InventoryComponent extends Component implements Pool.Poolable {
     
     public boolean setMetalShards(int shards)
     {
-    	//100 mit const MAX LIMIT ersetzen
+    	//700 mit const MAX LIMIT ersetzen
     	//0 mit const MIN LIMIT ersetzen
-    	if(shards <= 100 && shards >= 0)
+    	if(shards <= 700 && shards >= 0)
     	{
     		metalShards = shards;
     		return true;
