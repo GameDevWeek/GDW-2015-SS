@@ -175,6 +175,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
     @Override
     public void removedFromEngine(Engine engine) {
         super.removedFromEngine(engine);
+        Controllers.removeListener(this);
     }
 
     @Override
