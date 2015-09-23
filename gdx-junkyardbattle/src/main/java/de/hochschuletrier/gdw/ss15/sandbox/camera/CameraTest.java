@@ -53,19 +53,17 @@ import org.slf4j.LoggerFactory;
 
 /**
  *
+ * <p>
+ * Testing Sandbox for Camera-System implementation
+ * </p>
  * @author Sebastian Schalow
  */
 
 public class CameraTest extends SandboxGame {
-
-    private float camZoom = 1.0f;
     
     private static final Logger logger = LoggerFactory.getLogger(MapTest.class);
 
     private final Hotkey hkey = new Hotkey(this::addEntity, Input.Keys.E, HotkeyModifier.SHIFT);
-    private final Hotkey camOut = new Hotkey(() -> {camZoom += 1f; zoomCam();}, Input.Keys.Q);
-    private final Hotkey camIn = new Hotkey(() -> {camZoom -= 1f; zoomCam();}, Input.Keys.A);
-    private CVarFloat followFactor = new CVarFloat("camFollow", 1.0f, 0.25f, 30.f, 0, "Camera spring dist factor");
     
     public static final int POSITION_ITERATIONS = 3;
     public static final int VELOCITY_ITERATIONS = 8;
@@ -126,7 +124,6 @@ public class CameraTest extends SandboxGame {
         tempComp.isLocalPlayer = false;
         temp.add(tempComp);
         player.add(playerComponent);
-
         
         PositionComponent positionComponent = engine.createComponent(PositionComponent.class);
         player.add(positionComponent);
@@ -146,18 +143,10 @@ public class CameraTest extends SandboxGame {
         });
         engine.addEntity(player);
         hkey.register();
-        camOut.register();
-        camIn.register();
         
         totalMapWidth = map.getWidth() * map.getTileWidth();
         totalMapHeight = map.getHeight() * map.getTileHeight();
         //cameraSystem.setCameraBounds(0, 0, totalMapWidth, totalMapHeight);
-        
-        followFactor.addListener((CVar cvar)-> {
-            cameraSystem.getCamera().setSpringFollowFactor(followFactor.get());
-        });
-        
-        Main.getInstance().console.register(followFactor);
         
     }
 
@@ -176,8 +165,6 @@ public class CameraTest extends SandboxGame {
     @Override
     public void dispose() {
         hkey.unregister();
-        camOut.unregister();
-        camIn.unregister();
         tilesetImages.values().forEach(Texture::dispose);
     }
 
@@ -225,7 +212,7 @@ public class CameraTest extends SandboxGame {
             
             if(Gdx.input.isButtonPressed(Buttons.LEFT)){
                 WeaponCharging.emit();
-            } else if(Gdx.input.isButtonPressed(Buttons.RIGHT)){
+            } else if(!Gdx.input.isButtonPressed(Buttons.LEFT)){
                 WeaponUncharged.emit();
             }
             
