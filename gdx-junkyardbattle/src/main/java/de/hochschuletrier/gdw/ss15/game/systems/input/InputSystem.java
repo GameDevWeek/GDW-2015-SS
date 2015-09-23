@@ -227,16 +227,16 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
                     leftMBDown = rightMBDown = false;
                 break;
             case XBox360KeyMap.L1X:
-                if (value > 0.25f)
-
+                if (value > stickDeadZone || value < -stickDeadZone)
+                    horizontal = value;
+                else
+                    horizontal = 0.0f;
                 break;
             case XBox360KeyMap.L1Y:
-                if (value > 0.25f)
-                    down = true;
-                else if (value < -0.25)
-                    up = true;
+                if (value > stickDeadZone || value < -stickDeadZone)
+                    vertical = value;
                 else
-                    down = up = false;
+                    vertical = 0.0f;
                 break;
         }
         debug();
