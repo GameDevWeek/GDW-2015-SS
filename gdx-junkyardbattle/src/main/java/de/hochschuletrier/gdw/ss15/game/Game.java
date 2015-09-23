@@ -84,8 +84,8 @@ public class Game extends InputAdapter {
     }
 
     private void addSystems() {
-        engine.addSystem(physixSystem);
-        engine.addSystem(physixDebugRenderSystem);
+        //engine.addSystem(physixSystem);
+        //engine.addSystem(physixDebugRenderSystem);
         engine.addSystem(updatePositionSystem);
         engine.addSystem(networksystem);
         engine.addSystem(inputSystem);

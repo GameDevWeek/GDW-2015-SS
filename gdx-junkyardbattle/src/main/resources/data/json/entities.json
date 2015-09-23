@@ -112,6 +112,7 @@
         "meta": {},
         "components": {
             "Position": {},
+            "NetworkID": {},
             "Texture":{
                 "texture": "ball",
                 "width": 60,
@@ -141,6 +142,9 @@
             	"damageValue": 10,
             	"damageToPlayer": true,
             	"damageToTile": true
+            },
+            "Bullet": {
+                "playerID": -1
             }
         }
     },

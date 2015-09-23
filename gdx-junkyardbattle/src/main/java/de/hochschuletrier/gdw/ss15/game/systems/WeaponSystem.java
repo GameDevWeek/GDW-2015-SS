@@ -76,7 +76,7 @@ public class WeaponSystem extends IteratingSystem implements CollisionEvent.List
                     param.x = startPosition.x;
                     param.y = startPosition.y;
                     
-                    Entity projectile = factory.createEntity("Projectile", param);
+                    Entity projectile = factory.createEntity("projectile", param);
                     projectile.getComponent(PhysixBodyComponent.class).applyImpulse(dir.setLength(power));
                 }
             }

@@ -2,15 +2,13 @@ package de.hochschuletrier.gdw.ss15.game.systems.network;
 
 import com.badlogic.ashley.core.*;
 import com.badlogic.ashley.utils.ImmutableArray;
-import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.ss15.events.network.server.SendPacketServerEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.ServerGame;
-import de.hochschuletrier.gdw.ss15.game.components.network.server.ClientComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.components.network.server.PositionSynchComponent;
 import de.hochschuletrier.gdw.ss15.game.network.ClientConnection;
-import de.hochschuletrier.gdw.ss15.game.network.Packets.EntityPacket;
+import de.hochschuletrier.gdw.ss15.game.network.Packets.EntityUpdatePacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.InitEntityPacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serverclientsocket;
@@ -55,13 +53,13 @@ public class PositionSynchSystem extends EntitySystem implements EntityListener 
                     comp.lastSendTimer.Update();
                     if(comp.lastSendTimer.get_CounterMilliseconds()>200)
                     {
-
                         comp.lastSendTimer.StartCounter();
                         comp.lastX=pos.x;
                         comp.lastY=pos.y;
                         comp.lastRot=pos.rotation;
 
-                        EntityPacket pack = new EntityPacket(comp.networkID,comp.lastX,comp.lastY,comp.lastRot);
+                        //System.out.println("befor send");
+                        EntityUpdatePacket pack = new EntityUpdatePacket(comp.networkID,comp.lastX,comp.lastY,comp.lastRot);
                         SendPacketServerEvent.emit(pack,false);
                     }
                 }
@@ -106,6 +104,7 @@ public class PositionSynchSystem extends EntitySystem implements EntityListener 
                     //System.out.println("Send other player to client");
                     initPacket.name = sendComp.clientName;
                 }
+                //System.out.println();
                 client.sendPacketSave(initPacket,true);
             }
 
