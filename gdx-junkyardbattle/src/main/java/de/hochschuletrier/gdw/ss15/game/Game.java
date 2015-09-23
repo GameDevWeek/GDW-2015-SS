@@ -4,6 +4,10 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.Manifold;
 
 import de.hochschuletrier.gdw.commons.gdx.ashley.EntityFactory;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
@@ -12,7 +16,6 @@ import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
 import de.hochschuletrier.gdw.ss15.game.systems.network.NetworkClientSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.*;
 import de.hochschuletrier.gdw.ss15.game.systems.network.TestMovementSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.UpdatePhysixSystem;
@@ -103,6 +106,33 @@ public class Game extends InputAdapter {
         //physixSystem.getWorld().setContactListener(contactListener);
         //contactListener.addListener(ImpactSoundComponent.class, new ImpactSoundListener());
        // contactListener.addListener(TriggerComponent.class, new TriggerListener());
+    	ContactListener cl = new ContactListener() {
+			
+			@Override
+			public void preSolve(Contact contact, Manifold oldManifold) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void postSolve(Contact contact, ContactImpulse impulse) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void endContact(Contact contact) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void beginContact(Contact contact) {
+				contact.setEnabled(false);
+				
+			}
+		}; 
+    	physixSystem.getWorld().setContactListener(cl);
     }
 
     private void setupPhysixWorld() {
