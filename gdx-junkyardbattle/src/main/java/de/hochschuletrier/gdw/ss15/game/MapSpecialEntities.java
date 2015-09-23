@@ -17,7 +17,16 @@ import java.util.function.Consumer;
 /**
  * 
  * @author tobidot (Tobias Gepp)
- *
+ * 
+ *          DOKUMENTATION
+ * 
+ * Solange ein Entity-Typ immer identisch startet braucht KEINE extra Klasse hier benoetigt 
+ * sie wird Automtisch erstellt, wenn sie sich in 'entities.json' befindet.
+ * 
+ * Um ein Object z.B. mit einer Start-HP zu besetzten muss innerhalb von 
+ * 'MapSpecialEntites' eine Klasse mit dem gleichen Namen wie dem EntityTyp erstellt werden ( Gross/Kleinschreibung beachten )
+ * diese Klasse MUSS 'Consumer[CreatorInfo]' implementieren 
+ * dann wird die Consumer.accept( ('CreatorInfo') )  aufgerufen
  */
 
 public class MapSpecialEntities
@@ -28,16 +37,18 @@ public class MapSpecialEntities
      */
     public static class CreatorInfo
     {
-        public int posX;
-        public int posY;
-        public Entity entity;
-        public TileInfo asTile;
-        public LayerObject asObject;
-        public Layer layer;            /// Layer fuer Renderer
-        public TiledMap tiledMap;
+        public int posX;                
+        public int posY;                /// diese Positionen sind nur fuer Tiles besetzt und geben die Position in Tile-Schritten wieder
+        public Entity entity;           /// Entity die bereits erstellt und mit Standardwerten besetzt wurde
+                                        /// ist 'null' fuer Tiles
+        public TileInfo asTile;         /// wenn kein Tile erstellt wurde  => null  sonst eine Referenz zum geladenen Tile
+        public LayerObject asObject;    /// wenn kein Object erstellt wurde => null  sonst eine Referenz zum geladenen Object
+                /// TileInfo, LayerObject    geben ueber .getSafeProperties().getProperty("PropName","default") deren Attribute aus 
+        public Layer layer;             /// Layer in dem sich dieses Element befindet
+        public TiledMap tiledMap;       /// gesamte TiledMap wird uebertragen dfuer alle Faelle 
         public CreatorInfo(Entity ent,TiledMap tm,LayerObject lo,Layer layer)
         {
-            posX = 0;posY = 0;     /// x und y sind bei Objecten = 0  ->  erhalte Position ueber PositionComponent     
+            posX = 0;posY = 0;     /// x und y sind bei Objecten = 0  =>  erhalte Position ueber PositionComponent     
             tiledMap = null;
             asTile = null;
             entity = ent;
@@ -147,11 +158,16 @@ public class MapSpecialEntities
     
     static
     {
+        /// Alle von Consumer abgeleiteten Klassen werden instanziert und zur HashMap 'specialEntities' hinzugefuegt
+        /// als Key wird der Name der Klasse selbst verwendet
+        /// eine beim laden der Map erstelltes Object (Tile oder LayerObject)
+        /// sucht in dieser Map nach seinem Namen, und fuehrt falls gefunden  ('Consumer').accept() aus
+        
         Class allClasses[] = MapSpecialEntities.class.getClasses();         /// Alle Memberklassen von 'MapSpecialEntities'
         specialEntities = new HashMap<String, Consumer<CreatorInfo>>();     
         for ( Class c : allClasses ) 
         {
-            /// nur alle Klassen, die von Consumer abgeleitet sind
+            /// alle Klassen, die von Consumer abgeleitet sind  ( andere sind keine Creator Klassen )
             if ( Consumer.class.isAssignableFrom( c ) )
             {
                 try
@@ -160,7 +176,8 @@ public class MapSpecialEntities
                 } catch (InstantiationException | IllegalAccessException e)
                 {
                     // TODO 
-                    // Fehler bein Instanzieren
+                    // Fehler bein Instanzieren 
+                    // Ausgabe hinzufuegen ?   sollte eigentlich nie vorkommen
                     e.printStackTrace();
                 }
             }

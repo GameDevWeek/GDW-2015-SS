@@ -1,4 +1,4 @@
-package de.hochschuletrier.gdw.ss15.game.systems.network;
+﻿package de.hochschuletrier.gdw.ss15.game.systems.network;
 
 import com.badlogic.ashley.core.*;
 import com.badlogic.ashley.utils.ImmutableArray;
@@ -47,7 +47,8 @@ public class PositionSynchSystem extends EntitySystem implements EntityListener 
             if(ComponentMappers.position.has(ent))
             {
                 PositionComponent pos = ComponentMappers.position.get(ent);
-                //System.out.println("New movment gecoginced: x"+pos.x+ " y"+pos.y);
+//                System.out.println("New movment gecoginced: x"+pos.x+ " y"+pos.y);
+               // System.out.println("New rotation: "+pos.rotation);
                 if(pos.x != comp.lastX || pos.y != comp.lastY || pos.rotation != comp.lastRot)
                 {
                     comp.lastSendTimer.Update();
