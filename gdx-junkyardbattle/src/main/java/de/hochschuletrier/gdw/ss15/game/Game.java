@@ -80,7 +80,7 @@ public class Game extends InputAdapter {
         
         mapLoader.listen(renderSystem.getTileMapCreator());
         mapLoader.run((String name, float x, float y) -> createEntity(name, x, y), 
-                "data/maps/demo.tmx", physixSystem);
+                "data/maps/prototype.tmx", physixSystem);
     }
 
     private void addSystems() {
