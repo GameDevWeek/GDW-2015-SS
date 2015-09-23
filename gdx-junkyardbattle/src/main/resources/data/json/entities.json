@@ -70,7 +70,7 @@
         "components": {
             "Position": {},
             "PhysixBody": {
-                "type": "box",
+                "type": "circle",
                 "size": 60,
                 "density": 10,
                 "friction": 0.5,
@@ -87,6 +87,13 @@
         "meta": {},
         "components": {
             "Position": {},
+            "PhysixBody": {
+                "type": "circle",
+                "size": 40,
+                "density": 10,
+                "friction": 0.5,
+                "restitution": 0.1
+            },
             "NetworkID": {},
             "Texture":{
                 "texture": "ball",
@@ -106,6 +113,13 @@
         "meta": {},
         "components": {
             "Position": {},
+            "PhysixBody": {
+                "type": "circle",
+                "size": 40,
+                "density": 10,
+                "friction": 0.5,
+                "restitution": 0.1
+            },
             "NetworkID": {},
             "Texture":{
                 "texture": "ball",
