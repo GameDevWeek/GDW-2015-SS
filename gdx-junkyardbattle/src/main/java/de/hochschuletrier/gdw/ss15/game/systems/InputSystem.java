@@ -19,7 +19,6 @@ import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
  */
 public class InputSystem extends IteratingSystem implements InputProcessor {
 
-    //public InputMovPaket inputPaket;
 
     private boolean up = false;
     private boolean down = false;
