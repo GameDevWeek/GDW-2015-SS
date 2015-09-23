@@ -26,7 +26,8 @@ public class TestMovementSystem extends IteratingSystem{
 
     Game game;
     MyTimer timer = new MyTimer(true);
-    Vector2 vectorToAdd = new Vector2();
+    Vector2 velVector = new Vector2();
+    Vector2 vectorToAdd = new Vector2(0,0);
     private ComponentMapper<MoveComponent> move;
     private ComponentMapper<InputComponent> input;
     public TestMovementSystem(Game game)
@@ -80,15 +81,17 @@ public class TestMovementSystem extends IteratingSystem{
 
         
 //        vectorToAdd.nor();
-        vectorToAdd.scl(move.get(entity).speed);
-        MovementPacket packet = new MovementPacket(vectorToAdd.x,vectorToAdd.y,0);
-        SendPacketClientEvent.emit(packet,true);
-        
-        System.out.println(vectorToAdd.x);
-        System.out.println(vectorToAdd.y);
-        vectorToAdd.setZero();
+	        vectorToAdd.scl(move.get(entity).speed);
+	        MovementPacket packet = new MovementPacket(vectorToAdd.x,vectorToAdd.y,0);
+	        SendPacketClientEvent.emit(packet,true);
+	        
+	        System.out.println(vectorToAdd.x);
+	        System.out.println(vectorToAdd.y);
+	        vectorToAdd.setZero();
         }
-        vectorToAdd.add(input.get(entity).horizontal*deltaTime, input.get(entity).vertical*deltaTime);
+        velVector.set(input.get(entity).horizontal*deltaTime, input.get(entity).vertical*deltaTime);
+        velVector.nor();
+        vectorToAdd.add(velVector);
 
 
 		
