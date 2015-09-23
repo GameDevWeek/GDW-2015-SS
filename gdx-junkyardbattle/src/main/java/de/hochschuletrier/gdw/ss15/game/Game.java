@@ -127,7 +127,7 @@ public class Game extends InputAdapter {
 			@Override
 			public void endContact(Contact contact) {
 				// TODO Auto-generated method stub
-                contact.setEnabled(false);
+				contact.setEnabled(false);
 			}
 			
 			@Override
