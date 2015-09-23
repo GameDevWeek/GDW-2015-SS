@@ -38,15 +38,15 @@ public class UpdatePhysixSystem extends IteratingSystem
     /////// send every x miliseconds the player velocity and angle to the server
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
-        if(timer.isExpired()) {
-            PlayerComponent plc = ComponentMappers.player.get(entity);
-            if(! plc.isLocalPlayer) return;
-            PhysixBodyComponent phxc = ComponentMappers.physixBody.get(entity);
-//            System.out.println("velocity-x: " + phxc.getLinearVelocity().x + "velocity-y: " + phxc.getLinearVelocity().y);
-            MovementPacket packet = new MovementPacket(phxc.getLinearVelocity().x, phxc.getLinearVelocity().y, phxc.getAngle());
-            SendPacketClientEvent.emit(packet, true);
-            timer.restart();
-        }
+//        if(timer.isExpired()) {
+//            PlayerComponent plc = ComponentMappers.player.get(entity);
+//            if(! plc.isLocalPlayer) return;
+//            PhysixBodyComponent phxc = ComponentMappers.physixBody.get(entity);
+////            System.out.println("velocity-x: " + phxc.getLinearVelocity().x + "velocity-y: " + phxc.getLinearVelocity().y);
+//            MovementPacket packet = new MovementPacket(phxc.getLinearVelocity().x, phxc.getLinearVelocity().y, phxc.getAngle());
+//            SendPacketClientEvent.emit(packet, true);
+//            timer.restart();
+//        }
     }
 
     /////////////////// CLIENT
