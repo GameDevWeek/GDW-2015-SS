@@ -84,8 +84,8 @@ public class TestMovementSystem extends IteratingSystem{
         MovementPacket packet = new MovementPacket(vectorToAdd.x,vectorToAdd.y,0);
         SendPacketClientEvent.emit(packet,true);
         
-        System.out.println(vectorToAdd.x);
-        System.out.println(vectorToAdd.y);
+        //System.out.println(vectorToAdd.x);
+        //System.out.println(vectorToAdd.y);
         vectorToAdd.setZero();
         }
         vectorToAdd.add(input.get(entity).horizontal*deltaTime, input.get(entity).vertical*deltaTime);
