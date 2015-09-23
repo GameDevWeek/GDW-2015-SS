@@ -42,7 +42,7 @@ public class Game extends InputAdapter {
    );
    private final PhysixDebugRenderSystem physixDebugRenderSystem = new PhysixDebugRenderSystem(GameConstants.PRIORITY_DEBUG_WORLD);
     
-    private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem(GameConstants.PRIORITY_PHYSIX + 1);
+    private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem();
     private final NetworkClientSystem networksystem = new NetworkClientSystem(this,GameConstants.PRIORITY_PHYSIX+2);
     private final TestMovementSystem testMovementSystem = new TestMovementSystem(this);
     private final MoveSystem moveSystem = new MoveSystem();
@@ -84,7 +84,6 @@ public class Game extends InputAdapter {
         addContactListeners();
         setupPhysixWorld();
         entityFactory.init(engine, assetManager);
-        
         mapLoader.listen(renderSystem.getTileMapCreator());
         mapLoader.run((String name, float x, float y) -> createEntity(name, x, y),
                 "data/maps/prototype.tmx", physixSystem);

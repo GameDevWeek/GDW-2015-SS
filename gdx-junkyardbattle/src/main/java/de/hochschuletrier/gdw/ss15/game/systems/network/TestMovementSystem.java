@@ -7,6 +7,7 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector2;
 
 import de.hochschuletrier.gdw.ss15.events.network.client.SendPacketClientEvent;
@@ -73,13 +74,13 @@ public class TestMovementSystem extends IteratingSystem{
 	@Override
 	protected void processEntity(Entity entity, float deltaTime) {
 		
-		timer.Update();
+	/*	timer.Update();
         if(timer.get_CounterMilliseconds()>100)
         {
             timer.StartCounter();
 
-        
-//        vectorToAdd.nor();
+        */
+//      vectorToAdd.nor();
         vectorToAdd.scl(move.get(entity).speed);
         MovementPacket packet = new MovementPacket(vectorToAdd.x,vectorToAdd.y,0);
         SendPacketClientEvent.emit(packet,true);
@@ -87,7 +88,7 @@ public class TestMovementSystem extends IteratingSystem{
         //System.out.println(vectorToAdd.x);
         //System.out.println(vectorToAdd.y);
         vectorToAdd.setZero();
-        }
+       // }
         vectorToAdd.add(input.get(entity).horizontal*deltaTime, input.get(entity).vertical*deltaTime);
 
 
