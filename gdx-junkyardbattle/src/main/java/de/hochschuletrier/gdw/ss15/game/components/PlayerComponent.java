@@ -24,7 +24,7 @@ public class PlayerComponent extends Component implements Poolable
     public void reset()
     {
         playerID = playerIDCounter++;
-        teamID = teamIDCounter++;
+        teamID = 0;
         isLocalPlayer = false;
         lastSequenceId = 0;
         name = "";

@@ -104,6 +104,7 @@ public class PositionSynchSystem extends EntitySystem implements EntityListener 
                     //System.out.println("Send other player to client");
                     initPacket.name = sendComp.clientName;
                 }
+                //System.out.println();
                 client.sendPacketSave(initPacket,true);
             }
 
