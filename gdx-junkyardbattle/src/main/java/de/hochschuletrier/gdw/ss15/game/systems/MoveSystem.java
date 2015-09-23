@@ -6,9 +6,9 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.math.Vector2;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
-import de.hochschuletrier.gdw.ss15.game.components.InputComponent;
 import de.hochschuletrier.gdw.ss15.game.components.MoveComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
+import de.hochschuletrier.gdw.ss15.game.components.input.InputComponent;
 
 /**
  * Created by Ricardo on 22.09.2015.
@@ -41,10 +41,7 @@ public class MoveSystem extends IteratingSystem {
     protected void processEntity(Entity e, float deltaTime) {
 
         vectorToAdd.setZero();
-        if (input.get(e).left) vectorToAdd.add(-1, 0);
-        if (input.get(e).right) vectorToAdd.add(1, 0);
-        if (input.get(e).up) vectorToAdd.add(0, -1);
-        if (input.get(e).down) vectorToAdd.add(0, 1);
+        vectorToAdd.add(input.get(e).horizontal, input.get(e).vertical);
         vectorToAdd.nor();
         vectorToAdd.scl(move.get(e).speed);
 

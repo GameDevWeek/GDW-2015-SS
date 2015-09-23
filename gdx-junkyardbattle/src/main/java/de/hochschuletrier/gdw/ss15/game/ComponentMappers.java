@@ -5,6 +5,7 @@ import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixModifierComponent;
 import de.hochschuletrier.gdw.ss15.game.components.*;
 import de.hochschuletrier.gdw.ss15.game.components.animation.AnimatorComponent;
+import de.hochschuletrier.gdw.ss15.game.components.input.InputComponent;
 import de.hochschuletrier.gdw.ss15.game.components.light.*;
 import de.hochschuletrier.gdw.ss15.game.components.network.client.NetworkIDComponent;
 import de.hochschuletrier.gdw.ss15.game.components.network.server.ClientComponent;

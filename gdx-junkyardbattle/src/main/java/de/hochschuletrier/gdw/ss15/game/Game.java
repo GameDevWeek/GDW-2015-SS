@@ -13,6 +13,7 @@ import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixDebugRenderSystem
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
+import de.hochschuletrier.gdw.ss15.game.systems.input.InputSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.NetworkClientSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.*;
