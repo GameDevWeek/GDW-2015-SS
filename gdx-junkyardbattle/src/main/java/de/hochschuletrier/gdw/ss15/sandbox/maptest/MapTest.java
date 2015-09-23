@@ -2,11 +2,11 @@ package de.hochschuletrier.gdw.ss15.sandbox.maptest;
 
 import java.util.HashMap;
 
-import de.hochschuletrier.gdw.ss15.game.components.InputComponent;
 import de.hochschuletrier.gdw.ss15.game.components.MoveComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
+import de.hochschuletrier.gdw.ss15.game.components.input.InputComponent;
 import de.hochschuletrier.gdw.ss15.game.systems.MoveSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.InputSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.input.InputSystem;
 import jdk.internal.util.xml.impl.Input;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
