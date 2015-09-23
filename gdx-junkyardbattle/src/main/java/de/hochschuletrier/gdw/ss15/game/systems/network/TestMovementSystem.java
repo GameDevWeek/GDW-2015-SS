@@ -48,11 +48,11 @@ public class TestMovementSystem extends IteratingSystem{
 
 	protected void processEntity(Entity entity, float deltaTime) {
 		
-	/*	timer.Update();
+		timer.Update();
         if(timer.get_CounterMilliseconds()>100)
         {
             timer.StartCounter();
-        */
+        
 	        vectorToAdd.scl(move.get(entity).speed);
 	        InputComponent input = ComponentMappers.input.get(entity);
 	        PositionComponent posc = ComponentMappers.position.get(entity);
@@ -63,9 +63,9 @@ public class TestMovementSystem extends IteratingSystem{
 	        MovementPacket packet = new MovementPacket(vectorToAdd.x,vectorToAdd.y,rotation);
 	        SendPacketClientEvent.emit(packet,true);
 	        vectorToAdd.setZero();
-       // }
+        }
         
-        velVector.set(input.horizontal, input.vertical);
+        velVector.set(input.get(entity).horizontal, input.get(entity).vertical);
         velVector.nor();
         velVector.scl(deltaTime);
         vectorToAdd.add(velVector);
