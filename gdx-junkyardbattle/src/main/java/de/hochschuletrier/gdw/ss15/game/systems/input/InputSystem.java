@@ -27,7 +27,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
 
     private boolean isListener = false;
 
-    private final float STICKDEADZONE = -0.25f;
+    private final float STICKDEADZONE = 0.25f;
 
     private float horizontal = 0.0f;
     private float vertical = 0.0f;
@@ -77,6 +77,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
                 horizontal = -1.0f;
                 break;
         }
+        debug();
         //System.out.println(inputPaket);
         return true;
     }
@@ -98,6 +99,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
                 horizontal = 0.0f;
                 break;
         }
+        debug();
         //System.out.println(inputPaket);
         return true;
     }
@@ -118,6 +120,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
                 rightMBDown = true;
                 break;
         }
+        debug();
         return true;
     }
 
@@ -132,6 +135,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
                 rightMBDown = false;
                 break;
         }
+        debug();
         return true;
 
     }
@@ -146,7 +150,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
     public boolean mouseMoved(int screenX, int screenY) {
         posX = screenX;
         posY = screenY;
-
+        debug();
         return true;
     }
 
@@ -239,6 +243,14 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
                     vertical = value;
                 else
                     vertical = 0.0f;
+                break;
+            case XBox360KeyMap.R1X:
+                if (value > STICKDEADZONE || value < -STICKDEADZONE)
+                    System.out.println("rechterStickX");
+                break;
+            case XBox360KeyMap.R1Y:
+                if (value > STICKDEADZONE || value < -STICKDEADZONE)
+                        System.out.println("rechterStickY");
                 break;
         }
         debug();
