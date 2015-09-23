@@ -107,11 +107,6 @@ public class RenderSystemTest extends SandboxGame {
         player.add(modifyComponent);
 
         PositionComponent posComponent = engine.createComponent(PositionComponent.class);
-        ParticleEffectComponent particleEffect = engine.createComponent(ParticleEffectComponent.class);
-        
-        particleEffect.particleEffect = assetManager.getParticleEffect("particle");
-        
-        player.add(particleEffect);
         player.add(posComponent);
         
         player.add(engine.createComponent(PlayerComponent.class));

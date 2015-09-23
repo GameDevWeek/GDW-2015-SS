@@ -8,6 +8,8 @@ package de.hochschuletrier.gdw.ss15.game.components.effects;
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
+import com.badlogic.gdx.graphics.g2d.ParticleEmitter.ScaledNumericValue;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 
 /**
@@ -25,6 +27,7 @@ public class ParticleEffectComponent extends Component implements Pool.Poolable{
 
     public void stop()
     {
+        //particleEffect.
         isPlaying = false;
     }
     
@@ -37,6 +40,22 @@ public class ParticleEffectComponent extends Component implements Pool.Poolable{
         }
         
         isPlaying = true;
+    }
+
+    public void setRotation(float rotation) {
+        Array<ParticleEmitter> particleEmitter = particleEffect.getEmitters();  
+        
+        for (int i = 0; i < particleEmitter.size; i++) { 
+            ScaledNumericValue angle = particleEmitter.get(i).getAngle();
+            
+            float spanHigh = angle.getHighMax() - angle.getHighMin();
+            
+            angle.setHigh(rotation - spanHigh / 2.f, rotation + spanHigh / 2.f);
+            
+            float spanLow = angle.getLowMax() - angle.getLowMin();
+            
+            angle.setLow(rotation - spanLow / 2.f, rotation + spanLow / 2.f);
+        }
     }
     
     @Override

@@ -50,6 +50,8 @@ public class ParticleEffectRenderer extends SortedSubIteratingSystem.SubSystem i
                 position.x + particleEffectComponent.positionOffsetX, 
                 position.y + particleEffectComponent.positionOffsetY
             );
+            
+            particleEffectComponent.setRotation(position.rotation);
 
             particleEffectComponent.particleEffect.update(deltaTime);
             particleEffectComponent.particleEffect.draw(DrawUtil.batch);

@@ -24,7 +24,14 @@ public class ParticleEffectComponentFactory extends ComponentFactory<EntityFacto
 
     @Override
     public void run(Entity entity, SafeProperties meta, SafeProperties properties, EntityFactoryParam param) {
-       //ParticleEffectComponent particleEffectComponent = engine.createComponent(ParticleEffectComponent.class);
+       ParticleEffectComponent particleEffectComponent = engine.createComponent(ParticleEffectComponent.class);
+       
+       particleEffectComponent.particleEffect = assetManager.getParticleEffect(properties.getString("effectname"));
+       particleEffectComponent.positionOffsetX = properties.getFloat("offsetX", 0.f);
+       particleEffectComponent.positionOffsetY = properties.getFloat("offsetY", 0.f);
+       particleEffectComponent.setRotation(properties.getFloat("rotation", 90.f));
+       
+       entity.add(particleEffectComponent);
     }
     
 }
