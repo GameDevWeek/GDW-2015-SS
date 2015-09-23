@@ -83,7 +83,7 @@ public class MapTest extends SandboxGame {
     private AnimatorComponent animatorComponent;
     private PositionComponent positionComponent;
     
-    private final RenderSystem renderSystem = new RenderSystem(new RayHandler(physixSystem.getWorld()), 
+    private final RenderSystem renderSystem = new RenderSystem(physixSystem, 
             camera.getOrthographicCamera());
     private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem();
     

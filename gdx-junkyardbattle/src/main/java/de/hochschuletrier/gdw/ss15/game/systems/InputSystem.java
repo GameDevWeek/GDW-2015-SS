@@ -7,9 +7,8 @@ import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import de.hochschuletrier.gdw.ss15.Main;
-import de.hochschuletrier.gdw.ss15.events.*;
 import de.hochschuletrier.gdw.ss15.game.components.InputComponent;
-import de.hochschuletrier.gdw.ss15.game.network.Packets.InputMovPaket;
+import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
 
 /**
  * Created by David Siepen on 21.09.2015.
@@ -20,19 +19,40 @@ import de.hochschuletrier.gdw.ss15.game.network.Packets.InputMovPaket;
  */
 public class InputSystem extends IteratingSystem implements InputProcessor {
 
-    public InputMovPaket inputPaket;
+
+    private boolean up = false;
+    private boolean down = false;
+    private boolean left = false;
+    private boolean right = false;
+
+    private boolean leftMBDown = false;
+    private boolean rightMBDown = false;
+
+    private int posX;
+    private int posY;
 
     public InputSystem() {
         this(0);
     }
 
     public InputSystem(int priority) {
-        super(Family.one(InputComponent.class).get(), priority);
+        super(Family.all(InputComponent.class, PlayerComponent.class).get(), priority);
     }
 
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
+        if(entity.getComponent(PlayerComponent.class).isLocalPlayer){
+            entity.getComponent(InputComponent.class).up = up;
+            entity.getComponent(InputComponent.class).down = down;
+            entity.getComponent(InputComponent.class).left = left;
+            entity.getComponent(InputComponent.class).right = right;
 
+            entity.getComponent(InputComponent.class).shoot = leftMBDown;
+            entity.getComponent(InputComponent.class).gather = rightMBDown;
+
+            entity.getComponent(InputComponent.class).posX = posX;
+            entity.getComponent(InputComponent.class).posY = posY;
+        }
     }
 
     @Override
@@ -40,16 +60,16 @@ public class InputSystem extends IteratingSystem implements InputProcessor {
         // keyDown = ein knopf wurde gedrückt
         switch (keycode) {
             case Input.Keys.W:
-                inputPaket.up = true;
+                up = true;
                 break;
             case Input.Keys.S:
-                inputPaket.down = true;
+                down = true;
                 break;
             case Input.Keys.D:
-                inputPaket.right = true;
+                right = true;
                 break;
             case Input.Keys.A:
-                inputPaket.left = true;
+                left = true;
                 break;
         }
         //System.out.println(inputPaket);
@@ -61,16 +81,16 @@ public class InputSystem extends IteratingSystem implements InputProcessor {
         // keyUp = ein knopf wurde losgelassen
         switch (keycode) {
             case Input.Keys.W:
-                inputPaket.up = false;
+                up = false;
                 break;
             case Input.Keys.S:
-                inputPaket.down = false;
+                down = false;
                 break;
             case Input.Keys.D:
-                inputPaket.right = false;
+                right = false;
                 break;
             case Input.Keys.A:
-                inputPaket.left = false;
+                left = false;
                 break;
         }
         //System.out.println(inputPaket);
@@ -87,10 +107,10 @@ public class InputSystem extends IteratingSystem implements InputProcessor {
         // touchDown = mouseClick
         switch (button) {
             case Input.Buttons.LEFT:
-                GatherUpEvent.emit(screenX,screenY);
+                leftMBDown=true;
                 break;
             case Input.Buttons.RIGHT:
-                GatherUpEvent.emit(screenX,screenY);
+                rightMBDown = true;
                 break;
         }
         return true;
@@ -101,10 +121,10 @@ public class InputSystem extends IteratingSystem implements InputProcessor {
         // touchUp = mouseClick
         switch (button) {
             case Input.Buttons.LEFT:
-                GatherUpEvent.emit(screenX,screenY);
+                leftMBDown = false;
                 break;
             case Input.Buttons.RIGHT:
-                GatherUpEvent.emit(screenX,screenY);
+                rightMBDown = false;
                 break;
         }
         return true;
@@ -119,10 +139,10 @@ public class InputSystem extends IteratingSystem implements InputProcessor {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        //inputPaket.posX = screenX;
-        //inputPaket.posY = screenY;
+        posX = screenX;
+        posY = screenY;
 
-        return false;
+        return true;
     }
 
     @Override
@@ -137,7 +157,6 @@ public class InputSystem extends IteratingSystem implements InputProcessor {
         // Der InputProcessor wird beim Spiel angemeldet
         Main.getInstance().inputMultiplexer.addProcessor(this);
         // Das InputPaket fuer den Server wird initialisiert
-        inputPaket = new InputMovPaket();
     }
 
     @Override

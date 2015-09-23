@@ -1,7 +1,8 @@
-package de.hochschuletrier.gdw.ss15.game.components;
+package de.hochschuletrier.gdw.ss15.game.components.network.server;
 
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.utils.Pool;
+import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.MyTimer;
 //import de.hochschuletrier.gdw.ss14.networktest.gdwNetwork.interfaces.Sendable;
 
 import java.io.DataInputStream;
@@ -12,12 +13,20 @@ public class PositionSynchComponent extends Component implements Pool.Poolable {
 
     public static long currentID = 0;
     public long networkID = currentID++;
-    public boolean was_moved;
+    public String clientName;
+    public float lastX;
+    public float lastY;
+    public float lastRot;
+    public MyTimer lastSendTimer;
 
     @Override
     public void reset() {
         networkID = currentID++;
-        was_moved = false;
+        clientName=null;
+        lastX=0;
+        lastY=0;
+        lastRot=0;
+        lastSendTimer=null;
     }
 
     /*

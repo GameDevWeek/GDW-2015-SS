@@ -1,19 +1,23 @@
 package de.hochschuletrier.gdw.ss15.game;
 
+import box2dLight.RayHandler;
+
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
+
 import de.hochschuletrier.gdw.commons.gdx.ashley.EntityFactory;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
+import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixDebugRenderSystem;
+import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
-
-import de.hochschuletrier.gdw.ss15.game.systems.NetworkClientSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.InputSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.network.NetworkClientSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
-
 import de.hochschuletrier.gdw.ss15.game.systems.*;
+import de.hochschuletrier.gdw.ss15.game.systems.network.TestMovementSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.renderers.RenderSystem;
 
 import java.util.function.Consumer;
 
@@ -27,26 +31,38 @@ public class Game extends InputAdapter {
             GameConstants.COMPONENT_POOL_INITIAL_SIZE, GameConstants.COMPONENT_POOL_MAX_SIZE
     );
 
-   // private final PhysixSystem physixSystem = new PhysixSystem(GameConstants.BOX2D_SCALE,
-           // GameConstants.VELOCITY_ITERATIONS, GameConstants.POSITION_ITERATIONS, GameConstants.PRIORITY_PHYSIX
-   // );
-   // private final PhysixDebugRenderSystem physixDebugRenderSystem = new PhysixDebugRenderSystem(GameConstants.PRIORITY_DEBUG_WORLD);
+   private final PhysixSystem physixSystem = new PhysixSystem(GameConstants.BOX2D_SCALE,
+           GameConstants.VELOCITY_ITERATIONS, GameConstants.POSITION_ITERATIONS, GameConstants.PRIORITY_PHYSIX
+   );
+   private final PhysixDebugRenderSystem physixDebugRenderSystem = new PhysixDebugRenderSystem(GameConstants.PRIORITY_DEBUG_WORLD);
     
     private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem(GameConstants.PRIORITY_PHYSIX + 1);
     private final NetworkClientSystem networksystem = new NetworkClientSystem(this,GameConstants.PRIORITY_PHYSIX+2);
+    private final TestMovementSystem testMovementSystem = new TestMovementSystem(this);
 
     private final EntityFactoryParam factoryParam = new EntityFactoryParam();
     private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json", Game.class);
 
+    private final CameraSystem cameraSystem = new CameraSystem();
+
+    private final RenderSystem renderSystem = new RenderSystem(physixSystem,cameraSystem.getCamera().getOrthographicCamera());
+
     private final WeaponSystem weaponSystem = new WeaponSystem();
 
     private final InputSystem inputSystem = new InputSystem();
+    private final MapLoader mapLoader = new MapLoader();
 
+    
     public Game() {
         // If this is a build jar file, disable hotkeys
         if (!Main.IS_RELEASE) {
             //togglePhysixDebug.register();
         }
+    }
+
+    public PooledEngine getEngine()
+    {
+        return engine;
     }
 
     public void dispose() {
@@ -61,15 +77,22 @@ public class Game extends InputAdapter {
         addContactListeners();
         setupPhysixWorld();
         entityFactory.init(engine, assetManager);
+        
+        mapLoader.listen(renderSystem.getTileMapCreator());
+        mapLoader.run((String name, float x, float y) -> createEntity(name, x, y), 
+                "data/maps/demo.tmx", physixSystem);
     }
 
     private void addSystems() {
         //engine.addSystem(physixSystem);
         //engine.addSystem(physixDebugRenderSystem);
-        engine.addSystem(updatePositionSystem);
+        //engine.addSystem(updatePositionSystem);
         engine.addSystem(networksystem);
         engine.addSystem(inputSystem);
         engine.addSystem(weaponSystem);
+        engine.addSystem(cameraSystem);
+        engine.addSystem(renderSystem);
+        engine.addSystem(testMovementSystem);
     }
 
     private void addContactListeners() {

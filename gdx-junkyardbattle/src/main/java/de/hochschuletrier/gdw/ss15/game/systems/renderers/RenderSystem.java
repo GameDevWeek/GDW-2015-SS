@@ -1,7 +1,5 @@
 package de.hochschuletrier.gdw.ss15.game.systems.renderers;
 
-import de.hochschuletrier.gdw.ss15.game.systems.renderers.AnimatorRenderer;
-import de.hochschuletrier.gdw.ss15.game.systems.renderers.TextureRenderer;
 import java.util.Comparator;
 
 import box2dLight.RayHandler;
@@ -9,21 +7,20 @@ import box2dLight.RayHandler;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
 import de.hochschuletrier.gdw.commons.gdx.ashley.SortedSubIteratingSystem;
+import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.GameConstants;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
-import de.hochschuletrier.gdw.ss15.game.systems.renderers.AnimatorRenderer;
-import de.hochschuletrier.gdw.ss15.game.systems.renderers.LightRenderer;
-import de.hochschuletrier.gdw.ss15.game.systems.renderers.NormalMapRenderer;
-import de.hochschuletrier.gdw.ss15.game.systems.renderers.TextureRenderer;
+import de.hochschuletrier.gdw.ss15.game.rendering.TileMapCreator;
 
 /**
  * 
- * All Entities that have to be rendered require a PositionComponent and a LayerComponent. <br>
+ * All Entities that have to be rendered require a PositionComponent. <br>
  * If at least one of them is not provided the Entity won't be rendered.
  *
  */
@@ -42,14 +39,15 @@ public class RenderSystem extends SortedSubIteratingSystem {
     
     private final OrthographicCamera camera;
     private final LightRenderer lightRenderer;
+    private final TileMapCreator tileMapCreator = new TileMapCreator();
     
     @SuppressWarnings("unchecked")
-	public RenderSystem(RayHandler rayHandler, OrthographicCamera camera) {
+	public RenderSystem(PhysixSystem physixSystem, OrthographicCamera camera) {
         super(Family.all(PositionComponent.class).get(), renderComparator, GameConstants.PRIORITY_RENDER_SYSTEM);
 
         this.camera = camera;
         
-        lightRenderer = new LightRenderer(rayHandler);
+        lightRenderer = new LightRenderer(new RayHandler(physixSystem.getWorld()));
         
         // Order of adding = order of renderer selection for the entity
         addSubSystem(new TextureRenderer());
@@ -57,10 +55,15 @@ public class RenderSystem extends SortedSubIteratingSystem {
         addSubSystem(new NormalMapRenderer());
         addSubSystem(lightRenderer);
     }
+    
+    public TileMapCreator getTileMapCreator() {
+        return tileMapCreator;
+    }
 
     @Override
     public void addedToEngine(Engine engine) {
         super.addedToEngine(engine);
+        tileMapCreator.init((PooledEngine) (engine));
     }
 
     @Override

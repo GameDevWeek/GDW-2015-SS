@@ -1,10 +1,11 @@
-package de.hochschuletrier.gdw.ss15.game.components.factories;
+package de.hochschuletrier.gdw.ss15.game.components.factories.network.server;
 
 import com.badlogic.ashley.core.Entity;
 import de.hochschuletrier.gdw.commons.gdx.ashley.ComponentFactory;
 import de.hochschuletrier.gdw.commons.utils.SafeProperties;
 import de.hochschuletrier.gdw.ss15.Main;
-import de.hochschuletrier.gdw.ss15.game.components.ClientComponent;
+import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
+import de.hochschuletrier.gdw.ss15.game.components.network.server.ClientComponent;
 
 /**
  * Created by hherm on 22/09/2015.
