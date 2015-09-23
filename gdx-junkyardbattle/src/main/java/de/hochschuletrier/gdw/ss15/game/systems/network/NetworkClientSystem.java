@@ -57,18 +57,7 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener 
     @Override
     public void update(float deltaTime)
     {
-        /*
         //TODO check all input components
-        timer.Update();
-        if(timer.get_CounterMilliseconds() > 200){
-            InputMovPaket inputPacket = new InputMovPaket(game.getInputSystem().keyDown(Input.Keys.W),
-                    game.getInputSystem().keyDown(Input.Keys.S),
-                    game.getInputSystem().keyDown(Input.Keys.A),
-                    game.getInputSystem().keyDown(Input.Keys.D));
-            connection.getSocket().sendPacketUnsave(inputPacket);
-            timer.ResetTimer();
-        }
-        */
 
         Clientsocket socket = connection.getSocket();
         if(socket != null)
