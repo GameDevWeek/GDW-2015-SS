@@ -27,6 +27,8 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
 
     private boolean isListener = false;
 
+    private final float STICKDEADZONE = -0.25f;
+
     private float horizontal = 0.0f;
     private float vertical = 0.0f;
 
@@ -227,13 +229,13 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
                     leftMBDown = rightMBDown = false;
                 break;
             case XBox360KeyMap.L1X:
-                if (value > stickDeadZone || value < -stickDeadZone)
+                if (value > STICKDEADZONE || value < -STICKDEADZONE)
                     horizontal = value;
                 else
                     horizontal = 0.0f;
                 break;
             case XBox360KeyMap.L1Y:
-                if (value > stickDeadZone || value < -stickDeadZone)
+                if (value > STICKDEADZONE || value < -STICKDEADZONE)
                     vertical = value;
                 else
                     vertical = 0.0f;
