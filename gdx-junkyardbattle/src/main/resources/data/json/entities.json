@@ -93,6 +93,7 @@
         "meta": {},
         "components": {
             "Position": {},
+            "player": {},
             "NetworkID": {},
             "Texture":{
                 "texture": "ball",
@@ -111,6 +112,9 @@
     "clientOwnPlayer": {
         "meta": {},
         "components": {
+            "player": {
+                "isLocalPlayer": true
+            },
             "Position": {},
             "NetworkID": {},
             "Texture":{

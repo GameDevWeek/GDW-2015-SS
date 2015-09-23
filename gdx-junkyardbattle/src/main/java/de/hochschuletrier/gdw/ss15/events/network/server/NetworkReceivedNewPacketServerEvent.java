@@ -16,7 +16,7 @@ public class NetworkReceivedNewPacketServerEvent {
             void onReceivedNewPacket(Packet pack,Entity ent);
         }
 
-        private static final HashMap<Short,SnapshotArray<Listener>> map = new HashMap<Short,SnapshotArray<Listener>>();
+        private static final HashMap<Short,SnapshotArray<Listener>> map = new HashMap<>();
 
 
         public static void emit(Packet pack,Entity ent) {

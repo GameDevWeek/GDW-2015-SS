@@ -48,7 +48,7 @@ public class Game extends InputAdapter {
     private final RenderSystem renderSystem = new RenderSystem(physixSystem, cameraSystem.getCamera().getOrthographicCamera(), engine);
 
     private final WeaponSystem weaponSystem = new WeaponSystem();
-
+    private final RotationSystem rotationSystem = new RotationSystem(cameraSystem.getCamera().getOrthographicCamera());
     private final InputSystem inputSystem = new InputSystem();
     private final MapLoader mapLoader = new MapLoader();
 
@@ -79,7 +79,7 @@ public class Game extends InputAdapter {
         entityFactory.init(engine, assetManager);
         
         mapLoader.listen(renderSystem.getTileMapCreator());
-        mapLoader.run((String name, float x, float y) -> createEntity(name, x, y), 
+        mapLoader.run((String name, float x, float y) -> createEntity(name, x, y),
                 "data/maps/demo.tmx", physixSystem);
     }
 
@@ -93,6 +93,7 @@ public class Game extends InputAdapter {
         engine.addSystem(cameraSystem);
         engine.addSystem(renderSystem);
         engine.addSystem(testMovementSystem);
+        engine.addSystem(rotationSystem);
     }
 
     private void addContactListeners() {
