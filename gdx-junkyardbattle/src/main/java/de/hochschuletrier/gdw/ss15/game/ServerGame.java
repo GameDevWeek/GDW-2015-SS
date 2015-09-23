@@ -17,10 +17,10 @@ import de.hochschuletrier.gdw.ss15.game.contactlisteners.ImpactSoundListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.PickupListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.TriggerListener;
 import de.hochschuletrier.gdw.ss15.game.systems.LineOfSightSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.NetworkServerSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.network.NetworkServerSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.network.PositionSynchSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serversocket;
-import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
 
 /**
  * Created by lukas on 21.09.15.
@@ -35,8 +35,9 @@ public class ServerGame{
     private final PhysixSystem physixSystem = new PhysixSystem(GameConstants.BOX2D_SCALE,
             GameConstants.VELOCITY_ITERATIONS, GameConstants.POSITION_ITERATIONS, GameConstants.PRIORITY_PHYSIX
     );
-    private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem(GameConstants.PRIORITY_PHYSIX + 1);
-    private final NetworkServerSystem networkSystem = new NetworkServerSystem(this,GameConstants.PRIORITY_PHYSIX + 2);
+    private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem(GameConstants.PRIORITY_PHYSIX + 1);//todo magic numbers (von santo)
+    private final NetworkServerSystem networkSystem = new NetworkServerSystem(this,GameConstants.PRIORITY_PHYSIX + 2);//todo magic numbers (santo hats vorgemacht)
+    private final PositionSynchSystem syncPositionSystem = new PositionSynchSystem(this,GameConstants.PRIORITY_PHYSIX + 3);//todo magic numbers (boa ist das geil kann nicht mehr aufhoeren)
     private final LineOfSightSystem lineOfSightSystem = new LineOfSightSystem(physixSystem); // hier müssen noch Team-Listen übergeben werden
                                                                                  // (+ LineOfSightSystem-Konstruktor anpassen!)
 
@@ -51,6 +52,8 @@ public class ServerGame{
     {
         serverSocket = socket;
     }
+
+    public PooledEngine get_Engine(){return engine;}
 
     public void init(AssetManagerX assetManager) {
         // Main.getInstance().console.register(physixDebug);
@@ -68,9 +71,10 @@ public class ServerGame{
 
     private void addSystems() {
         engine.addSystem(physixSystem);
-        engine.addSystem(updatePositionSystem);
         engine.addSystem(networkSystem);
+        engine.addSystem(updatePositionSystem);
         engine.addSystem(lineOfSightSystem);
+        engine.addSystem(syncPositionSystem);
     }
 
     private void addContactListeners() {
@@ -82,8 +86,9 @@ public class ServerGame{
     }
 
     private void setupPhysixWorld() {
-        /*physixSystem.setGravity(0, 24);
-        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody, physixSystem).position(410, 500).fixedRotation(false);
+        physixSystem.setGravity(0, 0);
+
+        /*PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody, physixSystem).position(410, 500).fixedRotation(false);
         Body body = physixSystem.getWorld().createBody(bodyDef);
         body.createFixture(new PhysixFixtureDef(physixSystem).density(1).friction(0.5f).shapeBox(800, 20));
         PhysixUtil.createHollowCircle(physixSystem, 180, 180, 150, 30, 6);

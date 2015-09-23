@@ -56,7 +56,13 @@ import java.util.List;
  * @author Santo Pfingsten
  */
 public class Main extends StateBasedGame {
-    
+
+
+    //-----------------------------------------server on off-------------------
+    private static final boolean m_StartServerByGameStart = true;
+    //-------------------------------------------------------------------------
+
+
     public static CommandLine cmdLine;
 
     public static final boolean IS_RELEASE = ClassUtils.getClassUrl(Main.class).getProtocol().equals("jar");
@@ -150,9 +156,11 @@ public class Main extends StateBasedGame {
         emitterMode.addListener(this::onEmitterModeChanged);
 
 
-        server = new Server();
-        server.start();
-        logger.info("Server wurde gestartet");
+        if(m_StartServerByGameStart) {
+            server = new Server();
+            server.start();
+            logger.info("Server wurde gestartet");
+        }
     }
 
     private void onLoadComplete() {

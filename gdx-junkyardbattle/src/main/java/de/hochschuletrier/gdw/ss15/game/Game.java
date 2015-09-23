@@ -13,8 +13,10 @@ import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixDebugRenderSystem
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
-import de.hochschuletrier.gdw.ss15.game.rendering.TileMapCreator;
+import de.hochschuletrier.gdw.ss15.game.systems.network.NetworkClientSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.*;
+import de.hochschuletrier.gdw.ss15.game.systems.network.TestMovementSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.renderers.RenderSystem;
 
 import java.util.function.Consumer;
@@ -36,6 +38,7 @@ public class Game extends InputAdapter {
     
     private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem(GameConstants.PRIORITY_PHYSIX + 1);
     private final NetworkClientSystem networksystem = new NetworkClientSystem(this,GameConstants.PRIORITY_PHYSIX+2);
+    private final TestMovementSystem testMovementSystem = new TestMovementSystem(this);
 
     private final EntityFactoryParam factoryParam = new EntityFactoryParam();
     private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json", Game.class);
@@ -55,6 +58,11 @@ public class Game extends InputAdapter {
         if (!Main.IS_RELEASE) {
             //togglePhysixDebug.register();
         }
+    }
+
+    public PooledEngine getEngine()
+    {
+        return engine;
     }
 
     public void dispose() {
@@ -84,6 +92,7 @@ public class Game extends InputAdapter {
         engine.addSystem(weaponSystem);
         engine.addSystem(cameraSystem);
         engine.addSystem(renderSystem);
+        engine.addSystem(testMovementSystem);
     }
 
     private void addContactListeners() {

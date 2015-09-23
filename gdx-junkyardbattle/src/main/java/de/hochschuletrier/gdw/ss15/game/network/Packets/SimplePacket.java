@@ -32,11 +32,11 @@ public class SimplePacket extends Packet
 
     }
 
-    public SimplePacket(int simplepacketid,long l)
+    public SimplePacket(int simplepacketid,long moreData)
     {
         super(PacketIds.Simple.getValue());
         m_SimplePacketId = simplepacketid;
-        m_Moredata = l;
+        m_Moredata = moreData;
     }
 
     public SimplePacket()

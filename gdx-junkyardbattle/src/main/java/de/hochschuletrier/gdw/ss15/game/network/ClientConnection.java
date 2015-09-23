@@ -2,10 +2,9 @@ package de.hochschuletrier.gdw.ss15.game.network;
 
 import de.hochschuletrier.gdw.commons.devcon.ConsoleCmd;
 import de.hochschuletrier.gdw.ss15.Main;
+import de.hochschuletrier.gdw.ss15.events.network.client.SendPacketClientEvent;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Clientsocket;
-import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serverclientsocket;
-import de.hochschuletrier.gdw.ss15.network.gdwNetwork.basic.SocketConnectListener;
-import de.hochschuletrier.gdw.ss15.network.gdwNetwork.enums.ConnectStatus;
+import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +13,7 @@ import java.util.List;
 /**
  * Created by lukas on 21.09.15.
  */
-public class ClientConnection implements SocketConnectListener {
+public class ClientConnection implements SendPacketClientEvent.Listener {
     private Clientsocket clientSocket = null;
 
     public ClientConnection()
@@ -33,7 +32,13 @@ public class ClientConnection implements SocketConnectListener {
             String info = list.get(1);
             if(info.equals("connect"))
             {
-                connect("localhost", 12345);
+                if(list.size()>2){//zusätzlich ip
+                    logger.info("Try to connection to "+list.get(2));
+                    connect(list.get(2),12345);
+                }
+                else {logger.info("Try to connection to localhost");
+                   connect("localhost", 12345);
+                }
             }
             else if(info.equals("disconnect"))
             {
@@ -77,8 +82,9 @@ public class ClientConnection implements SocketConnectListener {
             clientSocket=null;
         }
         clientSocket = new Clientsocket(ip,port,true);
-        clientSocket.registerConnectListner(this);
+       // clientSocket.registerConnectListner(this);
         clientSocket.connect();
+        SendPacketClientEvent.registerListener(this);
     }
 
     public void disconnect()
@@ -95,6 +101,7 @@ public class ClientConnection implements SocketConnectListener {
         }
     }
 
+    /*
     public void loginFinished(ConnectStatus status)
     {
         if(status == ConnectStatus.Succes)
@@ -105,5 +112,21 @@ public class ClientConnection implements SocketConnectListener {
         {
             logger.error("Login gescheitert wegen: "+status);
         }
+    }*/
+
+    public void onSendSClientPacket(Packet pack,boolean save)
+    {
+        if(clientSocket!=null && clientSocket.isConnected())
+        {
+            if(save == true)
+            {
+                clientSocket.sendPacketSave(pack);
+            }
+            else
+            {
+                clientSocket.sendPacketUnsave(pack);
+            }
+        }
     }
+
 }
