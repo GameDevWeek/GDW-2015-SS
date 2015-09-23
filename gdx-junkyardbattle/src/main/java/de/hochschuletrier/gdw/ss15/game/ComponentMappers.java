@@ -10,7 +10,6 @@ import de.hochschuletrier.gdw.ss15.game.components.texture.TextureComponent;
 
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixModifierComponent;
-import de.hochschuletrier.gdw.ss15.game.components.AnimationComponent;
 import de.hochschuletrier.gdw.ss15.game.components.ImpactSoundComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.components.TriggerComponent;
