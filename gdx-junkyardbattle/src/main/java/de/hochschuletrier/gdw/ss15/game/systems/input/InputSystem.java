@@ -8,6 +8,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerListener;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
 import com.badlogic.gdx.math.Vector3;
 import de.hochschuletrier.gdw.ss15.Main;
@@ -160,6 +161,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
         super.addedToEngine(engine);
         // Der InputProcessor wird beim Spiel angemeldet
         Main.getInstance().inputMultiplexer.addProcessor(this);
+        Controllers.addListener(this);
         // Das InputPaket fuer den Server wird initialisiert
     }
 
@@ -175,17 +177,18 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
 
     @Override
     public void connected(Controller controller) {
-
+        System.out.println("Controller connected");
     }
 
     @Override
     public void disconnected(Controller controller) {
-
+        System.out.println("Controller disconnected");
     }
 
     @Override
     public boolean buttonDown(Controller controller, int buttonCode) {
-        return false;
+        System.out.println(buttonCode);
+        return true;
     }
 
     @Override
@@ -215,6 +218,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
 
     @Override
     public boolean accelerometerMoved(Controller controller, int accelerometerCode, Vector3 value) {
+        // brauchen wir nicht!
         return false;
     }
 }
