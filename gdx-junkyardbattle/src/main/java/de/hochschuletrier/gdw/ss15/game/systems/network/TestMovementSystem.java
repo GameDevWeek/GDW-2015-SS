@@ -90,7 +90,7 @@ public class TestMovementSystem extends IteratingSystem{
 	        vectorToAdd.setZero();
         }
         velVector.set(input.get(entity).horizontal*deltaTime, input.get(entity).vertical*deltaTime);
-        velVector.nor();
+        //velVector.nor();
         vectorToAdd.add(velVector);
 
 
