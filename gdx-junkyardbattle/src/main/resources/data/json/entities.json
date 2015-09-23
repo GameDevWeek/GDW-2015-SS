@@ -24,7 +24,9 @@
                 "density": 5,
                 "friction": 0.2,
                 "restitution": 0.4
-            }
+            },
+            "Move":{},
+            "Input":{}
         }
     },
     "box": {
@@ -74,6 +76,7 @@
     "player": {
         "meta": {},
         "components": {
+            "Player":{},
             "Position": {},
             "Player": {},
             "PhysixBody": {
@@ -86,7 +89,12 @@
             "Client":{},
             "PositionSynch":{
                 "clientname": "clientPlayer"
-            }
+            },
+            "Move":{
+                "speed": 120
+            },
+            "Input":{}
+
         }
     },
 
@@ -164,6 +172,106 @@
             },
             "Bullet": {
                 "playerID": -1
+            }
+        }
+    },
+    
+    "Base": {
+        "meta": {},
+        "components": {
+            "Position": {},
+            "PhysixBody": {
+                "type": "circle",
+                "size": 5,
+                "density": 10,
+                "friction": 0.5,
+                "restitution": 0.1
+            },
+            "Texture":{
+                "texture": "ball",
+                "width": 60,
+                "height": 60,
+                "srcX": 0,
+                "srcY": 0,
+                "scaleX": 1,
+                "scaleY": 1,
+                "flipX": false,
+                "flipY": false
+            }
+        }
+    },
+    
+    "SatelliteSite": {
+        "meta": {},
+        "components": {
+            "Position": {},
+            "PhysixBody": {
+                "type": "circle",
+                "size": 5,
+                "density": 10,
+                "friction": 0.5,
+                "restitution": 0.1
+            },
+            "Texture":{
+                "texture": "ball",
+                "width": 60,
+                "height": 60,
+                "srcX": 0,
+                "srcY": 0,
+                "scaleX": 1,
+                "scaleY": 1,
+                "flipX": false,
+                "flipY": false
+            }
+        }
+    },
+    
+    "Spawn": {
+        "meta": {},
+        "components": {
+            "Position": {},
+            "PhysixBody": {
+                "type": "circle",
+                "size": 5,
+                "density": 10,
+                "friction": 0.5,
+                "restitution": 0.1
+            },
+            "Texture":{
+                "texture": "ball",
+                "width": 60,
+                "height": 60,
+                "srcX": 0,
+                "srcY": 0,
+                "scaleX": 1,
+                "scaleY": 1,
+                "flipX": false,
+                "flipY": false
+            }
+        }
+    },
+    
+    "JunkSpawn": {
+        "meta": {},
+        "components": {
+            "Position": {},
+            "PhysixBody": {
+                "type": "circle",
+                "size": 5,
+                "density": 10,
+                "friction": 0.5,
+                "restitution": 0.1
+            },
+            "Texture":{
+                "texture": "ball",
+                "width": 60,
+                "height": 60,
+                "srcX": 0,
+                "srcY": 0,
+                "scaleX": 1,
+                "scaleY": 1,
+                "flipX": false,
+                "flipY": false
             }
         }
     },

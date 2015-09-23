@@ -1,4 +1,6 @@
-package de.hochschuletrier.gdw.ss15.game;
+﻿package de.hochschuletrier.gdw.ss15.game;
+
+import box2dLight.RayHandler;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
@@ -15,6 +17,7 @@ import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixDebugRenderSystem
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
+import de.hochschuletrier.gdw.ss15.game.systems.input.InputSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.NetworkClientSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.*;
 import de.hochschuletrier.gdw.ss15.game.systems.network.TestMovementSystem;
@@ -84,7 +87,7 @@ public class Game extends InputAdapter {
         
         mapLoader.listen(renderSystem.getTileMapCreator());
         mapLoader.run((String name, float x, float y) -> createEntity(name, x, y),
-                "data/maps/demo.tmx", physixSystem);
+                "data/maps/prototype.tmx", physixSystem);
     }
 
     private void addSystems() {
