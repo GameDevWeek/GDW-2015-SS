@@ -25,6 +25,7 @@ import de.hochschuletrier.gdw.ss15.game.input.XBox360KeyMap;
  */
 public class InputSystem extends IteratingSystem implements InputProcessor, ControllerListener {
 
+    private boolean isListener = false;
 
     private boolean up = false;
     private boolean down = false;
@@ -163,17 +164,19 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
         // Der InputProcessor wird beim Spiel angemeldet
         Main.getInstance().inputMultiplexer.addProcessor(this);
         Controllers.addListener(this);
+        this.isListener = true;
         // Das InputPaket fuer den Server wird initialisiert
     }
 
 
     // Controller
-    //----------------------------------------------------------------------------------------
+    //---------------------------------------------------------------------------------------
 
 
     @Override
     public void removedFromEngine(Engine engine) {
         super.removedFromEngine(engine);
+        Controllers.removeListener(this);
     }
 
     @Override
@@ -297,6 +300,19 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
     public boolean accelerometerMoved(Controller controller, int accelerometerCode, Vector3 value) {
         // brauchen wir nicht!
         return false;
+    }
+
+
+    @Override
+    public void update (float deltaTime) {
+        // sucht nach controllern, falls keiner angemeldet ist!
+        super.update(deltaTime);
+        if (!this.isListener) {
+            for (Controller controller : Controllers.getControllers()) {
+                if(!this.isListener)
+                Controllers.addListener(this);
+            }
+        }
     }
 
     private void debug() {
