@@ -2,6 +2,7 @@ package de.hochschuletrier.gdw.ss15.game.systems.network;
 
 import com.badlogic.ashley.core.*;
 import com.badlogic.ashley.utils.ImmutableArray;
+import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.ss15.events.network.server.SendPacketServerEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.ServerGame;
@@ -40,16 +41,20 @@ public class PositionSynchSystem extends EntitySystem implements EntityListener 
         for(int i = 0; i < entities.size(); ++i)
         {
             Entity ent = entities.get(i);
+            //PhysixBodyComponent physComp = ComponentMappers.physixBody.get(ent);
+            //physComp.setGravityScale(0);
+            //System.out.println(physComp.getPosition());
+
             PositionSynchComponent comp = ComponentMappers.positionSynch.get(ent);
             if(ComponentMappers.position.has(ent))
             {
                 PositionComponent pos = ComponentMappers.position.get(ent);
+                //System.out.println("New movment gecoginced: x"+pos.x+ " y"+pos.y);
                 if(pos.x != comp.lastX || pos.y != comp.lastY || pos.rotation != comp.lastRot)
                 {
                     comp.lastSendTimer.Update();
                     if(comp.lastSendTimer.get_CounterMilliseconds()>200)
                     {
-                        //System.out.println("New movment gecoginced: x"+pos.x+ " y"+pos.y);
 
                         comp.lastSendTimer.StartCounter();
                         comp.lastX=pos.x;

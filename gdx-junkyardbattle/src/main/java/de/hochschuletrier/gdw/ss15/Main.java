@@ -58,7 +58,7 @@ public class Main extends StateBasedGame {
 
 
     //-----------------------------------------server on off-------------------
-    private static final boolean m_StartServerByGameStart = false;
+    private static final boolean m_StartServerByGameStart = true;
     //-------------------------------------------------------------------------
 
 

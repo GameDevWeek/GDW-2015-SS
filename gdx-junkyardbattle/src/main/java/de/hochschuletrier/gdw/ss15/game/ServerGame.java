@@ -70,7 +70,7 @@ public class ServerGame{
     }
 
     private void addSystems() {
-       // engine.addSystem(physixSystem);
+        engine.addSystem(physixSystem);
         engine.addSystem(networkSystem);
         engine.addSystem(updatePositionSystem);
         engine.addSystem(lineOfSightSystem);
@@ -86,9 +86,9 @@ public class ServerGame{
     }
 
     private void setupPhysixWorld() {
-        /* physixSystem.setGravity(0, 0);
+        physixSystem.setGravity(0, 0);
 
-        PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody, physixSystem).position(410, 500).fixedRotation(false);
+        /*PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody, physixSystem).position(410, 500).fixedRotation(false);
         Body body = physixSystem.getWorld().createBody(bodyDef);
         body.createFixture(new PhysixFixtureDef(physixSystem).density(1).friction(0.5f).shapeBox(800, 20));
         PhysixUtil.createHollowCircle(physixSystem, 180, 180, 150, 30, 6);
