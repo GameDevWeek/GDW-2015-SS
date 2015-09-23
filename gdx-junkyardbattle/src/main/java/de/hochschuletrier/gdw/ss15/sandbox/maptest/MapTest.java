@@ -135,9 +135,6 @@ public class MapTest extends SandboxGame {
         // create a simple player ball
         player = createEntity("player", 100, 100);
         positionComponent = player.getComponent(PositionComponent.class);
-        
-        ParticleEffectComponent particleEffect = engine.createComponent(ParticleEffectComponent.class);
-        player.add(particleEffect);
         engine.addEntity(player);
         player.getComponent(PlayerComponent.class).isLocalPlayer = true;
 
