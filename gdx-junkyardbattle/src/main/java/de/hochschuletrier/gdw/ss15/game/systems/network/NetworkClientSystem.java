@@ -35,6 +35,8 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener 
     private ImmutableArray<Entity> entities;
     private Family family;
 
+
+
     Game game = null;
     ClientConnection connection = Main.getInstance().getClientConnection();
     long lastNetworkTimestamp = 0;
@@ -83,10 +85,10 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener 
             lastAddedEntityID = iPacket.entityID;
             Entity ent = game.createEntity(iPacket.name,0,0);
 
-
             ComponentMappers.position.get(ent).x = iPacket.xPos;
             ComponentMappers.position.get(ent).y = iPacket.yPos;
             ComponentMappers.position.get(ent).rotation = iPacket.rotation;
+
 
             NetworkReceivedNewPacketClientEvent.emit(pack,ent);
         }
@@ -97,7 +99,11 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener 
             Entity ent = hashMap.get(euPacket.entityID);
             if(ent!=null)
             {
-                NetworkReceivedNewPacketClientEvent.emit(pack,ent);
+                //System.out.println("Old postion: "+ComponentMappers.physixBody.get(ent).getPosition());
+
+                NetworkReceivedNewPacketClientEvent.emit(pack, ent);
+
+                //System.out.println("new postion: "+ComponentMappers.physixBody.get(ent).getPosition());
             }
         }
         else if(pack.getPacketId()==PacketIds.Simple.getValue())

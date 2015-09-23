@@ -70,9 +70,7 @@ public class ServerGame{
 
         new UpdatePhysixServer(); // magic → registers itself as listener for network packets
 
-        /// @author tobidot(Tobias Gepp)
         mapLoader.run( ( String name, float x, float y ) -> { return this.createEntity(name,  x, y); }, "data/maps/prototype.tmx",physixSystem );
-
     }
 
     private void addSystems() {
