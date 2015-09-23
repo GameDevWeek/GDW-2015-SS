@@ -79,7 +79,9 @@
             "Client":{},
             "PositionSynch":{
                 "clientname": "clientPlayer"
-            }
+            },
+            "Move":{}
+
         }
     },
 
