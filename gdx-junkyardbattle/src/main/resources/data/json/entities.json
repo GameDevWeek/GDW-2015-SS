@@ -140,6 +140,7 @@
             "Animator": {
                 "animation_IDLE": "character_idle"
             },
+
             "Move":{
                 "speed": 10
             },
