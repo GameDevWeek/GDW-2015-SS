@@ -6,8 +6,10 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.math.Vector2;
 import de.hochschuletrier.gdw.commons.gdx.ashley.EntityFactory;
+import de.hochschuletrier.gdw.commons.gdx.physix.PhysixContact;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.ss15.Main;
+import de.hochschuletrier.gdw.ss15.events.CollisionEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.Game;
 import de.hochschuletrier.gdw.ss15.game.ServerGame;
@@ -17,7 +19,7 @@ import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
 /**
  * Created by oliver on 21.09.15.
  */
-public class WeaponSystem extends IteratingSystem {
+public class WeaponSystem extends IteratingSystem implements CollisionEvent.Listener {
 	
 	private EntityFactory factory;
 
@@ -74,7 +76,7 @@ public class WeaponSystem extends IteratingSystem {
                     param.x = startPosition.x;
                     param.y = startPosition.y;
                     
-                    Entity projectile = factory.createEntity("Projectile", param);
+                    Entity projectile = factory.createEntity("projectile", param);
                     projectile.getComponent(PhysixBodyComponent.class).applyImpulse(dir.setLength(power));
                 }
             }
@@ -87,4 +89,8 @@ public class WeaponSystem extends IteratingSystem {
     }
 
 
+    @Override
+    public void onCollisionEvent(PhysixContact physixContact) {
+
+    }
 }
