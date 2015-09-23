@@ -8,6 +8,7 @@ package de.hochschuletrier.gdw.ss15.game.components.factories.effects;
 import com.badlogic.ashley.core.Entity;
 import de.hochschuletrier.gdw.commons.gdx.ashley.ComponentFactory;
 import de.hochschuletrier.gdw.commons.utils.SafeProperties;
+import de.hochschuletrier.gdw.ss15.game.components.effects.ParticleEffectComponent;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
 
 /**
@@ -23,7 +24,7 @@ public class ParticleEffectComponentFactory extends ComponentFactory<EntityFacto
 
     @Override
     public void run(Entity entity, SafeProperties meta, SafeProperties properties, EntityFactoryParam param) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       //ParticleEffectComponent particleEffectComponent = engine.createComponent(ParticleEffectComponent.class);
     }
     
 }

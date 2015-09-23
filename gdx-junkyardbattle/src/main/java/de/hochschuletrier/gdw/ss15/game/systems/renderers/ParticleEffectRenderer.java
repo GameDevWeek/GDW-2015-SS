@@ -46,7 +46,6 @@ public class ParticleEffectRenderer extends SortedSubIteratingSystem.SubSystem i
         }
         
         if(particleEffectComponent.isPlaying){
-            
             particleEffectComponent.particleEffect.setPosition(
                 position.x + particleEffectComponent.positionOffsetX, 
                 position.y + particleEffectComponent.positionOffsetY
@@ -64,6 +63,7 @@ public class ParticleEffectRenderer extends SortedSubIteratingSystem.SubSystem i
         if(particleEffectComponent.start)
         {
             particleEffectComponent.particleEffect.reset();
+            particleEffectComponent.particleEffect.flipY();
             particleEffectComponent.particleEffect.start();
             particleEffectComponent.isPlaying = true;
         }
