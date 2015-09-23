@@ -222,7 +222,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
     @Override
     public boolean axisMoved(Controller controller, int axisCode, float value) {
         switch (axisCode) {
-            case XBox360KeyMap.TRIGGER:
+            case XBox360KeyMap.TRIGGER: //Triggertasten
                 if (value < -0.1)
                     leftMBDown = true;
                 else if (value > 0.1)
