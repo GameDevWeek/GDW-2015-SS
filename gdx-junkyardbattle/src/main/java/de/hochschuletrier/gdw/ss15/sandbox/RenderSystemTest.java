@@ -133,6 +133,7 @@ public class RenderSystemTest extends SandboxGame {
         createEntity("greenPointLight", 50.f, 50.f);
         createEntity("blueConeLight", 500.f, 100.f);
         createEntity("ball", 50.f, 50.f);
+        createEntity("smokescreen", 50.f, 50.f);
         
         // Setup camera
         totalMapWidth = map.getWidth() * map.getTileWidth();

@@ -1,4 +1,13 @@
 {
+    "smokescreen": {
+        "meta": {},
+        "components":{
+            "Position": {},
+            "ParticleEffect": {
+                "effectname": "smoke"
+            }
+        }
+    },
     "ball": {
         "meta": {},
         "components": {
