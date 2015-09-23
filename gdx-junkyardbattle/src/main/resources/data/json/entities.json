@@ -121,16 +121,8 @@
         "components": {
             "Position": {},
             "NetworkID": {},
-            "Texture":{
-                "texture": "ball",
-                "width": 60,
-                "height": 60,
-                "srcX": 0,
-                "srcY": 0,
-                "scaleX": 1,
-                "scaleY": 1,
-                "flipX": false,
-                "flipY": false
+            "Animator": {
+                "animation_IDLE": "character_idle"
             }
         }
     },
@@ -168,16 +160,8 @@
                 "friction": 0.5,
                 "restitution": 0.1
             },
-            "Texture":{
-                "texture": "ball",
-                "width": 120,
-                "height": 120,
-                "srcX": 0,
-                "srcY": 0,
-                "scaleX": 1,
-                "scaleY": 1,
-                "flipX": false,
-                "flipY": false
+            "Animator": {
+                "animation_IDLE": "character_idle"
             }
         }
     },

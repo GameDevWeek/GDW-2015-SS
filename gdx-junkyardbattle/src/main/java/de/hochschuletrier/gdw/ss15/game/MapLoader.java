@@ -25,6 +25,18 @@ import de.hochschuletrier.gdw.commons.utils.Rectangle;
 /**
  * 
  * @author tobidot (Tobias Gepp)
+ * 
+ *      DOKUMENTATION
+ * 
+ * In dieser Klasse( MapLoader ) sollten keine Aendereungen gemacht werden 
+ * Entities oder aehnliches werden in 'MapSpecialEntities' modifiziert
+ * 
+ * eine Klasse die den 'TileCreationListener' implmentiert
+ * kann sich per 
+ *      ('MapLoader').listen( ('TileCreationListener') );
+ * regristieren 
+ * die Methode TileCreationListener.onTileCreate() wird 
+ * bei jeder erstellung (aus der Map) eines Tiles oder eines LayerObjects aufgerufen.
  *
  */
 
