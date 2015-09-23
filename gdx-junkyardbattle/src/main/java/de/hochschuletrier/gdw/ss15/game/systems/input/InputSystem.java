@@ -257,15 +257,17 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
             case XBox360KeyMap.R1X:
                 if (value > STICKDEADZONE || value < -STICKDEADZONE) {
                     winkel = Math.cosh(value / vertical);
-                    posX = (int) (RADIUS * Math.cos/*inan*/(winkel));
-                    posY = (int) (RADIUS * Math.sin/*an*/(winkel));
+                    posX = (int) (RADIUS * Math.cos(winkel));
+                    posY = (int) (RADIUS * Math.sin(winkel));
                 }
+                System.out.println("posX: " + posX + " posY: " + posY);
                 break;
             case XBox360KeyMap.R1Y:
                 if (value > STICKDEADZONE || value < -STICKDEADZONE) {
                     winkel = Math.cosh(value / vertical);
-                    posX = (int) (RADIUS * Math.cos/*inan*/(winkel));
-                    posY = (int) (RADIUS * Math.sin/*an*/(winkel));
+                    posX = (int) (RADIUS * Math.cos(winkel));
+                    posY = (int) (RADIUS * Math.sin(winkel));
+                    System.out.println("posX: " + posX + " posY: " + posY);
                 }
                 break;
         }
