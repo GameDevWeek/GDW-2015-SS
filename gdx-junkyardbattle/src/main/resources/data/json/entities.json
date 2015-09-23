@@ -24,7 +24,9 @@
                 "density": 5,
                 "friction": 0.2,
                 "restitution": 0.4
-            }
+            },
+            "Move":{},
+            "Input":{}
         }
     },
     "box": {
@@ -74,6 +76,7 @@
     "player": {
         "meta": {},
         "components": {
+            "Player":{},
             "Position": {},
             "PhysixBody": {
                 "type": "box",
@@ -85,7 +88,12 @@
             "Client":{},
             "PositionSynch":{
                 "clientname": "clientPlayer"
-            }
+            },
+            "Move":{
+                "speed": 120
+            },
+            "Input":{}
+
         }
     },
 
