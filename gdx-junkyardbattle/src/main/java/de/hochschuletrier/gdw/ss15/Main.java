@@ -154,9 +154,6 @@ public class Main extends StateBasedGame {
 
         this.console.register(emitterMode);
         emitterMode.addListener(this::onEmitterModeChanged);
-
-
-       
     }
 
     private void onLoadComplete() {
