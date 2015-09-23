@@ -16,7 +16,8 @@ public enum PacketIds
     Simple((short)1),
     InitEntity((short)2),
     Input((short)3),
-    InputEvent((short)4);
+    InputEvent((short)4),
+    Entity((short)5);
 
 
     private final short m_Value;
