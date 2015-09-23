@@ -4,6 +4,8 @@ import com.badlogic.ashley.core.*;
 
 import com.badlogic.ashley.utils.ImmutableArray;
 import de.hochschuletrier.gdw.commons.gdx.sceneanimator.Queue;
+import de.hochschuletrier.gdw.ss15.events.network.client.NetworkReceivedNewPacketClientEvent;
+import de.hochschuletrier.gdw.ss15.events.network.server.NetworkReceivedNewPacketServerEvent;
 import de.hochschuletrier.gdw.ss15.events.network.server.SendPacketServerEvent;
 import de.hochschuletrier.gdw.ss15.game.ServerGame;
 import de.hochschuletrier.gdw.ss15.game.components.network.server.ClientComponent;
@@ -20,6 +22,8 @@ import java.util.LinkedList;
 
 public class NetworkServerSystem extends EntitySystem implements SendPacketServerEvent.Listener{
 
+
+    private static final TestListenerServer testlistener = new TestListenerServer();
     private Serversocket serverSocket = null;
     private ServerGame game = null;
     private ImmutableArray<Entity> clients;
@@ -85,6 +89,7 @@ public class NetworkServerSystem extends EntitySystem implements SendPacketServe
 
     private void ReceivedPacket(Packet pack,Entity ent)
     {
+        NetworkReceivedNewPacketServerEvent.emit(pack);
         if(pack.getPacketId() == PacketIds.Position.getValue())
         {
             //System.out.println("Received position update");

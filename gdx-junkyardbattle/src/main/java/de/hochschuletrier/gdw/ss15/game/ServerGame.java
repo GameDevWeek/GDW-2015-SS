@@ -70,7 +70,7 @@ public class ServerGame{
     }
 
     private void addSystems() {
-        engine.addSystem(physixSystem);
+        //engine.addSystem(physixSystem);
         engine.addSystem(networkSystem);
         engine.addSystem(updatePositionSystem);
         engine.addSystem(lineOfSightSystem);

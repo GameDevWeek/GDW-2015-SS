@@ -4,8 +4,7 @@ import com.badlogic.ashley.core.*;
 import com.badlogic.ashley.utils.ImmutableArray;
 import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.events.network.NetworkPositionEvent;
-import de.hochschuletrier.gdw.ss15.events.network.client.NetworkReceivedDeleteEntity;
-import de.hochschuletrier.gdw.ss15.events.network.client.NetworkReceivedNewEntity;
+import de.hochschuletrier.gdw.ss15.events.network.client.NetworkReceivedNewPacketClientEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.Game;
 import de.hochschuletrier.gdw.ss15.game.components.network.client.NetworkIDComponent;
@@ -28,6 +27,8 @@ import java.util.HashMap;
 
 public class NetworkClientSystem extends EntitySystem implements EntityListener {
 
+
+    private static final TestListenerClient testlistener = new TestListenerClient();
     private MyTimer timer = new MyTimer(true);
     private long lastAddedEntityID = 0;
     private HashMap<Long, Entity> hashMap = new HashMap();
@@ -83,6 +84,7 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener 
 
     private void ReceivedPacket(Packet pack)
     {
+        NetworkReceivedNewPacketClientEvent.emit(pack);
         //System.out.println("received packet");
         if(pack.getPacketId()== PacketIds.InitEntity.getValue())
         {
@@ -96,8 +98,6 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener 
             ComponentMappers.position.get(ent).x = iPacket.xPos;
             ComponentMappers.position.get(ent).y = iPacket.yPos;
             ComponentMappers.position.get(ent).rotation = iPacket.rotation;
-
-            NetworkReceivedNewEntity.emit(ent);
         }
         else if(pack.getPacketId() == PacketIds.Position.getValue())
         {//positino update packet
@@ -124,7 +124,6 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener 
                 Entity ent = hashMap.get(sPacket.m_Moredata);
                 if(ent!=null) {
                     //entety deleted
-                    NetworkReceivedDeleteEntity.emit(ent);
                     hashMap.remove(sPacket.m_Moredata);
                     game.getEngine().removeEntity(ent);
                 }
