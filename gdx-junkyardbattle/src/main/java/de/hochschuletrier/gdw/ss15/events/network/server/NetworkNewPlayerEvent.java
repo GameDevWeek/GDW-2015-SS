@@ -2,8 +2,6 @@ package de.hochschuletrier.gdw.ss15.events.network.server;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.utils.SnapshotArray;
-import de.hochschuletrier.gdw.ss15.game.network.Packets.EntityPacket;
-import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
 
 /**
  * Created by lukas on 22.09.15.

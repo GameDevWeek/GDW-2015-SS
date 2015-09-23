@@ -3,16 +3,14 @@ package de.hochschuletrier.gdw.ss15.game.systems.network;
 import com.badlogic.ashley.core.*;
 
 import com.badlogic.ashley.utils.ImmutableArray;
-import de.hochschuletrier.gdw.commons.gdx.sceneanimator.Queue;
-import de.hochschuletrier.gdw.ss15.events.network.client.NetworkReceivedNewPacketClientEvent;
 import de.hochschuletrier.gdw.ss15.events.network.server.NetworkReceivedNewPacketServerEvent;
 import de.hochschuletrier.gdw.ss15.events.network.server.SendPacketServerEvent;
 import de.hochschuletrier.gdw.ss15.game.ServerGame;
 import de.hochschuletrier.gdw.ss15.game.components.network.server.ClientComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.network.PacketIds;
-import de.hochschuletrier.gdw.ss15.game.network.Packets.EntityPacket;
-import de.hochschuletrier.gdw.ss15.game.network.Packets.InitEntityPacket;
+import de.hochschuletrier.gdw.ss15.game.network.Packets.EntityUpdatePacket;
+import de.hochschuletrier.gdw.ss15.game.network.Packets.MovementPacket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serverclientsocket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serversocket;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
@@ -89,16 +87,17 @@ public class NetworkServerSystem extends EntitySystem implements SendPacketServe
 
     private void ReceivedPacket(Packet pack,Entity ent)
     {
-        NetworkReceivedNewPacketServerEvent.emit(pack);
-        if(pack.getPacketId() == PacketIds.Position.getValue())
+        //System.out.println("Received packet server");
+        NetworkReceivedNewPacketServerEvent.emit(pack,ent);
+        if(pack.getPacketId() == PacketIds.Movement.getValue())
         {
             //System.out.println("Received position update");
-            EntityPacket ePacket = (EntityPacket)pack;
+            MovementPacket ePacket = (MovementPacket)pack;
             PositionComponent posComp = ComponentMappers.position.get(ent);
             //System.out.println("Received position: "+ePacket.xPos+" "+ePacket.yPos);
             posComp.x+=ePacket.xPos;
             posComp.y+=ePacket.yPos;
-            //posComp.rotation=ePacket.rotation;
+            posComp.rotation=ePacket.rotation;
         }
     }
 
@@ -135,6 +134,7 @@ public class NetworkServerSystem extends EntitySystem implements SendPacketServe
 
     public void onSendServerPacket(Packet pack,boolean save,Entity exept)
     {
+        //System.out.print("dsklfjsdlkjfdl");
         int i = 0;
         for(Entity entity : clients){
             if(entity != exept){

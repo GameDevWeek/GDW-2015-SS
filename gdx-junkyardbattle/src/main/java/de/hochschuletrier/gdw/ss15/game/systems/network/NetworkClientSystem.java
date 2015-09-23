@@ -10,7 +10,7 @@ import de.hochschuletrier.gdw.ss15.game.Game;
 import de.hochschuletrier.gdw.ss15.game.components.network.client.NetworkIDComponent;
 import de.hochschuletrier.gdw.ss15.game.network.ClientConnection;
 import de.hochschuletrier.gdw.ss15.game.network.PacketIds;
-import de.hochschuletrier.gdw.ss15.game.network.Packets.EntityPacket;
+import de.hochschuletrier.gdw.ss15.game.network.Packets.EntityUpdatePacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.InitEntityPacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Clientsocket;
@@ -58,18 +58,7 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener 
     @Override
     public void update(float deltaTime)
     {
-        /*
         //TODO check all input components
-        timer.Update();
-        if(timer.get_CounterMilliseconds() > 200){
-            InputMovPaket inputPacket = new InputMovPaket(game.getInputSystem().keyDown(Input.Keys.W),
-                    game.getInputSystem().keyDown(Input.Keys.S),
-                    game.getInputSystem().keyDown(Input.Keys.A),
-                    game.getInputSystem().keyDown(Input.Keys.D));
-            connection.getSocket().sendPacketUnsave(inputPacket);
-            timer.ResetTimer();
-        }
-        */
 
         Clientsocket socket = connection.getSocket();
         if(socket != null)
@@ -99,12 +88,12 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener 
             ComponentMappers.position.get(ent).y = iPacket.yPos;
             ComponentMappers.position.get(ent).rotation = iPacket.rotation;
         }
-        else if(pack.getPacketId() == PacketIds.Position.getValue())
+        else if(pack.getPacketId() == PacketIds.EntityUpdate.getValue())
         {//positino update packet
             if(pack.getTimestamp()>lastNetworkTimestamp)
             {//synccompoent
                 lastNetworkTimestamp = pack.getTimestamp();
-                EntityPacket ePacket = (EntityPacket) pack;
+                EntityUpdatePacket ePacket = (EntityUpdatePacket) pack;
 
                 Entity ent = hashMap.get(ePacket.entityID);
                 if(ent!=null) {

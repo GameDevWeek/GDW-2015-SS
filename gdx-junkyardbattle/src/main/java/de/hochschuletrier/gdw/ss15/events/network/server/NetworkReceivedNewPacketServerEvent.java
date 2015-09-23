@@ -1,5 +1,6 @@
 package de.hochschuletrier.gdw.ss15.events.network.server;
 
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.utils.SnapshotArray;
 import de.hochschuletrier.gdw.ss15.game.network.PacketIds;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
@@ -12,19 +13,21 @@ import java.util.HashMap;
 
 public class NetworkReceivedNewPacketServerEvent {
         public static interface Listener {
-            void onReceivedNewPacket(Packet pack);
+            void onReceivedNewPacket(Packet pack,Entity ent);
         }
 
         private static final HashMap<Short,SnapshotArray<Listener>> map = new HashMap<Short,SnapshotArray<Listener>>();
 
 
-        public static void emit(Packet pack) {
+        public static void emit(Packet pack,Entity ent) {
             SnapshotArray<Listener> liste = map.get(pack.getPacketId());
-            Object[] items = liste.begin();
-            for (int i = 0, n = liste.size; i < n; i++) {
-                ((Listener) items[i]).onReceivedNewPacket(pack);
+            if(liste != null) {
+                Object[] items = liste.begin();
+                for (int i = 0, n = liste.size; i < n; i++) {
+                    ((Listener) items[i]).onReceivedNewPacket(pack,ent);
+                }
+                liste.end();
             }
-            liste.end();
         }
 
         public static void registerListener(PacketIds id, Listener listener){
