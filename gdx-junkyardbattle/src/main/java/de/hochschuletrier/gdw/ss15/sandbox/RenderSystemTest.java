@@ -1,4 +1,4 @@
-﻿package de.hochschuletrier.gdw.ss15.sandbox;
+package de.hochschuletrier.gdw.ss15.sandbox;
 
 import java.util.HashMap;
 
@@ -95,7 +95,7 @@ public class RenderSystemTest extends SandboxGame {
     public void init(AssetManagerX assetManager) {
         mapLoader.listen(renderSystem.getTileMapCreator());
         mapLoader.run((String name, float x, float y) -> createEntity(name, x, y), 
-                "data/maps/demo.tmx", physixSystem);
+                "data/maps/prototype.tmx", physixSystem);
 
         map = mapLoader.getTiledMap();
         entityFactory.init(engine, assetManager);
