@@ -28,6 +28,8 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
     private boolean isListener = false;
 
     private final float STICKDEADZONE = 0.25f;
+    private final float RADIUS= 123.0f;
+    private double winkel;
 
     private float horizontal = 0.0f;
     private float vertical = 0.0f;
@@ -48,7 +50,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
 
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
-        if(entity.getComponent(PlayerComponent.class).isLocalPlayer){
+        if (entity.getComponent(PlayerComponent.class).isLocalPlayer) {
             entity.getComponent(InputComponent.class).horizontal = horizontal;
             entity.getComponent(InputComponent.class).vertical = vertical;
 
@@ -114,7 +116,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
         // touchDown = mouseClick
         switch (button) {
             case Input.Buttons.LEFT:
-                leftMBDown=true;
+                leftMBDown = true;
                 break;
             case Input.Buttons.RIGHT:
                 rightMBDown = true;
@@ -245,12 +247,20 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
                     vertical = 0.0f;
                 break;
             case XBox360KeyMap.R1X:
-                if (value > STICKDEADZONE || value < -STICKDEADZONE)
-                    System.out.println("rechterStickX");
+                if (value > STICKDEADZONE || value < -STICKDEADZONE) {
+                    winkel = Math.cosh(value / vertical);
+                    posX = (int) (RADIUS * Math.cos/*inan*/(winkel));
+                    posY = (int) (RADIUS * Math.sin/*an*/(winkel));
+                }
+                System.out.println("posX: " + posX + " posY: " + posY);
                 break;
             case XBox360KeyMap.R1Y:
-                if (value > STICKDEADZONE || value < -STICKDEADZONE)
-                        System.out.println("rechterStickY");
+                if (value > STICKDEADZONE || value < -STICKDEADZONE) {
+                    winkel = Math.cosh(value / vertical);
+                    posX = (int) (RADIUS * Math.cos/*inan*/(winkel));
+                    posY = (int) (RADIUS * Math.sin/*an*/(winkel));
+                    System.out.println("posX: " + posX + " posY: " + posY);
+                }
                 break;
         }
         debug();
@@ -267,7 +277,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
                 break;
             case northEast:
                 vertical = -0.5f;
-                horizontal =0.5f;
+                horizontal = 0.5f;
                 break;
             case east:
                 vertical = 0.0f;
@@ -319,13 +329,13 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
 
 
     @Override
-    public void update (float deltaTime) {
+    public void update(float deltaTime) {
         // sucht nach controllern, falls keiner angemeldet ist!
         super.update(deltaTime);
         if (!this.isListener) {
             for (Controller controller : Controllers.getControllers()) {
-                if(!this.isListener)
-                Controllers.addListener(this);
+                if (!this.isListener)
+                    Controllers.addListener(this);
             }
         }
     }
