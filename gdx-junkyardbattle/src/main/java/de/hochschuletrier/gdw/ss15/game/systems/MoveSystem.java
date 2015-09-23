@@ -39,7 +39,9 @@ public class MoveSystem extends IteratingSystem {
 
     @Override
     protected void processEntity(Entity e, float deltaTime) {
-
+//    	System.out.println(move.get(e).speed);
+//    	System.out.println(input.get(e).horizontal);
+//    	System.out.println(input.get(e).vertical);
         vectorToAdd.setZero();
         vectorToAdd.add(input.get(e).horizontal, input.get(e).vertical);
         vectorToAdd.nor();

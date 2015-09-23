@@ -1,4 +1,4 @@
-﻿package de.hochschuletrier.gdw.ss15.game;
+package de.hochschuletrier.gdw.ss15.game;
 
 import box2dLight.RayHandler;
 
@@ -6,6 +6,10 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.Manifold;
 
 import de.hochschuletrier.gdw.commons.gdx.ashley.EntityFactory;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
@@ -15,10 +19,11 @@ import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
 import de.hochschuletrier.gdw.ss15.game.systems.input.InputSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.NetworkClientSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.*;
 import de.hochschuletrier.gdw.ss15.game.systems.network.TestMovementSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.network.UpdatePhysixSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.renderers.RenderSystem;
+import de.hochschuletrier.gdw.ss15.game.utils.TimerSystem;
 
 import java.util.function.Consumer;
 
@@ -40,7 +45,7 @@ public class Game extends InputAdapter {
     private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem(GameConstants.PRIORITY_PHYSIX + 1);
     private final NetworkClientSystem networksystem = new NetworkClientSystem(this,GameConstants.PRIORITY_PHYSIX+2);
     private final TestMovementSystem testMovementSystem = new TestMovementSystem(this);
-
+    private final MoveSystem moveSystem = new MoveSystem();
     private final EntityFactoryParam factoryParam = new EntityFactoryParam();
     private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json", Game.class);
 
@@ -48,12 +53,13 @@ public class Game extends InputAdapter {
 
     private final RenderSystem renderSystem = new RenderSystem(physixSystem, cameraSystem.getCamera().getOrthographicCamera(), engine);
 
+    private final TimerSystem timerSystem = new TimerSystem();
     private final WeaponSystem weaponSystem = new WeaponSystem();
-
+    private final RotationSystem rotationSystem = new RotationSystem(cameraSystem.getCamera().getOrthographicCamera());
+    private final UpdatePhysixSystem updatePhysixSystem = new UpdatePhysixSystem(timerSystem);
     private final InputSystem inputSystem = new InputSystem();
     private final MapLoader mapLoader = new MapLoader();
 
-    
     public Game() {
         // If this is a build jar file, disable hotkeys
         if (!Main.IS_RELEASE) {
@@ -80,20 +86,23 @@ public class Game extends InputAdapter {
         entityFactory.init(engine, assetManager);
         
         mapLoader.listen(renderSystem.getTileMapCreator());
-        mapLoader.run((String name, float x, float y) -> createEntity(name, x, y), 
+        mapLoader.run((String name, float x, float y) -> createEntity(name, x, y),
                 "data/maps/prototype.tmx", physixSystem);
     }
 
     private void addSystems() {
-        //engine.addSystem(physixSystem);
-        //engine.addSystem(physixDebugRenderSystem);
+        engine.addSystem(physixSystem);
+        engine.addSystem(physixDebugRenderSystem);
         engine.addSystem(updatePositionSystem);
         engine.addSystem(networksystem);
         engine.addSystem(inputSystem);
+        //engine.addSystem(moveSystem);
         engine.addSystem(weaponSystem);
         engine.addSystem(cameraSystem);
         engine.addSystem(renderSystem);
         engine.addSystem(testMovementSystem);
+        engine.addSystem(rotationSystem);
+        engine.addSystem(updatePhysixSystem);
     }
 
     private void addContactListeners() {
@@ -101,10 +110,37 @@ public class Game extends InputAdapter {
         //physixSystem.getWorld().setContactListener(contactListener);
         //contactListener.addListener(ImpactSoundComponent.class, new ImpactSoundListener());
        // contactListener.addListener(TriggerComponent.class, new TriggerListener());
+    	ContactListener cl = new ContactListener() {
+			
+			@Override
+			public void preSolve(Contact contact, Manifold oldManifold) {
+				// TODO Auto-generated method stub
+				contact.setEnabled(false);
+			}
+			
+			@Override
+			public void postSolve(Contact contact, ContactImpulse impulse) {
+				// TODO Auto-generated method stub
+				contact.setEnabled(false);
+			}
+			
+			@Override
+			public void endContact(Contact contact) {
+				// TODO Auto-generated method stub
+				contact.setEnabled(false);
+			}
+			
+			@Override
+			public void beginContact(Contact contact) {
+				contact.setEnabled(false);
+				
+			}
+		}; 
+    	physixSystem.getWorld().setContactListener(cl);
     }
 
     private void setupPhysixWorld() {
-        //physixSystem.setGravity(0, 24);
+        physixSystem.setGravity(0, 0);
         //PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody, physixSystem).position(410, 500).fixedRotation(false);
         //Body body = physixSystem.getWorld().createBody(bodyDef);
        // body.createFixture(new PhysixFixtureDef(physixSystem).density(1).friction(0.5f).shapeBox(800, 20));
@@ -117,6 +153,7 @@ public class Game extends InputAdapter {
 
     public void update(float delta) {
         Main.getInstance().screenCamera.bind();
+        timerSystem.update(delta);
         engine.update(delta);
     }
 

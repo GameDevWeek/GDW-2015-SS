@@ -78,8 +78,9 @@
         "components": {
             "Player":{},
             "Position": {},
+            "Player": {},
             "PhysixBody": {
-                "type": "box",
+                "type": "circle",
                 "size": 60,
                 "density": 10,
                 "friction": 0.5,
@@ -88,11 +89,8 @@
             "Client":{},
             "PositionSynch":{
                 "clientname": "clientPlayer"
-            },
-            "Move":{
-                "speed": 120
-            },
-            "Input":{}
+            }
+            
 
         }
     },
@@ -101,6 +99,14 @@
         "meta": {},
         "components": {
             "Position": {},
+            "Player": {},
+            "PhysixBody": {
+                "type": "circle",
+                "size": 40,
+                "density": 10,
+                "friction": 0.5,
+                "restitution": 0.1
+            },
             "NetworkID": {},
             "Texture":{
                 "texture": "ball",
@@ -119,11 +125,25 @@
     "clientOwnPlayer": {
         "meta": {},
         "components": {
+            "Player": {
+                "isLocalPlayer": true
+            },
             "Position": {},
+            "PhysixBody": {
+                "type": "circle",
+                "size": 40,
+                "density": 10,
+                "friction": 0.5,
+                "restitution": 0.1
+            },
             "NetworkID": {},
             "Animator": {
                 "animation_IDLE": "character_idle"
-            }
+            },
+            "Move":{
+                "speed": 10
+            },
+            "Input":{}
         }
     },
 
