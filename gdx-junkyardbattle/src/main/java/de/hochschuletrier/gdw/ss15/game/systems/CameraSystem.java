@@ -1,8 +1,5 @@
 package de.hochschuletrier.gdw.ss15.game.systems;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntityListener;
@@ -18,20 +15,36 @@ import de.hochschuletrier.gdw.ss15.game.rendering.BoundedCamera;
 import de.hochschuletrier.gdw.ss15.events.WeaponCharging;
 import de.hochschuletrier.gdw.ss15.events.WeaponUncharged;
 
+/**
+ *
+ * <p>
+ * The camera-system coordinates the camera and any interaction with it.
+ * To connect the camera to a player entity this entity needs a <i>PlayerComponent</i>
+ * with its attribute <i>isLocalPlayer</i> set to true.
+ * </p>
+ * @see {@link BoundedCamera}
+ * @version 0.2
+ * @author Sebastian Schalow
+ * 
+ */
+
 public class CameraSystem extends EntitySystem implements EntityListener, WeaponCharging.Listener, WeaponUncharged.Listener {
 
-    private final Logger logger = LoggerFactory.getLogger(getClass());
-    private BoundedCamera camera = new BoundedCamera();
-    
+    private BoundedCamera camera = new BoundedCamera();    
     private Entity player;
+    
+    //private final Logger logger = LoggerFactory.getLogger(getClass());
         
     public CameraSystem() {
         // Resizing Camera to match window dimensions
         camera.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         // Registering camering for resize-Events
+        Main.getInstance().addScreenListener(camera);
+        // TODO:
+        // to be replaced by future implementation of
+        // corresponding events by input / gamelogic group        
         WeaponCharging.register(this);
         WeaponUncharged.register(this);
-        Main.getInstance().addScreenListener(camera);
         camera.updateForced();
     }
 
@@ -47,12 +60,14 @@ public class CameraSystem extends EntitySystem implements EntityListener, Weapon
     
     public void setCameraBounds(float minX, float minY, float maxX, float maxY){
         // Set Camera Bounds to a matching region (e.g. map size)
+        // without using this method bounding is disabled
         camera.setBounds(minX, minY, maxX, maxY);
         camera.updateForced();
     }
     
     @Override
     public void update(float deltaTime) {
+        // if player dies / not existent
         if(player == null)
             return;
         
@@ -62,16 +77,19 @@ public class CameraSystem extends EntitySystem implements EntityListener, Weapon
         }                
 
         camera.update(deltaTime);
-        //camera.bind();        
+        camera.bind();        
     }
 
     @Override
-    public void entityAdded(Entity entity) {
-        if(entity.getComponent(PlayerComponent.class).isLocalPlayer){
-            player = entity;
-        }
+    public void onWeaponCharging() { 
+        camera.zoomOut(true);
     }
 
+    @Override
+    public void onWeaponUncharged() {
+        camera.zoomOut(false);        
+    }
+    
     @Override
     public void addedToEngine(Engine engine) {
         @SuppressWarnings("unchecked")
@@ -79,30 +97,14 @@ public class CameraSystem extends EntitySystem implements EntityListener, Weapon
         engine.addEntityListener(family, this);
     }
     
-    private void zoomOut(){
-        camera.zoomOut(true);
-    }
-    
-    private void resetZoom(){
-        camera.zoomOut(false);
+    @Override
+    public void entityAdded(Entity entity) {
+        if(entity.getComponent(PlayerComponent.class).isLocalPlayer){
+            player = entity;
+        }
     }
     
     @Override
     public void entityRemoved(Entity entity) {}
-
-    @Override
-    public void onWeaponCharging() {
-        // TODO Auto-generated method stub
-        logger.debug("Weapon is charging");        
-        zoomOut();
-    }
-
-    @Override
-    public void onWeaponUncharged() {
-        // TODO Auto-generated method stub
-        resetZoom();        
-    }
-    
-    
     
 }

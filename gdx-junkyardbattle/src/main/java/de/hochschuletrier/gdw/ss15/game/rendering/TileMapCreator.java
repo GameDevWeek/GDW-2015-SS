@@ -1,4 +1,4 @@
-package de.hochschuletrier.gdw.ss15.game.utils;
+package de.hochschuletrier.gdw.ss15.game.rendering;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
@@ -20,7 +20,7 @@ import de.hochschuletrier.gdw.ss15.game.components.animation.AnimationState;
 import de.hochschuletrier.gdw.ss15.game.components.animation.AnimatorComponent;
 import de.hochschuletrier.gdw.ss15.game.components.texture.TextureComponent;
 
-public class TileRenderLoader implements TileCreationListener {
+public class TileMapCreator implements TileCreationListener {
     private PooledEngine engine;
     
     public void init(PooledEngine e) {

@@ -38,9 +38,11 @@ import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.Game;
 import de.hochschuletrier.gdw.ss15.game.GameConstants;
+import de.hochschuletrier.gdw.ss15.game.MapLoader;
 import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
+import de.hochschuletrier.gdw.ss15.game.rendering.TileMapCreator;
 import de.hochschuletrier.gdw.ss15.game.systems.CameraSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.renderers.RenderSystem;
@@ -68,19 +70,19 @@ public class RenderSystemTest extends SandboxGame {
     );
     private final PhysixDebugRenderSystem physixDebugRenderSystem = new PhysixDebugRenderSystem(GameConstants.PRIORITY_DEBUG_WORLD);
     private final CameraSystem cameraSystem = new CameraSystem();
-    private final RenderSystem renderSystem = new RenderSystem(new RayHandler(physixSystem.getWorld()),
+    private final RenderSystem renderSystem = new RenderSystem(physixSystem,
             cameraSystem.getCamera().getOrthographicCamera());
     private final UpdatePositionSystem updatePosSystem = new UpdatePositionSystem();
     private float totalMapWidth, totalMapHeight;
 
     private TiledMap map;
-    private TiledMapRendererGdx mapRenderer;
+    private MapLoader mapLoader = new MapLoader();
     private PhysixBodyComponent playerBody;
     private final HashMap<TileSet, Texture> tilesetImages = new HashMap();
 
     private final EntityFactoryParam factoryParam = new EntityFactoryParam();
     private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json", Game.class);
-
+    
     public RenderSystemTest() {
         engine.addSystem(physixSystem);
         engine.addSystem(physixDebugRenderSystem);
@@ -91,22 +93,12 @@ public class RenderSystemTest extends SandboxGame {
 
     @Override
     public void init(AssetManagerX assetManager) {
-        map = loadMap("data/maps/demo.tmx");
-        for (TileSet tileset : map.getTileSets()) {
-            TmxImage img = tileset.getImage();
-            String filename = CurrentResourceLocator.combinePaths(tileset.getFilename(), img.getSource());
-            tilesetImages.put(tileset, new Texture(filename));
-        }
-        mapRenderer = new TiledMapRendererGdx(map, tilesetImages);
+        mapLoader.listen(renderSystem.getTileMapCreator());
+        mapLoader.run((String name, float x, float y) -> createEntity(name, x, y), 
+                "data/maps/demo.tmx", physixSystem);
+
+        map = mapLoader.getTiledMap();
         entityFactory.init(engine, assetManager);
-        
-        // Generate static world
-        int tileWidth = map.getTileWidth();
-        int tileHeight = map.getTileHeight();
-        RectangleGenerator generator = new RectangleGenerator();
-        generator.generate(map,
-                (Layer layer, TileInfo info) -> info.getBooleanProperty("blocked", false),
-                (Rectangle rect) -> addShape(rect, tileWidth, tileHeight));
 
         // create a simple player ball
         Entity player = engine.createEntity();
@@ -180,13 +172,7 @@ public class RenderSystemTest extends SandboxGame {
     @Override
     public void update(float delta) {
         cameraSystem.getCamera().bind();
-        for (Layer layer : map.getLayers()) {
-            mapRenderer.render(0, 0, layer);
-        }
         engine.update(delta);
-        
-        mapRenderer.update(delta);
-//        cameraSystem.getCamera().update(delta);
 
         if(playerBody != null) {
             float speed = 10000.0f;
