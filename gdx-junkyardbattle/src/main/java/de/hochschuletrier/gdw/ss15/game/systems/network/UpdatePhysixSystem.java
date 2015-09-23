@@ -49,55 +49,53 @@ public class UpdatePhysixSystem extends IteratingSystem
     	if(interp.sumDeltaTime < 1 ){
     		interp.sumDeltaTime += deltaTime;
     	}
-    	
-    	
     }
 
   
-            @Override
-            public void onReceivedNewPacket(Packet pack, Entity entity) {
-                try{
-                EntityUpdatePacket p = (EntityUpdatePacket)pack;
-                PhysixBodyComponent phxc = entity.getComponent(PhysixBodyComponent.class);
-                phxc.setPosition(p.xPos, p.yPos);
-                phxc.setAngle(p.rotation*MathUtils.degreesToRadians);
-             }catch(ClassCastException ex){}
-          
-            //System.out.println("used new rotation: "+p.rotation);
-            InterpolatePositionComponent interp = entity.getComponent(InterpolatePositionComponent.class);
-            
-            
-            if(interp.secondPos == null && interp.firstPos == null ){
-            	interp.firstPos = p;
-            	return;
-            } else if (interp.secondPos == null){
-            	if(interp.firstPos.getTimestamp() > p.getTimestamp()){
-            		interp.secondPos = interp.firstPos;
-            		interp.firstPos = p;
-            	} else{
-            		interp.secondPos = p;
-            	}
-            	return;
-            }
-            
-            if(p.getTimestamp() > interp.secondPos.getTimestamp()){
-            	interp.firstPos = interp.secondPos;
-            	interp.secondPos = p;
-            	phxc.getPosition().x = interp.firstPos.xPos;
-            	phxc.getPosition().y = interp.firstPos.yPos;
-            	interp.sumDeltaTime = 0;
-            	return;
-            }
-            
-            if(p.getTimestamp() > interp.firstPos.getTimestamp()) {
-            	interp.firstPos = p;
-            	phxc.getPosition().x = interp.firstPos.xPos;
-            	phxc.getPosition().y = interp.firstPos.yPos;
-            	interp.sumDeltaTime = 0;
-            	return;
-            }
-            
-        }catch(ClassCastException ex){}
-
+    @Override
+    public void onReceivedNewPacket(Packet pack, Entity entity) {
+        try{
+        EntityUpdatePacket p = (EntityUpdatePacket)pack;
+        PhysixBodyComponent phxc = entity.getComponent(PhysixBodyComponent.class);
+        phxc.setPosition(p.xPos, p.yPos);
+        phxc.setAngle(p.rotation*MathUtils.degreesToRadians);
+     }catch(ClassCastException ex){}
+  /*
+    //System.out.println("used new rotation: "+p.rotation);
+    InterpolatePositionComponent interp = entity.getComponent(InterpolatePositionComponent.class);
+    
+    
+    if(interp.secondPos == null && interp.firstPos == null ){
+    	interp.firstPos = p;
+    	return;
+    } else if (interp.secondPos == null){
+    	if(interp.firstPos.getTimestamp() > p.getTimestamp()){
+    		interp.secondPos = interp.firstPos;
+    		interp.firstPos = p;
+    	} else{
+    		interp.secondPos = p;
+    	}
+    	return;
+    }
+    
+    if(p.getTimestamp() > interp.secondPos.getTimestamp()){
+    	interp.firstPos = interp.secondPos;
+    	interp.secondPos = p;
+    	phxc.getPosition().x = interp.firstPos.xPos;
+    	phxc.getPosition().y = interp.firstPos.yPos;
+    	interp.sumDeltaTime = 0;
+    	return;
+    }
+    
+    if(p.getTimestamp() > interp.firstPos.getTimestamp()) {
+    	interp.firstPos = p;
+    	phxc.getPosition().x = interp.firstPos.xPos;
+    	phxc.getPosition().y = interp.firstPos.yPos;
+    	interp.sumDeltaTime = 0;
+    	return;
+    }
+    
+}catch(ClassCastException ex){}
+*/
     }
 }
