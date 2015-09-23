@@ -41,7 +41,7 @@ public class TestMovementSystem extends IteratingSystem{
     private ComponentMapper<InventoryComponent> inventory;
     public TestMovementSystem(Game game, Camera cam)
     {
-        super(Family.all(InputComponent.class, MoveComponent.class).get());
+        super(Family.all(InputComponent.class, MoveComponent.class, InventoryComponent.class).get());
         this.game = game;
         this.camera = cam;
         move = ComponentMappers.move;
@@ -54,21 +54,26 @@ public class TestMovementSystem extends IteratingSystem{
 		timer.Update();
         if(timer.get_CounterMilliseconds()>100)
         {
-            timer.StartCounter();
-        
-	        vectorToAdd.scl(move.get(entity).speed);
-	        InputComponent input = ComponentMappers.input.get(entity);
+        	InputComponent input = ComponentMappers.input.get(entity);
 	        PositionComponent posc = ComponentMappers.position.get(entity);
-	        
+	        InventoryComponent inventory = ComponentMappers.inventory.get(entity);
+	        System.out.println(inventory);
+            timer.StartCounter();
+            if(inventory.metalShards<=700 && inventory.metalShards>0)
+            {
+            	float invtemp = inventory.metalShards/700;
+            	vectorToAdd.scl(move.get(entity).speed-move.get(entity).speed*(invtemp*0.75f));
+            }
+            else
+            {
+        	vectorToAdd.scl(move.get(entity).speed);
+            }
 	        Vector3 mousepos = camera.unproject(new Vector3(input.posX, input.posY,0));
 	        Vector2 mousepos2 = new Vector2(mousepos.x, mousepos.y);
 	        
 	        mousepos2.sub(new Vector2(posc.x,posc.y));
 	        float angle = mousepos2.angle();
 	        System.out.println(angle);
-//	        System.out.println("X" + input.posX);
-//	        System.out.println("Y" + input.posY);
-	        System.out.println("Maus" + mousepos2);
 	
 //	        float rotation = (float)Math.atan2(mousepos2.y - posc.y,mousepos2.x - posc.x);
 	        

@@ -37,7 +37,8 @@ public class GameConstants {
 
     // PlayerParameters
     public static final int START_HEALTH = 100;
-    public static final int MAX_METALSHARDS = 100;
+    public static final int MAX_METALSHARDS = 700;
+    public static final int MIN_METALSHARDS = 0;
     public static final float START_X_POSITION = 0;
     public static final float START_Y_POSITION = 0;
     public static final float DYING_TIMER = 1000;

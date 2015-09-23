@@ -147,7 +147,8 @@
                 "speed": 10
             },
             "Input":{},
-            "Interpolate": {}
+            "Interpolate": {},
+            "Inventory":{}
         }
     },
 

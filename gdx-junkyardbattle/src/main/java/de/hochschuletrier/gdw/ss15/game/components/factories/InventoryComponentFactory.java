@@ -4,20 +4,21 @@ import com.badlogic.ashley.core.Entity;
 
 import de.hochschuletrier.gdw.commons.gdx.ashley.ComponentFactory;
 import de.hochschuletrier.gdw.commons.utils.SafeProperties;
-import de.hochschuletrier.gdw.ss15.game.components.InterpolatePositionComponent;
+import de.hochschuletrier.gdw.ss15.game.components.InventoryComponent;
 
-public class InterploatePositionComponentFactory extends ComponentFactory<EntityFactoryParam> {
+
+public class InventoryComponentFactory extends ComponentFactory<EntityFactoryParam> {
 
 	@Override
 	public String getType() {
-		// TODO Auto-generated method stub
-		return "Interpolate";
+		return "Inventory";
 	}
 
 	@Override
 	public void run(Entity entity, SafeProperties meta,
 			SafeProperties properties, EntityFactoryParam param) {
-		InterpolatePositionComponent component = engine.createComponent(InterpolatePositionComponent.class);
+		InventoryComponent component = engine.createComponent(InventoryComponent.class);
+		component.metalShards = properties.getInt("metalShards");
         entity.add(component);
 	}
 
