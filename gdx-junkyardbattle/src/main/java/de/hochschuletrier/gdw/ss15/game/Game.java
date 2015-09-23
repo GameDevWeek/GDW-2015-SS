@@ -1,4 +1,6 @@
-package de.hochschuletrier.gdw.ss15.game;
+﻿package de.hochschuletrier.gdw.ss15.game;
+
+import box2dLight.RayHandler;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
@@ -44,7 +46,7 @@ public class Game extends InputAdapter {
 
     private final CameraSystem cameraSystem = new CameraSystem();
 
-    private final RenderSystem renderSystem = new RenderSystem(physixSystem,cameraSystem.getCamera().getOrthographicCamera());
+    private final RenderSystem renderSystem = new RenderSystem(physixSystem, cameraSystem.getCamera().getOrthographicCamera(), engine);
 
     private final WeaponSystem weaponSystem = new WeaponSystem();
 
@@ -78,14 +80,14 @@ public class Game extends InputAdapter {
         entityFactory.init(engine, assetManager);
         
         mapLoader.listen(renderSystem.getTileMapCreator());
-        mapLoader.run((String name, float x, float y) -> createEntity(name, x, y),
-                "data/maps/demo.tmx", physixSystem);
+        mapLoader.run((String name, float x, float y) -> createEntity(name, x, y), 
+                "data/maps/prototype.tmx", physixSystem);
     }
 
     private void addSystems() {
         //engine.addSystem(physixSystem);
         //engine.addSystem(physixDebugRenderSystem);
-        //engine.addSystem(updatePositionSystem);
+        engine.addSystem(updatePositionSystem);
         engine.addSystem(networksystem);
         engine.addSystem(inputSystem);
         engine.addSystem(weaponSystem);

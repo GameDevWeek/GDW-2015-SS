@@ -79,7 +79,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
                 horizontal = -1.0f;
                 break;
         }
-        debug();
+        //debug();
         //System.out.println(inputPaket);
         return true;
     }
@@ -101,7 +101,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
                 horizontal = 0.0f;
                 break;
         }
-        debug();
+        //debug();
         //System.out.println(inputPaket);
         return true;
     }
@@ -122,7 +122,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
                 rightMBDown = true;
                 break;
         }
-        debug();
+        //debug();
         return true;
     }
 
@@ -137,7 +137,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
                 rightMBDown = false;
                 break;
         }
-        debug();
+        //debug();
         return true;
 
     }
@@ -152,7 +152,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
     public boolean mouseMoved(int screenX, int screenY) {
         posX = screenX;
         posY = screenY;
-        debug();
+        //debug();
         return true;
     }
 
@@ -205,7 +205,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
             default:
                 rightMBDown = leftMBDown = false;
         }
-        debug();
+        //debug();
         return false;
     }
 
@@ -219,7 +219,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
                 rightMBDown = false;
                 break;
         }
-        debug();
+        //debug();
         return false;
     }
 
@@ -263,7 +263,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
                 }
                 break;
         }
-        debug();
+        //debug();
         return false;
     }
 
@@ -307,7 +307,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
                 vertical = 0.0f;
                 horizontal = 0.0f;
         }
-        debug();
+        //debug();
         return false;
     }
 
