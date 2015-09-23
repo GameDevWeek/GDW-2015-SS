@@ -169,7 +169,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
 
 
     // Controller
-    //---------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------
 
 
     @Override
@@ -200,11 +200,43 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
 
     @Override
     public boolean axisMoved(Controller controller, int axisCode, float value) {
+        if (value > 0.2f || value < -0.2f)
+             System.out.println("axis: " + axisCode + " value: " + value);
         return false;
     }
 
     @Override
     public boolean povMoved(Controller controller, int povCode, PovDirection value) {
+        System.out.println("povCode: " + povCode + " value: " + value);
+        switch (value) {
+            case north:
+                up = true;
+                break;
+            case northEast:
+                up = right = true;
+                break;
+            case east:
+                right = true;
+                break;
+            case southEast:
+                right = down = true;
+                break;
+            case south:
+                down = true;
+                break;
+            case southWest:
+                down = left = true;
+                break;
+            case west:
+                left = true;
+                break;
+            case northWest:
+                left = up = true;
+                break;
+            default:
+                up = down = right = left = false;
+        }
+        debug();
         return false;
     }
 
@@ -235,5 +267,19 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
                 Controllers.addListener(this);
             }
         }
+    }
+
+    private void debug() {
+        System.out.println();
+        System.out.println("up: " + up);
+        System.out.println("down: " + down);
+        System.out.println("left: " + left);
+        System.out.println("right: " + right);
+
+        System.out.println("shoot: " + leftMBDown);
+        System.out.println("gather: " + rightMBDown);
+
+        System.out.println("posX: " + posX);
+        System.out.println("posY: " + posY);
     }
 }
