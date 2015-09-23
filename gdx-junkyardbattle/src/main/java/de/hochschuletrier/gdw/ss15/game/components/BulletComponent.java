@@ -8,12 +8,11 @@ import com.badlogic.gdx.utils.Pool.Poolable;
  */
 public class BulletComponent extends Component implements Poolable
 {
-    int playerID;
+    public int playerID;
 
     @Override
     public void reset()
     {
         playerID = -1;
     }
-
 }
