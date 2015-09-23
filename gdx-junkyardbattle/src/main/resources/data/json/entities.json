@@ -12,6 +12,12 @@
             "Animator": {
                 "animation_IDLE": "ball"
             },
+            "ParticleEffect": {
+                "effectname": "particle",
+                "offsetX": 0,
+                "offsetY": 0,
+                "rotation": 0
+            },
             "PhysixBody": {
                 "type": "circle",
                 "size": 30,
