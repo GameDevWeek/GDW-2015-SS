@@ -169,7 +169,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
 
 
     // Controller
-    //----------------------------------------------------------------------------------------
+    //---------------------------------------------------------------------------------------
 
 
     @Override
