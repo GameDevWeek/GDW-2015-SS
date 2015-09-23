@@ -27,10 +27,8 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
 
     private boolean isListener = false;
 
-    private boolean up = false;
-    private boolean down = false;
-    private boolean left = false;
-    private boolean right = false;
+    private float horizontal = 0.0f;
+    private float vertical = 0.0f;
 
     private boolean leftMBDown = false;
     private boolean rightMBDown = false;
@@ -49,10 +47,8 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
         if(entity.getComponent(PlayerComponent.class).isLocalPlayer){
-            entity.getComponent(InputComponent.class).up = up;
-            entity.getComponent(InputComponent.class).down = down;
-            entity.getComponent(InputComponent.class).left = left;
-            entity.getComponent(InputComponent.class).right = right;
+            entity.getComponent(InputComponent.class).horizontal = horizontal;
+            entity.getComponent(InputComponent.class).vertical = vertical;
 
             entity.getComponent(InputComponent.class).shoot = leftMBDown;
             entity.getComponent(InputComponent.class).gather = rightMBDown;
@@ -67,16 +63,16 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
         // keyDown = ein knopf wurde gedrückt
         switch (keycode) {
             case Input.Keys.W:
-                up = true;
+                vertical = -1.0f;
                 break;
             case Input.Keys.S:
-                down = true;
+                vertical = 1.0f;
                 break;
             case Input.Keys.D:
-                right = true;
+                horizontal = 1.0f;
                 break;
             case Input.Keys.A:
-                left = true;
+                horizontal = -1.0f;
                 break;
         }
         //System.out.println(inputPaket);
@@ -88,16 +84,16 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
         // keyUp = ein knopf wurde losgelassen
         switch (keycode) {
             case Input.Keys.W:
-                up = false;
+                vertical = 0.0f;
                 break;
             case Input.Keys.S:
-                down = false;
+                vertical = 0.0f;
                 break;
             case Input.Keys.D:
-                right = false;
+                horizontal = 0.0f;
                 break;
             case Input.Keys.A:
-                left = false;
+                horizontal = 0.0f;
                 break;
         }
         //System.out.println(inputPaket);
@@ -232,11 +228,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
                 break;
             case XBox360KeyMap.L1X:
                 if (value > 0.25f)
-                    right = true;
-                else if (value < -0.25f)
-                    left = true;
-                else
-                    left = right = false;
+
                 break;
             case XBox360KeyMap.L1Y:
                 if (value > 0.25f)
@@ -256,31 +248,40 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
         System.out.println("povCode: " + povCode + " value: " + value);
         switch (value) {
             case north:
-                up = true;
+                vertical = -1.0f;
+                horizontal = 0.0f;
                 break;
             case northEast:
-                up = right = true;
+                vertical = -0.5f;
+                horizontal =0.5f;
                 break;
             case east:
-                right = true;
+                vertical = 0.0f;
+                horizontal = 1.0f;
                 break;
             case southEast:
-                right = down = true;
+                vertical = 0.5f;
+                horizontal = 0.5f;
                 break;
             case south:
-                down = true;
+                vertical = 1.0f;
+                horizontal = 0.0f;
                 break;
             case southWest:
-                down = left = true;
+                vertical = 0.5f;
+                horizontal = -0.5f;
                 break;
             case west:
-                left = true;
+                vertical = 0.0f;
+                horizontal = -1.0f;
                 break;
             case northWest:
-                left = up = true;
+                vertical = -0.5f;
+                horizontal = -0.5f;
                 break;
             default:
-                up = down = right = left = false;
+                vertical = 0.0f;
+                horizontal = 0.0f;
         }
         debug();
         return false;
@@ -317,10 +318,8 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
 
     private void debug() {
         System.out.println();
-        System.out.println("up: " + up);
-        System.out.println("down: " + down);
-        System.out.println("left: " + left);
-        System.out.println("right: " + right);
+        System.out.println("horizontal: " + horizontal);
+        System.out.println("vertical: " + vertical);
 
         System.out.println("shoot: " + leftMBDown);
         System.out.println("gather: " + rightMBDown);
