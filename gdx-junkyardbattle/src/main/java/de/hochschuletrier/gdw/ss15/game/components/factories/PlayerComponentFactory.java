@@ -20,6 +20,7 @@ public class PlayerComponentFactory extends ComponentFactory<EntityFactoryParam>
     public void run(Entity entity, SafeProperties meta, SafeProperties properties, EntityFactoryParam param) {
         PlayerComponent component = engine.createComponent(PlayerComponent.class);
         component.name = properties.getString("name");
+        entity.add(component);
 
     }
 }

@@ -2,8 +2,12 @@ package de.hochschuletrier.gdw.ss15.sandbox.maptest;
 
 import java.util.HashMap;
 
+import de.hochschuletrier.gdw.ss15.game.components.InputComponent;
+import de.hochschuletrier.gdw.ss15.game.components.MoveComponent;
+import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ss15.game.systems.MoveSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.InputSystem;
+import jdk.internal.util.xml.impl.Input;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -76,12 +80,15 @@ public class MapTest extends SandboxGame {
     
     private AnimatorComponent animatorComponent;
     private PositionComponent positionComponent;
+    private MoveComponent moveComponent;
+    private InputComponent inputComponent;
+    private PhysixBodyComponent physixBodyComponent;
     
     private final RenderSystem renderSystem = new RenderSystem(physixSystem, 
             camera.getOrthographicCamera(), engine);
     private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem();
     private final InputSystem inputSystem = new InputSystem();
-    private final MoveSystem moveSystem = new MoveSystem(engine);
+    private final MoveSystem moveSystem = new MoveSystem();
     
     private final EntityFactoryParam factoryParam = new EntityFactoryParam();
     private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json", Game.class);
@@ -126,12 +133,13 @@ public class MapTest extends SandboxGame {
                 (Rectangle rect) -> addShape(rect, tileWidth, tileHeight));
 
         // create a simple player ball
-        player = createEntity("ball", 100, 100);
+        player = createEntity("player", 100, 100);
         positionComponent = player.getComponent(PositionComponent.class);
         
         ParticleEffectComponent particleEffect = engine.createComponent(ParticleEffectComponent.class);
         player.add(particleEffect);
         engine.addEntity(player);
+        player.getComponent(PlayerComponent.class).isLocalPlayer = true;
 
         // Setup camera
         camera.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
