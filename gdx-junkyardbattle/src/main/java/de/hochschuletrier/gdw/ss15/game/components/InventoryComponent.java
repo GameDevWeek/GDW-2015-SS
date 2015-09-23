@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.Pool;
  */
 public class InventoryComponent extends Component implements Pool.Poolable {
 
-    private int metalShards = 0;
+    public int metalShards = 0;
 
 
     @Override
