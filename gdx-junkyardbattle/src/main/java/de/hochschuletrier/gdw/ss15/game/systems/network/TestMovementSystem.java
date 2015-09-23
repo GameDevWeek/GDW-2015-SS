@@ -38,40 +38,6 @@ public class TestMovementSystem extends IteratingSystem{
         input = ComponentMappers.input;
     }
 
-//    @Override
-//    public void update(float deltatime)
-//    {
-//        timer.Update();
-//        if(timer.get_CounterMilliseconds()>100)
-//        {
-//            timer.StartCounter();
-//
-//            int x=0;
-//            int y=0;
-//
-//            if(Gdx.input.isKeyPressed(Input.Keys.W))
-//            {
-//                y--;
-//            }
-//            if(Gdx.input.isKeyPressed(Input.Keys.S))
-//            {
-//                y++;
-//            }
-//            if(Gdx.input.isKeyPressed(Input.Keys.A))
-//            {
-//                x--;
-//            }
-//            if(Gdx.input.isKeyPressed(Input.Keys.D))
-//            {
-//                x++;
-//            }
-//
-//            MovementPacket packet = new MovementPacket(x*2,y*2,0);
-//            SendPacketClientEvent.emit(packet,true);
-//        }
-//    }
-
-	@Override
 	protected void processEntity(Entity entity, float deltaTime) {
 		
 		timer.Update();
@@ -79,33 +45,17 @@ public class TestMovementSystem extends IteratingSystem{
         {
             timer.StartCounter();
 
-        
-//        vectorToAdd.nor();
-<<<<<<< HEAD
-	        vectorToAdd.scl(move.get(entity).speed);
-	        MovementPacket packet = new MovementPacket(vectorToAdd.x,vectorToAdd.y,0);
-	        SendPacketClientEvent.emit(packet,true);
-	        
-//	        System.out.println(vectorToAdd.x);
-//	        System.out.println(vectorToAdd.y);
-	        vectorToAdd.setZero();
-=======
         vectorToAdd.scl(move.get(entity).speed);
         MovementPacket packet = new MovementPacket(vectorToAdd.x,vectorToAdd.y,0);
         SendPacketClientEvent.emit(packet,true);
         
-        //System.out.println(vectorToAdd.x);
-        //System.out.println(vectorToAdd.y);
         vectorToAdd.setZero();
->>>>>>> develop
         }
         velVector.set(input.get(entity).horizontal, input.get(entity).vertical);
         velVector.nor();
         velVector.scl(deltaTime);
         vectorToAdd.add(velVector);
-
-
 		
-	}
+		}
 
     }
