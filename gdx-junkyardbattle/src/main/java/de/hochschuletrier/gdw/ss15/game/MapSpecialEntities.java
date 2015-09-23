@@ -7,6 +7,8 @@ import de.hochschuletrier.gdw.commons.tiled.LayerObject;
 import de.hochschuletrier.gdw.commons.tiled.TileInfo;
 import de.hochschuletrier.gdw.commons.tiled.TiledMap;
 import de.hochschuletrier.gdw.commons.utils.SafeProperties;
+import de.hochschuletrier.gdw.ss15.game.MapLoader.TileCreationListener;
+import de.hochschuletrier.gdw.ss15.game.components.SpawnComponent;
 
 import java.util.HashMap;
 import java.util.function.Consumer;
@@ -48,6 +50,7 @@ public class MapSpecialEntities
             tiledMap = tm;
             posX = x;
             posY = y;
+            tiledMap = tm;
             entity = null;
             asObject = null;
             asTile = ti;
@@ -58,6 +61,39 @@ public class MapSpecialEntities
     
     
     
+    /**
+     * Wird bei der erstellung aller Maprelevanten Elemente aufgerufen (Tiles und LayerObject)
+     * @author tobidot
+     */
+    public static void forAllElements ( CreatorInfo info )
+    {
+        
+    }
+    
+    
+    
+    
+    public static class SpawnPoint implements Consumer<CreatorInfo>
+    {
+        public void accept(CreatorInfo info)
+        {
+            
+            /// eine Componente herraussuchen 
+            SpawnComponent spawn = info.entity.getComponent( SpawnComponent.class );
+            
+            /// fuer wen spawn der Spawnpoint?
+            /*
+            if ( team != null ) {
+                /// erhaltenen Wert lesen 
+                int nr = info.asObject.getIntProperty("TeamID", 0);
+            
+                /// Komponente mit diesem Wert besetzten
+                /// team.flag = flag;
+            /// }
+             * 
+             */
+        }
+    }
     
     
     /**
@@ -72,9 +108,9 @@ public class MapSpecialEntities
             /// eine Componente herraussuchen 
             /// TestComponent body = ComponentMapper.test.get( info.entity );
             
-            /// if ( test != null ) {
+            /// if ( body != null ) {
                 /// erhaltenen Wert lesen 
-                /// boolean flag = info.data.getBooleanProperty("TestFlag", false);
+                /// boolean flag = info.asObject.getBooleanProperty("TestFlag", false);
             
                 /// Komponente mit diesem Wert besetzten
                 /// body.flag = flag;
@@ -95,9 +131,9 @@ public class MapSpecialEntities
             /// eine Componente herraussuchen 
             /// TestComponent body = ComponentMapper.test.get( info.entity );
             
-            /// if ( test != null ) {
+            /// if ( body != null ) {
                 /// erhaltenen Wert lesen 
-                /// boolean flag = info.data.getBooleanProperty("TestFlag", false);
+                /// boolean flag = info.asTile.getProperties().getBooleanProperty("TestFlag", false);
             
                 /// Komponente mit diesem Wert besetzten
                 /// body.flag = flag;
@@ -129,5 +165,6 @@ public class MapSpecialEntities
                 }
             }
         }
+        
     }
 }

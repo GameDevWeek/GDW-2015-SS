@@ -40,5 +40,5 @@ public class GameConstants {
     public static final float START_Y_POSITION = 0;
     public static final float DYING_TIMER = 1000;
     public static final float DEATH_TIMER = 30000;
-    public static final float SPAWNING_DURATION = 3000;
+    public static final float SPAWNING_DURATION = 4000;
 }

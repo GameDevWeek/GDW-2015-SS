@@ -3,7 +3,7 @@ package de.hochschuletrier.gdw.ss15.game.components.factories;
 import com.badlogic.ashley.core.Entity;
 import de.hochschuletrier.gdw.commons.gdx.ashley.ComponentFactory;
 import de.hochschuletrier.gdw.commons.utils.SafeProperties;
-import de.hochschuletrier.gdw.ss15.game.components.InputComponent;
+import de.hochschuletrier.gdw.ss15.game.components.input.InputComponent;
 
 /**
  * Created by hherm on 22/09/2015.

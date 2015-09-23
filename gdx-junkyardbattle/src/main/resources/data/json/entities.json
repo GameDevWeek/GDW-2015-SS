@@ -24,7 +24,9 @@
                 "density": 5,
                 "friction": 0.2,
                 "restitution": 0.4
-            }
+            },
+            "Move":{},
+            "Input":{}
         }
     },
     "box": {
@@ -74,9 +76,11 @@
     "player": {
         "meta": {},
         "components": {
+            "Player":{},
             "Position": {},
+            "Player": {},
             "PhysixBody": {
-                "type": "box",
+                "type": "circle",
                 "size": 60,
                 "density": 10,
                 "friction": 0.5,
@@ -86,6 +90,8 @@
             "PositionSynch":{
                 "clientname": "clientPlayer"
             }
+            
+
         }
     },
 
@@ -93,6 +99,14 @@
         "meta": {},
         "components": {
             "Position": {},
+            "Player": {},
+            "PhysixBody": {
+                "type": "circle",
+                "size": 40,
+                "density": 10,
+                "friction": 0.5,
+                "restitution": 0.1
+            },
             "NetworkID": {},
             "Texture":{
                 "texture": "ball",
@@ -111,7 +125,17 @@
     "clientOwnPlayer": {
         "meta": {},
         "components": {
+            "Player": {
+                "isLocalPlayer": true
+            },
             "Position": {},
+            "PhysixBody": {
+                "type": "circle",
+                "size": 40,
+                "density": 10,
+                "friction": 0.5,
+                "restitution": 0.1
+            },
             "NetworkID": {},
             "Texture":{
                 "texture": "ball",
@@ -123,7 +147,11 @@
                 "scaleY": 1,
                 "flipX": false,
                 "flipY": false
-            }
+            },
+            "Move":{
+                "speed": 10
+            },
+            "Input":{}
         }
     },
 
@@ -145,6 +173,106 @@
             },
             "Bullet": {
                 "playerID": -1
+            }
+        }
+    },
+    
+    "Base": {
+        "meta": {},
+        "components": {
+            "Position": {},
+            "PhysixBody": {
+                "type": "circle",
+                "size": 5,
+                "density": 10,
+                "friction": 0.5,
+                "restitution": 0.1
+            },
+            "Texture":{
+                "texture": "ball",
+                "width": 60,
+                "height": 60,
+                "srcX": 0,
+                "srcY": 0,
+                "scaleX": 1,
+                "scaleY": 1,
+                "flipX": false,
+                "flipY": false
+            }
+        }
+    },
+    
+    "SatelliteSite": {
+        "meta": {},
+        "components": {
+            "Position": {},
+            "PhysixBody": {
+                "type": "circle",
+                "size": 5,
+                "density": 10,
+                "friction": 0.5,
+                "restitution": 0.1
+            },
+            "Texture":{
+                "texture": "ball",
+                "width": 60,
+                "height": 60,
+                "srcX": 0,
+                "srcY": 0,
+                "scaleX": 1,
+                "scaleY": 1,
+                "flipX": false,
+                "flipY": false
+            }
+        }
+    },
+    
+    "Spawn": {
+        "meta": {},
+        "components": {
+            "Position": {},
+            "PhysixBody": {
+                "type": "circle",
+                "size": 5,
+                "density": 10,
+                "friction": 0.5,
+                "restitution": 0.1
+            },
+            "Texture":{
+                "texture": "ball",
+                "width": 60,
+                "height": 60,
+                "srcX": 0,
+                "srcY": 0,
+                "scaleX": 1,
+                "scaleY": 1,
+                "flipX": false,
+                "flipY": false
+            }
+        }
+    },
+    
+    "JunkSpawn": {
+        "meta": {},
+        "components": {
+            "Position": {},
+            "PhysixBody": {
+                "type": "circle",
+                "size": 5,
+                "density": 10,
+                "friction": 0.5,
+                "restitution": 0.1
+            },
+            "Texture":{
+                "texture": "ball",
+                "width": 60,
+                "height": 60,
+                "srcX": 0,
+                "srcY": 0,
+                "scaleX": 1,
+                "scaleY": 1,
+                "flipX": false,
+                "flipY": false
             }
         }
     },

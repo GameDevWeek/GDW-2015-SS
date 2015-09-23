@@ -11,9 +11,8 @@ import java.lang.Math.*;
 public class MoveComponent extends Component implements Pool.Poolable{
 
 
-    public Vector2 velocity = new Vector2(0,0);
+    public Vector2 velocity;
     public float speed = 0;
-    public double SQRT2 = Math.sqrt(2.0);
 
     @Override
     public void reset() {
