@@ -22,8 +22,9 @@ public class MoveComponentFactory extends ComponentFactory<EntityFactoryParam> {
     @Override
     public void run(Entity entity, SafeProperties meta, SafeProperties properties, EntityFactoryParam param) {
         MoveComponent component = engine.createComponent(MoveComponent.class);
-        component.speed = GameConstants.START_SPEED;
+        component.speed = properties.getFloat("speed");
         component.velocity = new Vector2(0,0);
+        entity.add(component);
 
     }
 }
