@@ -41,6 +41,7 @@ import de.hochschuletrier.gdw.ss15.game.GameConstants;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.components.animation.AnimationState;
 import de.hochschuletrier.gdw.ss15.game.components.animation.AnimatorComponent;
+import de.hochschuletrier.gdw.ss15.game.components.effects.ParticleEffectComponent;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
 import de.hochschuletrier.gdw.ss15.game.components.texture.TextureComponent;
 import de.hochschuletrier.gdw.ss15.game.systems.renderers.AnimatorRenderer;
@@ -84,7 +85,7 @@ public class MapTest extends SandboxGame {
     private PositionComponent positionComponent;
     
     private final RenderSystem renderSystem = new RenderSystem(physixSystem, 
-            camera.getOrthographicCamera());
+            camera.getOrthographicCamera(), engine);
     private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem();
     
     private final EntityFactoryParam factoryParam = new EntityFactoryParam();
@@ -130,6 +131,9 @@ public class MapTest extends SandboxGame {
         // create a simple player ball
         player = createEntity("ball", 100, 100);
         positionComponent = player.getComponent(PositionComponent.class);
+        
+        ParticleEffectComponent particleEffect = engine.createComponent(ParticleEffectComponent.class);
+        player.add(particleEffect);
         engine.addEntity(player);
 
         // Setup camera
