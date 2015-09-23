@@ -275,7 +275,6 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
 
     @Override
     public boolean povMoved(Controller controller, int povCode, PovDirection value) {
-        System.out.println("povCode: " + povCode + " value: " + value);
         switch (value) {
             case north:
                 vertical = -1.0f;

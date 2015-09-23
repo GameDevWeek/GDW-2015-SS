@@ -1,4 +1,4 @@
-﻿package de.hochschuletrier.gdw.ss15.sandbox;
+package de.hochschuletrier.gdw.ss15.sandbox;
 
 import java.util.HashMap;
 
