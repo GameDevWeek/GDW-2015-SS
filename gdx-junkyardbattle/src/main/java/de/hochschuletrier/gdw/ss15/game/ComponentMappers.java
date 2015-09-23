@@ -1,4 +1,4 @@
-﻿package de.hochschuletrier.gdw.ss15.game;
+package de.hochschuletrier.gdw.ss15.game;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
