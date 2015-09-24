@@ -1,4 +1,4 @@
-﻿package de.hochschuletrier.gdw.ss15.sandbox.maptest;
+package de.hochschuletrier.gdw.ss15.sandbox.maptest;
 
 import java.util.HashMap;
 
