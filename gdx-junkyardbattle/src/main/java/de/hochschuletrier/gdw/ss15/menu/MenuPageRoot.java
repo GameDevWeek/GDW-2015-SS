@@ -43,7 +43,7 @@ public class MenuPageRoot extends MenuPage implements ConnectTryFinishEvent.List
 
     private void StartButtonClicked()
     {
-        if(Main.getInstance().getClientConnection().connect("localhost", 12345))
+        if(!Main.getInstance().getClientConnection().connect("localhost", 12345))
         {
             logger.warn("Connect hat  nicht gelapt");
         }
@@ -71,6 +71,7 @@ public class MenuPageRoot extends MenuPage implements ConnectTryFinishEvent.List
 
     @Override
     public void onConnectFinishPacket(boolean status) {
+        //System.out.println("Called");
         if(status)
         {
             startGame();

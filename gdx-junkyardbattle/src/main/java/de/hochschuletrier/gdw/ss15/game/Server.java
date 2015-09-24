@@ -1,6 +1,9 @@
 package de.hochschuletrier.gdw.ss15.game;
 
 import de.hochschuletrier.gdw.ss15.Main;
+import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
+import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Clientsocket;
+import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serverclientsocket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serversocket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.MyTimer;
 
@@ -8,6 +11,7 @@ import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.Tools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.LinkedList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
@@ -23,8 +27,10 @@ public class Server implements Runnable
 
     private static final Logger logger = LoggerFactory.getLogger(Server.class);
 
-    ServerGame runningGame = new ServerGame(serversocket);
+    ServerGame runningGame = null;
     MyTimer timer = new MyTimer();
+
+    LinkedList<Clientsocket> clientSockets = new LinkedList<>();
 
     public Server()
     {
@@ -43,7 +49,8 @@ public class Server implements Runnable
             logger.error("Ports konnten nicht gebunden werden. Läuft bereits ?");
             return false;
         }
-        runningGame.init(Main.getInstance().getAssetManager());
+        //runningGame = new ServerGame();
+       // runningGame.init(Main.getInstance().getAssetManager());
         isRunning.set(true);
         runThread = new Thread(this);
         runThread.start();
@@ -63,6 +70,10 @@ public class Server implements Runnable
             }
             //logger.info("try close serversocket");
             serversocket.close();
+            if(runningGame != null)
+            {
+                runningGame = null;
+            }
             //logger.info("closed serversocket");
         }
     }
@@ -77,6 +88,22 @@ public class Server implements Runnable
             //runningGame.update(0);
             //System.out.println("runn");
             //engine.update();
+
+            if(serversocket.isNewClientAvaliable())
+            {
+                if(serversocket.isNewClientAvaliable())
+                {
+                    Serverclientsocket sockret = serversocket.getNewClient();
+                    if(runningGame != null)
+                    {
+                        SimplePacket packet = new SimplePacket(SimplePacket.SimplePacketId.ConnectInitPacket.getValue(),-1);
+                    }
+
+
+                }
+            }
+
+
         }
     }
 

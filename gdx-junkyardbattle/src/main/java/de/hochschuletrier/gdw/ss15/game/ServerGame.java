@@ -52,9 +52,8 @@ public class ServerGame{
     
     private final MapLoader mapLoader = new MapLoader(); /// @author tobidot
 
-    public ServerGame(Serversocket socket)
+    public ServerGame()
     {
-        serverSocket = socket;
     }
 
     public PooledEngine get_Engine(){return engine;}
