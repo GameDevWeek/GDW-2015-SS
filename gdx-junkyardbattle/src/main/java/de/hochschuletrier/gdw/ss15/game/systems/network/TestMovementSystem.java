@@ -63,30 +63,14 @@ public class TestMovementSystem extends IteratingSystem{
 	        PositionComponent posc = ComponentMappers.position.get(entity);
 	        InventoryComponent inventory = ComponentMappers.inventory.get(entity);
             timer.StartCounter();
-<<<<<<< HEAD
+
            
-=======
-    /*        if(inventory.metalShards<=700 && inventory.metalShards>0)
-            {
-            	float invtemp = inventory.metalShards/700;
-            	vectorToAdd.scl(move.get(entity).speed-move.get(entity).speed*(invtemp*0.75f));
-            }
-            else
-            {
-            	vectorToAdd.scl(move.get(entity).speed);
-            }*/
->>>>>>> 8ced1caffc396cac3ea4831ba10504356ed18f37
+
 	        Vector3 mousepos = camera.unproject(new Vector3(input.posX, input.posY,0));
 	        Vector2 mousepos2 = new Vector2(mousepos.x, mousepos.y);
 	        
 	        mousepos2.sub(new Vector2(posc.x,posc.y));
 	        float angle = mousepos2.angle();
-<<<<<<< HEAD
-	
-//	        float rotation = (float)Math.atan2(mousepos2.y - posc.y,mousepos2.x - posc.x);
-=======
-	        //float rotation = (float)Math.atan2(mousepos2.y - posc.y,mousepos2.x - posc.x);
->>>>>>> 8ced1caffc396cac3ea4831ba10504356ed18f37
 	        
 	        MovementPacket packet = new MovementPacket(vectorToAdd.x,vectorToAdd.y,angle);
 	        SendPacketClientEvent.emit(packet,true);
