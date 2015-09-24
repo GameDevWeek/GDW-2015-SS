@@ -25,6 +25,18 @@ import de.hochschuletrier.gdw.commons.utils.Rectangle;
 /**
  * 
  * @author tobidot (Tobias Gepp)
+ * 
+ *      DOKUMENTATION
+ * 
+ * In dieser Klasse( MapLoader ) sollten keine Aendereungen gemacht werden 
+ * Entities oder aehnliches werden in 'MapSpecialEntities' modifiziert
+ * 
+ * eine Klasse die den 'TileCreationListener' implmentiert
+ * kann sich per 
+ *      ('MapLoader').listen( ('TileCreationListener') );
+ * regristieren 
+ * die Methode TileCreationListener.onTileCreate() wird 
+ * bei jeder erstellung (aus der Map) eines Tiles oder eines LayerObjects aufgerufen.
  *
  */
 
@@ -32,6 +44,7 @@ import de.hochschuletrier.gdw.commons.utils.Rectangle;
 public class MapLoader
 {    
     private static ArrayList<TileCreationListener> tileListeners = new ArrayList<TileCreationListener>();
+    private TileInfo ginfo = null; /// used for RectangleGeneraotr
     
     
     private TiledMap tiledMap;
@@ -43,6 +56,7 @@ public class MapLoader
     {
         Entity createEntity(String name, float x, float y);
     }
+    
     
     public interface TileCreationListener
     {
@@ -102,12 +116,13 @@ public class MapLoader
      * @param tileWidth breite eines tile
      * @param tileHeight hoehe eines tile
      */
-    private void addShape(PhysixSystem pSystem,Rectangle rect, int tileWidth, int tileHeight) {
+    private void addShape(TileInfo info, PhysixSystem pSystem,Rectangle rect, int tileWidth, int tileHeight) {
         float width = rect.width * tileWidth;
         float height = rect.height * tileHeight;
         float x = rect.x * tileWidth + width / 2;
         float y = rect.y * tileHeight + height / 2;
 
+        // noch spezialisieren auf Flags ( block pathing, block sight, block walking  )
         
         PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody, pSystem).position(x, y).fixedRotation(false);
         Body body = pSystem.getWorld().createBody(bodyDef);
@@ -131,10 +146,11 @@ public class MapLoader
         /// Santomagic
         if ( pSystem != null )  /// Auf dem Server werden die PhysixsSystem nihct erstellt
         {
+            // hier wegen Pathing und visual absprechen @render @physix @asset
             RectangleGenerator generator = new RectangleGenerator();
             generator.generate( tiledMap,
-                    (Layer layer, TileInfo info) -> info.getBooleanProperty("blocked", false),
-                    (Rectangle rect) -> addShape(pSystem,rect, tileWidth, tileHeight) );
+                    (Layer layer, TileInfo info) -> { ginfo = info;return info.getBooleanProperty("BlockPath", false); },
+                    (Rectangle rect) -> addShape(ginfo,pSystem,rect, tileWidth, tileHeight) );
         }
         
         /// fuer alles Layers 
@@ -153,6 +169,7 @@ public class MapLoader
 
                     MapSpecialEntities.CreatorInfo info = new MapSpecialEntities.CreatorInfo(resultEnt,tiledMap,obj,layer);
                     
+                    MapSpecialEntities.forAllElements( info );
                     
                     /// koente hier ueberfluessig sein  @author tobidot
                     for( TileCreationListener l :tileListeners )  {
@@ -177,6 +194,8 @@ public class MapLoader
                         TileInfo tileInfo = tiles[x][y];
                         
                         MapSpecialEntities.CreatorInfo info = new MapSpecialEntities.CreatorInfo( x,y,tiledMap, tileInfo ,layer );
+
+                        MapSpecialEntities.forAllElements( info );
                         
                         for( TileCreationListener l :tileListeners )  {
                             l.onTileCreate(info);

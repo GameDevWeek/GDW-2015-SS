@@ -22,6 +22,8 @@ import de.hochschuletrier.gdw.ss15.game.systems.LineOfSightSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.NetworkServerSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.PositionSynchSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.network.UpdatePhysixServer;
+import de.hochschuletrier.gdw.ss15.game.systems.network.UpdatePhysixSystem;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serversocket;
 
 /**
@@ -65,14 +67,14 @@ public class ServerGame{
         setupPhysixWorld();
         networkSystem.init(serverSocket);
         entityFactory.init(engine, assetManager);
-        
-        /// @author tobidot(Tobias Gepp)
-        mapLoader.run( ( String name, float x, float y ) -> { return this.createEntity(name,  x, y); }, "data/maps/demo.tmx",physixSystem );
-    
+
+        new UpdatePhysixServer(); // magic → registers itself as listener for network packets
+
+        mapLoader.run( ( String name, float x, float y ) -> { return this.createEntity(name,  x, y); }, "data/maps/prototype.tmx",physixSystem );
     }
 
     private void addSystems() {
-        //engine.addSystem(physixSystem);
+        engine.addSystem(physixSystem);
         engine.addSystem(networkSystem);
         engine.addSystem(updatePositionSystem);
         engine.addSystem(lineOfSightSystem);

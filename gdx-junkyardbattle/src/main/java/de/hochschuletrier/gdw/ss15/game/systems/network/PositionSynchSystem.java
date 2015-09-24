@@ -51,7 +51,7 @@ public class PositionSynchSystem extends EntitySystem implements EntityListener 
                 if(pos.x != comp.lastX || pos.y != comp.lastY || pos.rotation != comp.lastRot)
                 {
                     comp.lastSendTimer.Update();
-                    if(comp.lastSendTimer.get_CounterMilliseconds()>200)
+                    if(comp.lastSendTimer.get_CounterMilliseconds()>42)
                     {
                         comp.lastSendTimer.StartCounter();
                         comp.lastX=pos.x;
