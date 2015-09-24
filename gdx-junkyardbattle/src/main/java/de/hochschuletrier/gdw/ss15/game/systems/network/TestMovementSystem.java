@@ -34,18 +34,15 @@ public class TestMovementSystem extends IteratingSystem{
     MyTimer timer = new MyTimer(true);
     Vector2 velVector = new Vector2();
     Vector2 vectorToAdd = new Vector2(0,0);
-    private ComponentMapper<MoveComponent> move;
     private ComponentMapper<InputComponent> input;
-    private ComponentMapper<InventoryComponent> inventory;
     private ComponentMapper<SoundEmitterComponent> soundEmitter;
     public TestMovementSystem(Game game, Camera cam)
     {
         super(Family.all(InputComponent.class, MoveComponent.class, InventoryComponent.class).get());
         this.game = game;
         this.camera = cam;
-        move = ComponentMappers.move;
         input = ComponentMappers.input;
-        inventory = ComponentMappers.inventory;
+        soundEmitter = ComponentMappers.soundEmitter;
 
         
     }
