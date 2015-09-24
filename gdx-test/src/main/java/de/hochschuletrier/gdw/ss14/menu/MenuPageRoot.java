@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import de.hochschuletrier.gdw.commons.gdx.menu.MenuManager;
 import de.hochschuletrier.gdw.commons.gdx.state.transition.SplitHorizontalTransition;
 import de.hochschuletrier.gdw.ss14.game.Game;
+
 import de.hochschuletrier.gdw.ss14.states.GameplayState;
 import de.hochschuletrier.gdw.ss14.states.MainMenuState;
 

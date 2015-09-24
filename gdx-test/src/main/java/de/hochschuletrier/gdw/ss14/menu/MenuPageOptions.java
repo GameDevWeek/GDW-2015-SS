@@ -19,10 +19,11 @@ public class MenuPageOptions extends MenuPage {
 		super(skin, "menu_bg");
 		
 		VerticalGroup vg = new VerticalGroup();
-		/*
-		vg.addActor(addSlider(30, 30, 600, 30, "Option1", null));
-		vg.addActor(addCheckBox(30, 60, 600, 30, "Option2", null));
-		*/
+		vg.setPosition(30, 30);
+		vg.setBounds(0, 0, 60, 30);
+		vg.addActor(addSlider("Option1", null));
+		//vg.addActor(addCheckBox("Option2", null));
+		
 	}
 
 
