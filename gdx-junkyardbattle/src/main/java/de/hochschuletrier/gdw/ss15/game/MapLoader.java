@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 
+import de.hochschuletrier.gdw.commons.gdx.ashley.EntityFactory;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixBodyDef;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixFixtureDef;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
@@ -26,6 +27,18 @@ import de.hochschuletrier.gdw.commons.utils.Rectangle;
 /**
  * 
  * @author tobidot (Tobias Gepp)
+ * 
+ *      DOKUMENTATION
+ * 
+ * In dieser Klasse( MapLoader ) sollten keine Aendereungen gemacht werden 
+ * Entities oder aehnliches werden in 'MapSpecialEntities' modifiziert
+ * 
+ * eine Klasse die den 'TileCreationListener' implmentiert
+ * kann sich per 
+ *      ('MapLoader').listen( ('TileCreationListener') );
+ * regristieren 
+ * die Methode TileCreationListener.onTileCreate() wird 
+ * bei jeder erstellung (aus der Map) eines Tiles oder eines LayerObjects aufgerufen.
  *
  */
 
@@ -74,7 +87,7 @@ public class MapLoader
      * @param game Spielstand fuer das die Entities geladen werden sollen
      * @param filename Name der Mapdatei die geladen werden soll
      */
-    public void run(EntityCreator creator, String filename,PhysixSystem pSystem)
+    public void run(EntityCreator creator, String filename,PhysixSystem pSystem,EntityFactory entityFactory)
     {     
         /// Datei auslesen und in tiledMap packen
         try
@@ -98,7 +111,7 @@ public class MapLoader
         }
         
         /// Objekte aus tiledMap laden und per Entitycreator im Game erstellen 
-        loadObjectsFromMap( pSystem,creator,tiledMap );
+        loadObjectsFromMap( pSystem,creator,tiledMap,entityFactory );
     }
 
     /**
@@ -113,7 +126,8 @@ public class MapLoader
         float x = rect.x * tileWidth + width / 2;
         float y = rect.y * tileHeight + height / 2;
 
-        // noch spezialisieren auf Flags ( block pathing, block sight, block walking  )
+        // TODO
+        // noch spezialisieren auf Flags ( block pathing, block sight, block shooting  )
         
         PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody, pSystem).position(x, y).fixedRotation(false);
         Body body = pSystem.getWorld().createBody(bodyDef);
@@ -125,7 +139,7 @@ public class MapLoader
      * @param game Spiel das gefuellt werden soll
      * @param tiledMap Map die geladen wird
      */     
-    private void loadObjectsFromMap(PhysixSystem pSystem,EntityCreator entCreator,TiledMap tiledMap)
+    private void loadObjectsFromMap(PhysixSystem pSystem,EntityCreator entCreator,TiledMap tiledMap,EntityFactory entityFactory)
     {
         
         
@@ -158,7 +172,7 @@ public class MapLoader
                     float yPos = obj.getY();
                     resultEnt = entCreator.createEntity(objectName, xPos, yPos);
 
-                    MapSpecialEntities.CreatorInfo info = new MapSpecialEntities.CreatorInfo(resultEnt,tiledMap,obj,layer);
+                    MapSpecialEntities.CreatorInfo info = new MapSpecialEntities.CreatorInfo(entityFactory,resultEnt,tiledMap,obj,layer);
                     
                     MapSpecialEntities.forAllElements( info );
                     
@@ -184,7 +198,7 @@ public class MapLoader
                     {
                         TileInfo tileInfo = tiles[x][y];
                         
-                        MapSpecialEntities.CreatorInfo info = new MapSpecialEntities.CreatorInfo( x,y,tiledMap, tileInfo ,layer );
+                        MapSpecialEntities.CreatorInfo info = new MapSpecialEntities.CreatorInfo(entityFactory,x,y,tiledMap, tileInfo ,layer );
 
                         MapSpecialEntities.forAllElements( info );
                         

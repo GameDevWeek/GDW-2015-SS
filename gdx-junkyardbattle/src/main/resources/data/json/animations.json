@@ -15,6 +15,14 @@
         "columns": 2,
         "rows" : 1
     },
+    "character_idle": {
+        "filename": "data/animations/charakter_animation_Spreadsheet2.png",
+        "frames" : 9,
+        "frameDuration": [0.1],
+        "playType" : "LOOP_PINGPONG",
+        "columns": 9,
+        "rows" : 1
+    },
     "box": {
         "filename": "data/animations/box.png",
         "frames" : 2,

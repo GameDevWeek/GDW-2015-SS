@@ -1,6 +1,8 @@
 package de.hochschuletrier.gdw.ss15.game.systems.network;
 
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.math.MathUtils;
+
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.ss15.events.network.server.NetworkReceivedNewPacketServerEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
@@ -26,9 +28,12 @@ public class UpdatePhysixServer implements NetworkReceivedNewPacketServerEvent.L
     public void onReceivedNewPacket(Packet pack, Entity ent) {
         PhysixBodyComponent phxc = ComponentMappers.physixBody.get(ent);
         try{
+
             MovementPacket p = (MovementPacket)pack;
+            //System.out.println("Received rotation"+ p.rotation);
             phxc.setLinearVelocity(p.xPos, p.yPos);
-            phxc.setAngle(p.rotation);
+            //phxc.setAngle(p.rotation);
+            phxc.setAngle(p.rotation * MathUtils.degreesToRadians);
         }catch (ClassCastException e){}
     }
 

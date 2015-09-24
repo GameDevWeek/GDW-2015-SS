@@ -12,8 +12,10 @@ import de.hochschuletrier.gdw.commons.gdx.menu.MenuManager;
 import de.hochschuletrier.gdw.commons.gdx.menu.widgets.DecoImage;
 import de.hochschuletrier.gdw.commons.gdx.audio.MusicManager;
 import de.hochschuletrier.gdw.commons.gdx.state.BaseGameState;
+import de.hochschuletrier.gdw.commons.gdx.state.transition.SplitHorizontalTransition;
 import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
 import de.hochschuletrier.gdw.ss15.Main;
+import de.hochschuletrier.gdw.ss15.events.network.Base.DisconnectEvent;
 import de.hochschuletrier.gdw.ss15.game.Game;
 import de.hochschuletrier.gdw.ss15.game.GameConstants;
 import de.hochschuletrier.gdw.ss15.menu.MenuPageRoot;
@@ -23,7 +25,7 @@ import de.hochschuletrier.gdw.ss15.menu.MenuPageRoot;
  * 
  * @author Santo Pfingsten
  */
-public class GameplayState extends BaseGameState {
+public class GameplayState extends BaseGameState implements DisconnectEvent.Listener {
 
     private static final Color OVERLAY_COLOR = new Color(0f, 0f, 0f, 0.5f);
 
@@ -67,6 +69,8 @@ public class GameplayState extends BaseGameState {
                 return super.keyUp(keycode);
             }
         };
+
+        DisconnectEvent.registerListener(this);
     }
 
     private void onMenuEmptyPop() {
@@ -103,6 +107,14 @@ public class GameplayState extends BaseGameState {
 
     @Override
     public void dispose() {
+        DisconnectEvent.unregisterListener(this);
         game.dispose();
+
+    }
+
+    @Override
+    public void onDisconnectPacket() {
+        System.out.println("jfsdkljfkldl  jetzt");
+        Main.getInstance().changeState(new GameplayState(Main.getInstance().getAssetManager(), game), new SplitHorizontalTransition(500), null);
     }
 }
