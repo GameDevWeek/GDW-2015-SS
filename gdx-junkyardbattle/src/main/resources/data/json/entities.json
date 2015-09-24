@@ -160,7 +160,7 @@
             "Input":{},
             "Interpolate": {},
             "Inventory":{
-            "metalShards": 0
+                "metalShards":0
             },
             "Weapon":{},
             "Health":{},
@@ -220,22 +220,12 @@
         "components": {
             "Position": {},
             "PhysixBody": {
-                "type": "circle",
-                "size": 5,
-                "density": 10,
+                "type": "box",
+                "size": 520,
+                "density": 100,
                 "friction": 0.5,
-                "restitution": 0.1
-            },
-            "Texture":{
-                "texture": "base",
-                "width": 500,
-                "height": 500,
-                "srcX": 0,
-                "srcY": 0,
-                "scaleX": 0.8,
-                "scaleY": 0.8,
-                "flipX": false,
-                "flipY": false
+                "restitution": 0,
+                "sensor" : true
             }
         }
     },
@@ -246,31 +236,38 @@
             "Position": {},
             "PhysixBody": {
                 "type": "circle",
-                "size": 5,
+                "size": 90,
                 "density": 10,
                 "friction": 0.5,
-                "restitution": 0.1
+                "restitution": 0.1,
+                "sensor": true
             },
             "Texture":{
-                "texture": "ball",
-                "width": 60,
-                "height": 60,
+                "texture": "satellite",
+                "width": 1600,
+                "height": 800,
                 "srcX": 0,
                 "srcY": 0,
-                "scaleX": 3,
-                "scaleY": 3,
+                "scaleX": 0.25,
+                "scaleY": 0.25,
                 "flipX": false,
-                "flipY": false
+                "flipY": false,
+                "offsetX": 0,
+                "offsetY": 60,
+                "initialRotation": 180
             },
             "NetworkID": {}
         }
     },
+    
     "SatelliteSiteServer": {
         "meta": {},
         "components": {
             "Position": {},
             "PositionSynch": {
-            "clientname": "SatelliteSite"
+            "clientname": "SatelliteSite",
+            "updateDuration": 10000000,
+            "sendSave": true
             },
             
             "PhysixBody": {
@@ -296,25 +293,7 @@
     "Spawn": {
         "meta": {},
         "components": {
-            "Position": {},
-            "PhysixBody": {
-                "type": "circle",
-                "size": 5,
-                "density": 10,
-                "friction": 0.5,
-                "restitution": 0.1
-            },
-            "Texture":{
-                "texture": "player_spawn",
-                "width": 120,
-                "height": 120,
-                "srcX": 0,
-                "srcY": 0,
-                "scaleX": 0.5,
-                "scaleY": 0.5,
-                "flipX": false,
-                "flipY": false
-            }
+            "Position": {}
         }
     },
     
@@ -349,35 +328,34 @@
     "JunkPile": {
         "meta": {},
         "components": {
+            "Position": {}
+        }
+    },
+
+    "Junk": {
+        "meta": {},
+        "components": {
             "Position": {},
-            "PhysixBody": {
-                "type": "circle",
-                "size": 5,
-                "density": 10,
-                "friction": 0.5,
-                "restitution": 0.1
-            },
             "Texture":{
-                "texture": "junk_spawn",
+                "texture": "junk0",
                 "width": 120,
                 "height": 120,
                 "srcX": 0,
                 "srcY": 0,
-                "scaleX": 0.3,
-                "scaleY": 0.3,
+                "scaleX": 0.5,
+                "scaleY": 0.5,
                 "flipX": false,
                 "flipY": false
             }
         }
     },
 
-
     "metalClient": {
         "meta": {},
         "components": {
             "Position": {},
             "Texture":{
-                "texture": "junk",
+                "texture": "junk0",
                 "width": 120,
                 "height": 120,
                 "srcX": 0,
@@ -398,6 +376,7 @@
        }
     },
 
+
     "metalServer": {
         "meta": {},
         "components": {
@@ -410,7 +389,14 @@
                 "restitution": 0.2
             },
             "PositionSynch":{
-                "clientname": "metalClient"
+                "clientname": "metalClient",
+                "updateDuration": 10000000,
+                "sendSave": true
+
+            },
+            "Pickable":{},
+            "Inventory":{
+                "metalShards":115
             }
        }
     }

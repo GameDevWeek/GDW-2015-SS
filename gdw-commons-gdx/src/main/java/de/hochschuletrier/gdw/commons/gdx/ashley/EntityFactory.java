@@ -57,6 +57,9 @@ public class EntityFactory<PT> {
     public Entity createEntity(String name, PT param) {
         Entity entity = engine.createEntity();
         EntityInfo info = entityInfos.get(name);
+        if ( info == null ) {
+            logger.error("Could not find entityInfo for '{}'!", name );
+        }
         for (Map.Entry<String, SafeProperties> entrySet : info.components.entrySet()) {
             ComponentFactory factory = componentFactories.get(entrySet.getKey());
             if(factory != null)

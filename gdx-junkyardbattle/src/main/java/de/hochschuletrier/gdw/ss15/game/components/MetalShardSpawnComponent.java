@@ -15,7 +15,7 @@ public class MetalShardSpawnComponent extends Component implements Pool.Poolable
 	public MetalShardSpawnComponent() {
 		timer = new MyTimer(true);
 		shards = 10;
-		System.out.println("MetalShardSpawn");
+		//System.out.println("MetalShardSpawn");
 	}
 	
 	@Override

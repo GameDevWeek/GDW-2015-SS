@@ -49,8 +49,10 @@ public class ServerGame{
     private final LineOfSightSystem lineOfSightSystem = new LineOfSightSystem(physixSystem); // hier müssen noch Team-Listen übergeben werden
     private final TestSatelliteSystem testSatelliteSystem = new TestSatelliteSystem(this); 
                                                                                  // (+ LineOfSightSystem-Konstruktor anpassen!)
-    private final BulletSystem bulletSystem = new BulletSystem();   
+    //private final BulletSystem bulletSystem = new BulletSystem();
     private final MetalShardSpawnSystem metalShardSpawnSystem = new MetalShardSpawnSystem(this);
+    private final BulletSystem bulletSystem = new BulletSystem();
+    private final PickupSystem pickupSystem = new PickupSystem(engine);
 
     private final EntityFactoryParam factoryParam = new EntityFactoryParam();
     private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json", ServerGame.class);
@@ -79,7 +81,7 @@ public class ServerGame{
         new FireServerListener(entityFactory); // ↑
         new GatherServerListener(physixSystem);
 
-        mapLoader.run( ( String name, float x, float y ) -> { return this.createEntity(name,  x, y); }, "data/maps/prototype.tmx",physixSystem,entityFactory );
+        mapLoader.run( ( String name, float x, float y ) -> { return this.createEntity(name,  x, y); }, "data/maps/3v3Alpha.tmx",physixSystem,entityFactory,assetManager );
     }
 
     private void addSystems() {
@@ -91,6 +93,7 @@ public class ServerGame{
         engine.addSystem(testSatelliteSystem);
         engine.addSystem(bulletSystem);
         engine.addSystem(metalShardSpawnSystem);
+        engine.addSystem(pickupSystem);
     }
 
     private void addContactListeners() {
