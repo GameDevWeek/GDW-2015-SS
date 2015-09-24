@@ -90,8 +90,9 @@
             "PositionSynch":{
                 "clientname": "clientPlayer"
             },
-            "Interpolate": {}
-            
+            "Interpolate": {},
+            "Health": {},
+            "Inventory": {}
 
         }
     },
@@ -101,6 +102,7 @@
         "components": {
             "Position": {},
             "Player": {},
+            "Health": {},
             "PhysixBody": {
                 "type": "circle",
                 "size": 40,
@@ -140,7 +142,9 @@
             },
             "Input":{},
             "Interpolate": {},
-            "Inventory":{}
+            "Inventory":{},
+            "Weapon":{},
+            "Health":{}
         }
     },
 
