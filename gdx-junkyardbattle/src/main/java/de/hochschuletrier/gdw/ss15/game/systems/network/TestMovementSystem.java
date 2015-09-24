@@ -1,4 +1,4 @@
-﻿package de.hochschuletrier.gdw.ss15.game.systems.network;
+package de.hochschuletrier.gdw.ss15.game.systems.network;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
@@ -78,7 +78,7 @@ public class TestMovementSystem extends IteratingSystem{
 //	        float rotation = (float)Math.atan2(mousepos2.y - posc.y,mousepos2.x - posc.x);
 	        
 	        MovementPacket packet = new MovementPacket(vectorToAdd.x,vectorToAdd.y,angle);
-	        SendPacketClientEvent.emit(packet,true);
+	        SendPacketClientEvent.emit(packet,false);
 	        vectorToAdd.setZero();
         }
         
