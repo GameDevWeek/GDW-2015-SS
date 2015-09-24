@@ -2,9 +2,15 @@ package de.hochschuletrier.gdw.ss15.game;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 
 import de.hochschuletrier.gdw.commons.gdx.ashley.EntityFactory;
 import de.hochschuletrier.gdw.commons.gdx.ashley.EntityInfo;
+import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
+import de.hochschuletrier.gdw.commons.gdx.physix.PhysixBodyDef;
+import de.hochschuletrier.gdw.commons.gdx.physix.PhysixFixtureDef;
+import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.commons.tiled.Layer;
 import de.hochschuletrier.gdw.commons.tiled.LayerObject;
 import de.hochschuletrier.gdw.commons.tiled.TileInfo;
@@ -14,6 +20,7 @@ import de.hochschuletrier.gdw.ss15.game.MapLoader.TileCreationListener;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.components.SpawnComponent;
 import de.hochschuletrier.gdw.ss15.game.components.light.ConeLightComponent;
+import de.hochschuletrier.gdw.ss15.game.components.texture.TextureComponent;
 import de.hochschuletrier.gdw.ss15.game.utils.RenderUtil;
 
 import java.util.HashMap;
@@ -49,6 +56,7 @@ public class MapSpecialEntities
     {
         public int posX;                
         public int posY;                /// diese Positionen sind nur fuer Tiles besetzt und geben die Position in Tile-Schritten wieder
+        public AssetManagerX assets;
         public EntityFactory factory;
         public Entity entity;           /// Entity die bereits erstellt und mit Standardwerten besetzt wurde
                                         /// ist 'null' fuer Tiles
@@ -58,7 +66,7 @@ public class MapSpecialEntities
         public Layer layer;             /// Layer in dem sich dieses Element befindet
         public TiledMap tiledMap;       /// gesamte TiledMap wird uebertragen dfuer alle Faelle 
         public MapLoader.EntityCreator creator;     /// noch eine neue Entity erstellen
-        public CreatorInfo(MapLoader.EntityCreator c,EntityFactory fact,Entity ent,TiledMap tm,LayerObject lo,Layer layer)
+        public CreatorInfo(MapLoader.EntityCreator c,EntityFactory fact,Entity ent,TiledMap tm,LayerObject lo,Layer layer,AssetManagerX ass)
         {
             creator = c;
             factory = fact;
@@ -69,8 +77,9 @@ public class MapSpecialEntities
             asObject = lo;
             this.layer = layer;
             tiledMap = tm;
+            assets = ass;
         }
-        public CreatorInfo(MapLoader.EntityCreator c,EntityFactory fact,int x,int y,TiledMap tm,TileInfo ti,Layer layer)
+        public CreatorInfo(MapLoader.EntityCreator c,EntityFactory fact,int x,int y,TiledMap tm,TileInfo ti,Layer layer,AssetManagerX ass)
         {
             creator = c;
             factory = fact;
@@ -81,7 +90,8 @@ public class MapSpecialEntities
             entity = null;
             asObject = null;
             asTile = ti;
-            this.layer = layer;            
+            this.layer = layer;   
+            assets = ass;         
         }
     }
     public static HashMap< String,Consumer<CreatorInfo> > specialEntities;
@@ -182,25 +192,39 @@ public class MapSpecialEntities
             {
                 x = minX + (float)(Math.random()*( maxX - minX ) );
                 y = minY + (float)(Math.random()*( maxY - minY ) );
-                info.creator.createEntity("metal", x, y);
+                Entity entity = info.creator.createEntity("Junk", x, y);
+                specialEntities.get("Junk").accept( new CreatorInfo( info.creator,info.factory, entity, info.tiledMap, null ,info.layer,info.assets ) );
             }
-
-            info.creator.createEntity("metal", 10, 10);
-            /// eine Componente herraussuchen 
-            // ConeLightComponent light = info.entity.getComponent( ConeLightComponent.class );
-            
-            
-            /// fuer wen spawn der Spawnpoint?
-            /*
-            if ( team != null ) {
-                /// erhaltenen Wert lesen 
-                int nr = info.asObject.getIntProperty("TeamID", 0);
-            
-                /// Komponente mit diesem Wert besetzten
-                /// team.flag = flag;
-            /// }
-             * 
-             */
+        }
+    }
+    
+    public static class Junk implements Consumer<CreatorInfo>
+    {
+        public void accept(CreatorInfo info)
+        {
+            if ( info.asObject == null )        /// nicht direkt aus Map
+            {
+                TextureComponent text = ComponentMappers.texture.get( info.entity );
+                if ( text != null )
+                {
+                    String junk_name;
+                    junk_name = "junk" + (char)('0' + (char)(Math.random() * 4) );
+                    text.texture = info.assets.getTexture( junk_name );
+                }
+                
+            } else
+            {
+                EntityInfo entityInfo = (EntityInfo)info.factory.getEntityInfos().get( info.asObject.getName() );
+                
+                
+                TextureComponent text = ComponentMappers.texture.get( info.entity );
+                if ( text != null )
+                {
+                    String junk_name;
+                    junk_name = "junk" + ('0' + (int)(Math.random() * 4) );
+                    text.texture = info.assets.getTexture( junk_name );
+                }
+            }
         }
     }
     
@@ -212,24 +236,18 @@ public class MapSpecialEntities
             /// eine Componente herraussuchen             
             EntityInfo entityInfo = (EntityInfo)info.factory.getEntityInfos().get( info.asObject.getName() );
             
-            // Team ?
+            
+           //team
             
             /// eine Componente herraussuchen 
             
-            //ConeLightComponent light = info.entity.getComponent( ConeLightComponent.class );
+            PhysixBodyComponent body = ComponentMappers.physixBody.get(info.entity);
             //SafeProperties sp = entityInfo.components.get("ConeLight");
             
-            /// fuer wen spawn der Spawnpoint?
-            /*
-            if ( team != null ) {
-                /// erhaltenen Wert lesen 
-                int nr = info.asObject.getIntProperty("TeamID", 0);
+            if ( body != null ) {
             
                 /// Komponente mit diesem Wert besetzten
-                /// team.flag = flag;
-            /// }
-             * 
-             */
+            }
         }
     }
     

@@ -78,7 +78,7 @@ public class ServerGame{
         new FireServerListener(entityFactory); // ↑
         new GatherServerListener(physixSystem);
 
-        mapLoader.run( ( String name, float x, float y ) -> { return this.createEntity(name,  x, y); }, "data/maps/prototype.tmx",physixSystem,entityFactory );
+        mapLoader.run( ( String name, float x, float y ) -> { return this.createEntity(name,  x, y); }, "data/maps/3v3Alpha.tmx",physixSystem,entityFactory,assetManager );
     }
 
     private void addSystems() {
