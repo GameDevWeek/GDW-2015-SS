@@ -20,6 +20,7 @@ import de.hochschuletrier.gdw.ss15.game.contactlisteners.PickupListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.TriggerListener;
 import de.hochschuletrier.gdw.ss15.game.systems.BulletSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.LineOfSightSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.MetalShardSpawnSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.NetworkServerSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.PositionSynchSystem;
@@ -49,6 +50,7 @@ public class ServerGame{
     private final TestSatelliteSystem testSatelliteSystem = new TestSatelliteSystem(this); 
                                                                                  // (+ LineOfSightSystem-Konstruktor anpassen!)
     private final BulletSystem bulletSystem = new BulletSystem();   
+    private final MetalShardSpawnSystem metalShardSpawnSystem = new MetalShardSpawnSystem(this);
 
     private final EntityFactoryParam factoryParam = new EntityFactoryParam();
     private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json", ServerGame.class);
@@ -88,6 +90,7 @@ public class ServerGame{
         engine.addSystem(syncPositionSystem);
         engine.addSystem(testSatelliteSystem);
         engine.addSystem(bulletSystem);
+//        engine.addSystem(metalShardSpawnSystem);
     }
 
     private void addContactListeners() {
