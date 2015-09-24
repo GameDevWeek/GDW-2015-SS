@@ -122,7 +122,8 @@ public class MapLoader
         float x = rect.x * tileWidth + width / 2;
         float y = rect.y * tileHeight + height / 2;
 
-        // noch spezialisieren auf Flags ( block pathing, block sight, block walking  )
+        // TODO
+        // noch spezialisieren auf Flags ( block pathing, block sight, block shooting  )
         
         PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody, pSystem).position(x, y).fixedRotation(false);
         Body body = pSystem.getWorld().createBody(bodyDef);

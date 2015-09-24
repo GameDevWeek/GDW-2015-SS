@@ -19,7 +19,7 @@
         "filename": "data/animations/charakter_animation_Spreadsheet2.png",
         "frames" : 9,
         "frameDuration": [0.1],
-        "playType" : "LOOP",
+        "playType" : "LOOP_PINPONG",
         "columns": 9,
         "rows" : 1
     },

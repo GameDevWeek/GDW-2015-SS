@@ -82,7 +82,7 @@ public class MapSpecialEntities
     }
     
     
-    
+    //public static class blueConeLight implements Conusmer
     
     public static class SpawnPoint implements Consumer<CreatorInfo>
     {
