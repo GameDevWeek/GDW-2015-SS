@@ -24,10 +24,10 @@ import de.hochschuletrier.gdw.ss15.game.utils.Timer;
 public class WeaponSystem extends IteratingSystem {
 
     public WeaponSystem() {
-        super(Family.all(PlayerComponent.class/*,
+        super(Family.all(PlayerComponent.class,
                          WeaponComponent.class,
                          HealthComponent.class,
-                         InputComponent.class*/).get());
+                         InputComponent.class).get());
     }
 
     @Override
