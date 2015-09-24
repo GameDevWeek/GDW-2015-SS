@@ -182,10 +182,10 @@ public class MapSpecialEntities
             {
                 x = minX + (float)(Math.random()*( maxX - minX ) );
                 y = minY + (float)(Math.random()*( maxY - minY ) );
-                info.creator.createEntity("metal", x, y);
+                //info.creator.createEntity("metal", x, y);
             }
 
-            info.creator.createEntity("metal", 10, 10);
+           // info.creator.createEntity("metal", 10, 10);
             /// eine Componente herraussuchen 
             // ConeLightComponent light = info.entity.getComponent( ConeLightComponent.class );
             

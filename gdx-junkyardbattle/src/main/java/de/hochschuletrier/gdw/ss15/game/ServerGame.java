@@ -90,7 +90,7 @@ public class ServerGame{
         engine.addSystem(syncPositionSystem);
         engine.addSystem(testSatelliteSystem);
         engine.addSystem(bulletSystem);
-//        engine.addSystem(metalShardSpawnSystem);
+        engine.addSystem(metalShardSpawnSystem);
     }
 
     private void addContactListeners() {

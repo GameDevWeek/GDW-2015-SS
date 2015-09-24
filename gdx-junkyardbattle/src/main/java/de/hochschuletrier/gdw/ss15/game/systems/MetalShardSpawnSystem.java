@@ -21,7 +21,7 @@ public class MetalShardSpawnSystem extends IteratingSystem{
 
 	@Override
 	protected void processEntity(Entity entity, float deltaTime) {
-		float minTimeBetweenSpawns = 1.f;
+		float minTimeBetweenSpawns = 5.f;
 		MyTimer timer = ComponentMappers.metalShardSpawn.get(entity).timer;
 		timer.Update();
 		if(timer.get_CounterSeconds() > minTimeBetweenSpawns)
@@ -33,10 +33,11 @@ public class MetalShardSpawnSystem extends IteratingSystem{
 			for (int i = 0; i < ComponentMappers.metalShardSpawn.get(entity).shards; i++) {
 				Vector2 center = new Vector2(ComponentMappers.position.get(entity).x, ComponentMappers.position.get(entity).y);
 				float angle = i * angleBetweenShards;
-				Vector2 pos = new Vector2(center);
-				pos.add(20.f, 0.f);
-				
-				game.createEntity("metalServer",pos.x, pos.y);
+				//Vector2 pos = new Vector2(center);
+				//pos.add(20.f, 0.f);
+
+				//System.out.println("Spawned entity "+ pos);
+				game.createEntity("metalServer",center.x, center.y);
 			}
 		}
 	}
