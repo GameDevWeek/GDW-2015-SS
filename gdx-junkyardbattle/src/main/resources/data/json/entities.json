@@ -1,4 +1,4 @@
-﻿{
+{
    "smokescreen": {
         "meta": {},
         "components":{
@@ -239,7 +239,8 @@
                 "size": 90,
                 "density": 10,
                 "friction": 0.5,
-                "restitution": 0.1
+                "restitution": 0.1,
+                "sensor": true
             },
             "Texture":{
                 "texture": "satellite",
@@ -247,8 +248,8 @@
                 "height": 800,
                 "srcX": 0,
                 "srcY": 0,
-                "scaleX": 1,
-                "scaleY": 1,
+                "scaleX": 0.25,
+                "scaleY": 0.25,
                 "flipX": false,
                 "flipY": false,
                 "offsetX": 0,
@@ -258,6 +259,7 @@
             "NetworkID": {}
         }
     },
+    
     "SatelliteSiteServer": {
         "meta": {},
         "components": {
@@ -303,7 +305,7 @@
     "JunkPile": {
         "meta": {},
         "components": {
-            "Position": {},
+            "Position": {}
         }
     },
 
@@ -322,7 +324,7 @@
                 "flipX": false,
                 "flipY": false
             }
-       }
+        }
     },
     
     "metal": {
@@ -349,6 +351,4 @@
             }
        }
     }
-
-
 }
