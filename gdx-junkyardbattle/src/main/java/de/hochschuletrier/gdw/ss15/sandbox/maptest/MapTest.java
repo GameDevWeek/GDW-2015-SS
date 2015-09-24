@@ -5,7 +5,6 @@ import java.util.HashMap;
 import de.hochschuletrier.gdw.ss15.game.components.MoveComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.input.InputComponent;
-import de.hochschuletrier.gdw.ss15.game.systems.MoveSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.input.InputSystem;
 import jdk.internal.util.xml.impl.Input;
 import org.slf4j.Logger;
@@ -88,7 +87,7 @@ public class MapTest extends SandboxGame {
             camera.getOrthographicCamera(), engine);
     private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem();
     private final InputSystem inputSystem = new InputSystem();
-    private final MoveSystem moveSystem = new MoveSystem();
+
     
     private final EntityFactoryParam factoryParam = new EntityFactoryParam();
     private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json", Game.class);
@@ -100,7 +99,7 @@ public class MapTest extends SandboxGame {
         engine.addSystem(physixSystem);
         engine.addSystem(physixDebugRenderSystem);
         engine.addSystem(inputSystem);
-        engine.addSystem(moveSystem);
+ 
     }
     
     public Entity createEntity(String name, float x, float y) {

@@ -16,6 +16,8 @@ public class PositionSynchComponent extends Component implements Pool.Poolable {
     public String clientName;
     public float lastX;
     public float lastY;
+    public float lastVelocityX;
+    public float lastVelocityY;
     public float lastRot;
     public MyTimer lastSendTimer;
 
@@ -25,6 +27,8 @@ public class PositionSynchComponent extends Component implements Pool.Poolable {
         clientName=null;
         lastX=0;
         lastY=0;
+        lastVelocityX = 0;
+        lastVelocityY = 0;
         lastRot=0;
         lastSendTimer=null;
     }
