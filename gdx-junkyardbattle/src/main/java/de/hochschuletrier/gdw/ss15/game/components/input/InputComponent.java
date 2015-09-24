@@ -17,11 +17,15 @@ public class InputComponent extends Component implements Pool.Poolable {
     public int posX;
     public int posY;
 
+    public double rightStickAngle;
+    public boolean isController = false;
+
     @Override
     public void reset()
     {
-        shoot = gather = false;
+        shoot = gather = isController = false;
         posX = posY = 0;
         horizontal = vertical = 0.0f;
+        rightStickAngle = 0.0;
     }
 }
