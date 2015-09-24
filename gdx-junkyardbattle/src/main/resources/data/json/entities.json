@@ -208,13 +208,39 @@
                 "height": 60,
                 "srcX": 0,
                 "srcY": 0,
-                "scaleX": 1,
-                "scaleY": 1,
+                "scaleX": 3,
+                "scaleY": 3,
                 "flipX": false,
                 "flipY": false
             }
         }
     },
+    "SatelliteSiteServer": {
+        "meta": {},
+        "components": {
+            "Position": {},
+            "PositionSync": {
+            "clientname": "SatelliteSite"
+            },
+            
+            "PhysixBody": {
+                "type": "circle",
+                "size": 5,
+                "density": 10,
+                "friction": 0.5,
+                "restitution": 0.1
+            },
+            "NetworkID": {},
+             "Damage": {
+            	"damageValue": 100,
+            	"damageToPlayer": true,
+            	"damageToTile": false
+            }
+            
+        
+      	}
+    },
+    
     
     "Spawn": {
         "meta": {},
