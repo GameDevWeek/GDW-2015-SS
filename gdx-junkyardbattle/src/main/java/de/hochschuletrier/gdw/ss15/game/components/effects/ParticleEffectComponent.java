@@ -45,6 +45,10 @@ public class ParticleEffectComponent extends Component implements Pool.Poolable{
                     particleEmitter.durationTimer=0;
                 }
                 break;
+            case RESET:
+                for(ParticleEmitter particleEmitter : particleEffect.getEmitters()){
+                    particleEmitter.durationTimer=0;
+                }
             default:
                 return ;
         }

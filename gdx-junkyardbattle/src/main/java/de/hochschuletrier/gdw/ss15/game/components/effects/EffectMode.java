@@ -12,5 +12,6 @@ package de.hochschuletrier.gdw.ss15.game.components.effects;
 public enum EffectMode {
     START,
     STARTANDRESET,
-    STOP
+    STOP,
+    RESET
 }
