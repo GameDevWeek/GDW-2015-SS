@@ -63,6 +63,7 @@ public class FireServerListener implements NetworkReceivedNewPacketServerEvent.L
                 Entity projectile = factory.createEntity("projectile", param);
                 projectile.getComponent(PhysixModifierComponent.class).runnables.add(() -> {
                     //projectile.getComponent(PhysixBodyComponent.class).applyImpulse(dir.setLength(power));
+                    //                 ComponentMappers.physixBody.get(projectile).setLinearDamping(10);//10 nur als vorläufiger. AUSTESTEN
                 });
             }
             }catch (ClassCastException e){}
