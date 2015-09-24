@@ -1,5 +1,7 @@
 package de.hochschuletrier.gdw.ss14.menu;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -54,7 +56,15 @@ public class MenuPage extends Group {
             clipEnd();
         }
     }
-
+    protected final void addHorizontalGroupe(ArrayList<Actor> list,int x, int y)
+    {
+    	HorizontalGroup hg= new HorizontalGroup();
+    	hg.setPosition(x, y);
+    	for (Actor tempActor : list) {
+			hg.addActor(tempActor);
+		}
+    	addActor(hg);
+    }
     protected final void addLeftAlignedButton(int x, int y, int width, int height, String text, Runnable runnable) {
         TextButton button = addButton(x, y, width, height, text, runnable, "default");
         button.getLabel().setAlignment(Align.left);
@@ -82,8 +92,9 @@ public class MenuPage extends Group {
     	
     }
     
-    protected final Actor addUIActor(Actor actor)
+    protected final Actor addUIActor(Actor actor,int x, int y)
     {
+    	actor.setPosition(x, y);
     	addActor(actor);
     	return actor;
     }

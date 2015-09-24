@@ -4,7 +4,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import de.hochschuletrier.gdw.commons.gdx.menu.MenuManager;
 import de.hochschuletrier.gdw.commons.gdx.state.transition.SplitHorizontalTransition;
 import de.hochschuletrier.gdw.ss14.game.Game;
-import de.hochschuletrier.gdw.ss14.menu.Actors.MouseCursorActor;
 import de.hochschuletrier.gdw.ss14.states.GameplayState;
 import de.hochschuletrier.gdw.ss14.states.MainMenuState;
 
@@ -27,6 +26,8 @@ public class MenuPageRoot extends MenuPage {
      
         if (type == Type.MAINMENU) {
             addLeftAlignedButton(x, y - YSTEP_BUTTON * (i++), WIDTH_BUTTON, HEIGHT_BUTTON, "Spiel starten", this::startGame);
+
+            addPageEntry(menuManager, x, y - YSTEP_BUTTON * (i++), "Start", new MenuPageEnterIP(skin,menuManager,"menu_bg"));
             addPageEntry(menuManager, x, y - YSTEP_BUTTON * (i++), "Optionen", new MenuPageOptions(skin,menuManager,Type.INGAME));
         } else {
             addLeftAlignedButton(x, y - YSTEP_BUTTON * (i++), WIDTH_BUTTON, HEIGHT_BUTTON, "Fortsetzen", () -> menuManager.popPage());

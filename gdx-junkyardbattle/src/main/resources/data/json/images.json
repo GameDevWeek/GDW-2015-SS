@@ -1,5 +1,8 @@
 {
     "menu_fg": "data/ui/menu/fg_border.png",
-    "menu_bg": "data/ui/menu/bg_root.png",
-    "ball": "data/images/ball.png"
+    "menu_bg": "data/ui/menu/Assets/MainMenu.png",
+    "ball": "data/images/ball.png",
+    "menu_bg": "data/ui/menu/Assets/MainMenu.png",
+    "plus_ui": "data/ui/menu/Assets/menu_sound_UP.png",
+    "minus_ui": "data/ui/menu/Assets/menu_sound_DOWN.png"
 }

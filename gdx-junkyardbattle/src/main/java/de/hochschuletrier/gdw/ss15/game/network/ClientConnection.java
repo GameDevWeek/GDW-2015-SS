@@ -69,12 +69,12 @@ public class ClientConnection implements SendPacketClientEvent.Listener {
         return clientSocket;
     }
 
-    public void connect(String ip,int port)
+    public boolean connect(String ip,int port)
     {
         if(clientSocket!=null && clientSocket.isConnected())
         {
             logger.warn("Client bereits verbunden");
-            return;
+            return false;
         }
         if(clientSocket!=null)
         {
@@ -83,8 +83,8 @@ public class ClientConnection implements SendPacketClientEvent.Listener {
         }
         clientSocket = new Clientsocket(ip,port,true);
        // clientSocket.registerConnectListner(this);
-        clientSocket.connect();
-        SendPacketClientEvent.registerListener(this);
+	   SendPacketClientEvent.registerListener(this);
+       return clientSocket.connect();
     }
 
     public void disconnect()
