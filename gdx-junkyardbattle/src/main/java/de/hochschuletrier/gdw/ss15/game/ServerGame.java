@@ -69,6 +69,7 @@ public class ServerGame{
 
         new UpdatePhysixServer(); // magic → registers itself as listener for network packets
         new FireServerListener(entityFactory); // ↑
+        new GatherServerListener(physixSystem);
 
         mapLoader.run( ( String name, float x, float y ) -> { return this.createEntity(name,  x, y); }, "data/maps/prototype.tmx",physixSystem,entityFactory );
     }
