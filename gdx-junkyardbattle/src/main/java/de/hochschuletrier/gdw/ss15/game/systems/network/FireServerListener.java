@@ -1,0 +1,60 @@
+package de.hochschuletrier.gdw.ss15.game.systems.network;
+
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.math.Vector2;
+import de.hochschuletrier.gdw.commons.gdx.ashley.EntityFactory;
+import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
+import de.hochschuletrier.gdw.ss15.events.network.server.NetworkReceivedNewPacketServerEvent;
+import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
+import de.hochschuletrier.gdw.ss15.game.components.WeaponComponent;
+import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
+import de.hochschuletrier.gdw.ss15.game.network.PacketIds;
+import de.hochschuletrier.gdw.ss15.game.network.Packets.FirePacket;
+import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
+
+/**
+ * Created by oliver on 24.09.15.
+ *
+ * Server received Fire Package
+ */
+public class FireServerListener implements NetworkReceivedNewPacketServerEvent.Listener{
+
+    private EntityFactory factory;
+
+    public FireServerListener(EntityFactory factory){
+        this.factory = factory;
+        NetworkReceivedNewPacketServerEvent.registerListener(PacketIds.Fire, this);
+    }
+
+    @Override
+    public void onReceivedNewPacket(Packet pack, Entity ent) {
+        PhysixBodyComponent phxc = ComponentMappers.physixBody.get(ent);
+        try{
+            FirePacket packet = (FirePacket)pack;
+
+
+            float p = packet.channeltime / WeaponComponent.maximumFireTime + 0.0001f;
+            float scatter = WeaponComponent.maximumScattering / p;
+            Vector2 dir = Vector2.Zero;
+            for (int i = 0; i < WeaponComponent.ShardsPerShot / p; ++i) {
+
+                dir.set((float) Math.cos((Math.random() - 0.5f) * scatter),
+                        (float) Math.sin((Math.random() - 0.5f) * scatter));
+                dir.add((float) Math.cos(phxc.getAngle()), (float) Math.sin(phxc.getAngle()));
+                // create projectile
+                //Components: Bullet, Damage, Physix
+                //physix component
+                float projectPlayerDistance = 5.f;
+                float power = 50.f;
+                EntityFactoryParam param = new EntityFactoryParam();
+                Vector2 startPosition = ent.getComponent(PhysixBodyComponent.class).getBody().getPosition().add(dir.setLength(projectPlayerDistance));
+                param.x = startPosition.x;
+                param.y = startPosition.y;
+                Entity projectile = factory.createEntity("Projectile", param);
+                projectile.getComponent(PhysixBodyComponent.class).applyImpulse(dir.setLength(power));
+            }
+
+
+            }catch (ClassCastException e){}
+    }
+}

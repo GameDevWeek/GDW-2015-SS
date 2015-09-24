@@ -15,6 +15,7 @@ import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.ss15.events.network.client.SendPacketClientEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.Game;
+import de.hochschuletrier.gdw.ss15.game.GameConstants;
 import de.hochschuletrier.gdw.ss15.game.components.InventoryComponent;
 import de.hochschuletrier.gdw.ss15.game.components.HealthComponent;
 import de.hochschuletrier.gdw.ss15.game.components.MoveComponent;
@@ -59,10 +60,10 @@ public class TestMovementSystem extends IteratingSystem{
 	        InventoryComponent inventory = ComponentMappers.inventory.get(entity);
 	        //System.out.println(inventory);
             timer.StartCounter();
-            if(inventory.metalShards<=700 && inventory.metalShards>0)
+            if(inventory.metalShards<= GameConstants.MAX_METALSHARDS && inventory.metalShards>0)
             {
-            	float invtemp = inventory.metalShards/700;
-            	vectorToAdd.scl(move.get(entity).speed-move.get(entity).speed*(invtemp*0.75f));
+                float invtemp = inventory.metalShards/GameConstants.MAX_METALSHARDS;
+                vectorToAdd.scl(move.get(entity).speed-move.get(entity).speed*(invtemp*0.75f));
             }
             else
             {
