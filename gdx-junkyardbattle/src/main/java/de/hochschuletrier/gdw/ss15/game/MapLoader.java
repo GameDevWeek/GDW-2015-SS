@@ -169,7 +169,7 @@ public class MapLoader
                     float yPos = obj.getY();
                     resultEnt = entCreator.createEntity(objectName, xPos, yPos);
 
-                    MapSpecialEntities.CreatorInfo info = new MapSpecialEntities.CreatorInfo(entityFactory,resultEnt,tiledMap,obj,layer);
+                    MapSpecialEntities.CreatorInfo info = new MapSpecialEntities.CreatorInfo(entCreator,entityFactory,resultEnt,tiledMap,obj,layer);
                     
                     MapSpecialEntities.forAllElements( info );
                     
@@ -195,7 +195,7 @@ public class MapLoader
                     {
                         TileInfo tileInfo = tiles[x][y];
                         
-                        MapSpecialEntities.CreatorInfo info = new MapSpecialEntities.CreatorInfo(entityFactory,x,y,tiledMap, tileInfo ,layer );
+                        MapSpecialEntities.CreatorInfo info = new MapSpecialEntities.CreatorInfo( entCreator,entityFactory,x,y,tiledMap, tileInfo ,layer );
 
                         MapSpecialEntities.forAllElements( info );
                         

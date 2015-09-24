@@ -177,8 +177,16 @@
                 "friction": 0.5,
                 "restitution": 0.1
             },
-            "Animator": {
-                "animation_IDLE": "character_idle"
+            "Texture":{
+                "texture": "base",
+                "width": 500,
+                "height": 500,
+                "srcX": 0,
+                "srcY": 0,
+                "scaleX": 0.5,
+                "scaleY": 0.5,
+                "flipX": false,
+                "flipY": false
             }
         }
     },
@@ -220,7 +228,7 @@
                 "restitution": 0.1
             },
             "Texture":{
-                "texture": "ball",
+                "texture": "player_spawn",
                 "width": 120,
                 "height": 120,
                 "srcX": 0,
@@ -245,7 +253,32 @@
                 "restitution": 0.1
             },
             "Texture":{
-                "texture": "ball",
+                "texture": "junk_spawn",
+                "width": 120,
+                "height": 120,
+                "srcX": 0,
+                "srcY": 0,
+                "scaleX": 0.3,
+                "scaleY": 0.3,
+                "flipX": false,
+                "flipY": false
+            }
+        }
+    },
+    
+    "JunkPile": {
+        "meta": {},
+        "components": {
+            "Position": {},
+            "PhysixBody": {
+                "type": "circle",
+                "size": 5,
+                "density": 10,
+                "friction": 0.5,
+                "restitution": 0.1
+            },
+            "Texture":{
+                "texture": "junk_spawn",
                 "width": 120,
                 "height": 120,
                 "srcX": 0,
@@ -259,7 +292,21 @@
     },
 
     "metal": {
-
+        "meta": {},
+        "components": {
+            "Position": {},
+            "Texture":{
+                "texture": "junk",
+                "width": 120,
+                "height": 120,
+                "srcX": 0,
+                "srcY": 0,
+                "scaleX": 0.2,
+                "scaleY": 0.2,
+                "flipX": false,
+                "flipY": false
+            }
+       }
     }
 
 
