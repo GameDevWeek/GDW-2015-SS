@@ -123,9 +123,11 @@
             },
             "NetworkID": {},
             "Animator": {
-                "animation_IDLE": "character_idle"
+                "animation_IDLE": "character_idle",
+                "initialRotation": 90
             },
-            "Interpolate": {}
+            "Interpolate": {},
+            "SoundEmitter": {}
         }
     },
 
@@ -145,7 +147,8 @@
             },
             "NetworkID": {},
             "Animator": {
-                "animation_IDLE": "character_idle"
+                "animation_IDLE": "character_idle",
+                "initialRotation": 90
             },
 
             "Move":{
@@ -155,7 +158,8 @@
             "Interpolate": {},
             "Inventory":{},
             "Weapon":{},
-            "Health":{}
+            "Health":{},
+            "SoundEmitter": {}
         }
     },
 
