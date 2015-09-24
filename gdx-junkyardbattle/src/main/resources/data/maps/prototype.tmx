@@ -1820,7 +1820,7 @@
     <property name="Base" value="B"/>
    </properties>
   </object>
-  <object id="4" name="SatelliteSite" x="1848" y="1812" width="240" height="232">
+  <object id="4" name="SateliteSite" x="1848" y="1812" width="240" height="232">
    <properties>
     <property name="SatelliteSite" value="1"/>
    </properties>
