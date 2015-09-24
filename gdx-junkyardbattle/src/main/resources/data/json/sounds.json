@@ -1,4 +1,6 @@
 {
 	"click": "data/sounds/click.wav",
-	"helicopter": "data/sounds/helicopter.wav"
+	"helicopter": "data/sounds/helicopter.wav",
+    "schritt_strasse": "data/sounds/Schrittestrasse.wav",
+    "sat_explode": "data/sounds/Satexplosion.wav"
 }
