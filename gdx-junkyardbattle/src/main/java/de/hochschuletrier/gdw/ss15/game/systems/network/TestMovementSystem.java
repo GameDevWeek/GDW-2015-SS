@@ -71,16 +71,15 @@ public class TestMovementSystem extends IteratingSystem{
             else
             {
             	vectorToAdd.scl(move.get(entity).speed);
-            }
+            }*/
 	        Vector3 mousepos = camera.unproject(new Vector3(input.posX, input.posY,0));
 	        Vector2 mousepos2 = new Vector2(mousepos.x, mousepos.y);
 	        
 	        mousepos2.sub(new Vector2(posc.x,posc.y));
 	        float angle = mousepos2.angle();
-	*/
-//	        float rotation = (float)Math.atan2(mousepos2.y - posc.y,mousepos2.x - posc.x);
+	        //float rotation = (float)Math.atan2(mousepos2.y - posc.y,mousepos2.x - posc.x);
 	        
-	        MovementPacket packet = new MovementPacket(vectorToAdd.x,vectorToAdd.y,0);
+	        MovementPacket packet = new MovementPacket(vectorToAdd.x,vectorToAdd.y,angle);
 	        SendPacketClientEvent.emit(packet,true);
 	        vectorToAdd.setZero();
        }

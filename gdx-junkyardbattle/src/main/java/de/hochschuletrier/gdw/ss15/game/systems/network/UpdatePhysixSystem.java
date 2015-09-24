@@ -65,6 +65,8 @@ public class UpdatePhysixSystem extends IteratingSystem
                 	//phxc.setPosition(pos);
                 	//.setLinearVelocity(, );
                 	phxc.setLinearVelocity(p.velocityX,p.velocityY);
+
+                    phxc.setAngle(p.rotation*MathUtils.degreesToRadians);
                 	
                 	//System.out.println("velo" +p.velocityX+ " "+ p.velocityY);
                     
