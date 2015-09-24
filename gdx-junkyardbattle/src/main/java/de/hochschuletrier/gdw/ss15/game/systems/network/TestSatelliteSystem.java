@@ -58,12 +58,13 @@ public class TestSatelliteSystem extends IteratingSystem {
 		PositionComponent posc = ComponentMappers.position.get(entity);
         InventoryComponent inventory = ComponentMappers.inventory.get(entity);
         PositionSynchComponent pos = ComponentMappers.positionSynch.get(entity);
-        inventory.metalShards = 750;
+          int shards =inventory.getMetalShards();
+          
         
         	
         	
         	
-        	if(inventory.metalShards<1)
+        	if(inventory.getMetalShards()<1)
         	{
         		entity.removeAll();
         		satellite = false;

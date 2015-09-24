@@ -1,5 +1,5 @@
 ﻿{
-    "smokescreen": {
+   "smokescreen": {
         "meta": {},
         "components":{
             "Position": {},
@@ -104,7 +104,7 @@
             "Move":{
             	"speed": 10,
                 "metalShards": 100
-            }
+            },
             "Health": {}
         }
     },
