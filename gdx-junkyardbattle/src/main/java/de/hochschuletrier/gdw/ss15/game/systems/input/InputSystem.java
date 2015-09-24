@@ -4,12 +4,14 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
@@ -30,7 +32,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
     private boolean controllerActive;
 
     private final float STICKDEADZONE = 0.25f;
-    private final float RADIUS= 123.0f;
+    private float radius = Gdx.graphics.getHeight() / 3;
     private double winkel;
 
     private float horizontal = 0.0f;
@@ -65,11 +67,16 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
             input.shoot = leftMBDown;
             input.gather = rightMBDown;
 
-            input.posX = posX;
-            input.posY = posY;
-
             input.rightStickAngle = winkel;
             input.isController = controllerActive;
+
+            if(controllerActive){
+                input.posX = (int)(position.x + (radius*Math.cos(winkel)));
+                input.posY = (int)(position.y + (radius*Math.sin(winkel)));
+            } else {
+                input.posX = posX;
+                input.posY = posY;
+            }
         }
     }
 
@@ -273,13 +280,13 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
 
                 break;
         }
-        //debug();
-        winkel = Math.toDegrees(Math.atan2(r1Vertical,r1Horizontal));
+        winkel = Math.atan2(r1Vertical,r1Horizontal);
         return false;
     }
 
     @Override
     public boolean povMoved(Controller controller, int povCode, PovDirection value) {
+        /*
         controllerActive = true;
         horizontal = vertical = 0.0f;
         switch (value) {
@@ -321,6 +328,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
         }
         System.out.println("pocCode: " + povCode + "\npovDirection: " + value);
         debug();
+        */
         return false;
     }
 
