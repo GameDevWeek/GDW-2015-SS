@@ -215,8 +215,8 @@
         "components": {
             "Position": {},
             "PhysixBody": {
-                "type": "circle",
-                "size": 1,
+                "type": "box",
+                "size": 200,
                 "density": 10,
                 "friction": 0.5,
                 "restitution": 0.1
@@ -254,8 +254,8 @@
         "components": {
             "Position": {},
             "PhysixBody": {
-                "type": "circle",
-                "size": 5,
+                "type": "box",
+                "size": 30,
                 "density": 10,
                 "friction": 0.5,
                 "restitution": 0.1
@@ -324,6 +324,31 @@
         }
     },
 
+    "Junk": {
+        "meta": {},
+        "components": {
+            "Position": {},
+            "PhysixBody": {
+                "type": "circle",
+                "size": 3,
+                "density": 2,
+                "friction": 0.3,
+                "restitution": 0.2
+            },
+            "Texture":{
+                "texture": "junk0",
+                "width": 120,
+                "height": 120,
+                "srcX": 0,
+                "srcY": 0,
+                "scaleX": 0.2,
+                "scaleY": 0.2,
+                "flipX": false,
+                "flipY": false
+            }
+       }
+    },
+    
     "metal": {
         "meta": {},
         "components": {
@@ -336,7 +361,7 @@
                 "restitution": 0.2
             },
             "Texture":{
-                "texture": "junk",
+                "texture": "junk0",
                 "width": 120,
                 "height": 120,
                 "srcX": 0,

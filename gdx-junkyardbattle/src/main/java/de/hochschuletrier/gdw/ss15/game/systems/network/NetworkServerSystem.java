@@ -60,7 +60,7 @@ public class NetworkServerSystem extends EntitySystem implements SendPacketServe
     public void update(float deltaTime) {
         //System.out.println("jfsdklfjsdaöklfjsdöklf rennt");
         while (serverSocket.isNewClientAvaliable()) {
-            Entity e = game.createEntity("player", 200, 200);
+            Entity e = game.createEntity("player", 600, 600);
         }
 
         LinkedList<Entity> toDelete = new LinkedList<>();

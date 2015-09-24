@@ -17,6 +17,7 @@ import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixDebugRenderSystem
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
+import de.hochschuletrier.gdw.ss15.game.components.texture.TextureComponent;
 import de.hochschuletrier.gdw.ss15.game.systems.input.InputSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.NetworkClientSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.*;
@@ -85,7 +86,7 @@ public class Game extends InputAdapter {
         entityFactory.init(engine, assetManager);
         mapLoader.listen(renderSystem.getTileMapCreator());
         mapLoader.run((String name, float x, float y) -> createEntity(name, x, y),
-                "data/maps/PrototypeV2.tmx", physixSystem,entityFactory);
+                "data/maps/PrototypeV2.tmx", physixSystem,entityFactory,assetManager );
     }
 
     private void addSystems() {
@@ -180,7 +181,7 @@ public class Game extends InputAdapter {
         factoryParam.x = x;
         factoryParam.y = y;
         Entity entity = entityFactory.createEntity(name, factoryParam);
-
+                
         engine.addEntity(entity);
         return entity;
     }
