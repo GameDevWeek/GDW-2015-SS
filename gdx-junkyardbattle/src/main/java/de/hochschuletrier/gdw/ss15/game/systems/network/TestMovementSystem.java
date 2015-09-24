@@ -92,7 +92,7 @@ public class TestMovementSystem extends IteratingSystem{
             float angle = mousepos2.angle();
             //System.out.println(angle);
 
-//	        float rotation = (float)Math.atan2(mousepos2.y - posc.y,mousepos2.x - posc.x);
+//          float rotation = (float)Math.atan2(mousepos2.y - posc.y,mousepos2.x - posc.x);
 
             MovementPacket packet = new MovementPacket(vectorToAdd.x,vectorToAdd.y,angle);
             SendPacketClientEvent.emit(packet,false);

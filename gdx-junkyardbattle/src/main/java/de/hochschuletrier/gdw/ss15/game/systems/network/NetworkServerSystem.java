@@ -18,6 +18,7 @@ import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serversocket;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 
 public class NetworkServerSystem extends EntitySystem implements SendPacketServerEvent.Listener{
@@ -57,15 +58,16 @@ public class NetworkServerSystem extends EntitySystem implements SendPacketServe
     }
 
     @Override
-    public void update(float deltaTime) {
+    public synchronized void update(float deltaTime) {
         //System.out.println("jfsdklfjsdaöklfjsdöklf rennt");
         while (serverSocket.isNewClientAvaliable()) {
             Entity e = game.createEntity("player", 200, 200);
         }
 
         LinkedList<Entity> toDelete = new LinkedList<>();
-        for(Entity client:clients)
+        for(int i=0;i< clients.size();i++)
         {
+            Entity client = clients.get(i);
             Serverclientsocket sock = ComponentMappers.client.get(client).client;
             if(!sock.isConnected())
             {//client lost connection
