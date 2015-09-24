@@ -1,7 +1,10 @@
 package de.hochschuletrier.gdw.ss15.game;
 
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.graphics.Color;
 
+import de.hochschuletrier.gdw.commons.gdx.ashley.EntityFactory;
+import de.hochschuletrier.gdw.commons.gdx.ashley.EntityInfo;
 import de.hochschuletrier.gdw.commons.tiled.Layer;
 import de.hochschuletrier.gdw.commons.tiled.LayerObject;
 import de.hochschuletrier.gdw.commons.tiled.TileInfo;
@@ -9,8 +12,10 @@ import de.hochschuletrier.gdw.commons.tiled.TiledMap;
 import de.hochschuletrier.gdw.commons.utils.SafeProperties;
 import de.hochschuletrier.gdw.ss15.game.MapLoader.TileCreationListener;
 import de.hochschuletrier.gdw.ss15.game.components.SpawnComponent;
+import de.hochschuletrier.gdw.ss15.game.components.light.ConeLightComponent;
 
 import java.util.HashMap;
+import java.util.Set;
 import java.util.function.Consumer;
 
 
@@ -39,6 +44,7 @@ public class MapSpecialEntities
     {
         public int posX;                
         public int posY;                /// diese Positionen sind nur fuer Tiles besetzt und geben die Position in Tile-Schritten wieder
+        public EntityFactory factory;
         public Entity entity;           /// Entity die bereits erstellt und mit Standardwerten besetzt wurde
                                         /// ist 'null' fuer Tiles
         public TileInfo asTile;         /// wenn kein Tile erstellt wurde  => null  sonst eine Referenz zum geladenen Tile
@@ -46,7 +52,7 @@ public class MapSpecialEntities
                 /// TileInfo, LayerObject    geben ueber .getSafeProperties().getProperty("PropName","default") deren Attribute aus 
         public Layer layer;             /// Layer in dem sich dieses Element befindet
         public TiledMap tiledMap;       /// gesamte TiledMap wird uebertragen dfuer alle Faelle 
-        public CreatorInfo(Entity ent,TiledMap tm,LayerObject lo,Layer layer)
+        public CreatorInfo(EntityFactory fact,Entity ent,TiledMap tm,LayerObject lo,Layer layer)
         {
             posX = 0;posY = 0;     /// x und y sind bei Objecten = 0  =>  erhalte Position ueber PositionComponent     
             tiledMap = null;
@@ -56,7 +62,7 @@ public class MapSpecialEntities
             this.layer = layer;
             tiledMap = tm;
         }
-        public CreatorInfo(int x,int y,TiledMap tm,TileInfo ti,Layer layer)
+        public CreatorInfo(EntityFactory fact,int x,int y,TiledMap tm,TileInfo ti,Layer layer)
         {
             tiledMap = tm;
             posX = x;
@@ -70,7 +76,12 @@ public class MapSpecialEntities
     }
     public static HashMap< String,Consumer<CreatorInfo> > specialEntities;
     
-    
+    public static boolean testForAttrib( String[] list, String testString )
+    {
+        boolean ret = false;
+        for( String s : list ) ret = ret | (s.equals(testString) );
+        return ret;
+    }
     
     /**
      * Wird bei der erstellung aller Maprelevanten Elemente aufgerufen (Tiles und LayerObject)
@@ -82,7 +93,33 @@ public class MapSpecialEntities
     }
     
     
-    //public static class blueConeLight implements Conusmer
+    public static class ConeLight implements Consumer<CreatorInfo>
+    {
+        public void accept(CreatorInfo info)
+        {
+            /// Alle veraenderten wert-namen,  immer abfragen ob ein Attribute ueberhaupt veraendert wurde
+            String[] givenAttributes = info.asObject.getProperties().keySet().toArray( new String[0] );
+            EntityInfo entityInfo = (EntityInfo)info.factory.getEntityInfos().get( info.asObject.getName() );
+            
+            /// eine Componente herraussuchen 
+            ConeLightComponent light = info.entity.getComponent( ConeLightComponent.class );
+            SafeProperties sp = entityInfo.components.get("ConeLight");
+            
+            if ( light != null ) {
+                /// erhaltenen Wert lesen 
+                boolean aExist;
+                Color color = Color.BLUE;
+                int degree;
+                int distance;
+                //color = Color.( info.asObject.getProperty("color", sp.getString("color") ) , Color.BLUE );
+                degree = info.asObject.getIntProperty( "degree",sp.getInt( "degree" ) );
+                distance = info.asObject.getIntProperty( "distance",sp.getInt( "distance" ) );
+            
+                /// Komponente mit diesem Wert besetzten
+                light.set( color, (float)distance,true,(float)degree,45f,true );
+            }
+        }
+    }
     
     public static class SpawnPoint implements Consumer<CreatorInfo>
     {
@@ -115,6 +152,8 @@ public class MapSpecialEntities
     {
         public void accept(CreatorInfo info)
         {
+            /// Alle veraenderten wert-namen,  immer abfragen ob ein Attribute ueberhaupt veraendert wurde
+            String[] givenAttributes = info.asObject.getProperties().keySet().toArray( new String[0] );
             
             /// eine Componente herraussuchen 
             /// TestComponent body = ComponentMapper.test.get( info.entity );
@@ -138,6 +177,8 @@ public class MapSpecialEntities
     {
         public void accept(CreatorInfo info)
         {
+            /// Alle veraenderten wert-namen,  immer abfragen ob ein Attribute ueberhaupt veraendert wurde
+            String[] givenAttributes = info.asObject.getProperties().keySet().toArray( new String[0] );
             
             /// eine Componente herraussuchen 
             /// TestComponent body = ComponentMapper.test.get( info.entity );

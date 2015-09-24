@@ -85,7 +85,7 @@ public class Game extends InputAdapter {
         entityFactory.init(engine, assetManager);
         mapLoader.listen(renderSystem.getTileMapCreator());
         mapLoader.run((String name, float x, float y) -> createEntity(name, x, y),
-                "data/maps/prototype.tmx", physixSystem);
+                "data/maps/prototype.tmx", physixSystem,entityFactory);
     }
 
     private void addSystems() {
