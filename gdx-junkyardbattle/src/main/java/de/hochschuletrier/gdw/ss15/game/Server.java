@@ -1,7 +1,9 @@
 package de.hochschuletrier.gdw.ss15.game;
 
 import de.hochschuletrier.gdw.ss15.Main;
+import de.hochschuletrier.gdw.ss15.game.network.LobyClient;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
+import de.hochschuletrier.gdw.ss15.game.network.ServerLobby;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Clientsocket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serverclientsocket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serversocket;
@@ -28,6 +30,7 @@ public class Server implements Runnable
     private static final Logger logger = LoggerFactory.getLogger(Server.class);
 
     ServerGame runningGame = null;
+    ServerLobby lobby = null;
     MyTimer timer = new MyTimer();
 
     LinkedList<Clientsocket> clientSockets = new LinkedList<>();
@@ -98,8 +101,18 @@ public class Server implements Runnable
                     {
                         SimplePacket packet = new SimplePacket(SimplePacket.SimplePacketId.ConnectInitPacket.getValue(),-1);
                     }
-
-
+                    else if(lobby == null)
+                    {
+                        SimplePacket packet = new SimplePacket(SimplePacket.SimplePacketId.ConnectInitPacket.getValue(),-2);
+                    }
+                    else if(!lobby.InserNewPlayer(sockret))
+                    {
+                        SimplePacket packet = new SimplePacket(SimplePacket.SimplePacketId.ConnectInitPacket.getValue(),-3);
+                    }
+                    else
+                    {
+                        SimplePacket packet = new SimplePacket(SimplePacket.SimplePacketId.ConnectInitPacket.getValue(),1);
+                    }
                 }
             }
 
