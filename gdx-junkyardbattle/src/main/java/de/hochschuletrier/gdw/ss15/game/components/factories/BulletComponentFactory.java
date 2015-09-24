@@ -20,6 +20,7 @@ public class BulletComponentFactory extends ComponentFactory<EntityFactoryParam>
         BulletComponent component = engine.createComponent(BulletComponent.class);
         component.playerID = properties.getInt("playerID");
         entity.add(component);
+//        System.out.println("BULLET");
     }
 
 }

@@ -18,6 +18,7 @@ import de.hochschuletrier.gdw.ss15.game.contactlisteners.BulletListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.ImpactSoundListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.PickupListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.TriggerListener;
+import de.hochschuletrier.gdw.ss15.game.systems.BulletSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.LineOfSightSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.*;
@@ -41,6 +42,7 @@ public class ServerGame{
     private final PositionSynchSystem syncPositionSystem = new PositionSynchSystem(this,GameConstants.PRIORITY_PHYSIX + 3);//todo magic numbers (boa ist das geil kann nicht mehr aufhoeren)
     private final LineOfSightSystem lineOfSightSystem = new LineOfSightSystem(physixSystem); // hier müssen noch Team-Listen übergeben werden
                                                                                  // (+ LineOfSightSystem-Konstruktor anpassen!)
+    private final BulletSystem bulletSystem = new BulletSystem();
 
     private final EntityFactoryParam factoryParam = new EntityFactoryParam();
     private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json", ServerGame.class);
@@ -77,6 +79,7 @@ public class ServerGame{
         engine.addSystem(updatePositionSystem);
         engine.addSystem(lineOfSightSystem);
         engine.addSystem(syncPositionSystem);
+        engine.addSystem(bulletSystem);
     }
 
     private void addContactListeners() {
