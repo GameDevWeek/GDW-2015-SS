@@ -30,11 +30,15 @@ public class ChangeNamePacket extends Packet {
 
     @Override
     protected void unpack(DataInputStream input) throws IOException {
-        StringBuffer buffer = new Stringbuffer();
+        StringBuffer buffer = new StringBuffer();
+        while(input.available() > 1){
+            buffer.append(input.readChar());
+        }
+        name = buffer.toString();
     }
 
     @Override
     public int getSize() {
-        return 0;
+        return -1;
     }
 }
