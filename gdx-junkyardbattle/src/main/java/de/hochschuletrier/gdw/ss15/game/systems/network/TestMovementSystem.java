@@ -1,4 +1,4 @@
-package de.hochschuletrier.gdw.ss15.game.systems.network;
+﻿package de.hochschuletrier.gdw.ss15.game.systems.network;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
@@ -23,6 +23,7 @@ import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.components.input.InputComponent;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.EntityUpdatePacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.MovementPacket;
+import de.hochschuletrier.gdw.ss15.game.systems.network.UpdatePhysixServer;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.MyTimer;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.Tools;
 
@@ -47,6 +48,7 @@ public class TestMovementSystem extends IteratingSystem{
         move = ComponentMappers.move;
         input = ComponentMappers.input;
         inventory = ComponentMappers.inventory;
+        
     }
 
 	protected void processEntity(Entity entity, float deltaTime) {
@@ -63,29 +65,22 @@ public class TestMovementSystem extends IteratingSystem{
 	        PositionComponent posc = ComponentMappers.position.get(entity);
 	        InventoryComponent inventory = ComponentMappers.inventory.get(entity);
             timer.StartCounter();
-    /*        if(inventory.metalShards<=700 && inventory.metalShards>0)
-            {
-            	float invtemp = inventory.metalShards/700;
-            	vectorToAdd.scl(move.get(entity).speed-move.get(entity).speed*(invtemp*0.75f));
-            }
-            else
-            {
-            	vectorToAdd.scl(move.get(entity).speed);
-            }
 	        Vector3 mousepos = camera.unproject(new Vector3(input.posX, input.posY,0));
 	        Vector2 mousepos2 = new Vector2(mousepos.x, mousepos.y);
 	        
 	        mousepos2.sub(new Vector2(posc.x,posc.y));
 	        float angle = mousepos2.angle();
-	*/
-//	        float rotation = (float)Math.atan2(mousepos2.y - posc.y,mousepos2.x - posc.x);
-	        
-	        MovementPacket packet = new MovementPacket(vectorToAdd.x,vectorToAdd.y,0);
+
+	        MovementPacket packet = new MovementPacket(vectorToAdd.x,vectorToAdd.y,angle);
 	        SendPacketClientEvent.emit(packet,true);
 	        vectorToAdd.setZero();
        }
         
         
+        velVector.set(input.get(entity).horizontal, input.get(entity).vertical);
+        velVector.nor();
+        velVector.scl(deltaTime);
+        vectorToAdd.add(velVector);
 		
 	}
 

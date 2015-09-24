@@ -1,4 +1,4 @@
-﻿package de.hochschuletrier.gdw.ss15.game.systems.network;
+package de.hochschuletrier.gdw.ss15.game.systems.network;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
@@ -65,6 +65,8 @@ public class UpdatePhysixSystem extends IteratingSystem
                 	//phxc.setPosition(pos);
                 	//.setLinearVelocity(, );
                 	phxc.setLinearVelocity(p.velocityX,p.velocityY);
+
+                    phxc.setAngle(p.rotation*MathUtils.degreesToRadians);
                 	
                 	//System.out.println("velo" +p.velocityX+ " "+ p.velocityY);
                     
