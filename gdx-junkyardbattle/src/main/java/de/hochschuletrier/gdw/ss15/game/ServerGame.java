@@ -20,10 +20,7 @@ import de.hochschuletrier.gdw.ss15.game.contactlisteners.PickupListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.TriggerListener;
 import de.hochschuletrier.gdw.ss15.game.systems.LineOfSightSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.network.NetworkServerSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.network.PositionSynchSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.network.UpdatePhysixServer;
-import de.hochschuletrier.gdw.ss15.game.systems.network.UpdatePhysixSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.network.*;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serversocket;
 
 /**
@@ -69,6 +66,7 @@ public class ServerGame{
         entityFactory.init(engine, assetManager);
 
         new UpdatePhysixServer(); // magic → registers itself as listener for network packets
+        new FireServerListener(entityFactory); // ↑
 
         mapLoader.run( ( String name, float x, float y ) -> { return this.createEntity(name,  x, y); }, "data/maps/prototype.tmx",physixSystem,entityFactory );
     }

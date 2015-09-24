@@ -22,7 +22,7 @@ public class FireServerListener implements NetworkReceivedNewPacketServerEvent.L
 
     private EntityFactory factory;
 
-    public FireServerListener(EntityFactory factory){
+    public FireServerListener(EntityFactory<EntityFactoryParam> factory){
         this.factory = factory;
         NetworkReceivedNewPacketServerEvent.registerListener(PacketIds.Fire, this);
     }
@@ -37,8 +37,12 @@ public class FireServerListener implements NetworkReceivedNewPacketServerEvent.L
             float p = packet.channeltime / WeaponComponent.maximumFireTime + 0.0001f;
             float scatter = WeaponComponent.maximumScattering / p;
             Vector2 dir = Vector2.Zero;
+//            System.out.println("received fire package: " + packet.channeltime + "seconds channeld");
             for (int i = 0; i < WeaponComponent.ShardsPerShot / p; ++i) {
-                if(invc.getMetalShards() <= 0) return;
+                if(invc.getMetalShards() <= 0){
+//                    System.out.println("not enough metal shards");
+                    return;
+                }
 
                 dir.set((float) Math.cos((Math.random() - 0.5f) * scatter),
                         (float) Math.sin((Math.random() - 0.5f) * scatter));

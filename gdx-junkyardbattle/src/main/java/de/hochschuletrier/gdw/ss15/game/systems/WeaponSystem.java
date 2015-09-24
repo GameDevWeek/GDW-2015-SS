@@ -24,14 +24,10 @@ import de.hochschuletrier.gdw.ss15.game.utils.Timer;
 public class WeaponSystem extends IteratingSystem {
 
     public WeaponSystem() {
-        super(Family.all(PlayerComponent.class/*,
+        super(Family.all(PlayerComponent.class,
                          WeaponComponent.class,
                          HealthComponent.class,
-                         InputComponent.class*/).get());
-    }
-
-    @Override
-    public void update(float deltaTime) {
+                         InputComponent.class).get());
     }
 
     @Override
@@ -55,8 +51,10 @@ public class WeaponSystem extends IteratingSystem {
             if(wpc.fireChannelTime > 0) { // left button is released
                 WeaponUncharged.emit();
 
+
                 FirePacket fire = new FirePacket(wpc.fireChannelTime);
                 SendPacketClientEvent.emit(fire, true);
+                System.out.println("emit fire package! " + wpc.fireChannelTime);
 
                 wpc.fireChannelTime = 0f;
             }

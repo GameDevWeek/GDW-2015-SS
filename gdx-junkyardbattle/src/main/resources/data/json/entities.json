@@ -160,16 +160,39 @@
                 "restitution": 0.1
             },
             "Damage": {
-            	"damageValue": 10,
-            	"damageToPlayer": true,
-            	"damageToTile": true
+                "damageValue": 10,
+                "damageToPlayer": true,
+                "damageToTile": true
             },
             "Bullet": {
                 "playerID": -1
+            },
+            "PositionSynch":{
+                "clientname": "clientProjectile"
             }
         }
     },
-    
+
+    "clientProjectile": {
+        "meta": {},
+        "components": {
+            "Position": {},
+            "PhysixBody": {
+                "type": "circle",
+                "size": 5,
+                "density": 10,
+                "friction": 0.5,
+                "restitution": 0.1
+            },
+            "Damage": {
+                "damageValue": 10,
+                "damageToPlayer": true,
+                "damageToTile": true
+            },
+            "Bullet": {}
+        }
+    },
+
     "Base": {
         "meta": {},
         "components": {
