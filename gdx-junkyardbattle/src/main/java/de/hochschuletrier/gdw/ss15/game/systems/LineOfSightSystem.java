@@ -100,15 +100,13 @@ public class LineOfSightSystem extends EntitySystem {
             public float reportRayFixture(Fixture fixture, Vector2 point,
                     Vector2 normal, float fraction) {
                 successful.set(fixture.getBody().equals(to));
-                return 0;
+                return fraction;
             }
         };
-        
         
         physixSystem.getWorld().rayCast(lineOfSightCallback,
                 from.getComponent(PhysixBodyComponent.class).getPosition(),
                 to.getComponent(PhysixBodyComponent.class).getPosition());
-        
         
         return successful.get();
     }
