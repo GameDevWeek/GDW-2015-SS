@@ -93,7 +93,8 @@
                 "size": 40,
                 "density": 10,
                 "friction": 0.5,
-                "restitution": 0.1
+                "restitution": 0.1,
+                "fixedRotation": true
             },
             "Client":{},
             "PositionSynch":{
@@ -119,7 +120,8 @@
                 "size": 40,
                 "density": 10,
                 "friction": 0.5,
-                "restitution": 0.1
+                "restitution": 0.1,
+                "fixedRotation": true
             },
             "NetworkID": {},
             "Animator": {
@@ -143,7 +145,8 @@
                 "size": 40,
                 "density": 10,
                 "friction": 0.5,
-                "restitution": 0.1
+                "restitution": 0.1,
+                "fixedRotation": true
             },
             "NetworkID": {},
             "Animator": {

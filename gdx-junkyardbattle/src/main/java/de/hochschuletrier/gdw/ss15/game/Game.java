@@ -45,12 +45,10 @@ public class Game extends InputAdapter {
     
     private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem();
     private final NetworkClientSystem networksystem = new NetworkClientSystem(this,GameConstants.PRIORITY_PHYSIX+2);
-    private final MoveSystem moveSystem = new MoveSystem();
     private final EntityFactoryParam factoryParam = new EntityFactoryParam();
     private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json", Game.class);
 
     private final CameraSystem cameraSystem = new CameraSystem();
-
     private final RenderSystem renderSystem = new RenderSystem(physixSystem, cameraSystem.getCamera().getOrthographicCamera(), engine);
     private final TestMovementSystem testMovementSystem = new TestMovementSystem(this, cameraSystem.getCamera().getOrthographicCamera());
     private final TimerSystem timerSystem = new TimerSystem();
@@ -77,9 +75,6 @@ public class Game extends InputAdapter {
     }
 
     public void init(AssetManagerX assetManager) {
-        //Main.getInstance().console.register(physixDebug);
-        //physixDebug.addListener((CVar) -> physixDebugRenderSystem.setProcessing(physixDebug.get()));
-
         addSystems();
         addContactListeners();
         setupPhysixWorld();
@@ -95,7 +90,6 @@ public class Game extends InputAdapter {
         engine.addSystem(updatePositionSystem);
         engine.addSystem(networksystem);
         engine.addSystem(inputSystem);
-        //engine.addSystem(moveSystem);
         engine.addSystem(weaponSystem);
         engine.addSystem(cameraSystem);
         engine.addSystem(renderSystem);
@@ -109,7 +103,7 @@ public class Game extends InputAdapter {
         //physixSystem.getWorld().setContactListener(contactListener);
         //contactListener.addListener(ImpactSoundComponent.class, new ImpactSoundListener());
        // contactListener.addListener(TriggerComponent.class, new TriggerListener());
-    	ContactListener cl = new ContactListener() {
+    /*	ContactListener cl = new ContactListener() {
 			
 			@Override
 			public void preSolve(Contact contact, Manifold oldManifold) {
@@ -134,46 +128,18 @@ public class Game extends InputAdapter {
 				contact.setEnabled(false);
 				
 			}
-		}; 
-    	physixSystem.getWorld().setContactListener(cl);
+		};
+    	physixSystem.getWorld().setContactListener(cl); */
     }
 
     private void setupPhysixWorld() {
         physixSystem.setGravity(0, 0);
-        //PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody, physixSystem).position(410, 500).fixedRotation(false);
-        //Body body = physixSystem.getWorld().createBody(bodyDef);
-       // body.createFixture(new PhysixFixtureDef(physixSystem).density(1).friction(0.5f).shapeBox(800, 20));
-        //PhysixUtil.createHollowCircle(physixSystem, 180, 180, 150, 30, 6);
-
-        //createTrigger(410, 600, 3200, 40, (Entity entity) -> {
-          //  engine.removeEntity(entity);
-       // });
     }
 
     public void update(float delta) {
         Main.getInstance().screenCamera.bind();
         timerSystem.update(delta);
         engine.update(delta);
-    }
-
-    public void createTrigger(float x, float y, float width, float height, Consumer<Entity> consumer) {
-        /*Entity entity = engine.createEntity();
-        PhysixModifierComponent modifyComponent = engine.createComponent(PhysixModifierComponent.class);
-        entity.add(modifyComponent);
-
-        TriggerComponent triggerComponent = engine.createComponent(TriggerComponent.class);
-        triggerComponent.consumer = consumer;
-        entity.add(triggerComponent);
-
-        modifyComponent.schedule(() -> {
-            PhysixBodyComponent bodyComponent = engine.createComponent(PhysixBodyComponent.class);
-            PhysixBodyDef bodyDef = new PhysixBodyDef(BodyType.StaticBody, physixSystem).position(x, y);
-            bodyComponent.init(bodyDef, physixSystem, entity);
-            PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem).sensor(true).shapeBox(width, height);
-            bodyComponent.createFixture(fixtureDef);
-            entity.add(bodyComponent);
-        });
-        engine.addEntity(entity);*/
     }
 
     public Entity createEntity(String name, float x, float y) {
@@ -186,14 +152,6 @@ public class Game extends InputAdapter {
         return entity;
     }
 
-    /*@Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        if(button == 0)
-            createEntity("ball", screenX, screenY);
-        else
-            createEntity("box", screenX, screenY);
-        return true;
-    }*/
 
     public InputProcessor getInputProcessor() {
         return this;

@@ -31,7 +31,6 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener,
 
 
     private static final TestListenerClient testlistener = new TestListenerClient();
-    private MyTimer timer = new MyTimer(true);
     private long lastAddedEntityID = 0;
     private HashMap<Long, Entity> hashMap = new HashMap();
     private ImmutableArray<Entity> entities;

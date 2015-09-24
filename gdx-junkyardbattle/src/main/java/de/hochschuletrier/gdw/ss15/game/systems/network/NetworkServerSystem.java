@@ -58,7 +58,6 @@ public class NetworkServerSystem extends EntitySystem implements SendPacketServe
 
     @Override
     public void update(float deltaTime) {
-        //System.out.println("jfsdklfjsdaöklfjsdöklf rennt");
         while (serverSocket.isNewClientAvaliable()) {
             Entity e = game.createEntity("player", 600, 600);
         }
@@ -92,16 +91,7 @@ public class NetworkServerSystem extends EntitySystem implements SendPacketServe
         //System.out.println("Received packet server");
         NetworkReceivedNewPacketServerEvent.emit(pack,ent);
         
-        if(pack.getPacketId()==PacketIds.Movement.getValue())
-        {
-        	
-        	//MovementPacket mPacket = (MovementPacket) pack;
-        	//PhysixBodyComponent comp = ComponentMappers.physixBody.get(ent);
-        	//comp.setPosition(mPacket.xPos, mPacket.yPos);
-        	//comp.setLinearVelocity(mPacket.xPos, mPacket.yPos);
-        	//comp.setAngle(mPacket.rotation);
-        	//System.out.println(mPacket.rotation);
-        }
+
         
     }
 
@@ -138,7 +128,7 @@ public class NetworkServerSystem extends EntitySystem implements SendPacketServe
 
     public void onSendServerPacket(Packet pack,boolean save,Entity exept)
     {
-        //System.out.print("dsklfjsdlkjfdl");
+
         int i = 0;
         for(Entity entity : clients){
             if(entity != exept){
