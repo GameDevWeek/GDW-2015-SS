@@ -1,4 +1,4 @@
-﻿package de.hochschuletrier.gdw.ss15.game.network;
+package de.hochschuletrier.gdw.ss15.game.network;
 
 /**
  * Created by lukas on 22.09.15.

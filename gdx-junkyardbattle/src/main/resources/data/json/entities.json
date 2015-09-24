@@ -1,4 +1,4 @@
-﻿{
+{
    "smokescreen": {
         "meta": {},
         "components":{
@@ -102,7 +102,7 @@
             "Interpolate": {},
             "Inventory": {},
             "Move":{
-            	"speed": 10,
+            	"speed": 300,
                 "metalShards": 100
             },
             "Health": {}
