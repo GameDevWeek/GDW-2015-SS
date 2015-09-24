@@ -247,7 +247,10 @@
         "meta": {},
         "components": {
             "Position": {},
-            "SpawnSatellite": {}
+            "SpawnSatellite": {},
+            "Inventory": {
+                 "metalShards": 0
+            }
         }
     },
     "SatelliteSiteServer": {
@@ -272,10 +275,8 @@
                 "damageValue": 100,
                 "damageToPlayer": true,
                 "damageToTile": true
-            },
-            "Inventory": {
-            "metalShards": 0
             }
+
         }
     },
     "SatelliteClient": {

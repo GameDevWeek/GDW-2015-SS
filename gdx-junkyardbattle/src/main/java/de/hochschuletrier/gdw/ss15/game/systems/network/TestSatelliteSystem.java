@@ -28,7 +28,6 @@ public class TestSatelliteSystem extends IteratingSystem {
 	MyTimer timer = new MyTimer(true);
 	float x;
     float y;
-    int shards;
 	private ComponentMapper<InventoryComponent> inventory;
 	private ComponentMapper<PositionComponent> position;
 	private ComponentMapper<PositionSynchComponent> positionSynch;
@@ -55,7 +54,7 @@ public class TestSatelliteSystem extends IteratingSystem {
 		    satellite = true;
             serverGame.createEntity("SatelliteSiteServer", x, y);
             System.out.println(x+" , "+ y);
-            shards = 2;
+
         }
 		
 		
@@ -80,12 +79,12 @@ public class TestSatelliteSystem extends IteratingSystem {
           
           //System.out.println(x+" , "+y);
         	
-        	if(shards>1)
+        	if(inventory.getMetalShards()>1)
         	{
         		entity.removeAll();
         		satellite = false;
         		timer.ResetTimer();
-        		shards = 2;
+        		
         		System.out.println("Ich bin hier");
         		
         	}
