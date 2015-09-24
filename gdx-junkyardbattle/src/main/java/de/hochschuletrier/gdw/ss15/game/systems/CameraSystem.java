@@ -42,7 +42,10 @@ public class CameraSystem extends EntitySystem
     private CameraRumble rumble = new CameraRumble();
     private Entity player;
     
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+    // Camera shake intension and runtime
+    private final float shakeTime = 1.5f, shakeIntension = 100.f;
+    
+    //private final Logger logger = LoggerFactory.getLogger(getClass());
         
     public CameraSystem() {
         // Resizing Camera to match window dimensions
@@ -102,11 +105,6 @@ public class CameraSystem extends EntitySystem
         camera.update(deltaTime);
         camera.bind();        
     }
-
-    // Initializes a camera shake
-    public void initializeShake(float time, float force){
-        rumble.rumble(force, time);
-    }
     
     @Override
     public void onWeaponCharging() { 
@@ -120,8 +118,8 @@ public class CameraSystem extends EntitySystem
     
     @Override
     public void onSatelliteColliding() {
-        initializeShake(1, 80);   
-        logger.info("initializing shake");
+        // Initializes the camera shake
+        rumble.rumble(shakeIntension, shakeTime);
     }
     
     @Override
@@ -146,9 +144,9 @@ public class CameraSystem extends EntitySystem
 // CameraSystem only used classes
 class CameraRumble {
 
-    public float time;
     Random random;
     float x, y;
+    float time;
     float current_time;
     float power;
     float current_power;
@@ -184,10 +182,11 @@ class CameraRumble {
             y = (random.nextFloat() - 0.5f) * 2 * current_power;
         
             // Set the camera to this new x/y position           
-            camera.setDestination(poscomp.x-x, poscomp.y-y);
+            camera.setDestination(poscomp.x+x, poscomp.y+y);
             current_time += delta;
         } else {
             // When the shaking is over move the camera back to the player position
+            // and set time to reach to zero
             camera.setDestination(poscomp.x, poscomp.y);
             time = 0.f;
         }

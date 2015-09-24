@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Interpolation;
 import de.hochschuletrier.gdw.commons.devcon.cvar.CVar;
 import de.hochschuletrier.gdw.commons.devcon.cvar.CVarBool;
 import de.hochschuletrier.gdw.commons.devcon.cvar.CVarFloat;
+import de.hochschuletrier.gdw.commons.devcon.cvar.CVarInt;
 import de.hochschuletrier.gdw.commons.gdx.cameras.orthogonal.SmoothCamera;
 import de.hochschuletrier.gdw.ss15.Main;
 
@@ -30,7 +31,7 @@ public class BoundedCamera extends SmoothCamera {
     
     // Viewport settings
     boolean fixedViewport = true;
-    final int viewportX = 1920 / 2, viewportY = 1080 / 2;
+    int viewportX = 1920, viewportY = 1080;
 
     // Camera zoom settings
     private float srcZoom = 1.f, dstZoom = 2.f, curZoom = 1.f, zoomSpeed = 0.75f, zoomProgress = 0.f;
@@ -39,19 +40,25 @@ public class BoundedCamera extends SmoothCamera {
     // < 1 slow follow || > 1 fast follow
     protected float followFactor = 1.f;
     
-    private CVarFloat followFactCVAR = new CVarFloat("camFollow", followFactor, 0.1f, 20.f, 0, "sets camera following speed");
-    private CVarFloat zoomSpeedCVAR = new CVarFloat("camZoomSpd", zoomSpeed, 0.1f, 5.f, 0, "sets camera zooming speed");
-    private CVarFloat maxZoomOutCVAR = new CVarFloat("camZoomOut", dstZoom, 0.1f, 3.f, 0, "sets camera maxmimum zoom-out");
-    private CVarBool fixViewportCVAR = new CVarBool("camFixedVP", fixedViewport, 0, "toggle fixed viewport for camera");
+    private CVarFloat followFactCVAR = new CVarFloat("cam_Follow", followFactor, 0.1f, 20.f, 0, "sets camera following speed");
+    private CVarFloat zoomSpeedCVAR = new CVarFloat("cam_ZoomSpd", zoomSpeed, 0.1f, 5.f, 0, "sets camera zooming speed");
+    private CVarFloat maxZoomOutCVAR = new CVarFloat("cam_ZoomOut", dstZoom, 0.1f, 3.f, 0, "sets camera maxmimum zoom-out");
+    private CVarInt camViewpXCVar = new CVarInt("cam_ViewportX", viewportX, 640, 1920, 0, "set camera viewport x-value");
+    private CVarInt camViewpYCVar = new CVarInt("cam_ViewportY", viewportY, 360, 1080, 0, "set camera viewport y-value");
+    private CVarBool fixViewportCVAR = new CVarBool("cam_FixedVP", fixedViewport, 0, "toggle fixed viewport for camera");
     
+    @SuppressWarnings("unused")
     private final Logger logger = LoggerFactory.getLogger(getClass());
     
     public BoundedCamera() {
+        
         // registering CVARs
         Main.getInstance().console.register(followFactCVAR);
         Main.getInstance().console.register(zoomSpeedCVAR);
         Main.getInstance().console.register(maxZoomOutCVAR);
         Main.getInstance().console.register(fixViewportCVAR);
+        Main.getInstance().console.register(camViewpXCVar);
+        Main.getInstance().console.register(camViewpYCVar);
         
         // attach listeners
         followFactCVAR.addListener((CVar cvar) -> {
@@ -70,6 +77,16 @@ public class BoundedCamera extends SmoothCamera {
            fixedViewport = !fixedViewport; 
         });
         
+        camViewpXCVar.addListener((CVar cvar) -> {
+           viewportX = camViewpXCVar.get();
+           resize(viewportX, viewportY);
+        });
+        
+        camViewpYCVar.addListener((CVar cvar) -> {
+            viewportY = camViewpYCVar.get();
+            resize(viewportX, viewportY);
+         });
+        
     }
     
     @Override
@@ -79,6 +96,8 @@ public class BoundedCamera extends SmoothCamera {
         Main.getInstance().console.unregister(zoomSpeedCVAR);
         Main.getInstance().console.unregister(maxZoomOutCVAR);
         Main.getInstance().console.unregister(fixViewportCVAR);
+        Main.getInstance().console.unregister(camViewpXCVar);
+        Main.getInstance().console.unregister(camViewpYCVar);
     }
     
     @Override
@@ -170,7 +189,6 @@ public class BoundedCamera extends SmoothCamera {
     
     @Override
     public void resize(int width, int height) {
-        logger.info("resized -> fixedViewport = {}", fixedViewport);
         if(!fixedViewport){
             camera.setToOrtho(true, width, height);
         } else {

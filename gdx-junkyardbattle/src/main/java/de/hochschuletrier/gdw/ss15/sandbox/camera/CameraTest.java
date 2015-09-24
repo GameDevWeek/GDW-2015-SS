@@ -51,9 +51,8 @@ import de.hochschuletrier.gdw.ss15.sandbox.SandboxGame;
  */
 public class CameraTest extends SandboxGame {
 
+    @SuppressWarnings("unused")
     private static final Logger logger = LoggerFactory.getLogger(CameraTest.class);
-    
-    private boolean fixedViewport = false;
     
     public static final int POSITION_ITERATIONS = 3;
     public static final int VELOCITY_ITERATIONS = 8;
@@ -78,11 +77,11 @@ public class CameraTest extends SandboxGame {
     private TiledMap map;
     private MapLoader mapLoader = new MapLoader();
     private PhysixBodyComponent playerBody;
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     private final HashMap<TileSet, Texture> tilesetImages = new HashMap();
 
     private final EntityFactoryParam factoryParam = new EntityFactoryParam();
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json", Game.class);
     
     private final Hotkey hkey = new Hotkey(() -> SatelliteColliding.emit(), Input.Keys.Q);

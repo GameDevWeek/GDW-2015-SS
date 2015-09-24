@@ -34,7 +34,6 @@ public abstract class AbstractCamera implements ScreenListener {
     }
 
     protected void onViewportChanged(float width, float height) {
-
     }
 
     public void update(float delta) {
