@@ -91,6 +91,7 @@
                 "clientname": "clientPlayer"
             },
             "Interpolate": {}
+
             
 
         }
@@ -112,7 +113,8 @@
             "Animator": {
                 "animation_IDLE": "character_idle"
             },
-            "Interpolate": {}
+            "Interpolate": {},
+            "SoundEmitter": {}
         }
     },
 
@@ -140,7 +142,8 @@
             },
             "Input":{},
             "Interpolate": {},
-            "Inventory":{}
+            "Inventory":{},
+            "SoundEmitter": {}
         }
     },
 

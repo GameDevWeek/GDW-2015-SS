@@ -57,6 +57,7 @@ public class Game extends InputAdapter {
     private final RotationSystem rotationSystem = new RotationSystem(cameraSystem.getCamera().getOrthographicCamera());
     private final UpdatePhysixSystem updatePhysixSystem = new UpdatePhysixSystem(timerSystem);
     private final InputSystem inputSystem = new InputSystem();
+    private final SoundSystem soundSystem = new SoundSystem(cameraSystem.getCamera());
     private final MapLoader mapLoader = new MapLoader();
 
     public Game() {
@@ -101,6 +102,7 @@ public class Game extends InputAdapter {
         engine.addSystem(testMovementSystem);
         engine.addSystem(rotationSystem);
         engine.addSystem(updatePhysixSystem);
+        engine.addSystem(soundSystem);
     }
 
     private void addContactListeners() {

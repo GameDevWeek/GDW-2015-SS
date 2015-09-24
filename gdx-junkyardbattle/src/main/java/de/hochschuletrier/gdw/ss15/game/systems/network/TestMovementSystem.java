@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
+import de.hochschuletrier.gdw.ss15.events.SoundEvent;
 import de.hochschuletrier.gdw.ss15.events.network.client.SendPacketClientEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.Game;
@@ -50,44 +51,54 @@ public class TestMovementSystem extends IteratingSystem{
         inventory = ComponentMappers.inventory;
     }
 
-	protected void processEntity(Entity entity, float deltaTime) {
-		
-		timer.Update();
+    protected void processEntity(Entity entity, float deltaTime) {
+
+        timer.Update();
         if(timer.get_CounterMilliseconds()>100)
         {
-        	InputComponent input = ComponentMappers.input.get(entity);
-	        PositionComponent posc = ComponentMappers.position.get(entity);
-	        InventoryComponent inventory = ComponentMappers.inventory.get(entity);
-	        //System.out.println(inventory);
+            InputComponent input = ComponentMappers.input.get(entity);
+            PositionComponent posc = ComponentMappers.position.get(entity);
+            InventoryComponent inventory = ComponentMappers.inventory.get(entity);
+            //System.out.println(inventory);
             timer.StartCounter();
             if(inventory.getMetalShards()<=700 && inventory.getMetalShards()>0)
             {
-            	float invtemp = inventory.getMetalShards()/700;
-            	vectorToAdd.scl(move.get(entity).speed-move.get(entity).speed*(invtemp*0.75f));
+                float invtemp = inventory.getMetalShards()/700;
+                vectorToAdd.scl(move.get(entity).speed-move.get(entity).speed*(invtemp*0.75f));
             }
             else
             {
-        	vectorToAdd.scl(move.get(entity).speed);
+                vectorToAdd.scl(move.get(entity).speed);
             }
-	        Vector3 mousepos = camera.unproject(new Vector3(input.posX, input.posY,0));
-	        Vector2 mousepos2 = new Vector2(mousepos.x, mousepos.y);
-	        
-	        mousepos2.sub(new Vector2(posc.x,posc.y));
-	        float angle = mousepos2.angle();
-	        //System.out.println(angle);
-	
+            if (!vectorToAdd.isZero())
+            {
+                System.out.println("Sound Street Step");
+                if (ComponentMappers.soundEmitter.has(entity)) {
+
+                    SoundEvent.emit("streetSteps", entity);
+                }
+            }
+
+
+            Vector3 mousepos = camera.unproject(new Vector3(input.posX, input.posY,0));
+            Vector2 mousepos2 = new Vector2(mousepos.x, mousepos.y);
+
+            mousepos2.sub(new Vector2(posc.x,posc.y));
+            float angle = mousepos2.angle();
+            //System.out.println(angle);
+
 //	        float rotation = (float)Math.atan2(mousepos2.y - posc.y,mousepos2.x - posc.x);
-	        
-	        MovementPacket packet = new MovementPacket(vectorToAdd.x,vectorToAdd.y,angle);
-	        SendPacketClientEvent.emit(packet,false);
-	        vectorToAdd.setZero();
+
+            MovementPacket packet = new MovementPacket(vectorToAdd.x,vectorToAdd.y,angle);
+            SendPacketClientEvent.emit(packet,false);
+            vectorToAdd.setZero();
         }
-        
+
         velVector.set(input.get(entity).horizontal, input.get(entity).vertical);
         velVector.nor();
         velVector.scl(deltaTime);
         vectorToAdd.add(velVector);
-		
-	}
+
+    }
 
 }

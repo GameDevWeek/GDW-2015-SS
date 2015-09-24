@@ -1,4 +1,5 @@
 {
 	"click": "data/sounds/click.wav",
+  	"streetSteps": "data/sounds/Schrittestrasse.wav",
 	"helicopter": "data/sounds/helicopter.wav"
 }

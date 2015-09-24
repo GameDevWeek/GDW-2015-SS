@@ -6,6 +6,7 @@ import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.math.Vector2;
 
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
+import de.hochschuletrier.gdw.ss15.events.SoundEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.components.InventoryComponent;
 import de.hochschuletrier.gdw.ss15.game.components.MoveComponent;
@@ -44,10 +45,16 @@ public class MoveSystem extends IteratingSystem {
         vectorToAdd.add(input.get(e).horizontal, input.get(e).vertical);
         vectorToAdd.nor();
         vectorToAdd.scl(move.get(e).speed);
+        if (!vectorToAdd.isZero())
+        {
+            System.out.println("Sound Street Step");
+            SoundEvent.emit("streetSteps", e);
+        }
 
         physixBody.get(e).setLinearVelocity(vectorToAdd);
 
     }
+
 
     private void updateMoveVector(Entity e)
     {
