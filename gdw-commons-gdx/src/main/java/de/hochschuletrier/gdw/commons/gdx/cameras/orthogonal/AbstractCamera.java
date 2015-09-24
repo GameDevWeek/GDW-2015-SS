@@ -29,7 +29,7 @@ public abstract class AbstractCamera implements ScreenListener {
     };
 
     @Override
-    public final void resize(int width, int height) {
+    public void resize(int width, int height) {
         camera.setToOrtho(true, width, height);
     }
 

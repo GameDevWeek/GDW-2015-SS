@@ -1,8 +1,6 @@
 package de.hochschuletrier.gdw.ss15.events;
 
-import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.utils.SnapshotArray;
-import de.hochschuletrier.gdw.ss15.game.components.animation.AnimationState;
 
 public class WeaponCharging {
 
@@ -10,6 +8,7 @@ public class WeaponCharging {
         void onWeaponCharging();
     }
 
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     private static final SnapshotArray<Listener> listeners = new SnapshotArray();
 
     public static void emit() {

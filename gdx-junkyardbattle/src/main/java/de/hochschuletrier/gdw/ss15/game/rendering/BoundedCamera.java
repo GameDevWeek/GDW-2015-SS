@@ -1,9 +1,13 @@
 package de.hochschuletrier.gdw.ss15.game.rendering;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Interpolation;
 
 import de.hochschuletrier.gdw.commons.devcon.cvar.CVar;
+import de.hochschuletrier.gdw.commons.devcon.cvar.CVarBool;
 import de.hochschuletrier.gdw.commons.devcon.cvar.CVarFloat;
 import de.hochschuletrier.gdw.commons.gdx.cameras.orthogonal.SmoothCamera;
 import de.hochschuletrier.gdw.ss15.Main;
@@ -20,15 +24,17 @@ import de.hochschuletrier.gdw.ss15.Main;
 
 public class BoundedCamera extends SmoothCamera {
     
-    float xMin, yMin, xMax, yMax;
     // use setBounds to use bounding
     boolean useBounds = false;
+    float xMin, yMin, xMax, yMax;
     
-    // setting initial state
-    private boolean resetZoom = true;
+    // Viewport settings
+    boolean fixedViewport = true;
+    final int viewportX = 1920 / 2, viewportY = 1080 / 2;
 
     // Camera zoom settings
     private float srcZoom = 1.f, dstZoom = 2.f, curZoom = 1.f, zoomSpeed = 0.75f, zoomProgress = 0.f;
+    private boolean resetZoom = true;
     
     // < 1 slow follow || > 1 fast follow
     protected float followFactor = 1.f;
@@ -36,14 +42,16 @@ public class BoundedCamera extends SmoothCamera {
     private CVarFloat followFactCVAR = new CVarFloat("camFollow", followFactor, 0.1f, 20.f, 0, "sets camera following speed");
     private CVarFloat zoomSpeedCVAR = new CVarFloat("camZoomSpd", zoomSpeed, 0.1f, 5.f, 0, "sets camera zooming speed");
     private CVarFloat maxZoomOutCVAR = new CVarFloat("camZoomOut", dstZoom, 0.1f, 3.f, 0, "sets camera maxmimum zoom-out");
+    private CVarBool fixViewportCVAR = new CVarBool("camFixedVP", fixedViewport, 0, "toggle fixed viewport for camera");
     
-    //private final Logger logger = LoggerFactory.getLogger(getClass());
+    private final Logger logger = LoggerFactory.getLogger(getClass());
     
     public BoundedCamera() {
         // registering CVARs
         Main.getInstance().console.register(followFactCVAR);
         Main.getInstance().console.register(zoomSpeedCVAR);
         Main.getInstance().console.register(maxZoomOutCVAR);
+        Main.getInstance().console.register(fixViewportCVAR);
         
         // attach listeners
         followFactCVAR.addListener((CVar cvar) -> {
@@ -58,6 +66,10 @@ public class BoundedCamera extends SmoothCamera {
             dstZoom = maxZoomOutCVAR.get();
         });
         
+        fixViewportCVAR.addListener((CVar cvar) -> {
+           fixedViewport = !fixedViewport; 
+        });
+        
     }
     
     @Override
@@ -66,6 +78,7 @@ public class BoundedCamera extends SmoothCamera {
         Main.getInstance().console.unregister(followFactCVAR);
         Main.getInstance().console.unregister(zoomSpeedCVAR);
         Main.getInstance().console.unregister(maxZoomOutCVAR);
+        Main.getInstance().console.unregister(fixViewportCVAR);
     }
     
     @Override
@@ -89,7 +102,8 @@ public class BoundedCamera extends SmoothCamera {
         checkProgressBounds();
         
         // change interpolation type for camera
-        setZoom(Interpolation.pow4.apply(srcZoom, dstZoom, zoomProgress));        
+        curZoom = Interpolation.pow4.apply(srcZoom, dstZoom, zoomProgress);
+        setZoom(curZoom);        
         
         camera.update(true);
     }
@@ -150,11 +164,18 @@ public class BoundedCamera extends SmoothCamera {
         useBounds = true;
     }
 
+    public void setFixedViewport(boolean fixed){
+        fixedViewport = fixed;
+    }
+    
     @Override
-    protected void onViewportChanged(float width, float height) {
-        camera.viewportWidth *= curZoom;
-        camera.viewportHeight *= curZoom;
-        updateForced();
+    public void resize(int width, int height) {
+        logger.info("resized -> fixedViewport = {}", fixedViewport);
+        if(!fixedViewport){
+            camera.setToOrtho(true, width, height);
+        } else {
+            camera.setToOrtho(true, viewportX, viewportY);
+        }
     }
     
     public void resetBounds() {
