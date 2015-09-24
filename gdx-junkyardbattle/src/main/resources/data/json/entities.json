@@ -308,6 +308,13 @@
         "meta": {},
         "components": {
             "Position": {},
+            "PhysixBody": {
+                "type": "circle",
+                "size": 3,
+                "density": 2,
+                "friction": 0.3,
+                "restitution": 0.2
+            },
             "Texture":{
                 "texture": "junk",
                 "width": 120,
