@@ -22,6 +22,7 @@ import de.hochschuletrier.gdw.ss15.game.systems.LineOfSightSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.NetworkServerSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.PositionSynchSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.network.TestSatelliteSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.UpdatePhysixServer;
 import de.hochschuletrier.gdw.ss15.game.systems.network.UpdatePhysixSystem;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serversocket;
@@ -43,7 +44,7 @@ public class ServerGame{
     private final NetworkServerSystem networkSystem = new NetworkServerSystem(this,GameConstants.PRIORITY_PHYSIX + 2);//todo magic numbers (santo hats vorgemacht)
     private final PositionSynchSystem syncPositionSystem = new PositionSynchSystem(this,GameConstants.PRIORITY_PHYSIX + 3);//todo magic numbers (boa ist das geil kann nicht mehr aufhoeren)
     private final LineOfSightSystem lineOfSightSystem = new LineOfSightSystem(physixSystem); // hier müssen noch Team-Listen übergeben werden
-                                                                                 // (+ LineOfSightSystem-Konstruktor anpassen!)
+    private final TestSatelliteSystem testSatelliteSystem = new TestSatelliteSystem(this);                                                                            // (+ LineOfSightSystem-Konstruktor anpassen!)
 
     private final EntityFactoryParam factoryParam = new EntityFactoryParam();
     private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json", ServerGame.class);
@@ -79,6 +80,7 @@ public class ServerGame{
         engine.addSystem(updatePositionSystem);
         engine.addSystem(lineOfSightSystem);
         engine.addSystem(syncPositionSystem);
+        engine.addSystem(testSatelliteSystem);
     }
 
     private void addContactListeners() {

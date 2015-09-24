@@ -21,6 +21,7 @@ import de.hochschuletrier.gdw.ss15.game.systems.input.InputSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.NetworkClientSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.*;
 import de.hochschuletrier.gdw.ss15.game.systems.network.TestMovementSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.network.TestSatelliteSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.UpdatePhysixSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.renderers.RenderSystem;
 import de.hochschuletrier.gdw.ss15.game.utils.TimerSystem;
@@ -58,7 +59,6 @@ public class Game extends InputAdapter {
     private final UpdatePhysixSystem updatePhysixSystem = new UpdatePhysixSystem(timerSystem);
     private final InputSystem inputSystem = new InputSystem();
     private final MapLoader mapLoader = new MapLoader();
-
     public Game() {
         // If this is a build jar file, disable hotkeys
         if (!Main.IS_RELEASE) {

@@ -14,7 +14,9 @@ public enum PacketIds
     InitEntity((short)2),
     Input((short)3),
     InputEvent((short)4),
-    EntityUpdate((short)5);
+    EntityUpdate((short)5),
+    Health((short)6),
+    Damage((short)7);
 
 
     private final short m_Value;
@@ -36,5 +38,7 @@ public enum PacketIds
         PacketFactory.registerPacket(Input.getValue(), Inputpacket.class);
         PacketFactory.registerPacket(InputEvent.getValue(), InputEventPacket.class);
         PacketFactory.registerPacket(EntityUpdate.getValue(), EntityUpdatePacket.class);
+        PacketFactory.registerPacket(Health.getValue(), HealthPacket.class);
+        
     }
 }
