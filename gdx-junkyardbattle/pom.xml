@@ -92,6 +92,11 @@
             <version>1.2</version>
             <classifier>sources</classifier>
         </dependency>
+        <dependency>
+            <groupId>org.apache.maven.plugin-tools</groupId>
+            <artifactId>maven-plugin-annotations</artifactId>
+            <version>3.1</version>
+        </dependency>
     </dependencies>
     
     <build>
