@@ -93,42 +93,13 @@ public class ServerGame{
 
     private void setupPhysixWorld() {
         physixSystem.setGravity(0, 0);
-
-        /*PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody, physixSystem).position(410, 500).fixedRotation(false);
-        Body body = physixSystem.getWorld().createBody(bodyDef);
-        body.createFixture(new PhysixFixtureDef(physixSystem).density(1).friction(0.5f).shapeBox(800, 20));
-        PhysixUtil.createHollowCircle(physixSystem, 180, 180, 150, 30, 6);
-
-        createTrigger(410, 600, 3200, 40, (Entity entity) -> {
-            engine.removeEntity(entity);
-        });*/
     }
 
     public void update(float delta) {
         //Main.getInstance().screenCamera.bind();
         engine.update(delta);
-        //System.out.println("rennt");
     }
 
-    public void createTrigger(float x, float y, float width, float height, Consumer<Entity> consumer) {
-       /* Entity entity = engine.createEntity();
-        PhysixModifierComponent modifyComponent = engine.createComponent(PhysixModifierComponent.class);
-        entity.add(modifyComponent);
-
-        TriggerComponent triggerComponent = engine.createComponent(TriggerComponent.class);
-        triggerComponent.consumer = consumer;
-        entity.add(triggerComponent);
-
-        modifyComponent.schedule(() -> {
-            PhysixBodyComponent bodyComponent = engine.createComponent(PhysixBodyComponent.class);
-            PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody, physixSystem).position(x, y);
-            bodyComponent.init(bodyDef, physixSystem, entity);
-            PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem).sensor(true).shapeBox(width, height);
-            bodyComponent.createFixture(fixtureDef);
-            entity.add(bodyComponent);
-        });
-        engine.addEntity(entity);*/
-    }
 
     public Entity createEntity(String name, float x, float y)
     {

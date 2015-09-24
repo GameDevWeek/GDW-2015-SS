@@ -13,6 +13,8 @@ public class EntityUpdatePacket extends Packet {
 
     public float xPos;
     public float yPos;
+    public float velocityX;
+    public float velocityY;
     public float rotation;
     public long entityID;
 
@@ -20,11 +22,13 @@ public class EntityUpdatePacket extends Packet {
         super(PacketIds.EntityUpdate.getValue());
     }
 
-    public EntityUpdatePacket(long entityID, float xPos, float yPos, float rotation){
+    public EntityUpdatePacket(long entityID, float xPos, float yPos, float velocityX, float velocityY, float rotation){
         super(PacketIds.EntityUpdate.getValue());
         this.entityID = entityID;
         this.xPos = xPos;
         this.yPos = yPos;
+        this.velocityX = velocityX;
+        this.velocityY = velocityY;
         this.rotation = rotation;
     }
 
@@ -33,6 +37,8 @@ public class EntityUpdatePacket extends Packet {
         dataOutput.writeLong(entityID);
         dataOutput.writeFloat(xPos);
         dataOutput.writeFloat(yPos);
+        dataOutput.writeFloat(velocityX);
+        dataOutput.writeFloat(velocityY);
         dataOutput.writeFloat(rotation);
     }
 
@@ -41,11 +47,13 @@ public class EntityUpdatePacket extends Packet {
         entityID = input.readLong();
         xPos = input.readFloat();
         yPos = input.readFloat();
+        velocityX = input.readFloat();
+        velocityY = input.readFloat();
         rotation = input.readFloat();
     }
 
     @Override
     public int getSize() {
-        return ((Long.SIZE+(3*Float.SIZE))/8);
+        return ((Long.SIZE+(5*Float.SIZE))/8);
     }
 }

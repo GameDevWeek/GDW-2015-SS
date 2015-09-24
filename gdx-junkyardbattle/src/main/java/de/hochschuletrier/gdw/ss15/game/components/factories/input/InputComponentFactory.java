@@ -1,12 +1,13 @@
-package de.hochschuletrier.gdw.ss15.game.components.factories;
+package de.hochschuletrier.gdw.ss15.game.components.factories.input;
 
 import com.badlogic.ashley.core.Entity;
 import de.hochschuletrier.gdw.commons.gdx.ashley.ComponentFactory;
 import de.hochschuletrier.gdw.commons.utils.SafeProperties;
+import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
 import de.hochschuletrier.gdw.ss15.game.components.input.InputComponent;
 
 /**
- * Created by hherm on 22/09/2015.
+ * Created by Herby on 22/09/2015.
  */
 public class InputComponentFactory extends ComponentFactory<EntityFactoryParam> {
     @Override
