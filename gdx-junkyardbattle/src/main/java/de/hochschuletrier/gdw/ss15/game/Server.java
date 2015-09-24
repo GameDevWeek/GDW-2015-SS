@@ -79,6 +79,8 @@ public class Server implements Runnable
 
     public boolean start()
     {
+        //Command registrieren
+        Main.getInstance().console.register(serverCommand);
         if(isRunning.get())
         {
             logger.error("Server läuft bereits");
