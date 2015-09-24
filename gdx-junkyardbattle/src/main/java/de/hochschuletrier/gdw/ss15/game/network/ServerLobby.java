@@ -13,9 +13,7 @@ import java.util.List;
  */
 public class ServerLobby
 {
-
-
-    private static final Logger logger = LoggerFactory.getLogger(ClientConnection.class);
+    /*
     ConsoleCmd clientCommand = new ConsoleCmd("client", 0, "Connected und disconncted fom server", 1) {
         @Override
         public void execute(List<String> list){
@@ -40,6 +38,7 @@ public class ServerLobby
             }
         }
     };
+    */
 
 
     String Mapname;

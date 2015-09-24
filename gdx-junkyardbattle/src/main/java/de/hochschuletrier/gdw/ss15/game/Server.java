@@ -1,6 +1,8 @@
 package de.hochschuletrier.gdw.ss15.game;
 
+import de.hochschuletrier.gdw.commons.devcon.ConsoleCmd;
 import de.hochschuletrier.gdw.ss15.Main;
+import de.hochschuletrier.gdw.ss15.game.network.ClientConnection;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Clientsocket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serverclientsocket;
@@ -12,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
@@ -20,6 +23,43 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class Server implements Runnable
 {
+    /**
+     * Server Command
+     */
+    ConsoleCmd serverCommand = new ConsoleCmd("serverCommand", 0, "Command for Server", 1) {
+        @Override
+        public void execute(List<String> list){
+            String info = list.get(1);
+            if(info.equals("startGame")){
+                logger.info("Spiel wird gestartet.");
+                startGame();
+            }
+            else if(info.equals("stopGame")){
+                logger.info("Spiel wird gestoppt.");
+                stopGame();
+            }else if(info.equals("lobby")){
+                String info2 = list.get(2);
+                if(info2.equals("kickPlayer")){
+                    logger.info("Spieler "+list.get(3)+" wird gekickt >:)");
+                    kickPlayer(list.get(3));
+                }else if(info2.equals("changeMap")){
+                    logger.info("Map wird geaendert zu "+list.get(3));
+                    changeMap(list.get(3));
+                }else{
+                    logger.error(info2+" falscher Parameter fuer command serverCommmand lobby");
+                }
+                //lobby kickplayer changemap
+            }
+            else
+            {
+                logger.error(info+" falsches parameter für command serverCommand");
+            }
+        }
+    };
+    /**
+     * End Command
+     */
+
     private AtomicBoolean isRunning = new AtomicBoolean(false);
     Thread runThread;
 
@@ -110,4 +150,21 @@ public class Server implements Runnable
     public Serversocket getServersocket(){
         return serversocket;
     }
+
+    public void startGame(){
+
+    }
+
+    public void stopGame(){
+
+    }
+
+    public void kickPlayer(String name){
+
+    }
+
+    public void changeMap(String map){
+
+    }
+
 }
