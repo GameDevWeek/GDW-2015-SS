@@ -66,6 +66,7 @@ public class FireServerListener implements NetworkReceivedNewPacketServerEvent.L
 
 //                System.out.println("schuss server");
                 invc.addMetalShards(-1);
+                //System.out.println("projectil created");
                 Entity projectile = game.createEntity("projectile", startPosition.x, startPosition.y);
 //                if(projectile.getComponent(BulletComponent.class) != null)
 //                	System.out.println("Has bullet component");

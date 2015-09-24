@@ -114,7 +114,9 @@
                 "clientname": "clientPlayer"
             },
             "Interpolate": {},
-            "Inventory": {},
+            "Inventory": {
+                "metalShards":100
+            },
             "Move":{
             	"speed": 300,
                 "metalShards": 100
@@ -203,7 +205,9 @@
             },
             "Interpolate": {},
             "PositionSynch":{
-                "clientname": "clientProjectile"
+                "clientname": "clientProjectile",
+                "updateDuration": 10000000,
+                "sendSave": true
             }
         }
     },

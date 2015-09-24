@@ -127,9 +127,14 @@ public class PositionSynchSystem extends EntitySystem implements EntityListener 
             return;
         }
         //allen speielern neue entit mitteilen
-     
-        InitEntityPacket packet = new InitEntityPacket(ComponentMappers.positionSynch.get(entity).networkID,
+
+        //PhysixBodyComponent phcomp = ComponentMappers.physixBody.get(entity);
+
+        //System.out.println(comp.x+" "+comp.y);
+       InitEntityPacket packet = new InitEntityPacket(ComponentMappers.positionSynch.get(entity).networkID,
                 ComponentMappers.positionSynch.get(entity).clientName, comp.x, comp.y, comp.rotation,0,0);
+     //   InitEntityPacket packet = new InitEntityPacket(ComponentMappers.positionSynch.get(entity).networkID,
+     //           ComponentMappers.positionSynch.get(entity).clientName, comp.x, comp.y, comp.rotation,phcomp.getLinearVelocity().x,phcomp.getLinearVelocity().y);
         SendPacketServerEvent.emit(packet, true, exept);
     }
 
