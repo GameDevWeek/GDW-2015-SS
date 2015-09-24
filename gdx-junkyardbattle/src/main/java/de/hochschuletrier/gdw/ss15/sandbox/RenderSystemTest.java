@@ -95,7 +95,7 @@ public class RenderSystemTest extends SandboxGame {
         entityFactory.init(engine, assetManager);
         mapLoader.listen(renderSystem.getTileMapCreator());
         mapLoader.run((String name, float x, float y) -> createEntity(name, x, y), 
-                "data/maps/prototype.tmx", physixSystem,entityFactory,assetManager);
+                "data/maps/prototypeV2.tmx", physixSystem,entityFactory,assetManager);
 
         map = mapLoader.getTiledMap();
         
@@ -121,7 +121,7 @@ public class RenderSystemTest extends SandboxGame {
         
         modifyComponent.schedule(() -> {
             playerBody = engine.createComponent(PhysixBodyComponent.class);
-            PhysixBodyDef bodyDef = new PhysixBodyDef(BodyType.DynamicBody, physixSystem).position(100, 100).fixedRotation(true);
+            PhysixBodyDef bodyDef = new PhysixBodyDef(BodyType.DynamicBody, physixSystem).position(500, 500).fixedRotation(true);
             playerBody.init(bodyDef, physixSystem, player);
             PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem).density(5).friction(0.2f).restitution(0.4f).shapeCircle(30);
             playerBody.createFixture(fixtureDef);
