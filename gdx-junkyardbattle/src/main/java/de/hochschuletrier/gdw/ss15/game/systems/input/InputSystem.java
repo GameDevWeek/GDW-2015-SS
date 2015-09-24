@@ -77,6 +77,8 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
                 input.posX = posX;
                 input.posY = posY;
             }
+            System.out.println("X: " + input.posX + ", y: "+ input.posY + ", radius: " + radius);
+            System.out.println("X: " + position.x + ", Y: " + position.y + ", radius: " + radius);
         }
     }
 
@@ -277,7 +279,6 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
                 break;
             case XBox360KeyMap.R1Y:
                     r1Vertical = value;
-
                 break;
         }
         winkel = Math.atan2(r1Vertical,r1Horizontal);
