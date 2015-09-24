@@ -55,7 +55,7 @@ public class Game extends InputAdapter {
     private final TimerSystem timerSystem = new TimerSystem();
     private final WeaponSystem weaponSystem = new WeaponSystem();
     private final UpdatePhysixSystem updatePhysixSystem = new UpdatePhysixSystem(timerSystem);
-    private final InputSystem inputSystem = new InputSystem();
+    private final InputSystem inputSystem = new InputSystem(0,cameraSystem.getCamera().getOrthographicCamera());
     private final MapLoader mapLoader = new MapLoader();
 
     public Game() {
