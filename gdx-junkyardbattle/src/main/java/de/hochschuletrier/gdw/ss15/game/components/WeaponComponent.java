@@ -10,7 +10,7 @@ public class WeaponComponent extends Component implements Pool.Poolable {
 
     public final float  maximumFireTime = 3f;
     public final float  maximumScattering = (float)Math.PI * 0.5f;
-    public final int    maximumShardsPerShot = 7;
+    public final int    maximumShardsPerShot = 5;
 
     public float fireChannelTime = 0.0f;
     public float harvestChannelTime = 0.0f;
