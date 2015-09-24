@@ -21,6 +21,11 @@ import de.hochschuletrier.gdw.ss15.game.contactlisteners.TriggerListener;
 import de.hochschuletrier.gdw.ss15.game.systems.BulletSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.LineOfSightSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.network.NetworkServerSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.network.PositionSynchSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.network.TestSatelliteSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.network.UpdatePhysixServer;
+import de.hochschuletrier.gdw.ss15.game.systems.network.UpdatePhysixSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.*;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serversocket;
 
@@ -41,8 +46,9 @@ public class ServerGame{
     private final NetworkServerSystem networkSystem = new NetworkServerSystem(this,GameConstants.PRIORITY_PHYSIX + 2);//todo magic numbers (santo hats vorgemacht)
     private final PositionSynchSystem syncPositionSystem = new PositionSynchSystem(this,GameConstants.PRIORITY_PHYSIX + 3);//todo magic numbers (boa ist das geil kann nicht mehr aufhoeren)
     private final LineOfSightSystem lineOfSightSystem = new LineOfSightSystem(physixSystem); // hier müssen noch Team-Listen übergeben werden
+    private final TestSatelliteSystem testSatelliteSystem = new TestSatelliteSystem(this); 
                                                                                  // (+ LineOfSightSystem-Konstruktor anpassen!)
-    private final BulletSystem bulletSystem = new BulletSystem();
+    private final BulletSystem bulletSystem = new BulletSystem();   
 
     private final EntityFactoryParam factoryParam = new EntityFactoryParam();
     private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json", ServerGame.class);
@@ -69,6 +75,7 @@ public class ServerGame{
 
         new UpdatePhysixServer(); // magic → registers itself as listener for network packets
         new FireServerListener(entityFactory); // ↑
+        new GatherServerListener(physixSystem);
 
         mapLoader.run( ( String name, float x, float y ) -> { return this.createEntity(name,  x, y); }, "data/maps/3v3Alpha.tmx",physixSystem,entityFactory,assetManager );
     }
@@ -79,6 +86,7 @@ public class ServerGame{
         engine.addSystem(updatePositionSystem);
         engine.addSystem(lineOfSightSystem);
         engine.addSystem(syncPositionSystem);
+        engine.addSystem(testSatelliteSystem);
         engine.addSystem(bulletSystem);
     }
 
