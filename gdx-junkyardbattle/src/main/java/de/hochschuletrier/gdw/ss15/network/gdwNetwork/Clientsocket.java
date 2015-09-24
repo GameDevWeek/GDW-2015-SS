@@ -246,7 +246,7 @@ public class Clientsocket extends BaseClient implements Closeable
 							
 							m_ReliablePackethandler = new ReliablePackethandler(10*m_LatenzValue, m_Sockets[Sockettypes.SaveSocket.getValue()]);
 							
-							m_Connected.set(true);;
+							m_Connected.set(true);
 							m_ThreadPool.execute(()->RunReceiveSave());
 							m_ThreadPool.execute(()->RunReceiveUnsave());
 							

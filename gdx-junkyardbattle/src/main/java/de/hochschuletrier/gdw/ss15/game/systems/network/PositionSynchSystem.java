@@ -47,11 +47,12 @@ public class PositionSynchSystem extends EntitySystem implements EntityListener 
             if(ComponentMappers.position.has(ent))
             {
                 PositionComponent pos = ComponentMappers.position.get(ent);
-                //System.out.println("New movment gecoginced: x"+pos.x+ " y"+pos.y);
+//                System.out.println("New movment gecoginced: x"+pos.x+ " y"+pos.y);
+               // System.out.println("New rotation: "+pos.rotation);
                 if(pos.x != comp.lastX || pos.y != comp.lastY || pos.rotation != comp.lastRot)
                 {
                     comp.lastSendTimer.Update();
-                    if(comp.lastSendTimer.get_CounterMilliseconds()>200)
+                    if(comp.lastSendTimer.get_CounterMilliseconds()>42)
                     {
                         comp.lastSendTimer.StartCounter();
                         comp.lastX=pos.x;
@@ -104,6 +105,7 @@ public class PositionSynchSystem extends EntitySystem implements EntityListener 
                     //System.out.println("Send other player to client");
                     initPacket.name = sendComp.clientName;
                 }
+                //System.out.println();
                 client.sendPacketSave(initPacket,true);
             }
 

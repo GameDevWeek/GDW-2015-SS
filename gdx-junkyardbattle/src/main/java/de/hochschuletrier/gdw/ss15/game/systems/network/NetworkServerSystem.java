@@ -3,6 +3,8 @@ package de.hochschuletrier.gdw.ss15.game.systems.network;
 import com.badlogic.ashley.core.*;
 
 import com.badlogic.ashley.utils.ImmutableArray;
+import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
+import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixModifierComponent;
 import de.hochschuletrier.gdw.ss15.events.network.server.NetworkReceivedNewPacketServerEvent;
 import de.hochschuletrier.gdw.ss15.events.network.server.SendPacketServerEvent;
 import de.hochschuletrier.gdw.ss15.game.ServerGame;
@@ -58,7 +60,7 @@ public class NetworkServerSystem extends EntitySystem implements SendPacketServe
     public void update(float deltaTime) {
         //System.out.println("jfsdklfjsdaöklfjsdöklf rennt");
         while (serverSocket.isNewClientAvaliable()) {
-            game.createEntity("player", 0, 0);
+            Entity e = game.createEntity("player", 200, 200);
         }
 
         LinkedList<Entity> toDelete = new LinkedList<>();
@@ -78,7 +80,7 @@ public class NetworkServerSystem extends EntitySystem implements SendPacketServe
             }
         }
 
-        while(!toDelete.isEmpty())
+        while (!toDelete.isEmpty())
         {
             System.out.println("Client lost connection");
             game.get_Engine().removeEntity(toDelete.poll());
@@ -89,16 +91,18 @@ public class NetworkServerSystem extends EntitySystem implements SendPacketServe
     {
         //System.out.println("Received packet server");
         NetworkReceivedNewPacketServerEvent.emit(pack,ent);
-        if(pack.getPacketId() == PacketIds.Movement.getValue())
+        
+        if(pack.getPacketId()==PacketIds.Movement.getValue())
         {
-            //System.out.println("Received position update");
-            MovementPacket ePacket = (MovementPacket)pack;
-            PositionComponent posComp = ComponentMappers.position.get(ent);
-            //System.out.println("Received position: "+ePacket.xPos+" "+ePacket.yPos);
-            posComp.x+=ePacket.xPos;
-            posComp.y+=ePacket.yPos;
-            posComp.rotation=ePacket.rotation;
+        	
+        	//MovementPacket mPacket = (MovementPacket) pack;
+        	//PhysixBodyComponent comp = ComponentMappers.physixBody.get(ent);
+        	//comp.setPosition(mPacket.xPos, mPacket.yPos);
+        	//comp.setLinearVelocity(mPacket.xPos, mPacket.yPos);
+        	//comp.setAngle(mPacket.rotation);
+        	//System.out.println(mPacket.rotation);
         }
+        
     }
 
 

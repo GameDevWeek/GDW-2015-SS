@@ -5,6 +5,7 @@ package de.hochschuletrier.gdw.ss15.game.network;
  */
 
 import de.hochschuletrier.gdw.ss15.game.network.Packets.*;
+import de.hochschuletrier.gdw.ss15.game.network.Packets.Menu.*;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.PacketFactory;
 
 public enum PacketIds
@@ -14,7 +15,9 @@ public enum PacketIds
     InitEntity((short)2),
     Input((short)3),
     InputEvent((short)4),
-    EntityUpdate((short)5);
+    EntityUpdate((short)5),
+    MenuInfo((short)7),
+    ChangeName((short)9);
 
 
     private final short m_Value;
@@ -36,5 +39,7 @@ public enum PacketIds
         PacketFactory.registerPacket(Input.getValue(), Inputpacket.class);
         PacketFactory.registerPacket(InputEvent.getValue(), InputEventPacket.class);
         PacketFactory.registerPacket(EntityUpdate.getValue(), EntityUpdatePacket.class);
+        PacketFactory.registerPacket(MenuInfo.getValue(), MenuePlayerChangedPacket.class);
+        PacketFactory.registerPacket(ChangeName.getValue(), ChangeNamePacket.class);
     }
 }

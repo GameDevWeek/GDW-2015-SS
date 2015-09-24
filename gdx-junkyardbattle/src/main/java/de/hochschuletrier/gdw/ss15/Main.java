@@ -12,6 +12,7 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import de.hochschuletrier.gdw.commons.devcon.ConsoleCmd;
 import de.hochschuletrier.gdw.commons.devcon.DevConsole;
@@ -108,6 +109,7 @@ public class Main extends StateBasedGame {
     private void loadAssetLists() {
         TextureParameter param = new TextureParameter();
         param.minFilter = param.magFilter = Texture.TextureFilter.Linear;
+        param.genMipMaps = true;
 
         assetManager.loadAssetList("data/json/images.json", Texture.class, param);
         assetManager.loadAssetList("data/json/sounds.json", Sound.class, null);
@@ -117,6 +119,7 @@ public class Main extends StateBasedGame {
         BitmapFontParameter fontParam = new BitmapFontParameter();
         fontParam.flip = true;
         assetManager.loadAssetList("data/json/fonts.json", BitmapFont.class, fontParam);
+        assetManager.loadAssetList("data/json/particles.json", ParticleEffect.class, null);
     }
 
     private void setupGdx() {
@@ -151,13 +154,6 @@ public class Main extends StateBasedGame {
 
         this.console.register(emitterMode);
         emitterMode.addListener(this::onEmitterModeChanged);
-
-
-        if(m_StartServerByGameStart) {
-            server = new Server();
-            server.start();
-            logger.info("Server wurde gestartet");
-        }
     }
 
     private void onLoadComplete() {
@@ -171,6 +167,11 @@ public class Main extends StateBasedGame {
         }
 
         Main.getInstance().console.register(serverCommand);
+        if(m_StartServerByGameStart) {
+            server = new Server();
+            server.start();
+            logger.info("Server wurde gestartet");
+        }
     }
 
     @Override

@@ -3,6 +3,7 @@ package de.hochschuletrier.gdw.ss15.game.systems.network;
 import com.badlogic.ashley.core.*;
 import com.badlogic.ashley.utils.ImmutableArray;
 import de.hochschuletrier.gdw.ss15.Main;
+import de.hochschuletrier.gdw.ss15.events.network.Base.DoNotTouchPacketEvent;
 import de.hochschuletrier.gdw.ss15.events.network.NetworkPositionEvent;
 import de.hochschuletrier.gdw.ss15.events.network.client.NetworkReceivedNewPacketClientEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
@@ -20,12 +21,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 
 /**
  * Created by lukas on 21.09.15.
  */
 
-public class NetworkClientSystem extends EntitySystem implements EntityListener {
+public class NetworkClientSystem extends EntitySystem implements EntityListener, DoNotTouchPacketEvent.Listener {
 
 
     private static final TestListenerClient testlistener = new TestListenerClient();
@@ -34,6 +36,8 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener 
     private HashMap<Long, Entity> hashMap = new HashMap();
     private ImmutableArray<Entity> entities;
     private Family family;
+
+    private LinkedList<Packet> packetBuffer = new LinkedList<>();
 
     Game game = null;
     ClientConnection connection = Main.getInstance().getClientConnection();
@@ -60,25 +64,18 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener 
     {
         //TODO check all input components
 
-        Clientsocket socket = connection.getSocket();
-        if(socket != null)
-        {
-            while(socket.isPacketAvaliable())
-            {
-                //System.out.println("Received packet");
-                ReceivedPacket(socket.getReceivedPacket());
-            }
+        while(!packetBuffer.isEmpty()){
+            ReceivedPacket(packetBuffer.removeFirst());
         }
     }
 
     private void ReceivedPacket(Packet pack)
     {
-        NetworkReceivedNewPacketClientEvent.emit(pack);
         //System.out.println("received packet");
         if(pack.getPacketId()== PacketIds.InitEntity.getValue())
         {
             InitEntityPacket iPacket = (InitEntityPacket) pack;
-            //logger.info("Spawned entitiy with name: "+iPacket.name);
+            logger.info("Spawned entitiy with name: "+iPacket.name);
 
 
             lastAddedEntityID = iPacket.entityID;
@@ -87,23 +84,22 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener 
             ComponentMappers.position.get(ent).x = iPacket.xPos;
             ComponentMappers.position.get(ent).y = iPacket.yPos;
             ComponentMappers.position.get(ent).rotation = iPacket.rotation;
+
+
+            NetworkReceivedNewPacketClientEvent.emit(pack,ent);
         }
         else if(pack.getPacketId() == PacketIds.EntityUpdate.getValue())
         {//positino update packet
-            //System.out.print("update packet received");
-            if(pack.getTimestamp()>lastNetworkTimestamp)
-            {//synccompoent
-                lastNetworkTimestamp = pack.getTimestamp();
-                EntityUpdatePacket ePacket = (EntityUpdatePacket) pack;
+            //System.out.println("update packet received");
+            EntityUpdatePacket euPacket = (EntityUpdatePacket) pack;
+            Entity ent = hashMap.get(euPacket.entityID);
+            if(ent!=null)
+            {
+                //System.out.println("Old postion: "+ComponentMappers.physixBody.get(ent).getPosition());
 
-                Entity ent = hashMap.get(ePacket.entityID);
-                if(ent!=null) {
-                    NetworkPositionEvent.emit(ent, ePacket.xPos, ePacket.yPos, ePacket.rotation, false);
+                NetworkReceivedNewPacketClientEvent.emit(pack, ent);
 
-                    ComponentMappers.position.get(ent).x = ePacket.xPos;
-                    ComponentMappers.position.get(ent).y = ePacket.yPos;
-                    ComponentMappers.position.get(ent).rotation = ePacket.rotation;
-                }
+                //System.out.println("new postion: "+ComponentMappers.physixBody.get(ent).getPosition());
             }
         }
         else if(pack.getPacketId()==PacketIds.Simple.getValue())
@@ -114,10 +110,15 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener 
                 Entity ent = hashMap.get(sPacket.m_Moredata);
                 if(ent!=null) {
                     //entety deleted
+                    NetworkReceivedNewPacketClientEvent.emit(pack,ent);
                     hashMap.remove(sPacket.m_Moredata);
                     game.getEngine().removeEntity(ent);
                 }
             }
+        }
+        else
+        {
+            NetworkReceivedNewPacketClientEvent.emit(pack,null);
         }
     }
 
@@ -129,11 +130,13 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener 
     @Override
     public void addedToEngine(Engine engine){
         engine.addEntityListener(family, this);
+        DoNotTouchPacketEvent.registerListener(this);
     }
 
     @Override
     public void removedFromEngine(Engine engine){
         engine.removeEntityListener(this);
+        DoNotTouchPacketEvent.unregisterListener(this);
     }
 
     @Override
@@ -146,6 +149,11 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener 
     @Override
     public void entityRemoved(Entity entity) {
         hashMap.remove(ComponentMappers.networkID.get(entity).networkID);
+    }
+
+    @Override
+    public void onDoNotTouchPacket(Packet pack) {
+        packetBuffer.addLast(pack);
     }
 }
 

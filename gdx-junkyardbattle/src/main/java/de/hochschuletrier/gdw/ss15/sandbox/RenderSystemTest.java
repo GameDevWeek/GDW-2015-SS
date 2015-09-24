@@ -5,13 +5,15 @@ import java.util.HashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import box2dLight.RayHandler;
-
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -24,15 +26,9 @@ import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixModifierComponent;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixDebugRenderSystem;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
-import de.hochschuletrier.gdw.commons.gdx.tiled.TiledMapRendererGdx;
-import de.hochschuletrier.gdw.commons.resourcelocator.CurrentResourceLocator;
-import de.hochschuletrier.gdw.commons.tiled.Layer;
 import de.hochschuletrier.gdw.commons.tiled.LayerObject;
-import de.hochschuletrier.gdw.commons.tiled.TileInfo;
 import de.hochschuletrier.gdw.commons.tiled.TileSet;
 import de.hochschuletrier.gdw.commons.tiled.TiledMap;
-import de.hochschuletrier.gdw.commons.tiled.tmx.TmxImage;
-import de.hochschuletrier.gdw.commons.tiled.utils.RectangleGenerator;
 import de.hochschuletrier.gdw.commons.utils.Rectangle;
 import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
@@ -41,8 +37,10 @@ import de.hochschuletrier.gdw.ss15.game.GameConstants;
 import de.hochschuletrier.gdw.ss15.game.MapLoader;
 import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
+import de.hochschuletrier.gdw.ss15.game.components.effects.ParticleEffectComponent;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
-import de.hochschuletrier.gdw.ss15.game.rendering.TileMapCreator;
+import de.hochschuletrier.gdw.ss15.game.components.light.ConeLightComponent;
+import de.hochschuletrier.gdw.ss15.game.components.light.PointLightComponent;
 import de.hochschuletrier.gdw.ss15.game.systems.CameraSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.renderers.RenderSystem;
@@ -71,7 +69,7 @@ public class RenderSystemTest extends SandboxGame {
     private final PhysixDebugRenderSystem physixDebugRenderSystem = new PhysixDebugRenderSystem(GameConstants.PRIORITY_DEBUG_WORLD);
     private final CameraSystem cameraSystem = new CameraSystem();
     private final RenderSystem renderSystem = new RenderSystem(physixSystem,
-            cameraSystem.getCamera().getOrthographicCamera());
+            cameraSystem.getCamera().getOrthographicCamera(), engine);
     private final UpdatePositionSystem updatePosSystem = new UpdatePositionSystem();
     private float totalMapWidth, totalMapHeight;
 
@@ -83,6 +81,8 @@ public class RenderSystemTest extends SandboxGame {
     private final EntityFactoryParam factoryParam = new EntityFactoryParam();
     private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json", Game.class);
     
+    private Entity player;
+    
     public RenderSystemTest() {
         engine.addSystem(physixSystem);
         engine.addSystem(physixDebugRenderSystem);
@@ -93,15 +93,16 @@ public class RenderSystemTest extends SandboxGame {
 
     @Override
     public void init(AssetManagerX assetManager) {
+        entityFactory.init(engine, assetManager);
         mapLoader.listen(renderSystem.getTileMapCreator());
         mapLoader.run((String name, float x, float y) -> createEntity(name, x, y), 
-                "data/maps/demo.tmx", physixSystem);
+                "data/maps/prototype.tmx", physixSystem);
 
         map = mapLoader.getTiledMap();
-        entityFactory.init(engine, assetManager);
+        
 
         // create a simple player ball
-        Entity player = engine.createEntity();
+        player = engine.createEntity();
         PhysixModifierComponent modifyComponent = engine.createComponent(PhysixModifierComponent.class);
         player.add(modifyComponent);
 
@@ -109,6 +110,14 @@ public class RenderSystemTest extends SandboxGame {
         player.add(posComponent);
         
         player.add(engine.createComponent(PlayerComponent.class));
+        PointLightComponent pointLightComponent = engine.createComponent(PointLightComponent.class);
+        pointLightComponent.set(new Color(1, 0, 0, 0.7f), 10.f);
+        
+        ConeLightComponent coneLightComponent = engine.createComponent(ConeLightComponent.class);
+        coneLightComponent.set(Color.WHITE, 10.f, 0.f, 30.f);
+        player.add(coneLightComponent);
+        player.add(pointLightComponent);
+        
         ComponentMappers.player.get(player).isLocalPlayer = true;
         
         modifyComponent.schedule(() -> {
@@ -191,6 +200,33 @@ public class RenderSystemTest extends SandboxGame {
             }
 
             playerBody.setLinearVelocity(velX, velY);
+            
+            float mouseX = Gdx.input.getX();
+            float mouseY = Gdx.input.getY();
+            
+            Ray ray = cameraSystem.getCamera().getOrthographicCamera().getPickRay(mouseX, mouseY);
+            PositionComponent posComp = ComponentMappers.position.get(player);
+            //cameraSystem.getCamera().getOrthographicCamera()
+            Vector3 target = new Vector3(mouseX, mouseY, 0.f);
+            target.mul(cameraSystem.getCamera().getOrthographicCamera().combined);
+            
+            target.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+            cameraSystem.getCamera().getOrthographicCamera().unproject(target);
+            
+            float angle = getAngle(posComp.x, posComp.y, target.x, target.y);
+            ConeLightComponent coneLightComp = ComponentMappers.coneLight.get(player);
+            
+            coneLightComp.coneLight.setDirection(angle);
         }
+    }
+    
+    public float getAngle(float srcX, float srcY, float targetX, float targetY) {
+        float angle = (float) Math.toDegrees(Math.atan2(targetY - srcY, targetX - srcX));
+
+        if(angle < 0){
+            angle += 360;
+        }
+
+        return angle;
     }
 }

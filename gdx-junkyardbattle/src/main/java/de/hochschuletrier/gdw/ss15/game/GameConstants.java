@@ -4,6 +4,8 @@ public class GameConstants {
 
     // Priorities for entity systems
     public static final int PRIORITY_PHYSIX = 0;
+    public static final int PRIORITY_UPDATE_PHYSIX = 5;
+    public static final int PRIORITY_UPDATE_POSITION = 6;
     public static final int PRIORITY_ENTITIES = 10;
     public static final int PRIORITY_ANIMATIONS = 20;
     public static final int PRIORITY_RENDER_SYSTEM = 29;
@@ -35,10 +37,11 @@ public class GameConstants {
 
     // PlayerParameters
     public static final int START_HEALTH = 100;
-    public static final int MAX_METALSHARDS = 100;
+    public static final int MAX_METALSHARDS = 700;
+    public static final int MIN_METALSHARDS = 0;
     public static final float START_X_POSITION = 0;
     public static final float START_Y_POSITION = 0;
     public static final float DYING_TIMER = 1000;
     public static final float DEATH_TIMER = 30000;
-    public static final float SPAWNING_DURATION = 3000;
+    public static final float SPAWNING_DURATION = 4000;
 }

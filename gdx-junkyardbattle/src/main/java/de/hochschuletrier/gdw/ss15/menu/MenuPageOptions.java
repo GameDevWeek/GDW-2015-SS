@@ -52,15 +52,15 @@ public class MenuPageOptions extends MenuPage {
 		//Skin für die Optionsseite wird übergeben
 		super(skin, "menu_bg");
 
-        addPageEntry(menuManager, 0, 500 , "Spiel beitreten", new MenuPageEnterIP(skin,menuManager,"menu_bg"));
+        
 		imageMinus.setWidth(20);
 		imageMinus.addListener(plusClicked);
 		imagePlus.setHeight(20);
 		imagePlus.addListener(minusClicked);
 		
-		hg.add(imageMinus);
-		hg.add(bar);
-		hg.add(imagePlus);
+		//hg.add(imageMinus);
+	//	hg.add(bar);
+		//hg.add(imagePlus);
 		
 		addHorizontalGroupe(hg, 380, 245);
 		bar.setY(380);
