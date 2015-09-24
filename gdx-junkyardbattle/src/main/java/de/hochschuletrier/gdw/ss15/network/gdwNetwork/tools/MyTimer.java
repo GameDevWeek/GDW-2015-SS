@@ -73,6 +73,10 @@ public class MyTimer
 	{
 		return (double)m_CountTime/1000000;
 	}
+	public double get_CounterSeconds()
+	{
+		return (double)m_CountTime/1000000000;
+	}
 	
 	public boolean IsCounting()
 	{
