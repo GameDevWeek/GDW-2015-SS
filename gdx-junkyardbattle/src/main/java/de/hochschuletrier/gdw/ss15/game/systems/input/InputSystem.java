@@ -83,8 +83,6 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
                 input.posX = posX;
                 input.posY = posY;
             }
-            System.out.println("X: " + input.posX + ", y: "+ input.posY + ", radius: " + radius);
-            System.out.println("X: " + position.x + ", Y: " + position.y + ", radius: " + radius);
         }
     }
 
