@@ -18,33 +18,6 @@ public class ServerLobby
 {
 
 
-    private static final Logger logger = LoggerFactory.getLogger(ClientConnection.class);
-    ConsoleCmd clientCommand = new ConsoleCmd("client", 0, "Connected und disconncted fom server", 1) {
-        @Override
-        public void execute(List<String> list){
-            String info = list.get(1);
-            if(info.equals("connect"))
-            {
-                if(list.size()>2){//zusätzlich ip
-                    logger.info("Try to connection to "+list.get(2));
-                    connect(list.get(2),12345);
-                }
-                else {logger.info("Try to connection to localhost");
-                    connect("localhost", 12345);
-                }
-            }
-            else if(info.equals("disconnect"))
-            {
-                disconnect();
-            }
-            else
-            {
-                logger.error(info+" falsches parameter für command client");
-            }
-        }
-    };
-
-
     String Mapname;
     private int MaximumPlayers = 10000;
     private float SecondsToStart = 60;
