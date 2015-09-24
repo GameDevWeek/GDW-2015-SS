@@ -39,7 +39,7 @@ public enum PacketIds
         PacketFactory.registerPacket(Input.getValue(), Inputpacket.class);
         PacketFactory.registerPacket(InputEvent.getValue(), InputEventPacket.class);
         PacketFactory.registerPacket(EntityUpdate.getValue(), EntityUpdatePacket.class);
-        PacketFactory.registerPacket(MenuInfo.getValue(), MenuePlayerChangedPacket.class);
+        PacketFactory.registerPacket(MenuInfo.getValue(), MenuInfoPacket.class);
         PacketFactory.registerPacket(ChangeName.getValue(), ChangeNamePacket.class);
     }
 }

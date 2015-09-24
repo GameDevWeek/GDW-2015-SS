@@ -1,12 +1,9 @@
 package de.hochschuletrier.gdw.ss15.game;
 
-import com.badlogic.gdx.backends.lwjgl.LwjglNativesLoader;
 import de.hochschuletrier.gdw.commons.devcon.ConsoleCmd;
 import de.hochschuletrier.gdw.ss15.Main;
-import de.hochschuletrier.gdw.ss15.game.network.LobyClient;
 import de.hochschuletrier.gdw.ss15.game.network.ClientConnection;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
-import de.hochschuletrier.gdw.ss15.game.network.ServerLobby;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Clientsocket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serverclientsocket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serversocket;
@@ -71,7 +68,6 @@ public class Server implements Runnable
     private static final Logger logger = LoggerFactory.getLogger(Server.class);
 
     ServerGame runningGame = null;
-    ServerLobby lobby = null;
     MyTimer timer = new MyTimer();
 
     LinkedList<Clientsocket> clientSockets = new LinkedList<>();
@@ -83,6 +79,8 @@ public class Server implements Runnable
 
     public boolean start()
     {
+        //Command registrieren
+        Main.getInstance().console.register(serverCommand);
         if(isRunning.get())
         {
             logger.error("Server läuft bereits");
@@ -93,8 +91,8 @@ public class Server implements Runnable
             logger.error("Ports konnten nicht gebunden werden. Läuft bereits ?");
             return false;
         }
-        lobby = new ServerLobby();
-        lobby.init();
+        //runningGame = new ServerGame();
+       // runningGame.init(Main.getInstance().getAssetManager());
         isRunning.set(true);
         runThread = new Thread(this);
         runThread.start();
@@ -128,15 +126,7 @@ public class Server implements Runnable
         {
             Tools.Sleep(10);
             timer.Update();
-
-            if(lobby!=null)
-            {
-                lobby.update((float) timer.get_FrameSeconds());
-            }
-            else
-            {
-                runningGame.update((float) timer.get_FrameSeconds());
-            }
+            runningGame.update((float)timer.get_FrameSeconds());
             //runningGame.update(0);
             //System.out.println("runn");
             //engine.update();
@@ -148,21 +138,10 @@ public class Server implements Runnable
                     Serverclientsocket sockret = serversocket.getNewClient();
                     if(runningGame != null)
                     {
-                        sockret.sendPacket(new SimplePacket(SimplePacket.SimplePacketId.ConnectInitPacket.getValue(),-1));
+                        SimplePacket packet = new SimplePacket(SimplePacket.SimplePacketId.ConnectInitPacket.getValue(),-1);
+                    }
 
-                    }
-                    else if(lobby == null)
-                    {
-                        sockret.sendPacket(new SimplePacket(SimplePacket.SimplePacketId.ConnectInitPacket.getValue(),-2));
-                    }
-                    else if(!lobby.InserNewPlayer(sockret))
-                    {
-                        sockret.sendPacket(new SimplePacket(SimplePacket.SimplePacketId.ConnectInitPacket.getValue(),-3));
-                    }
-                    else
-                    {
-                        sockret.sendPacket(new SimplePacket(SimplePacket.SimplePacketId.ConnectInitPacket.getValue(),1));
-                    }
+
                 }
             }
 

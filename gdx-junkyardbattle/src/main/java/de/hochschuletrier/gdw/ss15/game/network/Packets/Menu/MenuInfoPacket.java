@@ -10,34 +10,34 @@ import java.io.IOException;
 /**
  * Created by hherm on 24/09/2015.
  */
-public class MenuePlayerChangedPacket extends Packet {
+public class MenuInfoPacket extends Packet {
 
-    public int id;
-    public boolean team;
+    public int happening;
+    public long bla;
     public String name;
 
-    public MenuePlayerChangedPacket(){
+    public MenuInfoPacket(){
         super(PacketIds.MenuInfo.getValue());
     }
 
-    public MenuePlayerChangedPacket(int id, boolean team, String name){
+    public MenuInfoPacket(int happening, long bla, String name){
         super(PacketIds.MenuInfo.getValue());
-        this.team = team;
-        this.id = id;
+        this.happening = happening;
+        this.bla = bla;
         this.name = name;
     }
 
     @Override
     protected void pack(DataOutputStream dataOutput) throws IOException {
-        dataOutput.writeInt(id);
-        dataOutput.writeBoolean(team);
+        dataOutput.writeInt(happening);
+        dataOutput.writeLong(bla);
         dataOutput.writeChars(name);
     }
 
     @Override
     protected void unpack(DataInputStream input) throws IOException {
-        id = input.readInt();
-        team = input.readBoolean();
+        happening = input.readInt();
+        bla = input.readLong();
 
         StringBuffer buffer = new StringBuffer();
         while(input.available() > 1){
