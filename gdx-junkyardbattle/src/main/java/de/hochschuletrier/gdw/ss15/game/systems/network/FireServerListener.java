@@ -6,6 +6,7 @@ import de.hochschuletrier.gdw.commons.gdx.ashley.EntityFactory;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.ss15.events.network.server.NetworkReceivedNewPacketServerEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
+import de.hochschuletrier.gdw.ss15.game.components.InventoryComponent;
 import de.hochschuletrier.gdw.ss15.game.components.WeaponComponent;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
 import de.hochschuletrier.gdw.ss15.game.network.PacketIds;
@@ -29,14 +30,15 @@ public class FireServerListener implements NetworkReceivedNewPacketServerEvent.L
     @Override
     public void onReceivedNewPacket(Packet pack, Entity ent) {
         PhysixBodyComponent phxc = ComponentMappers.physixBody.get(ent);
+        InventoryComponent invc = ComponentMappers.inventory.get(ent);
         try{
             FirePacket packet = (FirePacket)pack;
-
 
             float p = packet.channeltime / WeaponComponent.maximumFireTime + 0.0001f;
             float scatter = WeaponComponent.maximumScattering / p;
             Vector2 dir = Vector2.Zero;
             for (int i = 0; i < WeaponComponent.ShardsPerShot / p; ++i) {
+                if(invc.getMetalShards() <= 0) return;
 
                 dir.set((float) Math.cos((Math.random() - 0.5f) * scatter),
                         (float) Math.sin((Math.random() - 0.5f) * scatter));
@@ -50,6 +52,8 @@ public class FireServerListener implements NetworkReceivedNewPacketServerEvent.L
                 Vector2 startPosition = ent.getComponent(PhysixBodyComponent.class).getBody().getPosition().add(dir.setLength(projectPlayerDistance));
                 param.x = startPosition.x;
                 param.y = startPosition.y;
+
+                invc.addMetalShards(-1);
                 Entity projectile = factory.createEntity("Projectile", param);
                 projectile.getComponent(PhysixBodyComponent.class).applyImpulse(dir.setLength(power));
             }

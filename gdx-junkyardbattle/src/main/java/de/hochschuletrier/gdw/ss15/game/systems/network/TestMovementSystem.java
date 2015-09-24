@@ -61,9 +61,9 @@ public class TestMovementSystem extends IteratingSystem{
 	        InventoryComponent inventory = ComponentMappers.inventory.get(entity);
 	        //System.out.println(inventory);
             timer.StartCounter();
-            if(inventory.metalShards<= GameConstants.MAX_METALSHARDS && inventory.metalShards>0)
+            if(inventory.getMetalShards()<= GameConstants.MAX_METALSHARDS && inventory.getMetalShards()>0)
             {
-                float invtemp = inventory.metalShards/GameConstants.MAX_METALSHARDS;
+                float invtemp = inventory.getMetalShards()/GameConstants.MAX_METALSHARDS;
                 vectorToAdd.scl(move.get(entity).speed-move.get(entity).speed*(invtemp*0.75f));
             }
             else
