@@ -19,7 +19,8 @@ public class SimplePacket extends Packet
     {
         RemoveEntity((short)0),
         ConnectInitPacket((short)1),
-        ChangeTeamPacket((short)2);
+        ChangeTeamPacket((short)2),
+        TimeToStartPacket((short)3);
 
         private final short m_Value;
         private SimplePacketId(short value)

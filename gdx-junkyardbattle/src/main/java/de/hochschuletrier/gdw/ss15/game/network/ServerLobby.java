@@ -1,10 +1,12 @@
 package de.hochschuletrier.gdw.ss15.game.network;
 
 import de.hochschuletrier.gdw.commons.devcon.ConsoleCmd;
+import de.hochschuletrier.gdw.ss15.game.network.Packets.Menu.ChangeNamePacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.Menu.MenuePlayerChangedPacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serverclientsocket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
+import javafx.scene.control.TextFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,7 +48,7 @@ public class ServerLobby
         {
             while(client.socket.isPacketAvaliable())
             {
-
+                ReceivePacket(client);
             }
         }
     }
@@ -63,6 +65,12 @@ public class ServerLobby
                 SendChangePlayerStatusToAll(client);
             }
         }
+        else if(pack.getPacketId() == PacketIds.ChangeName.getValue())
+        {
+            ChangeNamePacket nPacket = (ChangeNamePacket) pack;
+            client.name=nPacket.name;
+            SendChangePlayerStatusToAll(client);
+        }
     }
 
     public boolean InserNewPlayer(Serverclientsocket sock) {
@@ -73,6 +81,10 @@ public class ServerLobby
         SendAllTonewPlyer(client);
         connectedClients.push(client);
         SendChangePlayerStatusToAll(client);
+
+        SimplePacket pack = new SimplePacket(SimplePacket.SimplePacketId.TimeToStartPacket.getValue(),(long)SecondsToStart);
+        client.socket.sendPacket(pack);
+
         return true;
     }
 
@@ -92,6 +104,7 @@ public class ServerLobby
             client.socket.sendPacketSave(pack,true);
         }
     }
+
 
 
 }
