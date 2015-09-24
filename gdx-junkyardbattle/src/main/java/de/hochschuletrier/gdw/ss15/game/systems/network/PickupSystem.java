@@ -1,9 +1,6 @@
 package de.hochschuletrier.gdw.ss15.game.systems.network;
 
-import com.badlogic.ashley.core.ComponentMapper;
-import com.badlogic.ashley.core.Entity;
-import com.badlogic.ashley.core.EntitySystem;
-import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.core.*;
 import com.badlogic.ashley.systems.IntervalIteratingSystem;
 import com.badlogic.ashley.systems.IntervalSystem;
 import com.badlogic.ashley.systems.IteratingSystem;
@@ -21,26 +18,36 @@ public class PickupSystem extends IntervalIteratingSystem implements PickupEvent
 
     ComponentMapper<InventoryComponent> inventory;
     ComponentMapper<PlayerComponent> player;
-    public PickupSystem()
+    Engine engine;
+    public PickupSystem(Engine engine)
     {
         super(Family.all(PlayerComponent.class).get(), 10);
         inventory = ComponentMappers.inventory;
         player = ComponentMappers.player;
+        inventory = ComponentMappers.inventory;
+        player = ComponentMappers.player;
         PickupEvent.register(this);
+        this.engine = engine;
     }
 
 
 
     @Override
     public void onPickupEvent(PhysixContact physixContact) {
-        if (ComponentMappers.player.has(physixContact.getOtherComponent().getEntity())) {
+         if (player.has(physixContact.getOtherComponent().getEntity())) {
 
             Entity pickup = physixContact.getMyComponent().getEntity();
             Entity player = physixContact.getOtherComponent().getEntity();
             InventoryComponent invPickup = inventory.get(pickup);
             InventoryComponent invPlayer = inventory.get(player);
 
-            //Entity zerstören
+             System.out.println("Pickup: " + invPickup.getMetalShards());
+             System.out.println("Player: " + invPlayer.getMetalShards());
+             if (invPlayer.addMetalShards(invPickup.getMetalShards()) > 0)
+             {
+                 System.out.println("Pickup removed");
+                 this.engine.removeEntity(pickup);
+             }
 
 
 

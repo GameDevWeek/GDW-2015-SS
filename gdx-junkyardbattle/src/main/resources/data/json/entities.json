@@ -160,7 +160,7 @@
             "Input":{},
             "Interpolate": {},
             "Inventory":{
-            "metalShards": 0
+                "metalShards":0
             },
             "Weapon":{},
             "Health":{},
@@ -389,6 +389,10 @@
                 "scaleY": 0.2,
                 "flipX": false,
                 "flipY": false
+            },
+            "Pickable":{},
+            "Inventory":{
+                "metalShards":115
             }
        }
     }
