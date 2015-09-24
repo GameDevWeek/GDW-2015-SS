@@ -11,12 +11,17 @@ import de.hochschuletrier.gdw.commons.tiled.TileInfo;
 import de.hochschuletrier.gdw.commons.tiled.TiledMap;
 import de.hochschuletrier.gdw.commons.utils.SafeProperties;
 import de.hochschuletrier.gdw.ss15.game.MapLoader.TileCreationListener;
+import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.components.SpawnComponent;
 import de.hochschuletrier.gdw.ss15.game.components.light.ConeLightComponent;
+import de.hochschuletrier.gdw.ss15.game.utils.RenderUtil;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;
+
+import org.w3c.dom.css.Rect;
 
 
 /**
@@ -52,8 +57,11 @@ public class MapSpecialEntities
                 /// TileInfo, LayerObject    geben ueber .getSafeProperties().getProperty("PropName","default") deren Attribute aus 
         public Layer layer;             /// Layer in dem sich dieses Element befindet
         public TiledMap tiledMap;       /// gesamte TiledMap wird uebertragen dfuer alle Faelle 
-        public CreatorInfo(EntityFactory fact,Entity ent,TiledMap tm,LayerObject lo,Layer layer)
+        public MapLoader.EntityCreator creator;     /// noch eine neue Entity erstellen
+        public CreatorInfo(MapLoader.EntityCreator c,EntityFactory fact,Entity ent,TiledMap tm,LayerObject lo,Layer layer)
         {
+            creator = c;
+            factory = fact;
             posX = 0;posY = 0;     /// x und y sind bei Objecten = 0  =>  erhalte Position ueber PositionComponent     
             tiledMap = null;
             asTile = null;
@@ -62,8 +70,10 @@ public class MapSpecialEntities
             this.layer = layer;
             tiledMap = tm;
         }
-        public CreatorInfo(EntityFactory fact,int x,int y,TiledMap tm,TileInfo ti,Layer layer)
+        public CreatorInfo(MapLoader.EntityCreator c,EntityFactory fact,int x,int y,TiledMap tm,TileInfo ti,Layer layer)
         {
+            creator = c;
+            factory = fact;
             tiledMap = tm;
             posX = x;
             posY = y;
@@ -98,7 +108,6 @@ public class MapSpecialEntities
         public void accept(CreatorInfo info)
         {
             /// Alle veraenderten wert-namen,  immer abfragen ob ein Attribute ueberhaupt veraendert wurde
-            String[] givenAttributes = info.asObject.getProperties().keySet().toArray( new String[0] );
             EntityInfo entityInfo = (EntityInfo)info.factory.getEntityInfos().get( info.asObject.getName() );
             
             /// eine Componente herraussuchen 
@@ -111,23 +120,104 @@ public class MapSpecialEntities
                 Color color = Color.BLUE;
                 int degree;
                 int distance;
-                //color = Color.( info.asObject.getProperty("color", sp.getString("color") ) , Color.BLUE );
+                boolean isStatic;
+                color = RenderUtil.extractColor( info.asObject.getProperty("color", sp.getString("color") ) );
                 degree = info.asObject.getIntProperty( "degree",sp.getInt( "degree" ) );
                 distance = info.asObject.getIntProperty( "distance",sp.getInt( "distance" ) );
-            
+                isStatic = info.asObject.getBooleanProperty( "static",sp.getBoolean( "static" ) );
                 /// Komponente mit diesem Wert besetzten
-                light.set( color, (float)distance,true,(float)degree,45f,true );
+                light.set( color, (float)distance,isStatic,(float)degree,45f,true );
             }
         }
     }
     
-    public static class SpawnPoint implements Consumer<CreatorInfo>
+    public static class Spawn implements Consumer<CreatorInfo>
     {
         public void accept(CreatorInfo info)
         {
             
             /// eine Componente herraussuchen 
-            SpawnComponent spawn = info.entity.getComponent( SpawnComponent.class );
+            EntityInfo entityInfo = (EntityInfo)info.factory.getEntityInfos().get( info.asObject.getName() );
+            
+            /// eine Componente herraussuchen 
+            // ConeLightComponent light = info.entity.getComponent( ConeLightComponent.class );
+            //SafeProperties sp = entityInfo.components.get("ConeLight");
+            
+            /// fuer wen spawn der Spawnpoint?
+            /*
+            if ( team != null ) {
+                /// erhaltenen Wert lesen 
+                int nr = info.asObject.getIntProperty("TeamID", 0);
+            
+                /// Komponente mit diesem Wert besetzten
+                /// team.flag = flag;
+            /// }
+             * 
+             */
+        }
+    }
+    
+    public static class JunkSpawn implements Consumer<CreatorInfo>
+    {
+        public void accept(CreatorInfo info)
+        {
+            
+            /// eine Componente herraussuchen 
+            EntityInfo entityInfo = (EntityInfo)info.factory.getEntityInfos().get( info.asObject.getName() );
+            
+            /// Bedeuted das hier Muell Objecte spawnen
+            int spawn_amount = info.asObject.getIntProperty("initial_spawn", 2);
+            float x = 0,y = 0;
+            float maxX,maxY,minX,minY;
+            
+            PositionComponent pos = ComponentMappers.position.get( info.entity );
+            x = pos.x;
+            y = pos.y;
+            maxX = info.asObject.getFloatProperty("spawn_maxX", x+15);
+            maxY = info.asObject.getFloatProperty("spawn_maxY", y+15);
+            minX = info.asObject.getFloatProperty("spawn_minX", x-15);
+            minY = info.asObject.getFloatProperty("spawn_minY", y-15);
+            
+            for( int i=0;i<spawn_amount;i++ )
+            {
+                x = minX + (float)(Math.random()*( maxX - minX ) );
+                y = minY + (float)(Math.random()*( maxY - minY ) );
+                info.creator.createEntity("metal", x, y);
+            }
+
+            info.creator.createEntity("metal", 10, 10);
+            /// eine Componente herraussuchen 
+            // ConeLightComponent light = info.entity.getComponent( ConeLightComponent.class );
+            
+            
+            /// fuer wen spawn der Spawnpoint?
+            /*
+            if ( team != null ) {
+                /// erhaltenen Wert lesen 
+                int nr = info.asObject.getIntProperty("TeamID", 0);
+            
+                /// Komponente mit diesem Wert besetzten
+                /// team.flag = flag;
+            /// }
+             * 
+             */
+        }
+    }
+    
+    public static class Base implements Consumer<CreatorInfo>
+    {
+        public void accept(CreatorInfo info)
+        {
+            
+            /// eine Componente herraussuchen             
+            EntityInfo entityInfo = (EntityInfo)info.factory.getEntityInfos().get( info.asObject.getName() );
+            
+            // Team ?
+            
+            /// eine Componente herraussuchen 
+            
+            //ConeLightComponent light = info.entity.getComponent( ConeLightComponent.class );
+            //SafeProperties sp = entityInfo.components.get("ConeLight");
             
             /// fuer wen spawn der Spawnpoint?
             /*
@@ -153,7 +243,11 @@ public class MapSpecialEntities
         public void accept(CreatorInfo info)
         {
             /// Alle veraenderten wert-namen,  immer abfragen ob ein Attribute ueberhaupt veraendert wurde
-            String[] givenAttributes = info.asObject.getProperties().keySet().toArray( new String[0] );
+            EntityInfo entityInfo = (EntityInfo)info.factory.getEntityInfos().get( info.asObject.getName() );
+            
+            /// eine Componente herraussuchen 
+            //ConeLightComponent light = info.entity.getComponent( ConeLightComponent.class );
+            //SafeProperties sp = entityInfo.components.get("ConeLight");
             
             /// eine Componente herraussuchen 
             /// TestComponent body = ComponentMapper.test.get( info.entity );
@@ -178,7 +272,11 @@ public class MapSpecialEntities
         public void accept(CreatorInfo info)
         {
             /// Alle veraenderten wert-namen,  immer abfragen ob ein Attribute ueberhaupt veraendert wurde
-            String[] givenAttributes = info.asObject.getProperties().keySet().toArray( new String[0] );
+            EntityInfo entityInfo = (EntityInfo)info.factory.getEntityInfos().get( info.asObject.getName() );
+            
+            /// eine Componente herraussuchen 
+            //ConeLightComponent light = info.entity.getComponent( ConeLightComponent.class );
+            //SafeProperties sp = entityInfo.components.get("ConeLight");
             
             /// eine Componente herraussuchen 
             /// TestComponent body = ComponentMapper.test.get( info.entity );

@@ -1,5 +1,9 @@
 {
     "menu_fg": "data/ui/menu/fg_border.png",
     "menu_bg": "data/ui/menu/bg_root.png",
-    "ball": "data/images/Ball_Grundtextur.png"
+    "ball": "data/images/Ball_Grundtextur.png",
+    "junk": "data/images/Ball_Grundtextur.png",
+    "junk_spawn": "data/images/Magnet_Plus.png",
+    "player_spawn": "data/images/Magnet_Minus.png",
+    "base": "data/images/base.png"
 }

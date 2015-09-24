@@ -11,16 +11,14 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
+import de.hochschuletrier.gdw.commons.gdx.audio.SoundEmitter;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
+import de.hochschuletrier.gdw.ss15.events.SoundEvent;
 import de.hochschuletrier.gdw.ss15.events.network.client.SendPacketClientEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.Game;
+import de.hochschuletrier.gdw.ss15.game.components.*;
 import de.hochschuletrier.gdw.ss15.game.GameConstants;
-import de.hochschuletrier.gdw.ss15.game.components.InventoryComponent;
-import de.hochschuletrier.gdw.ss15.game.components.HealthComponent;
-import de.hochschuletrier.gdw.ss15.game.components.MoveComponent;
-import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
-import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.components.input.InputComponent;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.EntityUpdatePacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.MovementPacket;
@@ -41,6 +39,7 @@ public class TestMovementSystem extends IteratingSystem{
     private ComponentMapper<MoveComponent> move;
     private ComponentMapper<InputComponent> input;
     private ComponentMapper<InventoryComponent> inventory;
+    private ComponentMapper<SoundEmitterComponent> soundEmitter;
     public TestMovementSystem(Game game, Camera cam)
     {
         super(Family.all(InputComponent.class, MoveComponent.class, InventoryComponent.class).get());
@@ -49,17 +48,18 @@ public class TestMovementSystem extends IteratingSystem{
         move = ComponentMappers.move;
         input = ComponentMappers.input;
         inventory = ComponentMappers.inventory;
+        soundEmitter = ComponentMappers.soundEmitter;
     }
 
-	protected void processEntity(Entity entity, float deltaTime) {
-		
-		timer.Update();
+    protected void processEntity(Entity entity, float deltaTime) {
+
+        timer.Update();
         if(timer.get_CounterMilliseconds()>100)
         {
-        	InputComponent input = ComponentMappers.input.get(entity);
-	        PositionComponent posc = ComponentMappers.position.get(entity);
-	        InventoryComponent inventory = ComponentMappers.inventory.get(entity);
-	        //System.out.println(inventory);
+            InputComponent input = ComponentMappers.input.get(entity);
+            PositionComponent posc = ComponentMappers.position.get(entity);
+            InventoryComponent inventory = ComponentMappers.inventory.get(entity);
+            //System.out.println(inventory);
             timer.StartCounter();
             if(inventory.getMetalShards()<= GameConstants.MAX_METALSHARDS && inventory.getMetalShards()>0)
             {
@@ -68,27 +68,42 @@ public class TestMovementSystem extends IteratingSystem{
             }
             else
             {
-        	vectorToAdd.scl(move.get(entity).speed);
+                vectorToAdd.scl(move.get(entity).speed);
             }
-	        Vector3 mousepos = camera.unproject(new Vector3(input.posX, input.posY,0));
-	        Vector2 mousepos2 = new Vector2(mousepos.x, mousepos.y);
-	        
-	        mousepos2.sub(new Vector2(posc.x,posc.y));
-	        float angle = mousepos2.angle();
-	        //System.out.println(angle);
-	
+            if (!vectorToAdd.isZero())
+            {
+                if (ComponentMappers.soundEmitter.has(entity) && !soundEmitter.get(entity).isPlaying) {
+
+                    SoundEvent.emit("streetSteps", entity, true);
+                    soundEmitter.get(entity).isPlaying = true;
+                }
+            }
+            else
+            {
+                SoundEvent.stopSound(entity);
+                soundEmitter.get(entity).isPlaying = false;
+            }
+
+
+            Vector3 mousepos = camera.unproject(new Vector3(input.posX, input.posY,0));
+            Vector2 mousepos2 = new Vector2(mousepos.x, mousepos.y);
+
+            mousepos2.sub(new Vector2(posc.x,posc.y));
+            float angle = mousepos2.angle();
+            //System.out.println(angle);
+
 //	        float rotation = (float)Math.atan2(mousepos2.y - posc.y,mousepos2.x - posc.x);
-	        
-	        MovementPacket packet = new MovementPacket(vectorToAdd.x,vectorToAdd.y,angle);
-	        SendPacketClientEvent.emit(packet,false);
-	        vectorToAdd.setZero();
+
+            MovementPacket packet = new MovementPacket(vectorToAdd.x,vectorToAdd.y,angle);
+            SendPacketClientEvent.emit(packet,false);
+            vectorToAdd.setZero();
         }
-        
+
         velVector.set(input.get(entity).horizontal, input.get(entity).vertical);
         velVector.nor();
         velVector.scl(deltaTime);
         vectorToAdd.add(velVector);
-		
-	}
+
+    }
 
 }
