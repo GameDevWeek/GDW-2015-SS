@@ -2,6 +2,8 @@ package de.hochschuletrier.gdw.ss15.game.network;
 
 import de.hochschuletrier.gdw.commons.devcon.ConsoleCmd;
 import de.hochschuletrier.gdw.ss15.Main;
+import de.hochschuletrier.gdw.ss15.events.network.Base.ConnectTryFinishEvent;
+import de.hochschuletrier.gdw.ss15.events.network.Base.DisconnectEvent;
 import de.hochschuletrier.gdw.ss15.events.network.Base.DoNotTouchPacketEvent;
 import de.hochschuletrier.gdw.ss15.events.network.client.SendPacketClientEvent;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Clientsocket;
@@ -67,12 +69,12 @@ public class ClientConnection implements SendPacketClientEvent.Listener,
         if(clientSocket!=null) {
             //clientSocket.justCallDisconnectHandler();
             clientSocket.callListeners();
-            if(!clientSocket.isConnected() && !clientSocket.isByConnect())
+            /*if(!clientSocket.isConnected() && !clientSocket.isByConnect())
             {
                 logger.warn("Lost connection to server");
                 clientSocket.close();
                 clientSocket=null;
-            }
+            }*/
         }
     }
 
@@ -81,12 +83,12 @@ public class ClientConnection implements SendPacketClientEvent.Listener,
         return clientSocket;
     }
 
-    public void connect(String ip,int port)
+    public boolean connect(String ip,int port)
     {
         if(clientSocket!=null && clientSocket.isConnected())
         {
             logger.warn("Client bereits verbunden");
-            return;
+            return false;
         }
         if(clientSocket!=null)
         {
@@ -101,6 +103,7 @@ public class ClientConnection implements SendPacketClientEvent.Listener,
 
         clientSocket.connect();
         SendPacketClientEvent.registerListener(this);
+        return true;
     }
 
     public void disconnect()
@@ -148,12 +151,13 @@ public class ClientConnection implements SendPacketClientEvent.Listener,
 
     @Override
     public void loginFinished(ConnectStatus status) {
-
+        ConnectTryFinishEvent.emit(status == ConnectStatus.Succes);
     }
 
     @Override
     public void socketDisconnected() {
-        Main.getInstance().changeState(new MainMenuState(Main.getInstance().getAssetManager()));
+        System.out.print("called from socket");
+        DisconnectEvent.emit();
     }
 
     @Override

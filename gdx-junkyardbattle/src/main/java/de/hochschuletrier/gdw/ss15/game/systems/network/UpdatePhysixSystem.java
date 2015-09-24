@@ -23,6 +23,8 @@ public class UpdatePhysixSystem extends IteratingSystem
 
     Timer timer = new Timer(200); // 200 ms timer
 
+    long timestamp = 0;
+
     public UpdatePhysixSystem(TimerSystem timerSystem)
     {
         super(Family.all(PhysixBodyComponent.class, PlayerComponent.class).get());
@@ -54,11 +56,16 @@ public class UpdatePhysixSystem extends IteratingSystem
     @Override
     public void onReceivedNewPacket(Packet pack, Entity entity) {
         try{
-            EntityUpdatePacket p = (EntityUpdatePacket)pack;
-            PhysixBodyComponent phxc = entity.getComponent(PhysixBodyComponent.class);
-            phxc.setPosition(p.xPos, p.yPos);
-            phxc.setAngle(p.rotation);
-            //System.out.println("used new position "+p.xPos+" "+ p.yPos);
+            if(pack.getTimestamp()>timestamp) {
+                timestamp = pack.getTimestamp();
+                EntityUpdatePacket p = (EntityUpdatePacket) pack;
+                PhysixBodyComponent phxc = entity.getComponent(PhysixBodyComponent.class);
+                if(phxc!=null) {
+                    phxc.setPosition(p.xPos, p.yPos);
+                    phxc.setAngle(p.rotation);
+                }
+                //System.out.println("used new position "+p.xPos+" "+ p.yPos);
+            }
         }catch(ClassCastException ex){}
 
     }

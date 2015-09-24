@@ -47,7 +47,7 @@ public class TestMovementSystem extends IteratingSystem{
 
         vectorToAdd.scl(move.get(entity).speed);
         MovementPacket packet = new MovementPacket(vectorToAdd.x,vectorToAdd.y,0);
-        SendPacketClientEvent.emit(packet,true);
+        SendPacketClientEvent.emit(packet,false);
         
         vectorToAdd.setZero();
         }
