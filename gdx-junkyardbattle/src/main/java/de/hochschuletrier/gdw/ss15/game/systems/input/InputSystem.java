@@ -75,20 +75,19 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
         // keyDown = ein knopf wurde gedrückt
         switch (keycode) {
             case Input.Keys.W:
-                vertical = -1.0f;
+                vertical -= 1.0f;
                 break;
             case Input.Keys.S:
-                vertical = 1.0f;
+                vertical += 1.0f;
                 break;
             case Input.Keys.D:
-                horizontal = 1.0f;
+                horizontal += 1.0f;
                 break;
             case Input.Keys.A:
-                horizontal = -1.0f;
+                horizontal -= 1.0f;
                 break;
         }
         //debug();
-        //System.out.println(inputPaket);
         return true;
     }
 
@@ -97,20 +96,19 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
         // keyUp = ein knopf wurde losgelassen
         switch (keycode) {
             case Input.Keys.W:
-                vertical = 0.0f;
+                vertical += 1.0f;
                 break;
             case Input.Keys.S:
-                vertical = 0.0f;
+                vertical -= 1.0f;
                 break;
             case Input.Keys.D:
-                horizontal = 0.0f;
+                horizontal -= 1.0f;
                 break;
             case Input.Keys.A:
-                horizontal = 0.0f;
+                horizontal += 1.0f;
                 break;
         }
         //debug();
-        //System.out.println(inputPaket);
         return true;
     }
 
