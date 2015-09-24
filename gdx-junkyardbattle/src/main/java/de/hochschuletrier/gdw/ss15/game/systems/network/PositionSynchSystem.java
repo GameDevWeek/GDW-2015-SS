@@ -52,25 +52,22 @@ public class PositionSynchSystem extends EntitySystem implements EntityListener 
                 PositionComponent pos = ComponentMappers.position.get(ent);
 //                System.out.println("New movment gecoginced: x"+pos.x+ " y"+pos.y);
                // System.out.println("New rotation: "+pos.rotation);
-                //if(pos.x != comp.lastX || pos.y != comp.lastY || pos.rotation != comp.lastRot)
+                comp.lastSendTimer.Update();
+                if(comp.lastSendTimer.get_CounterMilliseconds()>comp.updateDuration)
                 {
-                    comp.lastSendTimer.Update();
-                    if(comp.lastSendTimer.get_CounterMilliseconds()>40)
-                    {
-                        comp.lastSendTimer.StartCounter();
-                        comp.lastX=physComp.getPosition().x;
-                        comp.lastY=physComp.getPosition().y;
-                        comp.lastVelocityX =physComp.getLinearVelocity().x;
-                        comp.lastVelocityY =physComp.getLinearVelocity().y;
-                        comp.lastRot=pos.rotation;
-                        
-                        //System.out.println("PositionSync Velocity:"+physComp.getLinearVelocity());
+                    comp.lastSendTimer.StartCounter();
+                    comp.lastX=physComp.getPosition().x;
+                    comp.lastY=physComp.getPosition().y;
+                    comp.lastVelocityX =physComp.getLinearVelocity().x;
+                    comp.lastVelocityY =physComp.getLinearVelocity().y;
+                    comp.lastRot=pos.rotation;
 
-                        //System.out.println("befor send");
-                        EntityUpdatePacket pack = new EntityUpdatePacket(comp.networkID,comp.lastX,comp.lastY,comp.lastVelocityX,  comp.lastVelocityY,comp.lastRot);
-                        SendPacketServerEvent.emit(pack,false);
-                   }
-                }
+                    //System.out.println("PositionSync Velocity:"+physComp.getLinearVelocity());
+
+                    //System.out.println("befor send");
+                    EntityUpdatePacket pack = new EntityUpdatePacket(comp.networkID,comp.lastX,comp.lastY,comp.lastVelocityX,  comp.lastVelocityY,comp.lastRot);
+                    SendPacketServerEvent.emit(pack, comp.sendSave);
+               }
             }
         }
     }
