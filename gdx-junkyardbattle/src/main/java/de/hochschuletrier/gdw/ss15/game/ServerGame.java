@@ -43,6 +43,7 @@ public class ServerGame{
     private final LineOfSightSystem lineOfSightSystem = new LineOfSightSystem(physixSystem); // hier müssen noch Team-Listen übergeben werden
                                                                                  // (+ LineOfSightSystem-Konstruktor anpassen!)
     private final BulletSystem bulletSystem = new BulletSystem();
+    private final PickupSystem pickupSystem = new PickupSystem();
 
     private final EntityFactoryParam factoryParam = new EntityFactoryParam();
     private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json", ServerGame.class);
@@ -80,6 +81,7 @@ public class ServerGame{
         engine.addSystem(lineOfSightSystem);
         engine.addSystem(syncPositionSystem);
         engine.addSystem(bulletSystem);
+        engine.addSystem(pickupSystem);
     }
 
     private void addContactListeners() {

@@ -354,7 +354,8 @@
                 "scaleY": 0.2,
                 "flipX": false,
                 "flipY": false
-            }
+            },
+            "Pickable":{}
        }
     }
 

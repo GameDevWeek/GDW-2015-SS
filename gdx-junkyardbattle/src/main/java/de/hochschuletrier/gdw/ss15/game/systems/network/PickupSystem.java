@@ -26,6 +26,8 @@ public class PickupSystem extends IntervalIteratingSystem implements PickupEvent
         super(Family.all(PlayerComponent.class).get(), 10);
         inventory = ComponentMappers.inventory;
         player = ComponentMappers.player;
+        inventory = ComponentMappers.inventory;
+        player = ComponentMappers.player;
         PickupEvent.register(this);
     }
 
@@ -33,14 +35,14 @@ public class PickupSystem extends IntervalIteratingSystem implements PickupEvent
 
     @Override
     public void onPickupEvent(PhysixContact physixContact) {
-        if (ComponentMappers.player.has(physixContact.getOtherComponent().getEntity())) {
+         if (player.has(physixContact.getOtherComponent().getEntity())) {
 
             Entity pickup = physixContact.getMyComponent().getEntity();
             Entity player = physixContact.getOtherComponent().getEntity();
             InventoryComponent invPickup = inventory.get(pickup);
             InventoryComponent invPlayer = inventory.get(player);
 
-            //Entity zerstören
+            System.out.println("PickUp");
 
 
 
