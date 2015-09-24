@@ -2,10 +2,10 @@ package de.hochschuletrier.gdw.ss15.events;
 
 import com.badlogic.gdx.utils.SnapshotArray;
 
-public class WeaponUncharged {
+public class SatelliteColliding {
 
     public static interface Listener {
-        void onWeaponUncharged();
+        void onSatelliteColliding();
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -14,7 +14,7 @@ public class WeaponUncharged {
     public static void emit() {
         Object[] items = listeners.begin();
         for (int i = 0, n = listeners.size; i < n; i++) {
-            ((Listener)items[i]).onWeaponUncharged();
+            ((Listener)items[i]).onSatelliteColliding();
         }
         listeners.end();
     }
