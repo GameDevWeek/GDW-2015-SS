@@ -102,7 +102,7 @@ public class Game extends InputAdapter {
         //physixSystem.getWorld().setContactListener(contactListener);
         //contactListener.addListener(ImpactSoundComponent.class, new ImpactSoundListener());
        // contactListener.addListener(TriggerComponent.class, new TriggerListener());
-    	ContactListener cl = new ContactListener() {
+    /*	ContactListener cl = new ContactListener() {
 			
 			@Override
 			public void preSolve(Contact contact, Manifold oldManifold) {
@@ -127,8 +127,8 @@ public class Game extends InputAdapter {
 				contact.setEnabled(false);
 				
 			}
-		}; 
-    	physixSystem.getWorld().setContactListener(cl);
+		};
+    	physixSystem.getWorld().setContactListener(cl); */
     }
 
     private void setupPhysixWorld() {
