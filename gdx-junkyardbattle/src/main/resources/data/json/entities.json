@@ -154,7 +154,9 @@
             },
             "Input":{},
             "Interpolate": {},
-            "Inventory":{},
+            "Inventory":{
+                "metalShards":0
+            },
             "Weapon":{},
             "Health":{},
             "SoundEmitter": {}
@@ -355,7 +357,10 @@
                 "flipX": false,
                 "flipY": false
             },
-            "Pickable":{}
+            "Pickable":{},
+            "Inventory":{
+                "metalShards":115
+            }
        }
     }
 
