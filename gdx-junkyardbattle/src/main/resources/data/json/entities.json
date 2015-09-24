@@ -101,7 +101,9 @@
             },
             "Interpolate": {},
             "Health": {},
-            "Inventory": {}
+            "Inventory": {
+                "metalShards": 100
+            }
 
         }
     },
@@ -176,6 +178,7 @@
             "Bullet": {
                 "playerID": -1
             },
+            "Interpolate": {},
             "PositionSynch":{
                 "clientname": "clientProjectile"
             }
@@ -193,6 +196,7 @@
                 "friction": 0.5,
                 "restitution": 0.1
             },
+            "NetworkID": {},
             "Damage": {
                 "damageValue": 10,
                 "damageToPlayer": true,
