@@ -219,10 +219,11 @@
             "Position": {},
             "PhysixBody": {
                 "type": "box",
-                "size": 200,
-                "density": 10,
+                "size": 520,
+                "density": 100,
                 "friction": 0.5,
-                "restitution": 0.1
+                "restitution": 0,
+                "sensor" : true
             }
         }
     },
@@ -233,21 +234,24 @@
             "Position": {},
             "PhysixBody": {
                 "type": "circle",
-                "size": 5,
+                "size": 90,
                 "density": 10,
                 "friction": 0.5,
                 "restitution": 0.1
             },
             "Texture":{
-                "texture": "ball",
-                "width": 60,
-                "height": 60,
+                "texture": "satellite",
+                "width": 1600,
+                "height": 800,
                 "srcX": 0,
                 "srcY": 0,
-                "scaleX": 1,
-                "scaleY": 1,
+                "scaleX": 0.25,
+                "scaleY": 0.25,
                 "flipX": false,
-                "flipY": false
+                "flipY": false,
+                "offsetX": 0,
+                "offsetY": 60,
+                "initialRotation": 180
             }
         }
     },
@@ -255,50 +259,14 @@
     "Spawn": {
         "meta": {},
         "components": {
-            "Position": {},
-            "PhysixBody": {
-                "type": "box",
-                "size": 30,
-                "density": 10,
-                "friction": 0.5,
-                "restitution": 0.1
-            },
-            "Texture":{
-                "texture": "player_spawn",
-                "width": 120,
-                "height": 120,
-                "srcX": 0,
-                "srcY": 0,
-                "scaleX": 0.5,
-                "scaleY": 0.5,
-                "flipX": false,
-                "flipY": false
-            }
+            "Position": {}
         }
     },
     
     "JunkSpawn": {
         "meta": {},
         "components": {
-            "Position": {},
-            "PhysixBody": {
-                "type": "circle",
-                "size": 5,
-                "density": 10,
-                "friction": 0.5,
-                "restitution": 0.1
-            },
-            "Texture":{
-                "texture": "junk_spawn",
-                "width": 120,
-                "height": 120,
-                "srcX": 0,
-                "srcY": 0,
-                "scaleX": 0.3,
-                "scaleY": 0.3,
-                "flipX": false,
-                "flipY": false
-            }
+            "Position": {}
         }
     },
     
@@ -306,24 +274,6 @@
         "meta": {},
         "components": {
             "Position": {},
-            "PhysixBody": {
-                "type": "circle",
-                "size": 5,
-                "density": 10,
-                "friction": 0.5,
-                "restitution": 0.1
-            },
-            "Texture":{
-                "texture": "junk_spawn",
-                "width": 120,
-                "height": 120,
-                "srcX": 0,
-                "srcY": 0,
-                "scaleX": 0.3,
-                "scaleY": 0.3,
-                "flipX": false,
-                "flipY": false
-            }
         }
     },
 
@@ -331,21 +281,14 @@
         "meta": {},
         "components": {
             "Position": {},
-            "PhysixBody": {
-                "type": "circle",
-                "size": 3,
-                "density": 2,
-                "friction": 0.3,
-                "restitution": 0.2
-            },
             "Texture":{
                 "texture": "junk0",
                 "width": 120,
                 "height": 120,
                 "srcX": 0,
                 "srcY": 0,
-                "scaleX": 0.2,
-                "scaleY": 0.2,
+                "scaleX": 0.5,
+                "scaleY": 0.5,
                 "flipX": false,
                 "flipY": false
             }

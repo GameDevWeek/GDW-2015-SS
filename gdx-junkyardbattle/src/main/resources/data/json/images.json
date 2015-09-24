@@ -9,5 +9,6 @@
     "junk1": "data/images/teil_02.png",
     "junk2": "data/images/trash_small_airthingy.png",
     "junk3": "data/images/trash_small_gear.png",
-    "junk4": "data/images/trash_small_screwship.png"
+    "junk4": "data/images/trash_small_screwship.png",
+    "satellite": "data/images/Satellit.png"
 }

@@ -2726,7 +2726,7 @@
     <property name="Base" value="B"/>
    </properties>
   </object>
-  <object id="4" name="JunkSpawn" type="Satellite" x="1848" y="1812" width="240" height="232">
+  <object id="4" name="SatelliteSite" type="SatelliteSite" x="1848" y="1812" width="240" height="232">
    <properties>
     <property name="SatelliteSite" value="1"/>
    </properties>
@@ -2777,25 +2777,25 @@
    </properties>
    <ellipse/>
   </object>
-  <object id="20" name="Spawn" type="TeamA" x="550" y="145.455" width="66.6667" height="66.6667">
+  <object id="20" name="Spawn" type="TeamA" x="672" y="145.455" width="66.6667" height="66.6667">
    <properties>
     <property name="Spawn" value="1"/>
     <property name="Team" value="A"/>
    </properties>
   </object>
-  <object id="21" name="Spawn" type="TeamA" x="550" y="300" width="60.6061" height="51.5152">
+  <object id="21" name="Spawn" type="TeamA" x="668" y="298" width="60.6061" height="51.5152">
    <properties>
     <property name="Spawn" value="2"/>
     <property name="Team" value="A"/>
    </properties>
   </object>
-  <object id="22" name="Spawn" type="TeamA" x="300" y="550" width="72.7273" height="54.5455">
+  <object id="22" name="Spawn" type="TeamA" x="302" y="682" width="72.7273" height="54.5455">
    <properties>
     <property name="Spawn" value="3"/>
     <property name="Team" value="A"/>
    </properties>
   </object>
-  <object id="23" name="Spawn" type="TeamA" x="157.576" y="550" width="69.697" height="36.3636">
+  <object id="23" name="Spawn" type="TeamA" x="161.576" y="688" width="69.697" height="36.3636">
    <properties>
     <property name="Spawn" value="4"/>
     <property name="Team" value="A"/>

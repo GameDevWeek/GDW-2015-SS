@@ -2,10 +2,15 @@ package de.hochschuletrier.gdw.ss15.game;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 
 import de.hochschuletrier.gdw.commons.gdx.ashley.EntityFactory;
 import de.hochschuletrier.gdw.commons.gdx.ashley.EntityInfo;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
+import de.hochschuletrier.gdw.commons.gdx.physix.PhysixBodyDef;
+import de.hochschuletrier.gdw.commons.gdx.physix.PhysixFixtureDef;
+import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.commons.tiled.Layer;
 import de.hochschuletrier.gdw.commons.tiled.LayerObject;
 import de.hochschuletrier.gdw.commons.tiled.TileInfo;
@@ -231,24 +236,18 @@ public class MapSpecialEntities
             /// eine Componente herraussuchen             
             EntityInfo entityInfo = (EntityInfo)info.factory.getEntityInfos().get( info.asObject.getName() );
             
-            // Team
+            
+           //team
             
             /// eine Componente herraussuchen 
             
-            //ConeLightComponent light = info.entity.getComponent( ConeLightComponent.class );
+            PhysixBodyComponent body = ComponentMappers.physixBody.get(info.entity);
             //SafeProperties sp = entityInfo.components.get("ConeLight");
             
-            /// fuer wen spawn der Spawnpoint?
-            /*
-            if ( team != null ) {
-                /// erhaltenen Wert lesen 
-                int nr = info.asObject.getIntProperty("TeamID", 0);
+            if ( body != null ) {
             
                 /// Komponente mit diesem Wert besetzten
-                /// team.flag = flag;
-            /// }
-             * 
-             */
+            }
         }
     }
     
