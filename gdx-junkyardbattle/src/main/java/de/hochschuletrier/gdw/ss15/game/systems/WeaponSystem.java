@@ -29,10 +29,6 @@ public class WeaponSystem extends IteratingSystem {
     }
 
     @Override
-    public void update(float deltaTime) {
-    }
-
-    @Override
     protected void processEntity(Entity entity, float deltaTime) {
         PlayerComponent plc = ComponentMappers.player.get(entity);
         if(! plc.isLocalPlayer) return;
@@ -53,8 +49,10 @@ public class WeaponSystem extends IteratingSystem {
             if(wpc.fireChannelTime > 0) { // left button is released
                 WeaponUncharged.emit();
 
+
                 FirePacket fire = new FirePacket(wpc.fireChannelTime);
                 SendPacketClientEvent.emit(fire, true);
+                System.out.println("emit fire package! " + wpc.fireChannelTime);
 
                 wpc.fireChannelTime = 0f;
             }

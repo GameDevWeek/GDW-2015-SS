@@ -51,15 +51,15 @@ public class TestMovementSystem extends IteratingSystem{
         inventory = ComponentMappers.inventory;
     }
 
-	protected void processEntity(Entity entity, float deltaTime) {
-		
-		timer.Update();
+    protected void processEntity(Entity entity, float deltaTime) {
+
+        timer.Update();
         if(timer.get_CounterMilliseconds()>100)
         {
-        	InputComponent input = ComponentMappers.input.get(entity);
-	        PositionComponent posc = ComponentMappers.position.get(entity);
-	        InventoryComponent inventory = ComponentMappers.inventory.get(entity);
-	        //System.out.println(inventory);
+            InputComponent input = ComponentMappers.input.get(entity);
+            PositionComponent posc = ComponentMappers.position.get(entity);
+            InventoryComponent inventory = ComponentMappers.inventory.get(entity);
+            //System.out.println(inventory);
             timer.StartCounter();
             if(inventory.getMetalShards()<= GameConstants.MAX_METALSHARDS && inventory.getMetalShards()>0)
             {
@@ -68,27 +68,27 @@ public class TestMovementSystem extends IteratingSystem{
             }
             else
             {
-        	vectorToAdd.scl(move.get(entity).speed);
+                vectorToAdd.scl(move.get(entity).speed);
             }
-	        Vector3 mousepos = camera.unproject(new Vector3(input.posX, input.posY,0));
-	        Vector2 mousepos2 = new Vector2(mousepos.x, mousepos.y);
-	        
-	        mousepos2.sub(new Vector2(posc.x,posc.y));
-	        float angle = mousepos2.angle();
-	        //System.out.println(angle);
-	
+            Vector3 mousepos = camera.unproject(new Vector3(input.posX, input.posY,0));
+            Vector2 mousepos2 = new Vector2(mousepos.x, mousepos.y);
+
+            mousepos2.sub(new Vector2(posc.x,posc.y));
+            float angle = mousepos2.angle();
+            //System.out.println(angle);
+
 //	        float rotation = (float)Math.atan2(mousepos2.y - posc.y,mousepos2.x - posc.x);
-	        
-	        MovementPacket packet = new MovementPacket(vectorToAdd.x,vectorToAdd.y,angle);
-	        SendPacketClientEvent.emit(packet,false);
-	        vectorToAdd.setZero();
+
+            MovementPacket packet = new MovementPacket(vectorToAdd.x,vectorToAdd.y,angle);
+            SendPacketClientEvent.emit(packet,false);
+            vectorToAdd.setZero();
         }
-        
+
         velVector.set(input.get(entity).horizontal, input.get(entity).vertical);
         velVector.nor();
         velVector.scl(deltaTime);
         vectorToAdd.add(velVector);
-		
-	}
+
+    }
 
 }
