@@ -75,7 +75,7 @@ public class TestMovementSystem extends IteratingSystem{
                 System.out.println("Sound Street Step");
                 if (ComponentMappers.soundEmitter.has(entity)) {
 
-                    SoundEvent.emit("streetSteps", entity);
+                    SoundEvent.emit("streetSteps", entity, true);
                 }
             }
 
