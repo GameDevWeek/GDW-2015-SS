@@ -1,4 +1,4 @@
-﻿package de.hochschuletrier.gdw.ss15.game.systems.network;
+package de.hochschuletrier.gdw.ss15.game.systems.network;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
@@ -57,7 +57,7 @@ public class TestMovementSystem extends IteratingSystem{
         	InputComponent input = ComponentMappers.input.get(entity);
 	        PositionComponent posc = ComponentMappers.position.get(entity);
 	        InventoryComponent inventory = ComponentMappers.inventory.get(entity);
-	        System.out.println(inventory);
+	        //System.out.println(inventory);
             timer.StartCounter();
             if(inventory.metalShards<=700 && inventory.metalShards>0)
             {
@@ -73,12 +73,12 @@ public class TestMovementSystem extends IteratingSystem{
 	        
 	        mousepos2.sub(new Vector2(posc.x,posc.y));
 	        float angle = mousepos2.angle();
-	        System.out.println(angle);
+	        //System.out.println(angle);
 	
 //	        float rotation = (float)Math.atan2(mousepos2.y - posc.y,mousepos2.x - posc.x);
 	        
 	        MovementPacket packet = new MovementPacket(vectorToAdd.x,vectorToAdd.y,angle);
-	        SendPacketClientEvent.emit(packet,true);
+	        SendPacketClientEvent.emit(packet,false);
 	        vectorToAdd.setZero();
         }
         
