@@ -1,10 +1,11 @@
-package de.hochschuletrier.gdw.ss15.game.network;
+﻿package de.hochschuletrier.gdw.ss15.game.network;
 
 /**
  * Created by lukas on 22.09.15.
  */
 
 import de.hochschuletrier.gdw.ss15.game.network.Packets.*;
+import de.hochschuletrier.gdw.ss15.game.network.Packets.Menu.MenuInfoPacket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.PacketFactory;
 
 public enum PacketIds
@@ -15,8 +16,11 @@ public enum PacketIds
     Input((short)3),
     InputEvent((short)4),
     EntityUpdate((short)5),
-    Health((short)6),
-    Damage((short)7);
+    Fire((short)6),
+    MenuInfo((short)7),
+    Gather((short)8),
+    Health((short)9),
+    Damage((short)10);
 
 
     private final short m_Value;
@@ -38,7 +42,9 @@ public enum PacketIds
         PacketFactory.registerPacket(Input.getValue(), Inputpacket.class);
         PacketFactory.registerPacket(InputEvent.getValue(), InputEventPacket.class);
         PacketFactory.registerPacket(EntityUpdate.getValue(), EntityUpdatePacket.class);
-        PacketFactory.registerPacket(Health.getValue(), HealthPacket.class);
-        
+        PacketFactory.registerPacket(Health.getValue(), HealthPacket.class); 
+        PacketFactory.registerPacket(Fire.getValue(), FirePacket.class);
+        PacketFactory.registerPacket(MenuInfo.getValue(), MenuInfoPacket.class);
+        PacketFactory.registerPacket(Gather.getValue(), GatherPacket.class);
     }
 }

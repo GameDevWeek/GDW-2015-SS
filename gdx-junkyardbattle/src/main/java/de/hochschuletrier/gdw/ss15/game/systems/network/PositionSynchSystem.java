@@ -2,6 +2,8 @@ package de.hochschuletrier.gdw.ss15.game.systems.network;
 
 import com.badlogic.ashley.core.*;
 import com.badlogic.ashley.utils.ImmutableArray;
+
+import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.ss15.events.network.server.SendPacketServerEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.ServerGame;
@@ -12,6 +14,7 @@ import de.hochschuletrier.gdw.ss15.game.network.Packets.EntityUpdatePacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.InitEntityPacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serverclientsocket;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,7 +42,7 @@ public class PositionSynchSystem extends EntitySystem implements EntityListener 
         for(int i = 0; i < entities.size(); ++i)
         {
             Entity ent = entities.get(i);
-            //PhysixBodyComponent physComp = ComponentMappers.physixBody.get(ent);
+            PhysixBodyComponent physComp = ComponentMappers.physixBody.get(ent);
             //physComp.setGravityScale(0);
             //System.out.println(physComp.getPosition());
 
@@ -49,20 +52,24 @@ public class PositionSynchSystem extends EntitySystem implements EntityListener 
                 PositionComponent pos = ComponentMappers.position.get(ent);
 //                System.out.println("New movment gecoginced: x"+pos.x+ " y"+pos.y);
                // System.out.println("New rotation: "+pos.rotation);
-                if(pos.x != comp.lastX || pos.y != comp.lastY || pos.rotation != comp.lastRot)
+                //if(pos.x != comp.lastX || pos.y != comp.lastY || pos.rotation != comp.lastRot)
                 {
                     comp.lastSendTimer.Update();
-                    if(comp.lastSendTimer.get_CounterMilliseconds()>42)
+                    if(comp.lastSendTimer.get_CounterMilliseconds()>40)
                     {
                         comp.lastSendTimer.StartCounter();
-                        comp.lastX=pos.x;
-                        comp.lastY=pos.y;
+                        comp.lastX=physComp.getPosition().x;
+                        comp.lastY=physComp.getPosition().y;
+                        comp.lastVelocityX =physComp.getLinearVelocity().x;
+                        comp.lastVelocityY =physComp.getLinearVelocity().y;
                         comp.lastRot=pos.rotation;
+                        
+                        //System.out.println("PositionSync Velocity:"+physComp.getLinearVelocity());
 
                         //System.out.println("befor send");
-                        EntityUpdatePacket pack = new EntityUpdatePacket(comp.networkID,comp.lastX,comp.lastY,comp.lastRot);
+                        EntityUpdatePacket pack = new EntityUpdatePacket(comp.networkID,comp.lastX,comp.lastY,comp.lastVelocityX,  comp.lastVelocityY,comp.lastRot);
                         SendPacketServerEvent.emit(pack,false);
-                    }
+                   }
                 }
             }
         }
@@ -119,6 +126,7 @@ public class PositionSynchSystem extends EntitySystem implements EntityListener 
             return;
         }
         //allen speielern neue entit mitteilen
+     
         InitEntityPacket packet = new InitEntityPacket(ComponentMappers.positionSynch.get(entity).networkID,
                 ComponentMappers.positionSynch.get(entity).clientName, comp.x, comp.y, comp.rotation);
         SendPacketServerEvent.emit(packet, true, exept);

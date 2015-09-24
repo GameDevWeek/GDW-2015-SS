@@ -51,12 +51,12 @@ public class MyTimer
 	
 	public double get_FrameMilliseconds()
 	{
-		return (double)m_TimeLastFrame/1000000000;
+		return (double)m_TimeLastFrame/1000000;
 	}
 	
 	public double get_FrameSeconds()
 	{
-		return (double)m_TimeLastFrame/1000000;
+		return (double)m_TimeLastFrame/1000000000l;
 	}
 	
 	static public long get_TimestampNanoseconds()

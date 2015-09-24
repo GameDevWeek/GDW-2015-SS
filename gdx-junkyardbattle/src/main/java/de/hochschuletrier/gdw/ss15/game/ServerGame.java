@@ -1,4 +1,4 @@
-package de.hochschuletrier.gdw.ss15.game;
+﻿package de.hochschuletrier.gdw.ss15.game;
 
 import java.util.function.Consumer;
 
@@ -18,6 +18,7 @@ import de.hochschuletrier.gdw.ss15.game.contactlisteners.BulletListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.ImpactSoundListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.PickupListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.TriggerListener;
+import de.hochschuletrier.gdw.ss15.game.systems.BulletSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.LineOfSightSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.NetworkServerSystem;
@@ -25,6 +26,7 @@ import de.hochschuletrier.gdw.ss15.game.systems.network.PositionSynchSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.TestSatelliteSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.UpdatePhysixServer;
 import de.hochschuletrier.gdw.ss15.game.systems.network.UpdatePhysixSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.network.*;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serversocket;
 
 /**
@@ -44,7 +46,9 @@ public class ServerGame{
     private final NetworkServerSystem networkSystem = new NetworkServerSystem(this,GameConstants.PRIORITY_PHYSIX + 2);//todo magic numbers (santo hats vorgemacht)
     private final PositionSynchSystem syncPositionSystem = new PositionSynchSystem(this,GameConstants.PRIORITY_PHYSIX + 3);//todo magic numbers (boa ist das geil kann nicht mehr aufhoeren)
     private final LineOfSightSystem lineOfSightSystem = new LineOfSightSystem(physixSystem); // hier müssen noch Team-Listen übergeben werden
-    private final TestSatelliteSystem testSatelliteSystem = new TestSatelliteSystem(this);                                                                            // (+ LineOfSightSystem-Konstruktor anpassen!)
+    private final TestSatelliteSystem testSatelliteSystem = new TestSatelliteSystem(this); 
+                                                                                 // (+ LineOfSightSystem-Konstruktor anpassen!)
+    private final BulletSystem bulletSystem = new BulletSystem()   
 
     private final EntityFactoryParam factoryParam = new EntityFactoryParam();
     private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json", ServerGame.class);
@@ -70,6 +74,7 @@ public class ServerGame{
         entityFactory.init(engine, assetManager);
 
         new UpdatePhysixServer(); // magic → registers itself as listener for network packets
+        new FireServerListener(entityFactory); // ↑
 
         mapLoader.run( ( String name, float x, float y ) -> { return this.createEntity(name,  x, y); }, "data/maps/prototype.tmx",physixSystem,entityFactory );
     }
@@ -81,6 +86,7 @@ public class ServerGame{
         engine.addSystem(lineOfSightSystem);
         engine.addSystem(syncPositionSystem);
         engine.addSystem(testSatelliteSystem);
+        engine.addSystem(bulletSystem);
     }
 
     private void addContactListeners() {
@@ -94,42 +100,13 @@ public class ServerGame{
 
     private void setupPhysixWorld() {
         physixSystem.setGravity(0, 0);
-
-        /*PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody, physixSystem).position(410, 500).fixedRotation(false);
-        Body body = physixSystem.getWorld().createBody(bodyDef);
-        body.createFixture(new PhysixFixtureDef(physixSystem).density(1).friction(0.5f).shapeBox(800, 20));
-        PhysixUtil.createHollowCircle(physixSystem, 180, 180, 150, 30, 6);
-
-        createTrigger(410, 600, 3200, 40, (Entity entity) -> {
-            engine.removeEntity(entity);
-        });*/
     }
 
     public void update(float delta) {
         //Main.getInstance().screenCamera.bind();
         engine.update(delta);
-        //System.out.println("rennt");
     }
 
-    public void createTrigger(float x, float y, float width, float height, Consumer<Entity> consumer) {
-       /* Entity entity = engine.createEntity();
-        PhysixModifierComponent modifyComponent = engine.createComponent(PhysixModifierComponent.class);
-        entity.add(modifyComponent);
-
-        TriggerComponent triggerComponent = engine.createComponent(TriggerComponent.class);
-        triggerComponent.consumer = consumer;
-        entity.add(triggerComponent);
-
-        modifyComponent.schedule(() -> {
-            PhysixBodyComponent bodyComponent = engine.createComponent(PhysixBodyComponent.class);
-            PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody, physixSystem).position(x, y);
-            bodyComponent.init(bodyDef, physixSystem, entity);
-            PhysixFixtureDef fixtureDef = new PhysixFixtureDef(physixSystem).sensor(true).shapeBox(width, height);
-            bodyComponent.createFixture(fixtureDef);
-            entity.add(bodyComponent);
-        });
-        engine.addEntity(entity);*/
-    }
 
     public Entity createEntity(String name, float x, float y)
     {

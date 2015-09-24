@@ -6,17 +6,31 @@ import com.badlogic.gdx.utils.SnapshotArray;
 public class SoundEvent {
 
     public static interface Listener {
-        void onSoundEvent(String sound, Entity entity);
+        void onSoundEvent(String sound, Entity entity, boolean b);
+        void onStopSound(Entity entity);
     }
 
     private static final SnapshotArray<Listener> listeners = new SnapshotArray();
 
-    public static void emit(String sound, Entity entity) {
+    public static void emit(String sound, Entity entity, boolean b) {
         Object[] items = listeners.begin();
         for (int i = 0, n = listeners.size; i < n; i++) {
-            ((Listener)items[i]).onSoundEvent(sound, entity);
+            ((Listener)items[i]).onSoundEvent(sound, entity, b);
         }
         listeners.end();
+    }
+
+    public static void emit(String sound, Entity entity)
+    {
+        emit(sound, entity, false);
+    }
+
+    public static void stopSound(Entity entity)
+    {
+        Object[] items = listeners.begin();
+        for (int i = 0, n = listeners.size; i < n; i++) {
+            ((Listener)items[i]).onStopSound(entity);
+        }
     }
 
     public static void register(Listener listener) {

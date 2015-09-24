@@ -6,6 +6,7 @@ import java.util.function.Consumer;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 
@@ -97,7 +98,9 @@ public class MapLoader
             for (TileSet tileset : tiledMap.getTileSets()) {
                 TmxImage img = tileset.getImage();
                 String fn = CurrentResourceLocator.combinePaths(tileset.getFilename(), img.getSource());
-                tilesetImages.put(tileset, new Texture(fn));
+                Texture tex = new Texture(fn);
+                tex.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+                tilesetImages.put(tileset, tex);
             }
             for (TileSet tileset : tiledMap.getTileSets()) {
                 tileset.setAttachment(tilesetImages.get(tileset));
@@ -165,11 +168,11 @@ public class MapLoader
                     
                     Entity resultEnt;
                     String objectName = obj.getName();
-                    float xPos = obj.getX();
-                    float yPos = obj.getY();
+                    float xPos = obj.getX() + (obj.getWidth() / 2);// / 2-tileWidth/2;
+                    float yPos = obj.getY() + (obj.getHeight() / 2);// / 2-tileHeight/2;
                     resultEnt = entCreator.createEntity(objectName, xPos, yPos);
 
-                    MapSpecialEntities.CreatorInfo info = new MapSpecialEntities.CreatorInfo(entityFactory,resultEnt,tiledMap,obj,layer);
+                    MapSpecialEntities.CreatorInfo info = new MapSpecialEntities.CreatorInfo(entCreator,entityFactory,resultEnt,tiledMap,obj,layer);
                     
                     MapSpecialEntities.forAllElements( info );
                     
@@ -195,7 +198,7 @@ public class MapLoader
                     {
                         TileInfo tileInfo = tiles[x][y];
                         
-                        MapSpecialEntities.CreatorInfo info = new MapSpecialEntities.CreatorInfo(entityFactory,x,y,tiledMap, tileInfo ,layer );
+                        MapSpecialEntities.CreatorInfo info = new MapSpecialEntities.CreatorInfo( entCreator,entityFactory,x,y,tiledMap, tileInfo ,layer );
 
                         MapSpecialEntities.forAllElements( info );
                         
