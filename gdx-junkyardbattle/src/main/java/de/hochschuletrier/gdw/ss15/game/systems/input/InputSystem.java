@@ -259,14 +259,14 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
                     posX = (int) (RADIUS * Math.cos(winkel));
                     posY = (int) (RADIUS * Math.sin(winkel));
                 }
-                System.out.println("posX: " + posX + " posY: " + posY);
+                //System.out.println("posX: " + posX + " posY: " + posY);
                 break;
             case XBox360KeyMap.R1Y:
                 if (value > STICKDEADZONE || value < -STICKDEADZONE) {
                     winkel = Math.cosh(value / vertical);
                     posX = (int) (RADIUS * Math.cos(winkel));
                     posY = (int) (RADIUS * Math.sin(winkel));
-                    System.out.println("posX: " + posX + " posY: " + posY);
+                    //System.out.println("posX: " + posX + " posY: " + posY);
                 }
                 break;
         }
@@ -282,38 +282,39 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
                 horizontal = 0.0f;
                 break;
             case northEast:
-                vertical = -0.5f;
-                horizontal = 0.5f;
-                break;
-            case east:
-                vertical = 0.0f;
+                vertical = -1.0f;
                 horizontal = 1.0f;
                 break;
+            case east:
+                horizontal = 1.0f;
+                vertical = 0.0f;
+                break;
             case southEast:
-                vertical = 0.5f;
-                horizontal = 0.5f;
+                vertical = 1.0f;
+                horizontal = 1.0f;
                 break;
             case south:
-                vertical = 1.0f;
                 horizontal = 0.0f;
+                vertical = 1.0f;
                 break;
             case southWest:
-                vertical = 0.5f;
-                horizontal = -0.5f;
-                break;
-            case west:
-                vertical = 0.0f;
+                vertical = 1.0f;
                 horizontal = -1.0f;
                 break;
-            case northWest:
-                vertical = -0.5f;
-                horizontal = -0.5f;
+            case west:
+                horizontal = -1.0f;
+                vertical = 0.0f;
                 break;
-            default:
+            case northWest:
+                vertical = -1.0f;
+                horizontal = -1.0f;
+                break;
+            case center:
                 vertical = 0.0f;
                 horizontal = 0.0f;
         }
-        //debug();
+        System.out.println("pocCode: " + povCode + "\npovDirection: " + value);
+        debug();
         return false;
     }
 
@@ -347,7 +348,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
     }
 
     private void debug() {
-        System.out.println();
+        System.out.println("");
         System.out.println("horizontal: " + horizontal);
         System.out.println("vertical: " + vertical);
 
