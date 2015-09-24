@@ -56,7 +56,7 @@ public class FireServerListener implements NetworkReceivedNewPacketServerEvent.L
                 invc.addMetalShards(-1);
                 Entity projectile = factory.createEntity("Projectile", param);
                 ComponentMappers.physixBody.get(projectile).applyImpulse(dir.setLength(power));
-                
+                //Projektil soll sich in der Luft verlangsamen
                 ComponentMappers.physixBody.get(projectile).setLinearDamping(10);//10 nur als vorläufiger. AUSTESTEN
             }
 
