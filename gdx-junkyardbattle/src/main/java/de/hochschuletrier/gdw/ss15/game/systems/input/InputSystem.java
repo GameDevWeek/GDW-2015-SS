@@ -83,8 +83,6 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
                 input.posX = posX;
                 input.posY = posY;
             }
-//            System.out.println("X: " + input.posX + ", y: "+ input.posY + ", radius: " + radius);
-//            System.out.println("X: " + position.x + ", Y: " + position.y + ", radius: " + radius);
         }
     }
 
@@ -172,8 +170,11 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        //brauchen wir nicht
-        return false;
+        //brauchen wir wohl
+        controllerActive = false;
+        posX = screenX;
+        posY = screenY;
+        return true;
     }
 
     @Override
