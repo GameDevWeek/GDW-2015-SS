@@ -11,16 +11,13 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
+import de.hochschuletrier.gdw.commons.gdx.audio.SoundEmitter;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.ss15.events.SoundEvent;
 import de.hochschuletrier.gdw.ss15.events.network.client.SendPacketClientEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.Game;
-import de.hochschuletrier.gdw.ss15.game.components.InventoryComponent;
-import de.hochschuletrier.gdw.ss15.game.components.HealthComponent;
-import de.hochschuletrier.gdw.ss15.game.components.MoveComponent;
-import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
-import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
+import de.hochschuletrier.gdw.ss15.game.components.*;
 import de.hochschuletrier.gdw.ss15.game.components.input.InputComponent;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.EntityUpdatePacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.MovementPacket;
@@ -41,6 +38,7 @@ public class TestMovementSystem extends IteratingSystem{
     private ComponentMapper<MoveComponent> move;
     private ComponentMapper<InputComponent> input;
     private ComponentMapper<InventoryComponent> inventory;
+    private ComponentMapper<SoundEmitterComponent> soundEmitter;
     public TestMovementSystem(Game game, Camera cam)
     {
         super(Family.all(InputComponent.class, MoveComponent.class, InventoryComponent.class).get());
@@ -49,6 +47,7 @@ public class TestMovementSystem extends IteratingSystem{
         move = ComponentMappers.move;
         input = ComponentMappers.input;
         inventory = ComponentMappers.inventory;
+        soundEmitter = ComponentMappers.soundEmitter;
     }
 
     protected void processEntity(Entity entity, float deltaTime) {
@@ -73,10 +72,16 @@ public class TestMovementSystem extends IteratingSystem{
             if (!vectorToAdd.isZero())
             {
                 System.out.println("Sound Street Step");
-                if (ComponentMappers.soundEmitter.has(entity)) {
+                if (ComponentMappers.soundEmitter.has(entity) && !soundEmitter.get(entity).isPlaying) {
 
                     SoundEvent.emit("streetSteps", entity, true);
+                    soundEmitter.get(entity).isPlaying = true;
                 }
+            }
+            else
+            {
+                SoundEvent.stopSound(entity);
+                soundEmitter.get(entity).isPlaying = false;
             }
 
 

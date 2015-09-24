@@ -7,6 +7,7 @@ public class SoundEvent {
 
     public static interface Listener {
         void onSoundEvent(String sound, Entity entity, boolean b);
+        void onStopSound(Entity entity);
     }
 
     private static final SnapshotArray<Listener> listeners = new SnapshotArray();
@@ -22,6 +23,14 @@ public class SoundEvent {
     public static void emit(String sound, Entity entity)
     {
         emit(sound, entity, false);
+    }
+
+    public static void stopSound(Entity entity)
+    {
+        Object[] items = listeners.begin();
+        for (int i = 0, n = listeners.size; i < n; i++) {
+            ((Listener)items[i]).onStopSound(entity);
+        }
     }
 
     public static void register(Listener listener) {
