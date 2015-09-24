@@ -6,6 +6,7 @@ import java.util.function.Consumer;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 
@@ -97,7 +98,9 @@ public class MapLoader
             for (TileSet tileset : tiledMap.getTileSets()) {
                 TmxImage img = tileset.getImage();
                 String fn = CurrentResourceLocator.combinePaths(tileset.getFilename(), img.getSource());
-                tilesetImages.put(tileset, new Texture(fn));
+                Texture tex = new Texture(fn);
+                tex.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+                tilesetImages.put(tileset, tex);
             }
             for (TileSet tileset : tiledMap.getTileSets()) {
                 tileset.setAttachment(tilesetImages.get(tileset));
