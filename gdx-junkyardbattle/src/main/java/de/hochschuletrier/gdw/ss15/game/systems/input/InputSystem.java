@@ -50,6 +50,9 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
     private int posX;
     private int posY;
 
+    private float r1Horizontal;
+    private float r1Vertical;
+
     public InputSystem(int priority, OrthographicCamera camera) {
         super(Family.all(InputComponent.class, PlayerComponent.class).get(), priority);
         this.camera = camera;
