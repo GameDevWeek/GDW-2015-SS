@@ -1,6 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="128" tileheight="128" nextobjectid="32">
- <tileset firstgid="1" source="tilesets/Grundset_1.tsx"/>
+ <tileset firstgid="1" name="Grundset_1" tilewidth="128" tileheight="128" tilecount="15">
+  <image source="tilesets/Grundset_1.png" width="640" height="511"/>
+  <tile id="0">
+   <properties>
+    <property name="BlockPath" value="true"/>
+   </properties>
+  </tile>
+  <tile id="1">
+   <properties>
+    <property name="BlockPath" value="true"/>
+    <property name="BlockShoot" value="true"/>
+    <property name="BlockSight" value="true"/>
+   </properties>
+  </tile>
+  <tile id="2">
+   <properties>
+    <property name="BlockPath" value="true"/>
+    <property name="BlockShoot" value="true"/>
+    <property name="BlockSight" value="true"/>
+   </properties>
+  </tile>
+  <tile id="3">
+   <properties>
+    <property name="BlockPath" value="true"/>
+    <property name="BlockShoot" value="true"/>
+    <property name="BlockSight" value="true"/>
+   </properties>
+  </tile>
+  <tile id="5">
+   <properties>
+    <property name="BlockPath" value="true"/>
+    <property name="BlockShoot" value="true"/>
+    <property name="BlockSight" value="true"/>
+   </properties>
+  </tile>
+  <tile id="6">
+   <properties>
+    <property name="BlockPath" value="true"/>
+    <property name="BlockShoot" value="true"/>
+    <property name="BlockSight" value="true"/>
+   </properties>
+  </tile>
+  <tile id="8">
+   <properties>
+    <property name="BlockPath" value="true"/>
+   </properties>
+  </tile>
+  <tile id="10">
+   <properties>
+    <property name="BlockPath" value="true"/>
+   </properties>
+  </tile>
+  <tile id="11">
+   <properties>
+    <property name="BlockPath" value="true"/>
+   </properties>
+  </tile>
+  <tile id="12">
+   <properties>
+    <property name="BlockPath" value="true"/>
+   </properties>
+  </tile>
+  <tile id="13">
+   <properties>
+    <property name="BlockPath" value="true"/>
+   </properties>
+  </tile>
+ </tileset>
  <tileset firstgid="16" source="tilesets/Tank_Body.tsx"/>
  <tileset firstgid="28" source="tilesets/Tank_Rohr.tsx"/>
  <tileset firstgid="40" source="tilesets/Block_Rohr.tsx"/>
@@ -1815,7 +1882,6 @@
  <layer name="Above" width="30" height="30">
   <data>
    <tile gid="0"/>
-   <tile gid="8"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -1845,10 +1911,6 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="8"/>
-   <tile gid="8"/>
-   <tile gid="8"/>
-   <tile gid="8"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -1875,10 +1937,6 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="8"/>
-   <tile gid="8"/>
-   <tile gid="8"/>
-   <tile gid="8"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -1905,10 +1963,6 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="8"/>
-   <tile gid="8"/>
-   <tile gid="8"/>
-   <tile gid="8"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
@@ -1935,10 +1989,23 @@
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
-   <tile gid="8"/>
-   <tile gid="8"/>
-   <tile gid="8"/>
-   <tile gid="8"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
+   <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>
    <tile gid="0"/>

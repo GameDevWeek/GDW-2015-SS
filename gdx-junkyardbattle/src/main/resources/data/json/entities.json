@@ -183,8 +183,8 @@
                 "height": 500,
                 "srcX": 0,
                 "srcY": 0,
-                "scaleX": 0.5,
-                "scaleY": 0.5,
+                "scaleX": 0.8,
+                "scaleY": 0.8,
                 "flipX": false,
                 "flipY": false
             }

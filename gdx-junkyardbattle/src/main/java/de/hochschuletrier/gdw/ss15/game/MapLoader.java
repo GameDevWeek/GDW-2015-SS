@@ -165,8 +165,8 @@ public class MapLoader
                     
                     Entity resultEnt;
                     String objectName = obj.getName();
-                    float xPos = obj.getX();
-                    float yPos = obj.getY();
+                    float xPos = obj.getX() + obj.getWidth() / 2;
+                    float yPos = obj.getY() + obj.getHeight() / 2;
                     resultEnt = entCreator.createEntity(objectName, xPos, yPos);
 
                     MapSpecialEntities.CreatorInfo info = new MapSpecialEntities.CreatorInfo(entCreator,entityFactory,resultEnt,tiledMap,obj,layer);
