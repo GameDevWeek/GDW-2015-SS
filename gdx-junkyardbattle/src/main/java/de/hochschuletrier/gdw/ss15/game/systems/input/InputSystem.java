@@ -172,8 +172,11 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        //brauchen wir nicht
-        return false;
+        //brauchen wir wohl
+        controllerActive = false;
+        posX = screenX;
+        posY = screenY;
+        return true;
     }
 
     @Override
