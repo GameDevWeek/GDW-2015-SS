@@ -78,7 +78,7 @@ public class ServerGame{
         entityFactory.init(engine, assetManager);
 
         new UpdatePhysixServer(); // magic → registers itself as listener for network packets
-        new FireServerListener(entityFactory); // ↑
+        new FireServerListener(this); // ↑
         new GatherServerListener(physixSystem);
 
         mapLoader.run( ( String name, float x, float y ) -> { return this.createEntity(name,  x, y); }, "data/maps/3v3Alpha.tmx",physixSystem,entityFactory,assetManager );
