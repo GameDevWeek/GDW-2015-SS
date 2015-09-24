@@ -109,16 +109,8 @@
                 "restitution": 0.1
             },
             "NetworkID": {},
-            "Texture":{
-                "texture": "ball",
-                "width": 60,
-                "height": 60,
-                "srcX": 0,
-                "srcY": 0,
-                "scaleX": 1,
-                "scaleY": 1,
-                "flipX": false,
-                "flipY": false
+            "Animator": {
+                "animation_IDLE": "character_idle"
             },
             "Interpolate": {}
         }
