@@ -1,4 +1,4 @@
-﻿package de.hochschuletrier.gdw.ss15.game.systems.network;
+package de.hochschuletrier.gdw.ss15.game.systems.network;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
@@ -27,6 +27,9 @@ import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
 public class UpdatePhysixSystem extends IteratingSystem
         implements NetworkReceivedNewPacketClientEvent.Listener{
 
+    Timer timer = new Timer(200); // 200 ms timer
+
+
     public UpdatePhysixSystem(TimerSystem timerSystem)
     {
         super(Family.all(PhysixBodyComponent.class, InterpolatePositionComponent.class).get(), GameConstants.PRIORITY_UPDATE_PHYSIX);
@@ -54,12 +57,16 @@ public class UpdatePhysixSystem extends IteratingSystem
   
     @Override
     public void onReceivedNewPacket(Packet pack, Entity entity) {
-        try{
-        EntityUpdatePacket p = (EntityUpdatePacket)pack;
-        PhysixBodyComponent phxc = entity.getComponent(PhysixBodyComponent.class);
-        phxc.setPosition(p.xPos, p.yPos);
-        phxc.setAngle(p.rotation*MathUtils.degreesToRadians);
-     }catch(ClassCastException ex){}
+        try {
+
+            EntityUpdatePacket p = (EntityUpdatePacket) pack;
+            PhysixBodyComponent phxc = entity.getComponent(PhysixBodyComponent.class);
+            if (phxc != null) {
+                phxc.setPosition(p.xPos, p.yPos);
+                phxc.setAngle(p.rotation * MathUtils.degreesToRadians);
+            }
+            }catch(ClassCastException ex){
+            }
   /*
     //System.out.println("used new rotation: "+p.rotation);
     InterpolatePositionComponent interp = entity.getComponent(InterpolatePositionComponent.class);
