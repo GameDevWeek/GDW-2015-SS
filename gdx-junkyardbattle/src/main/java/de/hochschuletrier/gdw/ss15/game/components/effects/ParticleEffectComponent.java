@@ -27,19 +27,27 @@ public class ParticleEffectComponent extends Component implements Pool.Poolable{
 
     public void stop()
     {
-        //particleEffect.
         isPlaying = false;
     }
     
-    public void start(boolean reset)
+    public void changeMode(EffectMode mode)
     {
-        if(reset){
-            for(ParticleEmitter particleEmitter : particleEffect.getEmitters()){
-                particleEmitter.durationTimer=0;
-            }
+        switch(mode){
+            case START:
+                isPlaying = true;
+                break;
+            case STOP:
+                isPlaying = false;
+                break;
+            case STARTANDRESET:
+                isPlaying = true;
+                for(ParticleEmitter particleEmitter : particleEffect.getEmitters()){
+                    particleEmitter.durationTimer=0;
+                }
+                break;
+            default:
+                return ;
         }
-        
-        isPlaying = true;
     }
 
     public void setRotation(float rotation) {

@@ -11,9 +11,8 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import de.hochschuletrier.gdw.commons.gdx.ashley.SortedSubIteratingSystem;
 import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended;
-import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended.PlayMode;
 import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
-import de.hochschuletrier.gdw.ss15.events.ChangeAnimationEvent;
+import de.hochschuletrier.gdw.ss15.events.rendering.ChangeAnimationEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.components.animation.AnimationState;
@@ -24,9 +23,6 @@ import de.hochschuletrier.gdw.ss15.game.components.animation.AnimatorComponent;
  * @author Julien Saevecke
  */
 public class AnimatorRenderer extends SortedSubIteratingSystem.SubSystem implements ChangeAnimationEvent.Listener{
-
-    private float factor = 1.f;
-    
     @SuppressWarnings("unchecked")
     public AnimatorRenderer() {
         super(Family.all(AnimatorComponent.class).get());
@@ -48,7 +44,7 @@ public class AnimatorRenderer extends SortedSubIteratingSystem.SubSystem impleme
         
         AnimationExtended currentAnimation = animator.animationStates.get(animator.animationState);
         
-        animator.stateTime += deltaTime * factor;
+        animator.stateTime += deltaTime;
         
         TextureRegion keyFrame = currentAnimation.getKeyFrame(animator.stateTime);
         
