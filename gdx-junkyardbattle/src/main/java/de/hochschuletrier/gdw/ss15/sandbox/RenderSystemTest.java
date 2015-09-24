@@ -11,7 +11,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -96,7 +95,7 @@ public class RenderSystemTest extends SandboxGame {
         entityFactory.init(engine, assetManager);
         mapLoader.listen(renderSystem.getTileMapCreator());
         mapLoader.run((String name, float x, float y) -> createEntity(name, x, y), 
-                "data/maps/prototype.tmx", physixSystem);
+                "data/maps/prototype.tmx", physixSystem,entityFactory);
 
         map = mapLoader.getTiledMap();
         
@@ -132,7 +131,15 @@ public class RenderSystemTest extends SandboxGame {
 
         createEntity("greenPointLight", 50.f, 50.f);
         createEntity("blueConeLight", 500.f, 100.f);
-        createEntity("ball", 50.f, 50.f);
+        createEntity("ball", 256.f, 256.f);
+        
+        /*
+        for(int x = 0; x < 25; ++x){
+            for(int y = 0; y < 25; ++y){
+                createEntity("smokescreen", 128.f * x, 128.f * y);
+            }
+        }
+                */
         
         // Setup camera
         totalMapWidth = map.getWidth() * map.getTileWidth();
@@ -213,10 +220,14 @@ public class RenderSystemTest extends SandboxGame {
             target.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             cameraSystem.getCamera().getOrthographicCamera().unproject(target);
             
+
+            
             float angle = getAngle(posComp.x, posComp.y, target.x, target.y);
             ConeLightComponent coneLightComp = ComponentMappers.coneLight.get(player);
             
             coneLightComp.coneLight.setDirection(angle);
+            
+            coneLightComp.coneLight.setActive(Gdx.input.isButtonPressed(Input.Buttons.LEFT));
         }
     }
     

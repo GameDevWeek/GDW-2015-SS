@@ -18,7 +18,7 @@ public class InventoryComponentFactory extends ComponentFactory<EntityFactoryPar
 	public void run(Entity entity, SafeProperties meta,
 			SafeProperties properties, EntityFactoryParam param) {
 		InventoryComponent component = engine.createComponent(InventoryComponent.class);
-		component.metalShards = properties.getInt("metalShards");
+		component.setMetalShards(properties.getInt("metalShards"));
         entity.add(component);
 	}
 
