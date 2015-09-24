@@ -60,6 +60,7 @@ public class Game extends InputAdapter {
     private final SoundSystem soundSystem = new SoundSystem(cameraSystem.getCamera());
     private final MapLoader mapLoader = new MapLoader();
     private final ParticleSpawnSystem particleSpawner = new ParticleSpawnSystem(this);
+    private final DeathSystem deathSystem = new DeathSystem();
 
     public Game() {
         // If this is a build jar file, disable hotkeys
@@ -93,6 +94,7 @@ public class Game extends InputAdapter {
         engine.addSystem(updatePositionSystem);
         engine.addSystem(networksystem);
         engine.addSystem(inputSystem);
+        engine.addSystem(deathSystem);
         engine.addSystem(weaponSystem);
         engine.addSystem(cameraSystem);
         engine.addSystem(renderSystem);
