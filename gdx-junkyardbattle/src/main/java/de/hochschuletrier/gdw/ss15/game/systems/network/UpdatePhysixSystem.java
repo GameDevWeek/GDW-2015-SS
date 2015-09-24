@@ -1,4 +1,4 @@
-package de.hochschuletrier.gdw.ss15.game.systems.network;
+﻿package de.hochschuletrier.gdw.ss15.game.systems.network;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
@@ -27,16 +27,14 @@ import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
 public class UpdatePhysixSystem extends IteratingSystem
         implements NetworkReceivedNewPacketClientEvent.Listener{
 
+    Timer timer = new Timer(200); // 200 ms timer
 	long lastTimestamp = 0;
-	
-	private PhysixSystem physixSystem;
-	
-    public UpdatePhysixSystem(PhysixSystem physixSystem)
+
+    public UpdatePhysixSystem(TimerSystem timerSystem)
     {
         super(Family.all(PhysixBodyComponent.class, InterpolatePositionComponent.class).get(), GameConstants.PRIORITY_UPDATE_PHYSIX);
         NetworkReceivedNewPacketClientEvent.registerListener(PacketIds.EntityUpdate, this);
         
-       this.physixSystem = physixSystem;
     }
 
     
@@ -52,23 +50,30 @@ public class UpdatePhysixSystem extends IteratingSystem
   
     @Override
     public void onReceivedNewPacket(Packet pack, Entity entity) {
-        
-    EntityUpdatePacket p = (EntityUpdatePacket)pack;  
-    PhysixBodyComponent phxc = entity.getComponent(PhysixBodyComponent.class);
-    InterpolatePositionComponent interp = entity.getComponent(InterpolatePositionComponent.class);
+    	 
+    	try {
+
+    		EntityUpdatePacket p = (EntityUpdatePacket) pack;
+            PhysixBodyComponent phxc = entity.getComponent(PhysixBodyComponent.class);
+            if (phxc != null) {
+            	if(p.getTimestamp()>lastTimestamp)
+                {
+                	lastTimestamp = p.getTimestamp();
+                	float calcTimestamp = (float) (Main.getInstance().getClientConnection().getSocket().getTimeDifferenceMS(p.getTimestamp())/1000);
+                	//phxc.setPosition(p.xPos + calcTimestamp*p.velocityX , p.yPos + calcTimestamp*p.velocityY);
+                	phxc.setPosition(p.xPos , p.yPos);
+                	//phxc.setPosition(pos);
+                	//.setLinearVelocity(, );
+                	phxc.setLinearVelocity(p.velocityX,p.velocityY);
+                	
+                	//System.out.println("velo" +p.velocityX+ " "+ p.velocityY);
+                    
+                }
+            }
+            }catch(ClassCastException ex){
+            }
+
     
-    if(p.getTimestamp()>lastTimestamp)
-    {
-    	lastTimestamp = p.getTimestamp();
-    	float calcTimestamp = (float) (Main.getInstance().getClientConnection().getSocket().getTimeDifferenceMS(p.getTimestamp())/1000);
-    	//phxc.setPosition(p.xPos + calcTimestamp*p.velocityX , p.yPos + calcTimestamp*p.velocityY);
-    	phxc.setPosition(p.xPos , p.yPos);
-    	//phxc.setPosition(pos);
-    	//.setLinearVelocity(, );
-    	phxc.setLinearVelocity(p.velocityX,p.velocityY);
-    	
-    	System.out.println("velo" +p.velocityX+ " "+ p.velocityY);
-        }
     }
     
 }

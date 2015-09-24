@@ -16,11 +16,11 @@
         "rows" : 1
     },
     "character_idle": {
-        "filename": "data/animations/charakter_animation_Spreadsheet2.png",
-        "frames" : 9,
+        "filename": "data/animations/Charakter_Orange_Anim.png",
+        "frames" : 16,
         "frameDuration": [0.1],
         "playType" : "LOOP",
-        "columns": 9,
+        "columns": 16,
         "rows" : 1
     },
     "box": {

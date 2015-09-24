@@ -3,6 +3,7 @@ package de.hochschuletrier.gdw.ss15.game.systems.network;
 import com.badlogic.ashley.core.*;
 import com.badlogic.ashley.utils.ImmutableArray;
 import de.hochschuletrier.gdw.ss15.Main;
+import de.hochschuletrier.gdw.ss15.events.network.Base.DoNotTouchPacketEvent;
 import de.hochschuletrier.gdw.ss15.events.network.NetworkPositionEvent;
 import de.hochschuletrier.gdw.ss15.events.network.client.NetworkReceivedNewPacketClientEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
@@ -20,12 +21,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 
 /**
  * Created by lukas on 21.09.15.
  */
 
-public class NetworkClientSystem extends EntitySystem implements EntityListener {
+public class NetworkClientSystem extends EntitySystem implements EntityListener, DoNotTouchPacketEvent.Listener {
 
 
     private static final TestListenerClient testlistener = new TestListenerClient();
@@ -34,7 +36,7 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener 
     private ImmutableArray<Entity> entities;
     private Family family;
 
-
+    private LinkedList<Packet> packetBuffer = new LinkedList<>();
 
     Game game = null;
     ClientConnection connection = Main.getInstance().getClientConnection();
@@ -61,14 +63,8 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener 
     {
         //TODO check all input components
 
-        Clientsocket socket = connection.getSocket();
-        if(socket != null)
-        {
-            while(socket.isPacketAvaliable())
-            {
-                //System.out.println("Received packet");
-                ReceivedPacket(socket.getReceivedPacket());
-            }
+        while(!packetBuffer.isEmpty()){
+            ReceivedPacket(packetBuffer.removeFirst());
         }
     }
 
@@ -133,11 +129,13 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener 
     @Override
     public void addedToEngine(Engine engine){
         engine.addEntityListener(family, this);
+        DoNotTouchPacketEvent.registerListener(this);
     }
 
     @Override
     public void removedFromEngine(Engine engine){
         engine.removeEntityListener(this);
+        DoNotTouchPacketEvent.unregisterListener(this);
     }
 
     @Override
@@ -150,6 +148,11 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener 
     @Override
     public void entityRemoved(Entity entity) {
         hashMap.remove(ComponentMappers.networkID.get(entity).networkID);
+    }
+
+    @Override
+    public void onDoNotTouchPacket(Packet pack) {
+        packetBuffer.addLast(pack);
     }
 }
 

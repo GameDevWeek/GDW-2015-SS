@@ -117,8 +117,10 @@ public abstract class BaseClient implements Closeable
 
 	public void justCallDisconnectHandler()
 	{
+		//System.out.println("rennt");
 		if(m_CalledDisconnectlistener.get() == false)
 		{
+			//System.out.println("Called disconnect stuff");
 			m_CalledDisconnectlistener.set(true);
 			//System.out.println("Called");
 			Iterator<Entry<Integer, HolderSocketDisconnectListener<Object>>> it = m_DisconnectListeners.entrySet().iterator();
@@ -171,7 +173,7 @@ public abstract class BaseClient implements Closeable
 				{
 					m_DisconnectHandler=null;
 					m_ByDisconned.set(false);
-					m_CalledDisconnectlistener.set(true);
+					m_CalledDisconnectlistener.set(false);
 					return;
 				}
 			}
@@ -182,14 +184,14 @@ public abstract class BaseClient implements Closeable
 				m_DisconnectHandler=null;
 				m_ByDisconned.set(false);
 				e.printStackTrace();
-				m_CalledDisconnectlistener.set(true);
+				m_CalledDisconnectlistener.set(false);
 				return;
 			}
 			m_ThreadPool.execute(()->RunReceiveDisconnect());
 		}
 		else
 		{
-			m_CalledDisconnectlistener.set(true);
+			m_CalledDisconnectlistener.set(false);
 		}
 	}
 

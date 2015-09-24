@@ -35,6 +35,7 @@ public class TextureComponentFactory extends ComponentFactory<EntityFactoryParam
         component.scaleY = properties.getFloat("scaleY", 1.0f);
         component.flipX = properties.getBoolean("flipX", false);
         component.flipY = properties.getBoolean("flipY", false);
+        component.initialRotation = properties.getFloat("initialRotation", 0);
         
         assert(component.texture != null);
         

@@ -31,9 +31,9 @@ public class UpdatePhysixServer implements NetworkReceivedNewPacketServerEvent.L
         try{
         	
         	MovementPacket p = (MovementPacket)pack;
-        	Vector2 velocity = new Vector2(p.xPos, p.yPos).nor().scl(200);
+        	Vector2 velocity = new Vector2(p.xPos, p.yPos).nor().scl(400);
             phxc.setLinearVelocity(velocity);
-            System.out.println("Velocity server "+p.xPos+" "+ p.yPos);
+            //System.out.println("Velocity server "+p.xPos+" "+ p.yPos);
             phxc.setAngle(p.rotation * MathUtils.degreesToRadians);
             }catch (ClassCastException e){}
     }

@@ -53,6 +53,7 @@ public class DevConsole {
         register(toggle_f);
         register(inc_f);
         register(dec_f);
+        register(set_f);
         register(reset_f);
     }
 
@@ -855,6 +856,44 @@ public class DevConsole {
                     amount = QuietUtils.parseFloat(args.get(2), amount);
                 }
                 ((CVarFloat) cvar).add(-amount, false);
+                logger.info("set {} = \"{}\"", cvar.getName(), cvar.toString());
+            } else {
+                logger.warn("This command only works on int and float cvars");
+            }
+        }
+    };
+    
+    private final ConsoleCmd set_f = new ConsoleCmd("set", CCmdFlags.SYSTEM, "Sets a CVar to a specific value", 1) {
+        @Override
+        public void showUsage() {
+            showUsage("<variable> [amount]");
+        }
+
+        @Override
+        public void complete(String arg, List<String> results) {
+            cvarCompleter.complete(arg, results);
+        }
+
+        @Override
+        public void execute(List<String> args) {
+            CVar cvar = getWriteableCVar(args.get(1));
+            if (cvar == null) {
+                return;
+            }
+
+            if (cvar instanceof CVarInt) {
+                int amount = 1;
+                if (args.size() == 3) {
+                    amount = QuietUtils.parseInt(args.get(2), amount);
+                }
+                ((CVarInt) cvar).set(amount, false);
+                logger.info("set {} = \"{}\"", cvar.getName(), cvar.toString());
+            } else if (cvar instanceof CVarFloat) {
+                float amount = 1.0f;
+                if (args.size() == 3) {
+                    amount = QuietUtils.parseFloat(args.get(2), amount);
+                }
+                ((CVarFloat) cvar).set(amount, false);
                 logger.info("set {} = \"{}\"", cvar.getName(), cvar.toString());
             } else {
                 logger.warn("This command only works on int and float cvars");

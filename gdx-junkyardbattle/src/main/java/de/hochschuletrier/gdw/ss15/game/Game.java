@@ -1,4 +1,4 @@
-package de.hochschuletrier.gdw.ss15.game;
+﻿package de.hochschuletrier.gdw.ss15.game;
 
 import box2dLight.RayHandler;
 
@@ -52,9 +52,9 @@ public class Game extends InputAdapter {
     private final TestMovementSystem testMovementSystem = new TestMovementSystem(this, cameraSystem.getCamera().getOrthographicCamera());
     private final TimerSystem timerSystem = new TimerSystem();
     private final WeaponSystem weaponSystem = new WeaponSystem();
-    private final RotationSystem rotationSystem = new RotationSystem(cameraSystem.getCamera().getOrthographicCamera());
-    private final UpdatePhysixSystem updatePhysixSystem = new UpdatePhysixSystem(physixSystem);
-    private final InputSystem inputSystem = new InputSystem();
+    private final UpdatePhysixSystem updatePhysixSystem = new UpdatePhysixSystem(timerSystem);
+    private final InputSystem inputSystem = new InputSystem(0,cameraSystem.getCamera().getOrthographicCamera());
+    private final SoundSystem soundSystem = new SoundSystem(cameraSystem.getCamera());
     private final MapLoader mapLoader = new MapLoader();
 
     public Game() {
@@ -80,7 +80,7 @@ public class Game extends InputAdapter {
         entityFactory.init(engine, assetManager);
         mapLoader.listen(renderSystem.getTileMapCreator());
         mapLoader.run((String name, float x, float y) -> createEntity(name, x, y),
-                "data/maps/prototype.tmx", physixSystem);
+                "data/maps/prototype.tmx", physixSystem,entityFactory);
     }
 
     private void addSystems() {
@@ -93,8 +93,8 @@ public class Game extends InputAdapter {
         engine.addSystem(cameraSystem);
         engine.addSystem(renderSystem);
         engine.addSystem(testMovementSystem);
-        engine.addSystem(rotationSystem);
         engine.addSystem(updatePhysixSystem);
+        engine.addSystem(soundSystem);
     }
 
     private void addContactListeners() {
