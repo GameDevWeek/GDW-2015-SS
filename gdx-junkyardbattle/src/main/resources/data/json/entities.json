@@ -1,4 +1,15 @@
 {
+    "footstepeffect":{
+        "meta": {},
+        "components":{
+            "Position":{
+                "layer": 1
+            },
+            "ParticleEffect":{
+                "effectname": "footsteps"
+            }
+        }
+    },
     "smokescreen": {
         "meta": {},
         "components":{
@@ -204,6 +215,9 @@
                 "restitution": 0.1
             },
             "NetworkID": {},
+            "ParticleEffect":{
+                "effectname": "shoot"
+            },
             "Damage": {
                 "damageValue": 10,
                 "damageToPlayer": true,

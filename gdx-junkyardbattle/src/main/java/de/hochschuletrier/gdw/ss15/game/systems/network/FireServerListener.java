@@ -7,6 +7,8 @@ import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixModifierComponent;
 import de.hochschuletrier.gdw.ss15.events.network.server.NetworkReceivedNewPacketServerEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
+import de.hochschuletrier.gdw.ss15.game.Game;
+import de.hochschuletrier.gdw.ss15.game.ServerGame;
 import de.hochschuletrier.gdw.ss15.game.components.BulletComponent;
 import de.hochschuletrier.gdw.ss15.game.components.InventoryComponent;
 import de.hochschuletrier.gdw.ss15.game.components.WeaponComponent;
@@ -22,10 +24,10 @@ import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
  */
 public class FireServerListener implements NetworkReceivedNewPacketServerEvent.Listener{
 
-    private EntityFactory<EntityFactoryParam> factory;
+    private ServerGame game;
 
-    public FireServerListener(EntityFactory<EntityFactoryParam> factory){
-        this.factory = factory;
+    public FireServerListener(ServerGame game){
+        this.game = game;
         NetworkReceivedNewPacketServerEvent.registerListener(PacketIds.Fire, this);
     }
 
@@ -33,6 +35,8 @@ public class FireServerListener implements NetworkReceivedNewPacketServerEvent.L
     public void onReceivedNewPacket(Packet pack, Entity ent) {
         PhysixBodyComponent phxc = ComponentMappers.physixBody.get(ent);
         InventoryComponent invc = ComponentMappers.inventory.get(ent);
+        
+        //System.out.print("akjsdklasdjlaskdashkdjashkjdahjksad");
         try{
             FirePacket packet = (FirePacket)pack;
 
@@ -55,14 +59,14 @@ public class FireServerListener implements NetworkReceivedNewPacketServerEvent.L
                 //physix component
                 float projectPlayerDistance = 5.f;
                 float power = 50.f;
-                EntityFactoryParam param = new EntityFactoryParam();
+                //EntityFactoryParam param = new EntityFactoryParam();
                 Vector2 startPosition = phxc.getPosition(); //ent.getComponent(PhysixBodyComponent.class).getBody().getPosition()/*.add(dir.setLength(projectPlayerDistance))*/;
-                param.x = startPosition.x;
-                param.y = startPosition.y;
+                //param.x = startPosition.x;
+                //param.y = startPosition.y;
 
 //                System.out.println("schuss server");
                 invc.addMetalShards(-1);
-                Entity projectile = factory.createEntity("projectile", param);
+                Entity projectile = game.createEntity("projectile", startPosition.x, startPosition.y);
 //                if(projectile.getComponent(BulletComponent.class) != null)
 //                	System.out.println("Has bullet component");
                 projectile.getComponent(PhysixModifierComponent.class).runnables.add(() -> {
