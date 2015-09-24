@@ -125,7 +125,8 @@
             "Animator": {
                 "animation_IDLE": "character_idle"
             },
-            "Interpolate": {}
+            "Interpolate": {},
+            "SoundEmitter": {}
         }
     },
 
@@ -155,7 +156,8 @@
             "Interpolate": {},
             "Inventory":{},
             "Weapon":{},
-            "Health":{}
+            "Health":{},
+            "SoundEmitter": {}
         }
     },
 

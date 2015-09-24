@@ -59,12 +59,25 @@ public class SoundSystem extends IteratingSystem implements SoundEvent.Listener 
         soundEmitter.emitter.setPosition(position.x, position.y, 0);
         soundEmitter.emitter.update();
     }
-
     @Override
-    public void onSoundEvent(String sound, Entity entity) {
+    public void onSoundEvent(String sound, Entity entity, boolean b) {
         SoundEmitterComponent soundEmitter = ComponentMappers.soundEmitter.get(entity);
+        //System.out.println(soundEmitter.emitter);
         soundEmitter.emitter.play(assetManager.getSound(sound), false);
-        
+
+    }
+
+    public void onStopSound(Entity entity)
+    {
+        ComponentMappers.soundEmitter.get(entity).emitter.dispose();
+    }
+
+
+
+
+    public void onSoundEvent(String sound, Entity entity)
+    {
+        onSoundEvent(sound, entity, false);
     }
 
 }
