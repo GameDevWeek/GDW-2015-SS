@@ -1,7 +1,7 @@
 {
-   "smokescreen": {
+    "smokescreen": {
         "meta": {},
-        "components":{
+        "components": {
             "Position": {},
             "ParticleEffect": {
                 "effectname": "smoke"
@@ -12,7 +12,7 @@
         "meta": {},
         "components": {
             "Position": {},
-            "ImpactSound" : {
+            "ImpactSound": {
                 "sound": "click",
                 "minImpulseStrength": 20,
                 "minSpeed": 20,
@@ -34,14 +34,14 @@
                 "friction": 0.2,
                 "restitution": 0.4
             },
-            "Input":{}
+            "Input": {}
         }
     },
     "box": {
         "meta": {},
         "components": {
             "Position": {},
-            "ImpactSound" : {
+            "ImpactSound": {
                 "sound": "click",
                 "minImpulseStrength": 20,
                 "minSpeed": 20,
@@ -63,30 +63,29 @@
         "meta": {},
         "components": {
             "Position": {},
-			"PointLight": {
-				"color": "0, 1, 0",
-				"distance": 10
-			}
+            "PointLight": {
+                "color": "0, 1, 0",
+                "distance": 10
+            }
         }
     },
     "blueConeLight": {
         "meta": {},
         "components": {
             "Position": {},
-			"ConeLight": {
-				"color": "0, 0, 1",
-				"distance": 10,
-				"coneDegree": 45,
-				"degree": 45
-			}
+            "ConeLight": {
+                "color": "0, 0, 1",
+                "distance": 10,
+                "coneDegree": 45,
+                "degree": 45
+            }
         }
     },
     "player": {
         "meta": {},
         "components": {
-            "Player":{},
-            "Position": {},
             "Player": {},
+            "Position": {},
             "PhysixBody": {
                 "type": "circle",
                 "size": 40,
@@ -95,20 +94,19 @@
                 "restitution": 0.1,
                 "fixedRotation": true
             },
-            "Client":{},
-            "PositionSynch":{
+            "Client": {},
+            "PositionSynch": {
                 "clientname": "clientPlayer"
             },
             "Interpolate": {},
             "Inventory": {},
-            "Move":{
-            	"speed": 300,
-                "metalShards": 100
+            "Move": {
+                "speed": 300,
+                "metalShards": 0
             },
             "Health": {}
         }
     },
-
     "clientPlayer": {
         "meta": {},
         "components": {
@@ -132,7 +130,6 @@
             "SoundEmitter": {}
         }
     },
-
     "clientOwnPlayer": {
         "meta": {},
         "components": {
@@ -153,21 +150,19 @@
                 "animation_IDLE": "character_idle",
                 "initialRotation": 90
             },
-
-            "Move":{
+            "Move": {
                 "speed": 10
             },
-            "Input":{},
+            "Input": {},
             "Interpolate": {},
-            "Inventory":{
-            "metalShards": 0
+            "Inventory": {
+                "metalShards": 0
             },
-            "Weapon":{},
-            "Health":{},
+            "Weapon": {},
+            "Health": {},
             "SoundEmitter": {}
         }
     },
-
     "projectile": {
         "meta": {},
         "components": {
@@ -188,12 +183,11 @@
                 "playerID": -1
             },
             "Interpolate": {},
-            "PositionSynch":{
+            "PositionSynch": {
                 "clientname": "clientProjectile"
             }
         }
     },
-
     "clientProjectile": {
         "meta": {},
         "components": {
@@ -214,7 +208,6 @@
             "Bullet": {}
         }
     },
-
     "Base": {
         "meta": {},
         "components": {
@@ -225,24 +218,47 @@
                 "density": 100,
                 "friction": 0.5,
                 "restitution": 0,
-                "sensor" : true
+                "sensor": true
             }
         }
     },
-    
     "SatelliteSite": {
         "meta": {},
         "components": {
             "Position": {},
+            "SpawnSatellite": {}
+        }
+    },
+    "SatelliteSiteServer": {
+        "meta": {},
+        "components": {
+            "Position": {},
+            "PositionSynch": {
+                "clientname": "SatelliteClient"
+            },
             "PhysixBody": {
                 "type": "circle",
-                "size": 90,
+                "size": 5,
                 "density": 10,
                 "friction": 0.5,
                 "restitution": 0.1,
                 "sensor": true
             },
-            "Texture":{
+            "Damage": {
+                "damageValue": 100,
+                "damageToPlayer": true,
+                "damageToTile": true
+            },
+            "Inventory": {
+            "metalShards": 0
+            }
+        }
+    },
+    "SatelliteClient": {
+        "meta": {},
+        "components": {
+        	"Position":{},
+            "Texture": {
                 "texture": "satellite",
                 "width": 1600,
                 "height": 800,
@@ -252,68 +268,42 @@
                 "scaleY": 0.25,
                 "flipX": false,
                 "flipY": false,
-                "offsetX": 0,
-                "offsetY": 60,
                 "initialRotation": 180
             },
-            "NetworkID": {}
-        }
-    },
-    
-    "SatelliteSiteServer": {
-        "meta": {},
-        "components": {
-            "Position": {},
-            "PositionSynch": {
-            "clientname": "SatelliteSite"
-            },
-            
+            "NetworkID": {},
             "PhysixBody": {
                 "type": "circle",
-                "size": 5,
+                "size": 90,
                 "density": 10,
                 "friction": 0.5,
-                "restitution": 0.1
-            },
-             "Damage": {
-            	"damageValue": 100,
-            	"damageToPlayer": true,
-            	"damageToTile": true
-            },
-            "Health":{
-            	"health": 1
-          	},
-          	"Inventory": {}
-      	}
+                "restitution": 0.1,
+                "sensor": true
+            }
+        }
     },
-    
-    
     "Spawn": {
         "meta": {},
         "components": {
             "Position": {}
         }
     },
-    
     "JunkSpawn": {
         "meta": {},
         "components": {
             "Position": {}
         }
     },
-    
     "JunkPile": {
         "meta": {},
         "components": {
             "Position": {}
         }
     },
-
     "Junk": {
         "meta": {},
         "components": {
             "Position": {},
-            "Texture":{
+            "Texture": {
                 "texture": "junk0",
                 "width": 120,
                 "height": 120,
@@ -326,7 +316,6 @@
             }
         }
     },
-    
     "metal": {
         "meta": {},
         "components": {
@@ -338,7 +327,7 @@
                 "friction": 0.3,
                 "restitution": 0.2
             },
-            "Texture":{
+            "Texture": {
                 "texture": "junk0",
                 "width": 120,
                 "height": 120,
@@ -349,6 +338,6 @@
                 "flipX": false,
                 "flipY": false
             }
-       }
+        }
     }
 }

@@ -47,4 +47,5 @@ public class ComponentMappers {
     public static final ComponentMapper<ParticleEffectComponent> particleEffect = ComponentMapper.getFor(ParticleEffectComponent.class);
     public static final ComponentMapper<MineableComponent> mineable = ComponentMapper.getFor(MineableComponent.class);
     public static final ComponentMapper<InterpolatePositionComponent> interpolate = ComponentMapper.getFor(InterpolatePositionComponent.class);
+    public static final ComponentMapper<SpawnSatelliteComponent> spawnSatellite = ComponentMapper.getFor(SpawnSatelliteComponent.class);
 }

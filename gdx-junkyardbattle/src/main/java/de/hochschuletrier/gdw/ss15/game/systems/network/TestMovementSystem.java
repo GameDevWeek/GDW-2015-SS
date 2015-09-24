@@ -42,7 +42,7 @@ public class TestMovementSystem extends IteratingSystem{
     private ComponentMapper<InventoryComponent> inventory;
     public TestMovementSystem(Game game, Camera cam)
     {
-        super(Family.all(InputComponent.class, MoveComponent.class, InventoryComponent.class).get());
+        super(Family.all(MoveComponent.class).get());
         this.game = game;
         this.camera = cam;
         move = ComponentMappers.move;
@@ -61,7 +61,6 @@ public class TestMovementSystem extends IteratingSystem{
 
         	InputComponent input = ComponentMappers.input.get(entity);
 	        PositionComponent posc = ComponentMappers.position.get(entity);
-	        InventoryComponent inventory = ComponentMappers.inventory.get(entity);
 	        Vector3 mousepos = camera.unproject(new Vector3(input.posX, input.posY,0));
 	        Vector2 mousepos2 = new Vector2(mousepos.x, mousepos.y);
 	        

@@ -252,6 +252,8 @@ public class MapSpecialEntities
     }
     
     
+    
+    
     /**
      * Klasse zum laden eines 'Dummy' Objects
      * Diese Klasse kopieren um ein Object zu veraendern
@@ -279,6 +281,7 @@ public class MapSpecialEntities
             /// }
         }
     }
+   
     
     
     /**

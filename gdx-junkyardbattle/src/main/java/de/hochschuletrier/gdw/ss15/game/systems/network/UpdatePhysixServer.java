@@ -39,7 +39,6 @@ public class UpdatePhysixServer implements NetworkReceivedNewPacketServerEvent.L
             //InventoryComponent inventory = ComponentMappers.inventory.get(ent);
             MoveComponent move = ComponentMappers.move.get(ent);
             
-            inventory.setMetalShards(0);
             Vector2 vel = new Vector2(p.xPos,p.yPos);
 
            // System.out.println("Base : "+vel);
