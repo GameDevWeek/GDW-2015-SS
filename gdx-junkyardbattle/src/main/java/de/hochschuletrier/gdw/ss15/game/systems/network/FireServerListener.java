@@ -7,6 +7,7 @@ import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixModifierComponent;
 import de.hochschuletrier.gdw.ss15.events.network.server.NetworkReceivedNewPacketServerEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
+import de.hochschuletrier.gdw.ss15.game.components.BulletComponent;
 import de.hochschuletrier.gdw.ss15.game.components.InventoryComponent;
 import de.hochschuletrier.gdw.ss15.game.components.WeaponComponent;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
@@ -59,8 +60,11 @@ public class FireServerListener implements NetworkReceivedNewPacketServerEvent.L
                 param.x = startPosition.x;
                 param.y = startPosition.y;
 
+//                System.out.println("schuss server");
                 invc.addMetalShards(-1);
                 Entity projectile = factory.createEntity("projectile", param);
+//                if(projectile.getComponent(BulletComponent.class) != null)
+//                	System.out.println("Has bullet component");
                 projectile.getComponent(PhysixModifierComponent.class).runnables.add(() -> {
                     //projectile.getComponent(PhysixBodyComponent.class).applyImpulse(dir.setLength(power));
                     //                 ComponentMappers.physixBody.get(projectile).setLinearDamping(10);//10 nur als vorläufiger. AUSTESTEN

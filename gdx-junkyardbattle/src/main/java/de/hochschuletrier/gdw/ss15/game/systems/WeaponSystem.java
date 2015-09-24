@@ -49,7 +49,6 @@ public class WeaponSystem extends IteratingSystem {
             if(wpc.fireChannelTime > 0) { // left button is released
                 WeaponUncharged.emit();
 
-
                 FirePacket fire = new FirePacket(wpc.fireChannelTime);
                 SendPacketClientEvent.emit(fire, true);
                 System.out.println("emit fire package! " + wpc.fireChannelTime);
