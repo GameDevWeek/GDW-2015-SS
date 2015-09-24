@@ -54,7 +54,6 @@ public class Game extends InputAdapter {
     private final TestMovementSystem testMovementSystem = new TestMovementSystem(this, cameraSystem.getCamera().getOrthographicCamera());
     private final TimerSystem timerSystem = new TimerSystem();
     private final WeaponSystem weaponSystem = new WeaponSystem();
-    private final RotationSystem rotationSystem = new RotationSystem(cameraSystem.getCamera().getOrthographicCamera());
     private final UpdatePhysixSystem updatePhysixSystem = new UpdatePhysixSystem(timerSystem);
     private final InputSystem inputSystem = new InputSystem();
     private final MapLoader mapLoader = new MapLoader();
@@ -99,7 +98,6 @@ public class Game extends InputAdapter {
         engine.addSystem(cameraSystem);
         engine.addSystem(renderSystem);
         engine.addSystem(testMovementSystem);
-        engine.addSystem(rotationSystem);
         engine.addSystem(updatePhysixSystem);
     }
 
