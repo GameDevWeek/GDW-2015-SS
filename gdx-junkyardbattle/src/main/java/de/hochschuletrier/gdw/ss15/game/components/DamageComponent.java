@@ -8,7 +8,7 @@ public class DamageComponent extends Component implements Poolable
 	public int damage;
     public boolean damageToPlayer;
     public boolean damageToTile;
-    public float radius;
+    public int radiusInTiles;
 
 	@Override
 	public void reset() 
@@ -16,7 +16,7 @@ public class DamageComponent extends Component implements Poolable
 		damage = 0;
         damageToPlayer = false;
         damageToTile = false;	
-        radius = 0;
+        radiusInTiles = 0;
 	}
 
 }
