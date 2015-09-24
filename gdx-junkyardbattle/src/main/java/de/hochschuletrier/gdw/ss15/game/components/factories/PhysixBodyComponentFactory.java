@@ -85,6 +85,7 @@ public class PhysixBodyComponentFactory extends ComponentFactory<EntityFactoryPa
         return new PhysixFixtureDef(physixSystem)
                 .density(properties.getFloat("density", 5))
                 .friction(properties.getFloat("friction", 5))
+                .sensor(properties.getBoolean("sensor", false) )
                 .restitution(properties.getFloat("restitution", 0));
     }
 }

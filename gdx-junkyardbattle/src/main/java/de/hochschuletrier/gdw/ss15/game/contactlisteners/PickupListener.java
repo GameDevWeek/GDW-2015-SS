@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixContact;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixContactListener;
+import de.hochschuletrier.gdw.ss15.events.PickupEvent;
 import de.hochschuletrier.gdw.ss15.game.components.InventoryComponent;
 
 public class PickupListener implements PhysixContactListener{
@@ -17,19 +18,8 @@ public class PickupListener implements PhysixContactListener{
 	}
 	@Override
 	public void beginContact(PhysixContact contact) {
-		InventoryComponent inv = contact.getOtherComponent().getEntity().getComponent(InventoryComponent.class);
-		if(inv != null)
-		{
-
-			//Pickup nur aufheben, wenn die maximale Shards Anzahl nicht überschritten wird
-			if(inv.setMetalShards(inv.getMetalShards()+1))
-			{
-				//Pickup Sounds etc. hier hinzufügen
-				engine.removeEntity(contact.getMyComponent().getEntity());
-			}
-			else//Kollision zwischen Player und Pickup ausgeschaltet-Player können durchlaufen
-				contact.setEnabled(false);
-		}
+		if (contact.getOtherComponent() != null)
+			PickupEvent.emit(contact);
 	}
 
 	@Override
@@ -40,7 +30,7 @@ public class PickupListener implements PhysixContactListener{
 
 	@Override
 	public void preSolve(PhysixContact contact, Manifold oldManifold) {
-		// TODO Auto-generated method stub
+		contact.setEnabled(false);
 		
 	}
 

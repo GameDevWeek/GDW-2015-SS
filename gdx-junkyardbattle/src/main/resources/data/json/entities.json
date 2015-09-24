@@ -10,7 +10,7 @@
             }
         }
     },
-    "smokescreen": {
+   "smokescreen": {
         "meta": {},
         "components":{
             "Position": {},
@@ -45,7 +45,6 @@
                 "friction": 0.2,
                 "restitution": 0.4
             },
-            "Move":{},
             "Input":{}
         }
     },
@@ -112,11 +111,12 @@
                 "clientname": "clientPlayer"
             },
             "Interpolate": {},
-            "Health": {},
-            "Inventory": {
+            "Inventory": {},
+            "Move":{
+            	"speed": 300,
                 "metalShards": 100
-            }
-
+            },
+            "Health": {}
         }
     },
 
@@ -170,7 +170,9 @@
             },
             "Input":{},
             "Interpolate": {},
-            "Inventory":{},
+            "Inventory":{
+                "metalShards":0
+            },
             "Weapon":{},
             "Health":{},
             "SoundEmitter": {}
@@ -232,22 +234,12 @@
         "components": {
             "Position": {},
             "PhysixBody": {
-                "type": "circle",
-                "size": 5,
-                "density": 10,
+                "type": "box",
+                "size": 520,
+                "density": 100,
                 "friction": 0.5,
-                "restitution": 0.1
-            },
-            "Texture":{
-                "texture": "base",
-                "width": 500,
-                "height": 500,
-                "srcX": 0,
-                "srcY": 0,
-                "scaleX": 0.8,
-                "scaleY": 0.8,
-                "flipX": false,
-                "flipY": false
+                "restitution": 0,
+                "sensor" : true
             }
         }
     },
@@ -258,29 +250,38 @@
             "Position": {},
             "PhysixBody": {
                 "type": "circle",
-                "size": 5,
+                "size": 90,
                 "density": 10,
                 "friction": 0.5,
-                "restitution": 0.1
+                "restitution": 0.1,
+                "sensor": true
             },
             "Texture":{
-                "texture": "ball",
-                "width": 60,
-                "height": 60,
+                "texture": "satellite",
+                "width": 1600,
+                "height": 800,
                 "srcX": 0,
                 "srcY": 0,
-                "scaleX": 1,
-                "scaleY": 1,
+                "scaleX": 0.25,
+                "scaleY": 0.25,
                 "flipX": false,
-                "flipY": false
-            }
+                "flipY": false,
+                "offsetX": 0,
+                "offsetY": 60,
+                "initialRotation": 180
+            },
+            "NetworkID": {}
         }
     },
     
-    "Spawn": {
+    "SatelliteSiteServer": {
         "meta": {},
         "components": {
             "Position": {},
+            "PositionSynch": {
+            "clientname": "SatelliteSite"
+            },
+            
             "PhysixBody": {
                 "type": "circle",
                 "size": 5,
@@ -288,8 +289,46 @@
                 "friction": 0.5,
                 "restitution": 0.1
             },
+             "Damage": {
+            	"damageValue": 100,
+            	"damageToPlayer": true,
+            	"damageToTile": true
+            },
+            "Health":{
+            	"health": 1
+          	},
+          	"Inventory": {}
+      	}
+    },
+    
+    
+    "Spawn": {
+        "meta": {},
+        "components": {
+            "Position": {}
+        }
+    },
+    
+    "JunkSpawn": {
+        "meta": {},
+        "components": {
+            "Position": {}
+        }
+    },
+    
+    "JunkPile": {
+        "meta": {},
+        "components": {
+            "Position": {}
+        }
+    },
+
+    "Junk": {
+        "meta": {},
+        "components": {
+            "Position": {},
             "Texture":{
-                "texture": "player_spawn",
+                "texture": "junk0",
                 "width": 120,
                 "height": 120,
                 "srcX": 0,
@@ -302,56 +341,6 @@
         }
     },
     
-    "JunkSpawn": {
-        "meta": {},
-        "components": {
-            "Position": {},
-            "PhysixBody": {
-                "type": "circle",
-                "size": 5,
-                "density": 10,
-                "friction": 0.5,
-                "restitution": 0.1
-            },
-            "Texture":{
-                "texture": "junk_spawn",
-                "width": 120,
-                "height": 120,
-                "srcX": 0,
-                "srcY": 0,
-                "scaleX": 0.3,
-                "scaleY": 0.3,
-                "flipX": false,
-                "flipY": false
-            }
-        }
-    },
-    
-    "JunkPile": {
-        "meta": {},
-        "components": {
-            "Position": {},
-            "PhysixBody": {
-                "type": "circle",
-                "size": 5,
-                "density": 10,
-                "friction": 0.5,
-                "restitution": 0.1
-            },
-            "Texture":{
-                "texture": "junk_spawn",
-                "width": 120,
-                "height": 120,
-                "srcX": 0,
-                "srcY": 0,
-                "scaleX": 0.3,
-                "scaleY": 0.3,
-                "flipX": false,
-                "flipY": false
-            }
-        }
-    },
-
     "metal": {
         "meta": {},
         "components": {
@@ -364,7 +353,7 @@
                 "restitution": 0.2
             },
             "Texture":{
-                "texture": "junk",
+                "texture": "junk0",
                 "width": 120,
                 "height": 120,
                 "srcX": 0,
@@ -373,9 +362,11 @@
                 "scaleY": 0.2,
                 "flipX": false,
                 "flipY": false
+            },
+            "Pickable":{},
+            "Inventory":{
+                "metalShards":115
             }
        }
     }
-
-
 }

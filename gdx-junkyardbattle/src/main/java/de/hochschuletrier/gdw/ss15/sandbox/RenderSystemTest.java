@@ -95,7 +95,7 @@ public class RenderSystemTest extends SandboxGame {
         entityFactory.init(engine, assetManager);
         mapLoader.listen(renderSystem.getTileMapCreator());
         mapLoader.run((String name, float x, float y) -> createEntity(name, x, y), 
-                "data/maps/prototype.tmx", physixSystem,entityFactory);
+                "data/maps/prototype.tmx", physixSystem,entityFactory,assetManager);
 
         map = mapLoader.getTiledMap();
         
