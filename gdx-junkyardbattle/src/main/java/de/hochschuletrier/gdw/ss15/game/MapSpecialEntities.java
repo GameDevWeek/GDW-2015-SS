@@ -185,7 +185,6 @@ public class MapSpecialEntities
                 info.creator.createEntity("metal", x, y);
             }
 
-            info.creator.createEntity("metal", 10, 10);
             /// eine Componente herraussuchen 
             // ConeLightComponent light = info.entity.getComponent( ConeLightComponent.class );
             

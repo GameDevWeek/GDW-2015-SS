@@ -212,21 +212,10 @@
             "Position": {},
             "PhysixBody": {
                 "type": "circle",
-                "size": 5,
+                "size": 1,
                 "density": 10,
                 "friction": 0.5,
                 "restitution": 0.1
-            },
-            "Texture":{
-                "texture": "base",
-                "width": 500,
-                "height": 500,
-                "srcX": 0,
-                "srcY": 0,
-                "scaleX": 0.8,
-                "scaleY": 0.8,
-                "flipX": false,
-                "flipY": false
             }
         }
     },
