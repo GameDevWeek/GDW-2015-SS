@@ -40,7 +40,7 @@ public class TextureRenderer extends SortedSubIteratingSystem.SubSystem {
                 texture.height,
                 texture.scaleX, 
                 texture.scaleY, 
-                position.rotation,
+                texture.initialRotation + position.rotation,
                 texture.srcX, 
                 texture.srcY,
                 texture.width,
