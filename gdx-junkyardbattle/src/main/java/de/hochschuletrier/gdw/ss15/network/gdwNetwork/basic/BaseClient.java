@@ -117,10 +117,10 @@ public abstract class BaseClient implements Closeable
 
 	public void justCallDisconnectHandler()
 	{
-		System.out.println("rennt");
+		//System.out.println("rennt");
 		if(m_CalledDisconnectlistener.get() == false)
 		{
-			System.out.println("Called disconnect stuff");
+			//System.out.println("Called disconnect stuff");
 			m_CalledDisconnectlistener.set(true);
 			//System.out.println("Called");
 			Iterator<Entry<Integer, HolderSocketDisconnectListener<Object>>> it = m_DisconnectListeners.entrySet().iterator();

@@ -42,9 +42,8 @@ public class Game extends InputAdapter {
    );
    private final PhysixDebugRenderSystem physixDebugRenderSystem = new PhysixDebugRenderSystem(GameConstants.PRIORITY_DEBUG_WORLD);
     
-    private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem(GameConstants.PRIORITY_PHYSIX + 1);
+    private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem();
     private final NetworkClientSystem networksystem = new NetworkClientSystem(this,GameConstants.PRIORITY_PHYSIX+2);
-    private final TestMovementSystem testMovementSystem = new TestMovementSystem(this);
     private final MoveSystem moveSystem = new MoveSystem();
     private final EntityFactoryParam factoryParam = new EntityFactoryParam();
     private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json", Game.class);
@@ -52,7 +51,7 @@ public class Game extends InputAdapter {
     private final CameraSystem cameraSystem = new CameraSystem();
 
     private final RenderSystem renderSystem = new RenderSystem(physixSystem, cameraSystem.getCamera().getOrthographicCamera(), engine);
-
+    private final TestMovementSystem testMovementSystem = new TestMovementSystem(this, cameraSystem.getCamera().getOrthographicCamera());
     private final TimerSystem timerSystem = new TimerSystem();
     private final WeaponSystem weaponSystem = new WeaponSystem();
     private final RotationSystem rotationSystem = new RotationSystem(cameraSystem.getCamera().getOrthographicCamera());
@@ -84,7 +83,6 @@ public class Game extends InputAdapter {
         addContactListeners();
         setupPhysixWorld();
         entityFactory.init(engine, assetManager);
-        
         mapLoader.listen(renderSystem.getTileMapCreator());
         mapLoader.run((String name, float x, float y) -> createEntity(name, x, y),
                 "data/maps/prototype.tmx", physixSystem);
