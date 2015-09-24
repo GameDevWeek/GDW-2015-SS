@@ -1,4 +1,4 @@
-﻿package de.hochschuletrier.gdw.ss15.game.systems.network;
+package de.hochschuletrier.gdw.ss15.game.systems.network;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.math.MathUtils;
@@ -39,10 +39,10 @@ public class UpdatePhysixServer implements NetworkReceivedNewPacketServerEvent.L
             //InventoryComponent inventory = ComponentMappers.inventory.get(ent);
             MoveComponent move = ComponentMappers.move.get(ent);
             
-            inventory.setMetalShards(700);
+            inventory.setMetalShards(0);
             Vector2 vel = new Vector2(p.xPos,p.yPos);
-            
-            
+
+           // System.out.println("Base : "+vel);
 			if(inventory.getMetalShards()<=700 && inventory.getMetalShards()>0)
             {
             	float invtemp = inventory.getMetalShards()/700;
@@ -51,9 +51,10 @@ public class UpdatePhysixServer implements NetworkReceivedNewPacketServerEvent.L
             }
             else
             {
-        	vel.scl(move.speed);
+        	    vel.scl(move.speed);
             }
-            
+
+            //System.out.println(vel);
             
             phxc.setLinearVelocity(vel);
             //phxc.setAngle(p.rotation);
