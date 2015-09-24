@@ -32,7 +32,6 @@ public class InventoryComponent extends Component implements Pool.Poolable {
     }
 
     /**
-     *
      * @param shards
      * @return number of shards that are actually added, if you add too much the maximum number of metal shards will be set
      */

@@ -87,7 +87,7 @@ public class MapTest extends SandboxGame {
     private final RenderSystem renderSystem = new RenderSystem(physixSystem, 
             camera.getOrthographicCamera(), engine);
     private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem();
-    private final InputSystem inputSystem = new InputSystem();
+    private final InputSystem inputSystem = new InputSystem(0,camera.getOrthographicCamera());
     private final MoveSystem moveSystem = new MoveSystem();
     
     private final EntityFactoryParam factoryParam = new EntityFactoryParam();

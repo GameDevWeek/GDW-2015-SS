@@ -4,18 +4,24 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.components.input.InputComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ss15.game.input.XBox360KeyMap;
+import de.hochschuletrier.gdw.ss15.game.systems.CameraSystem;
 
 /**
  * Created by David Siepen on 21.09.2015.
@@ -26,12 +32,14 @@ import de.hochschuletrier.gdw.ss15.game.input.XBox360KeyMap;
  */
 public class InputSystem extends IteratingSystem implements InputProcessor, ControllerListener {
 
+    Camera camera;
+
     private boolean isListener = false;
     private boolean controllerActive;
 
     private final float STICKDEADZONE = 0.25f;
-    private final float RADIUS= 123.0f;
-    private double winkel;
+    private float radius = Gdx.graphics.getHeight() / 3;
+    private Vector2 rightStick = new Vector2();
 
     private float horizontal = 0.0f;
     private float vertical = 0.0f;
@@ -42,15 +50,9 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
     private int posX;
     private int posY;
 
-    private float r1Horizontal;
-    private float r1Vertical;
-
-    public InputSystem() {
-        this(0);
-    }
-
-    public InputSystem(int priority) {
+    public InputSystem(int priority, OrthographicCamera camera) {
         super(Family.all(InputComponent.class, PlayerComponent.class).get(), priority);
+        this.camera = camera;
     }
 
     @Override
@@ -58,6 +60,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
         if (entity.getComponent(PlayerComponent.class).isLocalPlayer) {
             InputComponent input = entity.getComponent(InputComponent.class);
             PositionComponent position = entity.getComponent(PositionComponent.class);
+            Vector3 playerScreenpos = camera.project(new Vector3(position.x, position.y, 0));
 
             input.horizontal = horizontal;
             input.vertical = vertical;
@@ -65,11 +68,18 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
             input.shoot = leftMBDown;
             input.gather = rightMBDown;
 
-            input.posX = posX;
-            input.posY = posY;
-
-            input.rightStickAngle = winkel;
+            input.rightStickAngle = rightStick.angle();
             input.isController = controllerActive;
+
+            if(controllerActive){
+                rightStick.nor().scl(radius);
+                input.posX = (int)(rightStick.x + playerScreenpos.x);
+                input.posY = (int)(rightStick.y + playerScreenpos.y);
+
+            } else {
+                input.posX = posX;
+                input.posY = posY;
+            }
         }
     }
 
@@ -157,8 +167,11 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        //brauchen wir nicht
-        return false;
+        //brauchen wir wohl
+        controllerActive = false;
+        posX = screenX;
+        posY = screenY;
+        return true;
     }
 
     @Override
@@ -270,16 +283,15 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
                 break;
             case XBox360KeyMap.R1Y:
                     r1Vertical = value;
-
                 break;
         }
-        //debug();
-        winkel = Math.toDegrees(Math.atan2(r1Vertical,r1Horizontal));
+        rightStick.set(r1Horizontal, r1Vertical);
         return false;
     }
 
     @Override
     public boolean povMoved(Controller controller, int povCode, PovDirection value) {
+        /*
         controllerActive = true;
         horizontal = vertical = 0.0f;
         switch (value) {
@@ -319,8 +331,9 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
                 vertical = 0.0f;
                 horizontal = 0.0f;
         }
-        //System.out.println("pocCode: " + povCode + "\npovDirection: " + value);
+        System.out.println("pocCode: " + povCode + "\npovDirection: " + value);
         debug();
+        */
         return false;
     }
 
@@ -368,6 +381,6 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
         System.out.println("posX: " + posX);
         System.out.println("posY: " + posY);
         System.out.println("");
-        System.out.println("rechter Stick Winkel: " + winkel);
+        System.out.println("rechter Stick Winkel: " + rightStick.angle());
     }
 }
