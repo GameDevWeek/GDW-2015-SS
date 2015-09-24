@@ -28,6 +28,7 @@ import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.Tools;
 
 /**
  * Created by lukas on 22.09.15.
+ * With code of Ricardo Helms and Dominik Petersdorf
  */
 public class TestMovementSystem extends IteratingSystem{
 
@@ -59,9 +60,9 @@ public class TestMovementSystem extends IteratingSystem{
 	        InventoryComponent inventory = ComponentMappers.inventory.get(entity);
 	        //System.out.println(inventory);
             timer.StartCounter();
-            if(inventory.metalShards<=700 && inventory.metalShards>0)
+            if(inventory.getMetalShards()<=700 && inventory.getMetalShards()>0)
             {
-            	float invtemp = inventory.metalShards/700;
+            	float invtemp = inventory.getMetalShards()/700;
             	vectorToAdd.scl(move.get(entity).speed-move.get(entity).speed*(invtemp*0.75f));
             }
             else
