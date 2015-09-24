@@ -1,3 +1,4 @@
 {
-    "particle": "data/particles/particle.p"
+    "particle": "data/particles/particle.p",
+    "smoke": "data/particles/smoke.p"
 }

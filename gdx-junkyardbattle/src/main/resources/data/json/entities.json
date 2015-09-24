@@ -1,4 +1,13 @@
 {
+    "smokescreen": {
+        "meta": {},
+        "components":{
+            "Position": {},
+            "ParticleEffect": {
+                "effectname": "smoke"
+            }
+        }
+    },
     "ball": {
         "meta": {},
         "components": {
@@ -10,7 +19,7 @@
                 "minDelay": 100
             },
             "Animator": {
-                "animation_IDLE": "ball"
+                "animation_IDLE": "walking"
             },
             "ParticleEffect": {
                 "effectname": "particle",

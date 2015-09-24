@@ -17,7 +17,8 @@ public enum PacketIds
     InputEvent((short)4),
     EntityUpdate((short)5),
     Fire((short)6),
-    MenuInfo((short)7);
+    MenuInfo((short)7),
+    Gather((short)8);
 
 
     private final short m_Value;
@@ -41,5 +42,6 @@ public enum PacketIds
         PacketFactory.registerPacket(EntityUpdate.getValue(), EntityUpdatePacket.class);
         PacketFactory.registerPacket(Fire.getValue(), FirePacket.class);
         PacketFactory.registerPacket(MenuInfo.getValue(), MenuInfoPacket.class);
+        PacketFactory.registerPacket(Gather.getValue(), GatherPacket.class);
     }
 }
