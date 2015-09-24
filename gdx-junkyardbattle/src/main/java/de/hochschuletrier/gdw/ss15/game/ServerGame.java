@@ -22,6 +22,8 @@ import de.hochschuletrier.gdw.ss15.game.systems.LineOfSightSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.NetworkServerSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.PositionSynchSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.network.UpdatePhysixServer;
+import de.hochschuletrier.gdw.ss15.game.systems.network.UpdatePhysixSystem;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serversocket;
 
 /**
@@ -37,7 +39,7 @@ public class ServerGame{
     private final PhysixSystem physixSystem = new PhysixSystem(GameConstants.BOX2D_SCALE,
             GameConstants.VELOCITY_ITERATIONS, GameConstants.POSITION_ITERATIONS, GameConstants.PRIORITY_PHYSIX
     );
-    private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem(GameConstants.PRIORITY_PHYSIX + 1);//todo magic numbers (von santo)
+    private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem();//todo magic numbers (von santo)
     private final NetworkServerSystem networkSystem = new NetworkServerSystem(this,GameConstants.PRIORITY_PHYSIX + 2);//todo magic numbers (santo hats vorgemacht)
     private final PositionSynchSystem syncPositionSystem = new PositionSynchSystem(this,GameConstants.PRIORITY_PHYSIX + 3);//todo magic numbers (boa ist das geil kann nicht mehr aufhoeren)
     private final LineOfSightSystem lineOfSightSystem = new LineOfSightSystem(physixSystem); // hier müssen noch Team-Listen übergeben werden
@@ -65,14 +67,14 @@ public class ServerGame{
         setupPhysixWorld();
         networkSystem.init(serverSocket);
         entityFactory.init(engine, assetManager);
-        
-        /// @author tobidot(Tobias Gepp)
-        mapLoader.run( ( String name, float x, float y ) -> { return this.createEntity(name,  x, y); }, "data/maps/demo.tmx",physixSystem );
-    
+
+        new UpdatePhysixServer(); // magic → registers itself as listener for network packets
+
+        mapLoader.run( ( String name, float x, float y ) -> { return this.createEntity(name,  x, y); }, "data/maps/prototype.tmx",physixSystem );
     }
 
     private void addSystems() {
-        //engine.addSystem(physixSystem);
+        engine.addSystem(physixSystem);
         engine.addSystem(networkSystem);
         engine.addSystem(updatePositionSystem);
         engine.addSystem(lineOfSightSystem);

@@ -15,7 +15,7 @@ public class TestListenerClient implements NetworkReceivedNewPacketClientEvent.L
         NetworkReceivedNewPacketClientEvent.registerListener(PacketIds.EntityUpdate,this);
     }
     @Override
-    public void onReceivedNewPacket(Packet pack) {
+    public void onReceivedNewPacket(Packet pack,Entity ent) {
         //System.out.println("Received new Position for entity");
     }
 }

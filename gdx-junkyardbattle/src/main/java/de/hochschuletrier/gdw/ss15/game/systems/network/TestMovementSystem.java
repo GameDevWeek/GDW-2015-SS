@@ -1,59 +1,92 @@
-package de.hochschuletrier.gdw.ss15.game.systems.network;
+﻿package de.hochschuletrier.gdw.ss15.game.systems.network;
 
+import com.badlogic.ashley.core.ComponentMapper;
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
+import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
+
+import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.ss15.events.network.client.SendPacketClientEvent;
+import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.Game;
+import de.hochschuletrier.gdw.ss15.game.components.InventoryComponent;
+import de.hochschuletrier.gdw.ss15.game.components.HealthComponent;
+import de.hochschuletrier.gdw.ss15.game.components.MoveComponent;
+import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
+import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
+import de.hochschuletrier.gdw.ss15.game.components.input.InputComponent;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.EntityUpdatePacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.MovementPacket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.MyTimer;
+import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.Tools;
 
 /**
  * Created by lukas on 22.09.15.
  */
-public class TestMovementSystem extends EntitySystem{
+public class TestMovementSystem extends IteratingSystem{
 
     Game game;
+    Camera camera;
     MyTimer timer = new MyTimer(true);
-
-    public TestMovementSystem(Game game)
+    Vector2 velVector = new Vector2();
+    Vector2 vectorToAdd = new Vector2(0,0);
+    private ComponentMapper<MoveComponent> move;
+    private ComponentMapper<InputComponent> input;
+    private ComponentMapper<InventoryComponent> inventory;
+    public TestMovementSystem(Game game, Camera cam)
     {
-        super(53);
+        super(Family.all(InputComponent.class, MoveComponent.class, InventoryComponent.class).get());
         this.game = game;
+        this.camera = cam;
+        move = ComponentMappers.move;
+        input = ComponentMappers.input;
+        inventory = ComponentMappers.inventory;
     }
 
-    @Override
-    public void update(float deltatime)
-    {
-        timer.Update();
+	protected void processEntity(Entity entity, float deltaTime) {
+		
+		timer.Update();
         if(timer.get_CounterMilliseconds()>100)
         {
+        	InputComponent input = ComponentMappers.input.get(entity);
+	        PositionComponent posc = ComponentMappers.position.get(entity);
+	        InventoryComponent inventory = ComponentMappers.inventory.get(entity);
+	        System.out.println(inventory);
             timer.StartCounter();
-
-            int x=0;
-            int y=0;
-
-            if(Gdx.input.isKeyPressed(Input.Keys.W))
+            if(inventory.metalShards<=700 && inventory.metalShards>0)
             {
-                y--;
+            	float invtemp = inventory.metalShards/700;
+            	vectorToAdd.scl(move.get(entity).speed-move.get(entity).speed*(invtemp*0.75f));
             }
-            if(Gdx.input.isKeyPressed(Input.Keys.S))
+            else
             {
-                y++;
+        	vectorToAdd.scl(move.get(entity).speed);
             }
-            if(Gdx.input.isKeyPressed(Input.Keys.A))
-            {
-                x--;
-            }
-            if(Gdx.input.isKeyPressed(Input.Keys.D))
-            {
-                x++;
-            }
-
-            MovementPacket packet = new MovementPacket(x*10,y*10,0);
-            SendPacketClientEvent.emit(packet,true);
+	        Vector3 mousepos = camera.unproject(new Vector3(input.posX, input.posY,0));
+	        Vector2 mousepos2 = new Vector2(mousepos.x, mousepos.y);
+	        
+	        mousepos2.sub(new Vector2(posc.x,posc.y));
+	        float angle = mousepos2.angle();
+	        System.out.println(angle);
+	
+//	        float rotation = (float)Math.atan2(mousepos2.y - posc.y,mousepos2.x - posc.x);
+	        
+	        MovementPacket packet = new MovementPacket(vectorToAdd.x,vectorToAdd.y,angle);
+	        SendPacketClientEvent.emit(packet,true);
+	        vectorToAdd.setZero();
         }
-    }
+        
+        velVector.set(input.get(entity).horizontal, input.get(entity).vertical);
+        velVector.nor();
+        velVector.scl(deltaTime);
+        vectorToAdd.add(velVector);
+		
+	}
 
-    }
+}

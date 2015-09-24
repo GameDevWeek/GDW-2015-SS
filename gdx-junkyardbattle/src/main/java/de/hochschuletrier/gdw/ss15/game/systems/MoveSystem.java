@@ -4,8 +4,10 @@ import com.badlogic.ashley.core.*;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.math.Vector2;
+
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
+import de.hochschuletrier.gdw.ss15.game.components.InventoryComponent;
 import de.hochschuletrier.gdw.ss15.game.components.MoveComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.input.InputComponent;
@@ -31,7 +33,6 @@ public class MoveSystem extends IteratingSystem {
         player = ComponentMappers.player;
         input = ComponentMappers.input;
         physixBody = ComponentMappers.physixBody;
-        //playerFamily = Family.all(PhysixBodyComponent.class, PlayerComponent.class, MoveComponent.class, InputComponent.class).get();
 
         vectorToAdd = Vector2.Zero;
     }
@@ -39,7 +40,6 @@ public class MoveSystem extends IteratingSystem {
 
     @Override
     protected void processEntity(Entity e, float deltaTime) {
-
         vectorToAdd.setZero();
         vectorToAdd.add(input.get(e).horizontal, input.get(e).vertical);
         vectorToAdd.nor();
