@@ -1,5 +1,7 @@
 package de.hochschuletrier.gdw.ss15.game.systems.network;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
+
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.math.Vector2;
@@ -72,8 +74,8 @@ public class GatherServerListener implements NetworkReceivedNewPacketServerEvent
     	closestFixture = null;
         physixSystem.getWorld().rayCast(lineOfSightCallback,
                 pos, rayPos);
-    
-        if(closestFixture.getBody().getUserData() instanceof PhysixBodyComponent)
+    	
+        if(closestFixture != null && closestFixture.getBody().getUserData() instanceof PhysixBodyComponent)
         {
         	hitEntity = ((PhysixBodyComponent)closestFixture.getBody().getUserData()).getEntity();
         }

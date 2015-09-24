@@ -1,5 +1,5 @@
 {
-    "smokescreen": {
+   "smokescreen": {
         "meta": {},
         "components":{
             "Position": {},
@@ -34,7 +34,6 @@
                 "friction": 0.2,
                 "restitution": 0.4
             },
-            "Move":{},
             "Input":{}
         }
     },
@@ -101,11 +100,12 @@
                 "clientname": "clientPlayer"
             },
             "Interpolate": {},
-            "Health": {},
-            "Inventory": {
+            "Inventory": {},
+            "Move":{
+            	"speed": 300,
                 "metalShards": 100
-            }
-
+            },
+            "Health": {}
         }
     },
 
@@ -159,7 +159,9 @@
             },
             "Input":{},
             "Interpolate": {},
-            "Inventory":{},
+            "Inventory":{
+            "metalShards": 0
+            },
             "Weapon":{},
             "Health":{},
             "SoundEmitter": {}
@@ -255,13 +257,41 @@
                 "height": 60,
                 "srcX": 0,
                 "srcY": 0,
-                "scaleX": 1,
-                "scaleY": 1,
+                "scaleX": 3,
+                "scaleY": 3,
                 "flipX": false,
                 "flipY": false
-            }
+            },
+            "NetworkID": {}
         }
     },
+    "SatelliteSiteServer": {
+        "meta": {},
+        "components": {
+            "Position": {},
+            "PositionSynch": {
+            "clientname": "SatelliteSite"
+            },
+            
+            "PhysixBody": {
+                "type": "circle",
+                "size": 5,
+                "density": 10,
+                "friction": 0.5,
+                "restitution": 0.1
+            },
+             "Damage": {
+            	"damageValue": 100,
+            	"damageToPlayer": true,
+            	"damageToTile": true
+            },
+            "Health":{
+            	"health": 1
+          	},
+          	"Inventory": {}
+      	}
+    },
+    
     
     "Spawn": {
         "meta": {},
