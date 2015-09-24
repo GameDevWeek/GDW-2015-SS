@@ -63,8 +63,9 @@ public class NetworkServerSystem extends EntitySystem implements SendPacketServe
         }
 
         LinkedList<Entity> toDelete = new LinkedList<>();
-        for(Entity client:clients)
+        for(int i=0; i < clients.size(); ++i)
         {
+            Entity client = clients.get(i);
             Serverclientsocket sock = ComponentMappers.client.get(client).client;
             if(!sock.isConnected())
             {//client lost connection

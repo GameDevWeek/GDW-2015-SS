@@ -20,6 +20,7 @@ import de.hochschuletrier.gdw.ss15.game.contactlisteners.PickupListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.TriggerListener;
 import de.hochschuletrier.gdw.ss15.game.systems.BulletSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.LineOfSightSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.MetalShardSpawnSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.NetworkServerSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.PositionSynchSystem;
@@ -48,7 +49,10 @@ public class ServerGame{
     private final LineOfSightSystem lineOfSightSystem = new LineOfSightSystem(physixSystem); // hier müssen noch Team-Listen übergeben werden
     private final TestSatelliteSystem testSatelliteSystem = new TestSatelliteSystem(this); 
                                                                                  // (+ LineOfSightSystem-Konstruktor anpassen!)
-    private final BulletSystem bulletSystem = new BulletSystem();   
+    //private final BulletSystem bulletSystem = new BulletSystem();
+    private final MetalShardSpawnSystem metalShardSpawnSystem = new MetalShardSpawnSystem(this);
+    private final BulletSystem bulletSystem = new BulletSystem();
+    private final PickupSystem pickupSystem = new PickupSystem(engine);
 
     private final EntityFactoryParam factoryParam = new EntityFactoryParam();
     private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json", ServerGame.class);
@@ -74,7 +78,7 @@ public class ServerGame{
         entityFactory.init(engine, assetManager);
 
         new UpdatePhysixServer(); // magic → registers itself as listener for network packets
-        new FireServerListener(entityFactory); // ↑
+        new FireServerListener(this); // ↑
         new GatherServerListener(physixSystem);
 
         mapLoader.run( ( String name, float x, float y ) -> { return this.createEntity(name,  x, y); }, "data/maps/3v3Alpha.tmx",physixSystem,entityFactory,assetManager );
@@ -88,6 +92,8 @@ public class ServerGame{
         engine.addSystem(syncPositionSystem);
         engine.addSystem(testSatelliteSystem);
         engine.addSystem(bulletSystem);
+        engine.addSystem(metalShardSpawnSystem);
+        engine.addSystem(pickupSystem);
     }
 
     private void addContactListeners() {
