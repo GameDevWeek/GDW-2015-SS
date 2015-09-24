@@ -55,7 +55,9 @@ public class FireServerListener implements NetworkReceivedNewPacketServerEvent.L
 
                 invc.addMetalShards(-1);
                 Entity projectile = factory.createEntity("Projectile", param);
-                projectile.getComponent(PhysixBodyComponent.class).applyImpulse(dir.setLength(power));
+                ComponentMappers.physixBody.get(projectile).applyImpulse(dir.setLength(power));
+                
+                ComponentMappers.physixBody.get(projectile).setLinearDamping(10);//10 nur als vorläufiger. AUSTESTEN
             }
 
 
