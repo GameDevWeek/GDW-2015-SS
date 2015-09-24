@@ -281,6 +281,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
     @Override
     public boolean povMoved(Controller controller, int povCode, PovDirection value) {
         controllerActive = true;
+        horizontal = vertical = 0.0f;
         switch (value) {
             case north:
                 vertical = -1.0f;
@@ -356,13 +357,17 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
 
     private void debug() {
         System.out.println("");
+        System.out.println("");
+        System.out.println("Controller active: " + controllerActive);
         System.out.println("horizontal: " + horizontal);
         System.out.println("vertical: " + vertical);
-
+        System.out.println("");
         System.out.println("shoot: " + leftMBDown);
         System.out.println("gather: " + rightMBDown);
-
+        System.out.println("");
         System.out.println("posX: " + posX);
         System.out.println("posY: " + posY);
+        System.out.println("");
+        System.out.println("rechter Stick Winkel: " + winkel);
     }
 }
