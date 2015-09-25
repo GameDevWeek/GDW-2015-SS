@@ -64,6 +64,7 @@ public class ClientConnection implements SendPacketClientEvent.Listener,
         }
     };
 
+
     public void update()
     {
         if(clientSocket!=null) {
@@ -151,6 +152,7 @@ public class ClientConnection implements SendPacketClientEvent.Listener,
 
     @Override
     public void loginFinished(ConnectStatus status) {
+
         ConnectTryFinishEvent.emit(status == ConnectStatus.Succes);
     }
 
@@ -162,6 +164,7 @@ public class ClientConnection implements SendPacketClientEvent.Listener,
 
     @Override
     public void receivedPacket(Packet packet, boolean receivedSave) {
+
         DoNotTouchPacketEvent.emit(packet);
     }
 }

@@ -19,6 +19,8 @@ public class InventoryComponentFactory extends ComponentFactory<EntityFactoryPar
 					SafeProperties properties, EntityFactoryParam param) {
 		InventoryComponent component = engine.createComponent(InventoryComponent.class);
 		component.setMetalShards(properties.getInt("metalShards"));
+		component.minMetalShards = properties.getInt("minMetalShards");
+		component.maxMetalShards = properties.getInt("maxMetalShards");
 		entity.add(component);
 	}
 

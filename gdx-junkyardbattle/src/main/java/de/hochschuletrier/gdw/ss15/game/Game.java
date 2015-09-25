@@ -93,7 +93,7 @@ public class Game extends InputAdapter {
         entityFactory.init(engine, assetManager);
         mapLoader.listen(renderSystem.getTileMapCreator());
         mapLoader.run((String name, float x, float y) -> createEntity(name, x, y),
-                "data/maps/3v3Alpha.tmx", physixSystem,entityFactory,assetManager );
+                "data/maps/3v3Alpha.tmx", physixSystem, entityFactory, assetManager );
     }
 
     private void addSystems() {

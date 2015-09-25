@@ -130,8 +130,6 @@ public class PositionSynchSystem extends EntitySystem implements EntityListener 
                 //System.out.println();
                 client.sendPacketSave(initPacket,true);
             }
-
-
         }
 
         PositionComponent comp = ComponentMappers.position.get(entity);

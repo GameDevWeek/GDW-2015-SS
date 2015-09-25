@@ -56,12 +56,12 @@ public class GatherServerListener extends EntitySystem implements NetworkReceive
                 //ent = spieler
                 //entity = objekt
             {
-                System.out.println("checkHarvestEntity != null");
+                //System.out.println("checkHarvestEntity != null");
                 //for (int i = 0; i < entity.getComponents().size(); i++) {
                 //    System.out.println(entity.getComponents().get(i));
                 //}
                 if (ComponentMappers.player.has(ent) && ComponentMappers.mineable.has(entity)) {
-                    System.out.println("checkHarvestEntity mineable");
+                    //System.out.println("checkHarvestEntity mineable");
                     MiningEvent.emit(ent, entity, channelTime);
                 } else if (ComponentMappers.player.has(ent)) {
                     SimplePacket miningPacket = new SimplePacket(SimplePacket.SimplePacketId.MiningPacket.getValue(), 1);

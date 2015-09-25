@@ -4,6 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import de.hochschuletrier.gdw.commons.gdx.menu.MenuManager;
 import de.hochschuletrier.gdw.commons.gdx.state.transition.SplitHorizontalTransition;
 import de.hochschuletrier.gdw.ss14.game.Game;
+
 import de.hochschuletrier.gdw.ss14.states.GameplayState;
 import de.hochschuletrier.gdw.ss14.states.MainMenuState;
 
@@ -22,14 +23,18 @@ public class MenuPageRoot extends MenuPage {
         int x = 100;
         int i = 0;
         int y = 370;
-        int yStep = 55;
+       // addUIActor(new MouseCursorActor());
+     
         if (type == Type.MAINMENU) {
-            addLeftAlignedButton(x, y - yStep * (i++), 400, 50, "Spiel Starten", this::startGame);
+            addLeftAlignedButton(x, y - YSTEP_BUTTON * (i++), WIDTH_BUTTON, HEIGHT_BUTTON, "Spiel starten", this::startGame);
+
+            addPageEntry(menuManager, x, y - YSTEP_BUTTON * (i++), "Start", new MenuPageEnterIP(skin,menuManager,"menu_bg"));
+            addPageEntry(menuManager, x, y - YSTEP_BUTTON * (i++), "Optionen", new MenuPageOptions(skin,menuManager,Type.INGAME));
         } else {
-            addLeftAlignedButton(x, y - yStep * (i++), 400, 50, "Fortsetzen", () -> menuManager.popPage());
-            addLeftAlignedButton(x, y - yStep * (i++), 400, 50, "Spiel verlassen", this::stopGame);
+            addLeftAlignedButton(x, y - YSTEP_BUTTON * (i++), WIDTH_BUTTON, HEIGHT_BUTTON, "Fortsetzen", () -> menuManager.popPage());
+            addLeftAlignedButton(x, y - YSTEP_BUTTON * (i++), WIDTH_BUTTON, HEIGHT_BUTTON, "Spiel verlassen", this::stopGame);
         }
-        addPageEntry(menuManager, x, y - yStep * (i++), "Credits", new MenuPageCredits(skin, menuManager));
+        addPageEntry(menuManager, x, y - YSTEP_BUTTON * (i++), "Credits", new MenuPageCredits(skin, menuManager));
         addCenteredButton(menuManager.getWidth() - 80, 54, 100, 40, "Exit", () -> System.exit(-1));
     }
 
