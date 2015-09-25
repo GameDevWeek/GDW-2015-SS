@@ -37,18 +37,13 @@ public class HudSystem extends IteratingSystem {
 
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
-        PositionComponent position = entity.getComponent(PositionComponent.class);
         PlayerComponent player = entity.getComponent(PlayerComponent.class);
-        InputComponent input = entity.getComponent(InputComponent.class);
         if (player.isLocalPlayer){
+            InputComponent input = entity.getComponent(InputComponent.class);
 
-
+            DrawUtil.batch.draw(assetManager.getTexture("crosshair"),input.posX,input.posY);
 
         }
     }
 
-    @Override
-    public void addedToEngine(Engine engine){
-
-    }
 }
