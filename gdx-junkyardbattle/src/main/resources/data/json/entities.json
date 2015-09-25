@@ -278,7 +278,7 @@
                 "friction": 0.5,
                 "restitution": 0.1,
                 "sensor": true,
-                "type": "static"
+                "type": "kinematic"
             },
             "Damage": {
                 "damageValue": 100,
@@ -312,7 +312,7 @@
                 "friction": 0.5,
                 "restitution": 0.1,
                 "sensor": true,
-                "type": "static"
+                "type": "kinematic"
             }
         }
     },
