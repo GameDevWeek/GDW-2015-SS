@@ -3,7 +3,10 @@ package de.hochschuletrier.gdw.ss15.game.components;
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.utils.Pool;
 
+import de.hochschuletrier.gdw.ss15.events.network.server.SendPacketServerEvent;
 import de.hochschuletrier.gdw.ss15.game.GameConstants;
+import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
+import sun.java2d.pipe.SpanShapeRenderer;
 
 /**
  * Stores the number of MetallShards some object contains.
@@ -26,6 +29,8 @@ public class InventoryComponent extends Component implements Pool.Poolable {
         if(shards <= GameConstants.MAX_METALSHARDS && shards >= GameConstants.MIN_METALSHARDS)
         {
             metalShards = shards;
+            SimplePacket packet = new SimplePacket(SimplePacket.SimplePacketId.MetalShardsUpdate.getValue(), metalShards);
+            SendPacketServerEvent.emit(packet, true);
             return true;
         }
         return false;
