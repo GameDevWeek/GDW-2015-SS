@@ -1,12 +1,15 @@
 package de.hochschuletrier.gdw.ss15.game.systems;
 
+import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
+import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.game.GameConstants;
 import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
@@ -20,6 +23,8 @@ import javax.swing.text.Position;
  */
 public class HudSystem extends IteratingSystem {
 
+    AssetManagerX assetManager;
+
     public HudSystem(){
         this(Family.one(PlayerComponent.class).get(), GameConstants.PRIORITY_HUD);
     }
@@ -27,6 +32,7 @@ public class HudSystem extends IteratingSystem {
     public HudSystem(Family family, int priority) {
         super(family);
         this.priority = priority;
+        this.assetManager = Main.getInstance().getAssetManager();
     }
 
     @Override
@@ -39,5 +45,10 @@ public class HudSystem extends IteratingSystem {
 
 
         }
+    }
+
+    @Override
+    public void addedToEngine(Engine engine){
+
     }
 }
