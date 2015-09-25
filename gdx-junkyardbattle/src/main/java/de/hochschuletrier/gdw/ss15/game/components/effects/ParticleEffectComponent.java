@@ -21,6 +21,7 @@ public class ParticleEffectComponent extends Component implements Pool.Poolable{
     public ParticleEffect particleEffect = null;
     public float positionOffsetX = 0;
     public float positionOffsetY = 0;
+    public float initialRotation = 0;
     public boolean start = true;
     public boolean isPlaying = false;
     public boolean loop = true;
@@ -75,6 +76,7 @@ public class ParticleEffectComponent extends Component implements Pool.Poolable{
         positionOffsetX = 0;
         positionOffsetY = 0;
         particleEffect = null;
+        initialRotation = 0;
         start = true;
         isPlaying = false;
         loop = true;

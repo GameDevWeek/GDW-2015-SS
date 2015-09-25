@@ -3,6 +3,8 @@ package de.hochschuletrier.gdw.ss15.game.components.factories;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.ashley.ComponentFactory;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixBodyDef;
@@ -11,6 +13,7 @@ import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixModifierComponent;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.commons.utils.SafeProperties;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,11 +38,11 @@ public class PhysixBodyComponentFactory extends ComponentFactory<EntityFactoryPa
     public void run(Entity entity, SafeProperties meta, SafeProperties properties, EntityFactoryParam param) {
         final PhysixModifierComponent modifyComponent = engine.createComponent(PhysixModifierComponent.class);
         modifyComponent.schedule(() -> {
-            String type = properties.getString("type", "");
-            switch(type) {
+            String shape = properties.getString("shape", "");
+            switch(shape) {
                 case "circle": addCircle(param, entity, properties); break;
                 case "box": addBox(param, entity, properties); break;
-                default: logger.error("Unknown type: {}", type); break;
+                default: logger.error("Unknown type: {}", shape); break;
             }
         });
         
@@ -53,9 +56,7 @@ public class PhysixBodyComponentFactory extends ComponentFactory<EntityFactoryPa
                 .shapeCircle(properties.getFloat("size", 5));
         bodyComponent.createFixture(fixtureDef);
         bodyComponent.setPosition(param.x,param.y);
-        boolean isfixedRotation = properties.getBoolean("fixedRotation");
-        bodyComponent.getBody().setFixedRotation(isfixedRotation);
-        entity.add(bodyComponent);
+        addProperties(entity, properties, bodyComponent);
     }
 
     private void addBox(EntityFactoryParam param, Entity entity, SafeProperties properties) {
@@ -64,8 +65,25 @@ public class PhysixBodyComponentFactory extends ComponentFactory<EntityFactoryPa
                 .shapeBox(properties.getFloat("size", 5), properties.getFloat("size", 5));
         bodyComponent.createFixture(fixtureDef);
         bodyComponent.setPosition(param.x,param.y);
-        boolean isfixedRotation = properties.getBoolean("fixedRotation");
+        addProperties(entity, properties, bodyComponent);
+    }
+    
+    private void addProperties(Entity entity, SafeProperties properties, PhysixBodyComponent bodyComponent){
+    	boolean isfixedRotation = properties.getBoolean("fixedRotation");
         bodyComponent.getBody().setFixedRotation(isfixedRotation);
+        if(!bodyComponent.getBody().getFixtureList().get(0).isSensor()){
+	        switch(properties.getString("type", "static")){
+	        case"dynamic":
+	        	bodyComponent.getBody().setType(BodyType.DynamicBody);
+	        	break;
+	        case"static":
+	       	bodyComponent.getBody().setType(BodyType.StaticBody);
+	        	break;
+	        case"kinematic":
+	        	bodyComponent.getBody().setType(BodyType.KinematicBody);
+	        	break;
+	        }
+        }
         entity.add(bodyComponent);
     }
 
