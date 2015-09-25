@@ -11,17 +11,16 @@ import de.hochschuletrier.gdw.commons.gdx.physix.PhysixComponentAwareContactList
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.ss15.game.components.BulletComponent;
 import de.hochschuletrier.gdw.ss15.game.components.ImpactSoundComponent;
+import de.hochschuletrier.gdw.ss15.game.components.MetalShardSpawnComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PickableComponent;
 import de.hochschuletrier.gdw.ss15.game.components.TriggerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.BulletListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.ImpactSoundListener;
+import de.hochschuletrier.gdw.ss15.game.contactlisteners.MetalShardSpawnListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.PickupListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.TriggerListener;
-import de.hochschuletrier.gdw.ss15.game.systems.BulletSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.LineOfSightSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.MetalShardSpawnSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.*;
 import de.hochschuletrier.gdw.ss15.game.systems.network.NetworkServerSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.PositionSynchSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.TestSatelliteSystem;
@@ -47,7 +46,8 @@ public class ServerGame{
     private final NetworkServerSystem networkSystem = new NetworkServerSystem(this,GameConstants.PRIORITY_PHYSIX + 2);//todo magic numbers (santo hats vorgemacht)
     private final PositionSynchSystem syncPositionSystem = new PositionSynchSystem(this,GameConstants.PRIORITY_PHYSIX + 3);//todo magic numbers (boa ist das geil kann nicht mehr aufhoeren)
     private final LineOfSightSystem lineOfSightSystem = new LineOfSightSystem(physixSystem); // hier müssen noch Team-Listen übergeben werden
-    private final TestSatelliteSystem testSatelliteSystem = new TestSatelliteSystem(this); 
+    private final TestSatelliteSystem testSatelliteSystem = new TestSatelliteSystem(this);
+    private final PlayerLifeSystem playerLifeSystem = new PlayerLifeSystem();
                                                                                  // (+ LineOfSightSystem-Konstruktor anpassen!)
     //private final BulletSystem bulletSystem = new BulletSystem();
     private final MetalShardSpawnSystem metalShardSpawnSystem = new MetalShardSpawnSystem(this);
@@ -97,6 +97,7 @@ public class ServerGame{
         engine.addSystem(bulletSystem);
         engine.addSystem(metalShardSpawnSystem);
         engine.addSystem(pickupSystem);
+        engine.addSystem(playerLifeSystem);
 
         //// ---- add listener to engine, to get an autoremove
         engine.addSystem(fireServerListener);
@@ -111,6 +112,7 @@ public class ServerGame{
         contactListener.addListener(TriggerComponent.class, new TriggerListener());
         contactListener.addListener(PickableComponent.class, new PickupListener(engine));
         contactListener.addListener(BulletComponent.class, new BulletListener());
+        contactListener.addListener(MetalShardSpawnComponent.class, new MetalShardSpawnListener());
     }
 
     private void setupPhysixWorld() {

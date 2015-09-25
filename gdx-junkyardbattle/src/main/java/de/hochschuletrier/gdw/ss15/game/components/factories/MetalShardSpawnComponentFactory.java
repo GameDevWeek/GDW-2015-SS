@@ -17,9 +17,8 @@ public class MetalShardSpawnComponentFactory extends ComponentFactory<EntityFact
 	@Override
 	public void run(Entity entity, SafeProperties meta, SafeProperties properties, EntityFactoryParam param) {
 		MetalShardSpawnComponent comp = engine.createComponent(MetalShardSpawnComponent.class);
-		comp.shards = properties.getInt("shards", 5);
+		comp.minTimeBetweenSpawns = properties.getFloat("spawnTime", 5.0f);
         entity.add(comp);
-//        System.out.println("MetalShardFactory");
 	}
 
 }
