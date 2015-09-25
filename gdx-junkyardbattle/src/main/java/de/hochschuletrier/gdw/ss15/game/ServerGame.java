@@ -53,6 +53,7 @@ public class ServerGame{
     private final MetalShardSpawnSystem metalShardSpawnSystem = new MetalShardSpawnSystem(this);
     private final BulletSystem bulletSystem = new BulletSystem(engine, this);
     private final PickupSystem pickupSystem = new PickupSystem(engine);
+    private final MiningSystem miningSystem = new MiningSystem();
 
     private final EntityFactoryParam factoryParam = new EntityFactoryParam();
     private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json", ServerGame.class);
@@ -103,6 +104,7 @@ public class ServerGame{
         engine.addSystem(fireServerListener);
         engine.addSystem(updatePhysixServer);
         engine.addSystem(gatherServerListener);
+        engine.addSystem(miningSystem);
     }
 
     private void addContactListeners() {
@@ -123,7 +125,6 @@ public class ServerGame{
         //Main.getInstance().screenCamera.bind();
         engine.update(delta);
     }
-
 
     public Entity createEntity(String name, float x, float y)
     {

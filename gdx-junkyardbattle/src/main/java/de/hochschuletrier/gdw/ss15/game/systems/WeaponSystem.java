@@ -88,6 +88,7 @@ public class WeaponSystem extends IteratingSystem {
                 GatherPacket gather = new GatherPacket(wpc.harvestChannelTime);
                 SendPacketClientEvent.emit(gather, true);
             }
+            //System.out.println("gather: " + wpc.harvestChannelTime);
         }
         else
         { // right button is released

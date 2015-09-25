@@ -1,8 +1,9 @@
-package de.hochschuletrier.gdw.ss15.game.systems;
+package de.hochschuletrier.gdw.ss15.game.systems.network;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
+import com.badlogic.ashley.signals.Listener;
 import com.badlogic.ashley.systems.IteratingSystem;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixContact;
 import de.hochschuletrier.gdw.ss15.events.ComeToBaseEvent;
@@ -16,11 +17,17 @@ import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
 /**
  * Created by Ricardo on 24.09.2015.
  */
-public class BringHomeSystem extends EntitySystem implements ComeToBaseEvent.listener {
+
+public class BringHomeSystem extends EntitySystem implements ComeToBaseEvent.Listener {
 
     ComponentMapper<InventoryComponent> inventory = ComponentMappers.inventory;
     ComponentMapper<BasePointComponent> basePoint = ComponentMappers.basePoint;
     ComponentMapper<PlayerComponent> player = ComponentMappers.player;
+
+    public BringHomeSystem()
+    {
+        ComeToBaseEvent.register(this);
+    }
 
     public void onComeToBase(PhysixContact contact) {
         if (player.has(contact.getOtherComponent().getEntity())) {

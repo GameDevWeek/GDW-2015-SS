@@ -1,4 +1,4 @@
-{
+﻿{
 	"footstepeffect":{
         "meta": {},
         "components":{
@@ -212,7 +212,8 @@
                 "density": 10,
                 "friction": 0.5,
                 "restitution": 0.1,
-                "type": "dynamic"
+                "type": "dynamic",
+                "category":  "BULLET"
             },
             "Damage": {
                 "damageValue": 10,
@@ -222,50 +223,7 @@
             "Bullet": {
                 "playerID": -1
             },
-            "Interpolate": {},
-            "PositionSynch": {
-                "clientname": "clientProjectile",
-                "updateDuration": 42,
-                "sendSave": true
-            }
-        }
-    },
-    "clientProjectile": {
-        "meta": {},
-        "components": {
-            "Position": {},
-            "PhysixBody": {
-                "shape": "circle",
-                "size": 5,
-                "density": 10,
-                "friction": 0.5,
-                "restitution": 0.1,
-                "type": "dynamic"
-            },
-            "Texture": {
-                "texture": "junk0",
-                "width": 120,
-                "height": 120,
-                "srcX": 0,
-                "srcY": 0,
-                "scaleX": 0.5,
-                "scaleY": 0.5,
-                "flipX": false,
-                "flipY": false
-            },
-            "NetworkID": {},
-            "ParticleEffect":{
-                "effectname": "shoot",
-                "offsetX": 0,
-                "offsetY": 0,
-                "initialRotation": 0
-            },
-            "Damage": {
-                "damageValue": 10,
-                "damageToPlayer": true,
-                "damageToTile": false
-            },
-            "Bullet": {}
+            "Interpolate": {}
         }
     },
     "Base": {
@@ -321,8 +279,8 @@
             "Inventory": {
             "metalShards": 100
             },
-            "SoundEmitter": {}
-            
+            "SoundEmitter": {},  
+            "Mineable":{}
 
         }
     },
@@ -423,8 +381,8 @@
                 "height": 120,
                 "srcX": 0,
                 "srcY": 0,
-                "scaleX": 0.2,
-                "scaleY": 0.2,
+                "scaleX": 0.3,
+                "scaleY": 0.3,
                 "flipX": false,
                 "flipY": false
             }, 
@@ -448,7 +406,7 @@
             "Position": {},
             "PhysixBody": {
                 "shape": "circle",
-                "size": 5,
+                "size": 15,
                 "density": 2,
                 "friction": 0.3,
                 "restitution": 0.2,
@@ -456,13 +414,13 @@
             },
             "PositionSynch":{
                 "clientname": "metalClient",
-                "updateDuration": 40,
+                "updateDuration": 10000000,
                 "sendSave": true
 
             },
             "Pickable":{},
             "Inventory":{
-                "metalShards":115
+                "metalShards":1
             }
         }
     }
