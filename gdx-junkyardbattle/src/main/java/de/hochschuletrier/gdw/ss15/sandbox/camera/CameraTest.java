@@ -1,4 +1,4 @@
-﻿package de.hochschuletrier.gdw.ss15.sandbox.camera;
+package de.hochschuletrier.gdw.ss15.sandbox.camera;
 
 import java.util.HashMap;
 
