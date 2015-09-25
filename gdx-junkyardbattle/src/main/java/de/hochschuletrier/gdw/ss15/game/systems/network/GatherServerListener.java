@@ -46,13 +46,14 @@ public class GatherServerListener extends EntitySystem implements NetworkReceive
         try{
             GatherPacket packet = (GatherPacket)pack;
             float channelTime = packet.channelTime;
-
+            System.out.println("Sammeln0");
             Entity entity = checkHarvestRayCollision(ent);
 
             if (entity != null)
                 //ent = spieler
                 //entity = objekt
             {
+                System.out.println("Sammeln1");
                 if (ComponentMappers.player.has(ent) && ComponentMappers.mineable.has(entity)) {
                     MiningEvent.emit(ent, entity, channelTime);
                 } else if (ComponentMappers.player.has(ent)) {
@@ -70,6 +71,7 @@ public class GatherServerListener extends EntitySystem implements NetworkReceive
     }
 
     private Entity checkHarvestRayCollision(Entity entity){
+        System.out.println("checkHarvestRayCollision");
         Entity hitEntity = null;
         float range = 5f;
 
