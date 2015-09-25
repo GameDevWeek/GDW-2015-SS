@@ -19,15 +19,12 @@ import de.hochschuletrier.gdw.ss15.game.contactlisteners.MetalShardSpawnListener
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.PickupListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.TriggerListener;
 import de.hochschuletrier.gdw.ss15.game.systems.BulletSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.MetalShardDropSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.LineOfSightSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.MetalShardSpawnSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.PlayerLifeSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.SpawnSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.network.NetworkServerSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.network.PositionSynchSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.network.TestSatelliteSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.network.UpdatePhysixServer;
 import de.hochschuletrier.gdw.ss15.game.systems.network.*;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serversocket;
 
@@ -44,6 +41,7 @@ public class ServerGame{
     private final PhysixSystem physixSystem = new PhysixSystem(GameConstants.BOX2D_SCALE,
             GameConstants.VELOCITY_ITERATIONS, GameConstants.POSITION_ITERATIONS, GameConstants.PRIORITY_PHYSIX
     );
+    
     private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem();//todo magic numbers (von santo)
     private final NetworkServerSystem networkSystem = new NetworkServerSystem(this,GameConstants.PRIORITY_PHYSIX + 2);//todo magic numbers (santo hats vorgemacht)
     private final PositionSynchSystem syncPositionSystem = new PositionSynchSystem(this,GameConstants.PRIORITY_PHYSIX + 3);//todo magic numbers (boa ist das geil kann nicht mehr aufhoeren)
@@ -68,7 +66,8 @@ public class ServerGame{
     private GatherServerListener gatherServerListener;
     
     private final SpawnSystem spawnSystem = new SpawnSystem();
-
+    private final MetalShardDropSystem metalShardDropSystem = new MetalShardDropSystem(this);
+    
     public ServerGame(Serversocket socket)
     {
         serverSocket = socket;
@@ -105,6 +104,7 @@ public class ServerGame{
         engine.addSystem(pickupSystem);
         engine.addSystem(playerLifeSystem);
         engine.addSystem(spawnSystem);
+        engine.addSystem(metalShardDropSystem);
 
         //// ---- add listener to engine, to get an autoremove
         engine.addSystem(fireServerListener);

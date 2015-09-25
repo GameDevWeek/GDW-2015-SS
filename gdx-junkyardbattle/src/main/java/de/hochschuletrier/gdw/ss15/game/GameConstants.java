@@ -11,6 +11,7 @@ public class GameConstants {
     public static final int PRIORITY_RENDER_SYSTEM = 29;
     public static final int PRIORITY_DEBUG_WORLD = 30;
     public static final int PRIORITY_HUD = 40;
+    public static final int PRIORITY_METAL_SHARD_DROP_SYSTEM = 50;
     public static final int PRIORITY_REMOVE_ENTITIES = 1000;
 
     // PooledEngine parameters
