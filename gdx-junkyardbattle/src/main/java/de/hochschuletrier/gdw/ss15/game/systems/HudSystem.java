@@ -18,6 +18,7 @@ import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
 import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.game.GameConstants;
 import de.hochschuletrier.gdw.ss15.game.components.HealthComponent;
+import de.hochschuletrier.gdw.ss15.game.components.InventoryComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.components.input.InputComponent;
@@ -33,6 +34,7 @@ import javax.swing.text.Position;
  */
 public class HudSystem extends IteratingSystem {
 
+    private float radarScale = 0.1337f;
     Vector2 lineToPlayer = new Vector2(0,0);
     Vector3 mouseScreenPos = new Vector3(0,0,0);
     Camera camera;
@@ -73,13 +75,28 @@ public class HudSystem extends IteratingSystem {
 
         mouseScreenPos.x = entity.getComponent(InputComponent.class).posX;
         mouseScreenPos.y = entity.getComponent(InputComponent.class).posY;
-        DrawUtil.batch.draw(crosshairTex,mouseScreenPos.x - crosshairTex.getWidth()/4,
-                mouseScreenPos.y - crosshairTex.getHeight()/4, crosshairTex.getWidth()/2, crosshairTex.getHeight()/2);
 
+        DrawUtil.batch.draw(crosshairTex, mouseScreenPos.x - crosshairTex.getWidth() / 4,
+                mouseScreenPos.y - crosshairTex.getHeight() / 4, crosshairTex.getWidth() / 2, crosshairTex.getHeight() / 2);
     }
     private void radar(Entity entity) {
 
+        lineToPlayer.x = entity.getComponent(PositionComponent.class).x >
+                localPlayer.getComponent(PositionComponent.class).x ? entity.getComponent(PositionComponent.class).x -
+                localPlayer.getComponent(PositionComponent.class).x :
+                localPlayer.getComponent(PositionComponent.class).x - entity.getComponent(PositionComponent.class).x;
+        lineToPlayer.y = entity.getComponent(PositionComponent.class).y >
+                localPlayer.getComponent(PositionComponent.class).y ? entity.getComponent(PositionComponent.class).y -
+                localPlayer.getComponent(PositionComponent.class).y :
+                localPlayer.getComponent(PositionComponent.class).y - entity.getComponent(PositionComponent.class).y;
+
+        lineToPlayer.scl(radarScale);
+        //DrawUtil.batch.draw("icon für spieler", radarMitte + vector);
+
+        //Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()-Gdx.graphics.getHeight/4
     }
+
+
     private void lebensBalken() {
         Color healthColor;
         if (HudDebug.health >= 50 && HudDebug.health <= 100)
@@ -92,6 +109,10 @@ public class HudSystem extends IteratingSystem {
         DrawUtil.fillRect(Gdx.graphics.getWidth() / 2 - HudDebug.health, Gdx.graphics.getHeight() - 20, 2 * HudDebug.health, 40, healthColor);
         DrawUtil.drawRect(Gdx.graphics.getWidth() / 2 - 100, Gdx.graphics.getHeight() - 20, 200, 40, Color.WHITE);
         font.draw(DrawUtil.batch, "" + HudDebug.health, Gdx.graphics.getWidth() / 2 - 120, Gdx.graphics.getHeight() - 20);
+    }
+
+    private void schrottAnzeige(){
+        localPlayer.getComponent(InventoryComponent.class).getMetalShards();
     }
 
 }
