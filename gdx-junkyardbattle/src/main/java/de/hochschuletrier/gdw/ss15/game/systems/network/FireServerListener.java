@@ -7,7 +7,9 @@ import com.badlogic.gdx.math.Vector2;
 import de.hochschuletrier.gdw.commons.gdx.ashley.EntityFactory;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixModifierComponent;
+import de.hochschuletrier.gdw.ss15.events.network.client.SendPacketClientEvent;
 import de.hochschuletrier.gdw.ss15.events.network.server.NetworkReceivedNewPacketServerEvent;
+import de.hochschuletrier.gdw.ss15.events.network.server.SendPacketServerEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.ServerGame;
 import de.hochschuletrier.gdw.ss15.game.components.BulletComponent;
@@ -16,6 +18,7 @@ import de.hochschuletrier.gdw.ss15.game.components.WeaponComponent;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
 import de.hochschuletrier.gdw.ss15.game.network.PacketIds;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.FirePacket;
+import de.hochschuletrier.gdw.ss15.game.network.Packets.SpawnBulletPacket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
 
 /**
@@ -75,8 +78,12 @@ public class FireServerListener extends EntitySystem implements NetworkReceivedN
                 invc.addMetalShards(-1);
                 Entity projectile = game.createEntity("projectile", startPosition.x, startPosition.y);
 
-                createProjectile(projectile, (float) (phxc.getAngle() + (Math.random() - 0.5f) * scatter));
-
+                float rotation = (float) (phxc.getAngle() + (Math.random() - 0.5f) * scatter);
+                createProjectile(projectile, rotation);
+                SpawnBulletPacket spawnBulletPacket = new SpawnBulletPacket();
+                spawnBulletPacket.position = new Vector2(startPosition.x, startPosition.y);
+                spawnBulletPacket.rotation = rotation;
+                SendPacketServerEvent.emit(spawnBulletPacket, true);
             }
             }catch (ClassCastException e){}
     }
@@ -94,7 +101,7 @@ public class FireServerListener extends EntitySystem implements NetworkReceivedN
             Vector2 v2 = new Vector2((float)Math.cos(physixBodyComponent.getAngle()), (float)Math.sin(physixBodyComponent.getAngle()));
             v2.nor().scl(power);
             entity.getComponent(PhysixBodyComponent.class).applyImpulse(v2);
-            physixBodyComponent.setLinearDamping(damping);
+//            physixBodyComponent.setLinearDamping(damping);
         });
     }
 }

@@ -23,11 +23,8 @@ import de.hochschuletrier.gdw.ss15.game.components.texture.TextureComponent;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.PickupListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.PickupListenerClient;
 import de.hochschuletrier.gdw.ss15.game.systems.input.InputSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.network.NetworkClientSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.network.*;
 import de.hochschuletrier.gdw.ss15.game.systems.*;
-import de.hochschuletrier.gdw.ss15.game.systems.network.TestMovementSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.network.TestSatelliteSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.network.UpdatePhysixSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.renderers.ChangeAnimationStateSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.renderers.ParticleSpawnSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.renderers.RenderSystem;
@@ -65,7 +62,9 @@ public class Game extends InputAdapter {
     private final SoundSystem soundSystem = new SoundSystem(cameraSystem.getCamera());
     private final MapLoader mapLoader = new MapLoader();
     
-    
+    private final FireClientListener fireClientListener = new FireClientListener(this);
+    private final BulletClientSystem bulletClientSystem = new BulletClientSystem(engine);
+
     private final ParticleSpawnSystem particleSpawner = new ParticleSpawnSystem(this);
     private final DeathSystem deathSystem = new DeathSystem();
     private final ChangeAnimationStateSystem changeAnimSystem = new ChangeAnimationStateSystem();
@@ -87,6 +86,7 @@ public class Game extends InputAdapter {
     }
 
     public void init(AssetManagerX assetManager) {
+
         addSystems();
         addContactListeners();
         setupPhysixWorld();
@@ -109,6 +109,10 @@ public class Game extends InputAdapter {
         engine.addSystem(testMovementSystem);
         engine.addSystem(updatePhysixSystem);
         engine.addSystem(soundSystem);
+        engine.addSystem(bulletClientSystem);
+
+        // add to engine to get removed from listeners:
+        engine.addSystem(fireClientListener);
     }
 
     private void addContactListeners() {

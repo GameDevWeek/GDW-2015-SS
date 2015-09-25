@@ -27,6 +27,7 @@ public class SpawnBulletPacket extends Packet{
 
     @Override
     protected void unpack(DataInputStream input) throws IOException {
+        position = new Vector2(0, 0);
         position.x = input.readFloat();
         position.y = input.readFloat();
         rotation = input.readFloat();
