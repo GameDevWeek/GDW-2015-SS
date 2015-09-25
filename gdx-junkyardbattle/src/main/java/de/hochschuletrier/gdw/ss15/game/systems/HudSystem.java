@@ -16,10 +16,12 @@ import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
 import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.game.GameConstants;
+import de.hochschuletrier.gdw.ss15.game.components.HealthComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.components.input.InputComponent;
 import de.hochschuletrier.gdw.ss15.game.components.texture.TextureComponent;
+import de.hochschuletrier.gdw.ss15.game.hudDebugTemporary.HudDebug;
 import jdk.internal.dynalink.linker.GuardingDynamicLinker;
 
 import javax.swing.text.Position;
@@ -92,7 +94,9 @@ public class HudSystem extends IteratingSystem {
 
 
     private void lebensBalken() {
-        DrawUtil.fillRect( Gdx.graphics.getWidth()/2 - 100,Gdx.graphics.getHeight() -20 , 200, 40, Color.RED);
+        DrawUtil.fillRect(Gdx.graphics.getWidth() / 2 - HudDebug.health, Gdx.graphics.getHeight() - 20, 2 * HudDebug.health, 40, Color.RED);
+        DrawUtil.drawRect(Gdx.graphics.getWidth() / 2 - 100, Gdx.graphics.getHeight() - 20, 200, 40, Color.WHITE);
+
     }
 
 }
