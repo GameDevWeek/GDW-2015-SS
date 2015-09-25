@@ -70,6 +70,8 @@ public class Game extends InputAdapter {
     private final DeathSystem deathSystem = new DeathSystem();
     private final ChangeAnimationStateSystem changeAnimSystem = new ChangeAnimationStateSystem();
 
+    private final HudSystem hudSystem = new HudSystem();
+
     public Game() {
         // If this is a build jar file, disable hotkeys
         if (!Main.IS_RELEASE) {
@@ -93,7 +95,7 @@ public class Game extends InputAdapter {
         entityFactory.init(engine, assetManager);
         mapLoader.listen(renderSystem.getTileMapCreator());
         mapLoader.run((String name, float x, float y) -> createEntity(name, x, y),
-                "data/maps/3v3Alpha.tmx", physixSystem,entityFactory,assetManager );
+                "data/maps/3v3Alpha.tmx", physixSystem, entityFactory, assetManager);
     }
 
     private void addSystems() {
@@ -109,6 +111,7 @@ public class Game extends InputAdapter {
         engine.addSystem(testMovementSystem);
         engine.addSystem(updatePhysixSystem);
         engine.addSystem(soundSystem);
+        engine.addSystem(hudSystem);
     }
 
     private void addContactListeners() {
