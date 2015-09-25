@@ -2,6 +2,7 @@ package de.hochschuletrier.gdw.ss15.menu;
 
 import de.hochschuletrier.gdw.commons.gdx.state.transition.SplitHorizontalTransition;
 import de.hochschuletrier.gdw.ss15.game.Game;
+import de.hochschuletrier.gdw.ss15.game.utils.Timer;
 import de.hochschuletrier.gdw.ss15.states.GameplayState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,12 +32,16 @@ import de.hochschuletrier.gdw.ss15.game.network.Packets.Menu.MenuePlayerChangedP
 import de.hochschuletrier.gdw.ss15.menu.Actors.HorizontalGroupID;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
 
+import java.util.TimerTask;
+
 public class MenuPageJoinGame extends MenuPage implements DoNotTouchPacketEvent.Listener {
 	private Table scrollTableBlue = new Table();
 	private Table scrollTableRed = new Table();
 	private float height = 40;
 	private float width = 130;
 	private final DecoImage change = new DecoImage(assetManager.getTexture("change_button"));
+
+	public int timetoStart = 0;
 
 	private Label labelTimer;
 	private HorizontalGroupID hgBlue1 = createHGroup(1, -1, "");
@@ -50,12 +55,16 @@ public class MenuPageJoinGame extends MenuPage implements DoNotTouchPacketEvent.
 	private HorizontalGroupID hgRed3 = createHGroup(7, -1, "");
 	private HorizontalGroupID hgRed4 = createHGroup(8, -1, "");
 
+	private java.util.Timer timer = new java.util.Timer();
+
 	private float widthChange = 60;
 	private float heightChange = 30;
 	private static final Logger logger = LoggerFactory.getLogger(ClientConnection.class);
 
 	public MenuPageJoinGame(Skin skin, MenuManager menuManager, String background) {
 		super(skin, background);
+
+		DoNotTouchPacketEvent.registerListener(this);
 
 		labelTimer = new Label("Ti:me", skin);
 		labelTimer.setWidth(widthChange);
@@ -65,8 +74,8 @@ public class MenuPageJoinGame extends MenuPage implements DoNotTouchPacketEvent.
 				.emit(new SimplePacket(SimplePacketId.ChangeTeamPacket.getValue(), 0), true));
 		hgBlue1.setWidth(width);
 		hgBlue1.setHeight(height);
-		hgRed1.setWidth(width);   
-		hgRed1.setHeight(height); 
+		hgRed1.setWidth(width);
+		hgRed1.setHeight(height);
 		addUIActor(hgBlue1, 90, (int) (375 - height), null);
 		addUIActor(hgBlue2, 90, (int) (310 - height), null);
 		addUIActor(hgBlue3, 90, (int) (230 - height), null);
@@ -84,18 +93,42 @@ public class MenuPageJoinGame extends MenuPage implements DoNotTouchPacketEvent.
 		//SimplePacket spack = new SimplePacket(SimplePacketId.ChangeTeamPacket.getValue(), 0);
 		//SendPacketClientEvent.emit(spack, true);
 
-		DoNotTouchPacketEvent.registerListener(this);
+
+
+		timer.schedule(new TimerTask()
+		{
+			@Override
+			public void run ()
+			{
+				// Your database code here
+				if(timetoStart!=0)
+				{
+					timetoStart--;
+					labelTimer.setText(""+timetoStart);
+				}
+			}
+		},1000,1000);
 	}
 
 	@Override
 	public void onDoNotTouchPacket(Packet pack) {
 		// TODO Auto-generated method stub
-		if (pack.getPacketId() == PacketIds.Simple.getValue()) {// einafche
+		System.out.println("test");
+		System.out.print(pack.getPacketId());
+		if (pack.getPacketId() == PacketIds.Simple.getValue())
+		{// einafche
 																// nachricht
+
+			System.out.println("received simpile packet");
 			SimplePacket sPack = (SimplePacket) pack;
 			if(sPack.m_SimplePacketId==SimplePacketId.StartGame.getValue())
 			{
 				startGame();
+			}
+			else if(sPack.m_SimplePacketId == SimplePacketId.TimeMenuePacket.getValue())
+			{//timer ist gespawned
+				System.out.println("Received time: " + sPack.m_Moredata);
+				timetoStart=(int)sPack.m_Moredata;
 			}
 			/*if (sPack.m_SimplePacketId == SimplePacket.SimplePacketId.TimeToStartPacket.getValue()) {
 				// team wechseln

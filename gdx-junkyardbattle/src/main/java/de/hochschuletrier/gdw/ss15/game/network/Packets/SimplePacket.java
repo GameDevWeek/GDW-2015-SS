@@ -21,7 +21,8 @@ public class SimplePacket extends Packet
         ConnectInitPacket((short)1),
         ChangeTeamPacket((short)2),
         StartGame((short)1337),
-        StopGame((short)42);
+        StopGame((short)42),
+        TimeMenuePacket((short)55);
 
         private final short m_Value;
         private SimplePacketId(short value)

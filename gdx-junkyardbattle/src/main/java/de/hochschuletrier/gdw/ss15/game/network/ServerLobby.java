@@ -1,6 +1,8 @@
 package de.hochschuletrier.gdw.ss15.game.network;
 
 import de.hochschuletrier.gdw.commons.devcon.ConsoleCmd;
+import de.hochschuletrier.gdw.ss15.events.network.client.SendPacketClientEvent;
+import de.hochschuletrier.gdw.ss15.game.network.Packets.Menu.ChangeNamePacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.Menu.MenuePlayerChangedPacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serverclientsocket;
@@ -19,7 +21,7 @@ public class ServerLobby
 {
 
     String Mapname;
-    private int MaximumPlayers = 10000;
+    private int MaximumPlayers = 8;
     private float SecondsToStart = 60;
 
     public LinkedList<LobyClient> connectedClients = new LinkedList<>();
@@ -77,6 +79,16 @@ public class ServerLobby
                 SendChangePlayerStatusToAll(client);
             }
         }
+        if(pack.getPacketId() == PacketIds.ChangeName.getValue())
+        {
+            System.out.println("name changed");
+            //ChangeNamePacket nPack = (ChangeNamePacket)pack;
+            //client.name = nPack.name;
+            //SendChangePlayerStatusToAll(client);
+
+            SimplePacket sPack = new SimplePacket(SimplePacket.SimplePacketId.TimeMenuePacket.getValue(),(long)SecondsToStart);
+            client.socket.sendPacket(sPack, true);
+        }
     }
 
     public boolean InserNewPlayer(Serverclientsocket sock) {
@@ -87,6 +99,9 @@ public class ServerLobby
         SendAllTonewPlyer(client);
         connectedClients.push(client);
         SendChangePlayerStatusToAll(client);
+        SimplePacket sPack = new SimplePacket(SimplePacket.SimplePacketId.TimeMenuePacket.getValue(),(long)SecondsToStart);
+        SendPacketClientEvent.emit(sPack,true);
+
         return true;
     }
 
