@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.RayCastCallback;
 
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
+import de.hochschuletrier.gdw.ss15.events.MiningEvent;
 import de.hochschuletrier.gdw.ss15.events.network.server.NetworkReceivedNewPacketServerEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
@@ -47,9 +48,13 @@ public class GatherServerListener extends EntitySystem implements NetworkReceive
             Entity entity = checkHarvestRayCollision(ent);
             if(entity != null)
             {
-                //Gamelogik
-                //Strahl ein Entity getroffen
-                //prüfen ob Abbauschuss ein Objekt mit der Komponente Mineable getroffen hat etc.
+                //ent = spieler
+                //entity = objekt
+                if (ComponentMappers.player.has(ent) && ComponentMappers.mineable.has(entity))
+                {
+                    MiningEvent.emit(ent, entity, channelTime);
+                }
+
             }
 
         }catch(ClassCastException e){}
