@@ -1,5 +1,7 @@
 package de.hochschuletrier.gdw.ss15.events;
 
+import com.badlogic.ashley.signals.Listener;
+import com.badlogic.gdx.utils.SnapshotArray;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixContact;
 
 /**
@@ -7,15 +9,17 @@ import de.hochschuletrier.gdw.commons.gdx.physix.PhysixContact;
  */
 public class ComeToBaseEvent {
 
-    public static interface Listener
+    private static final SnapshotArray<Listener> listeners = new SnapshotArray<>();
+
+    public static interface listener
     {
-        void onCollisionEvent(PhysixContact physixContact);
+        void onComeToBase(PhysixContact physixContact);
     }
 
     public static void emit(PhysixContact physixContact) {
         Object[] items = listeners.begin();
         for (int i = 0, n = listeners.size; i < n; i++) {
-            ((Listener)items[i]).onCollisionEvent(physixContact);
+            ((listener)items[i]).onComeToBase(physixContact);
         }
         listeners.end();
     }
