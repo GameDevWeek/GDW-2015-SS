@@ -18,7 +18,8 @@ public class SimplePacket extends Packet
     public enum SimplePacketId
     {
         RemoveEntity((short)0),
-        MetalShardsUpdate((short)10);
+        MetalShardsUpdate((short)10),
+        BasePointsUpdate((short)20);
 
         private final short m_Value;
         private SimplePacketId(short value)

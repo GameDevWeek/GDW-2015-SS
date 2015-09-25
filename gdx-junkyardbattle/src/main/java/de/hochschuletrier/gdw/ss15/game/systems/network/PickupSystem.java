@@ -41,8 +41,6 @@ public class PickupSystem extends IntervalIteratingSystem implements PickupEvent
             InventoryComponent invPickup = inventory.get(pickup);
             InventoryComponent invPlayer = inventory.get(player);
 
-             System.out.println("Pickup: " + invPickup.getMetalShards());
-             System.out.println("Player: " + invPlayer.getMetalShards());
              if (invPlayer.addMetalShards(invPickup.getMetalShards()) > 0)
              {
                  System.out.println("Pickup removed");

@@ -6,10 +6,12 @@ import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.systems.IteratingSystem;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixContact;
 import de.hochschuletrier.gdw.ss15.events.ComeToBaseEvent;
+import de.hochschuletrier.gdw.ss15.events.network.server.SendPacketServerEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.components.BasePointComponent;
 import de.hochschuletrier.gdw.ss15.game.components.InventoryComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
+import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
 
 /**
  * Created by Ricardo on 24.09.2015.
@@ -27,6 +29,8 @@ public class BringHomeSystem extends EntitySystem implements ComeToBaseEvent.lis
 
             basePoint.get(basePointEntity).points += inventory.get(playerEntity).getMetalShards();
             inventory.get(playerEntity).setMetalShards(0);
+            SimplePacket packet = new SimplePacket(SimplePacket.SimplePacketId.BasePointsUpdate.getValue(), basePoint.get(basePointEntity).points);
+            SendPacketServerEvent.emit(packet, true);
         }
     }
 
