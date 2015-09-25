@@ -225,17 +225,6 @@
                 "type": "dynamic",
                 "category": "BULLET"
             },
-            "Texture": {
-                "texture": "junk0",
-                "width": 120,
-                "height": 120,
-                "srcX": 0,
-                "srcY": 0,
-                "scaleX": 0.3,
-                "scaleY": 0.3,
-                "flipX": false,
-                "flipY": false
-            },
             "Damage": {
                 "damageValue": 10,
                 "damageToPlayer": true,
@@ -339,16 +328,11 @@
         "meta": {},
         "components": {
             "Position": {},
-            "Texture":{
-                "texture": "junk_spawn",
-                "width": 120,
-                "height": 120,
-                "srcX": 0,
-                "srcY": 0,
-                "scaleX": 0.3,
-                "scaleY": 0.3,
-                "flipX": false,
-                "flipY": false
+            "ParticleEffect": {
+                "effectname": "spawn",
+                "offsetX": 0,
+                "offsetY": 0,
+                "initialRotation": -90
             }
         }
     },
@@ -384,13 +368,17 @@
     "JunkPile": {
         "meta": {},
         "components": {
-            "Position": {}
+            "Position": {
+                "layer": 1
+            }
         }
     },
     "Junk": {
         "meta": {},
         "components": {
-            "Position": {},
+            "Position": {
+                "layer": 1
+            },
             "Texture": {
                 "texture": "junk0",
                 "width": 120,
@@ -407,7 +395,15 @@
     "metalClient": {
         "meta": {},
         "components": {
-            "Position": {},
+            "Position": {
+                "layer": 1
+            },
+            "ParticleEffect": {
+                "effectname": "glow",
+                "offsetX": 0,
+                "offsetY": 0,
+                "initialRotation": -90
+            },
             "Texture": {
                 "texture": "junk0",
                 "width": 120,
