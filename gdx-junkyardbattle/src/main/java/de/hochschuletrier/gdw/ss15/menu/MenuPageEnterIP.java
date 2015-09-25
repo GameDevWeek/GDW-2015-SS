@@ -13,133 +13,107 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import de.hochschuletrier.gdw.commons.gdx.menu.MenuManager;
+import de.hochschuletrier.gdw.commons.gdx.menu.widgets.DecoImage;
 import de.hochschuletrier.gdw.commons.gdx.state.transition.SplitHorizontalTransition;
 import de.hochschuletrier.gdw.ss15.Main;
+import de.hochschuletrier.gdw.ss15.events.network.Base.ConnectTryFinishEvent;
+import de.hochschuletrier.gdw.ss15.events.network.Base.DoNotTouchPacketEvent;
 import de.hochschuletrier.gdw.ss15.game.Game;
 import de.hochschuletrier.gdw.ss15.game.components.network.server.ClientComponent;
 import de.hochschuletrier.gdw.ss15.game.network.ClientConnection;
+import de.hochschuletrier.gdw.ss15.game.network.PacketIds;
+import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.basic.SocketConnectListener;
+import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.enums.ConnectStatus;
 import de.hochschuletrier.gdw.ss15.states.GameplayState;
 
-public class MenuPageEnterIP extends MenuPage implements SocketConnectListener {
+public class MenuPageEnterIP extends MenuPage
+		implements ConnectTryFinishEvent.Listener, DoNotTouchPacketEvent.Listener {
 
 	ArrayList<Actor> horizontalGroupeContent = new ArrayList<>();
-	Label labelIP = new Label("IP: ", skin);
-	Label labelPort= new Label("Port: ", skin);
-	
-	TextArea textAreaIP = new TextArea("", skin);
-	TextArea textAreaPort= new TextArea("", skin);
-	
-	TextButton textButtonConnectToServer = new TextButton("Server suchen", skin);
-	TextButton textButtonStartGame = new TextButton("Spiel starten", skin);
-	
-	//Unneeded
-	String ServerIP=null;
-	
-	
-	ScrollPane scrollPaneMembers= new ScrollPane(null);
+
+	MenuManager menuManager;
+
+	TextArea textAreaPort = new TextArea("port", skin);
+	TextArea textAreaName = new TextArea("name", skin);
+	TextArea textAreaIP = new TextArea("ip", skin);
+	private int width = 235, height = 45;
+
+	private final DecoImage imageStart = new DecoImage(assetManager.getTexture("start_button"));
+	/*
+	 * addCenteredImage(390, 350-height, width, height, imageStart,
+	 * runnableStart); imageStart.setWidth(width); imageStart.setHeight(height);
+	 */
+
+	ScrollPane scrollPaneMembers = new ScrollPane(null);
+	private Runnable runnableStart = new Runnable() {
+
+		@Override
+		public void run() {
+			try {
+				String temp = textAreaPort.getText();
+				String ip = "localhost";
+				int port = Integer.parseInt((temp.trim()));
+				if (textAreaIP.getText().trim().length() > 0);
+				{
+					ip = textAreaIP.getText();
+				}
+
+				if (Main.getInstance().getClientConnection().connect(ip, port) == false) {
+					System.out.println("Could not Connect to Server");
+				}
+			} catch (Exception e) {
+				System.out.println(e);
+				System.out.println("port Wrong");
+			}
+
+			// TODO Auto-generated method stub
+
+		}
+	};
 
 	public MenuPageEnterIP(Skin skin, MenuManager menuManager, String background) {
 		super(skin, background);
-		
-		textButtonStartGame.setVisible(false);
-		textButtonStartGame.addListener(new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
+		this.menuManager = menuManager;
+		imageStart.setWidth(width);
+		imageStart.setHeight(height);
+		textAreaName.setWidth(234);
+		textAreaPort.setWidth(234);
+		addCenteredImage(390, 350 - height, width, height, imageStart, runnableStart);
+		addUIActor(textAreaName, 390, (int) (250 - textAreaName.getHeight()), null);
+		addUIActor(textAreaPort, 390, (int) (150 - textAreaPort.getHeight()), null);
+		addUIActor(textAreaIP, 390, (int) (100 - textAreaIP.getHeight()), null);
 
-				startGame();
-
-			}
-		});
-		textButtonConnectToServer.addListener(new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-
-				connectToServer();
-
-			}
-
-		});
-
-		TextButton textButtonAbort = new TextButton("Abbrechen", skin);
-		textButtonAbort.addListener(new ClickListener() {
-			@Override
-			public void clicked(InputEvent event, float x, float y) {
-
-				menuManager.popPage();
-
-			}
-
-		});
-		
-		
-		VerticalGroup vgTemp1= new VerticalGroup();
-		VerticalGroup vgTemp2= new VerticalGroup();
-		
-		vgTemp1.addActor(labelIP);
-		vgTemp1.addActor(labelPort);
-		
-		vgTemp2.addActor(textAreaIP);
-		vgTemp2.addActor(textAreaPort);
-		
-		horizontalGroupeContent.add(vgTemp1);
-		horizontalGroupeContent.add(vgTemp2);
-		horizontalGroupeContent.add(textButtonConnectToServer);
-		horizontalGroupeContent.add(textButtonAbort);
-		horizontalGroupeContent.add(textButtonStartGame);
-		
-		addHorizontalGroupe(horizontalGroupeContent, 100, 100);
-		
-		
-		//scrollPaneMembers.add
-		//remove
-		scrollPaneMembers.debug();
-		addUIActor(scrollPaneMembers, 100, 500,null);
+		ConnectTryFinishEvent.registerListener(this);
+		DoNotTouchPacketEvent.registerListener(this);
 	}
 
-	// TODO: Connect to gameServer 
-	protected void connectToServer() {
-		String iP = textAreaIP.getText();
-		int port;
-		try {
-			port = Integer.getInteger(textAreaPort.getText());
-		} catch (Exception e) {
-			System.out.println("LOG: UI : Wrong Port");
-			port=-1;
-		}
-		// Connected?
-	
-		if (!Main.getInstance().getClientConnection().connect(iP, port)) {
-			
-			
-		}
-
-		Main.getInstance().getClientConnection().getSocket().registerConnectListner(this);
-		
-	}
-
-	private void startGame() {
-		if(ServerIP!=null)
-		{
-		if (!main.isTransitioning()) {
-			Game game = new Game();
-			game.init(assetManager);
-			main.changeState(new GameplayState(assetManager, game), new SplitHorizontalTransition(500), null);
-		}
-		}
-	}
-
-	//Called when connected
 	@Override
-	public void loginFinished(ConnectStatus status) {
+	public void onDoNotTouchPacket(Packet pack) {
 		// TODO Auto-generated method stub
-		if(status==ConnectStatus.Succes)
-		{
-		textButtonStartGame.setVisible(true);
+		if (pack.getPacketId() == PacketIds.Simple.getValue()) {
+			SimplePacket sPack = (SimplePacket) pack;
+			if (sPack.m_SimplePacketId == SimplePacket.SimplePacketId.ConnectInitPacket.getValue()) {
+				if (sPack.m_Moredata == 1) {
+					// MenuPage page= new MenuPageJoinGame(skin, menuManager,
+					// "join_bg");
+					MenuPage page = new MenuPageJoinGame(skin, menuManager, "join_bg", textAreaName.getText());
+					menuManager.addLayer(page);
+					menuManager.pushPage(page);
+				}
+			}
 		}
-		
-		
 	}
+
+	@Override
+	public void onConnectFinishPacket(boolean status) {
+		if (!status) {
+
+		}
+		System.out.println(status);
+	}
+
 }

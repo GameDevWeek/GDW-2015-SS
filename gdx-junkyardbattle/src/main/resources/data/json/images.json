@@ -7,11 +7,25 @@
     "minus_ui": "data/ui/menu/Assets/menu_sound_DOWN.png",
     "sound_bg": "data/ui/menu/Assets/Sound_menu.png",
     "start_bg": "data/ui/menu/Assets/Start_menu.png",
+    "join_bg":"data/ui/menu/Assets/Lobby.png",
+    
     "start_button":"data/ui/menu/Assets/Start.png",
 	"join_button": "data/ui/menu/Assets/join.png",
 	"host_button": "data/ui/menu/Assets/host.png",
 	"option_button":"data/ui/menu/Assets/Options.png",
-	"credits_button":"data/ui/menu/Assets/Options.png",
-	"join_bg":"data/ui/menu/Assets/Lobby.png",
-	"change_button":"data/ui/menu/Assets/change.png"
+	"credits_button":"data/ui/menu/Assets/Credits.png",
+	"quit_button":"data/ui/menu/Assets/Quit.png",
+	"change_button":"data/ui/menu/Assets/change.png",
+	"back_button":"data/ui/menu/Assets/pfeil.png",
+	
+	"start_button_over":"data/ui/menu/Assets/Start_hover.png",
+	"join_button_over": "data/ui/menu/Assets/join_hover.png",
+	"host_button_over": "data/ui/menu/Assets/host_hover.png",
+	"option_button_over":"data/ui/menu/Assets/Options_hover.png",
+	"quit_button_over":"data/ui/menu/Assets/Quit_hover.png"
+	
+	
+	
+	
+	
 }
