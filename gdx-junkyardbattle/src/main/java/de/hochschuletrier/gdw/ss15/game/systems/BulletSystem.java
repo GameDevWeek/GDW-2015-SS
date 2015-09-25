@@ -16,7 +16,7 @@ import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 
 public class BulletSystem extends IteratingSystem{
 
-    private static final float maxrange = 500;
+    public static final float maxrange = 500;
 
     private final PooledEngine engine;
     private final ServerGame serverGame;

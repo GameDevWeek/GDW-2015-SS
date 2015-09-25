@@ -13,8 +13,6 @@ import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 
 public class BulletClientSystem extends IteratingSystem{
 
-    private static final float maxrange = 500;
-
     private final PooledEngine engine;
 
     public BulletClientSystem(PooledEngine engine) {
@@ -28,7 +26,7 @@ public class BulletClientSystem extends IteratingSystem{
         BulletComponent bullet = ComponentMappers.bullet.get(entity);
         Vector2 dst = new Vector2(physix.getPosition().x, physix.getPosition().y);
         dst.sub(bullet.startpos);
-        if(dst.len2() > maxrange*maxrange)//Bullet quasi stehengeblieben
+        if(dst.len2() > BulletSystem.maxrange*BulletSystem.maxrange)//Bullet quasi stehengeblieben
         {
             engine.removeEntity(entity);
         }
