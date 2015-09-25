@@ -68,7 +68,7 @@ public class TestMovementSystem extends IteratingSystem{
             //System.out.println("Client vel: "+vectorToAdd);
 	        MovementPacket packet = new MovementPacket(vectorToAdd.x,vectorToAdd.y,angle);
 	        SendPacketClientEvent.emit(packet,true);
-	        vectorToAdd.setZero();
+            vectorToAdd.setZero();
        }
         
         

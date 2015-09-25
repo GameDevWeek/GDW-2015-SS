@@ -13,18 +13,18 @@ import de.hochschuletrier.gdw.ss15.game.components.InventoryComponent;
 
 public class BulletListener extends PhysixContactAdapter{
 
-	private PooledEngine engine;
-	
-	public BulletListener(PooledEngine engine){
-		this.engine = engine;
-	}
-	
-	//Wird aufgerufen, wenn eine Bullet/Spielerschuss gegen ein Objekt trifft
-	//TO DO wo wird differenziert, was getroffen wurde. Hier oder im WeaponSystem?
+    private PooledEngine engine;
+
+    public BulletListener(PooledEngine engine){
+        this.engine = engine;
+    }
+
+    //Wird aufgerufen, wenn eine Bullet/Spielerschuss gegen ein Objekt trifft
+    //TO DO wo wird differenziert, was getroffen wurde. Hier oder im WeaponSystem?
     @Override
-	public void beginContact(PhysixContact contact) {
-		//Kontakt weiterreichen an WeaponSystem
-		//TO DO Entity in WeaponSystem oder hier löschen?
+    public void beginContact(PhysixContact contact) {
+        //Kontakt weiterreichen an WeaponSystem
+        //TO DO Entity in WeaponSystem oder hier löschen?
         PhysixBodyComponent otherComponent = contact.getOtherComponent();
         if (otherComponent != null) {
             BulletComponent otherBulletComponent = ComponentMappers.bullet.get(contact.getOtherComponent().getEntity());
@@ -39,12 +39,12 @@ public class BulletListener extends PhysixContactAdapter{
             engine.removeEntity(contact.getMyComponent().getEntity());
 
         }
-	}
-	
-	@Override
-	public void preSolve(PhysixContact contact, Manifold oldManifold)
-	{
-	    PhysixBodyComponent otherComponent = contact.getOtherComponent();
+    }
+
+    @Override
+    public void preSolve(PhysixContact contact, Manifold oldManifold)
+    {
+        PhysixBodyComponent otherComponent = contact.getOtherComponent();
         if (otherComponent != null) {
             BulletComponent otherBulletComponent = ComponentMappers.bullet.get(contact.getOtherComponent().getEntity());
             if(otherBulletComponent != null)

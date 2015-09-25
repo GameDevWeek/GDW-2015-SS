@@ -74,21 +74,27 @@ public class FireServerListener extends EntitySystem implements NetworkReceivedN
 
                 invc.addMetalShards(-1);
                 Entity projectile = game.createEntity("projectile", startPosition.x, startPosition.y);
-//                if(projectile.getComponent(BulletComponent.class) != null)
-//                	System.out.println("Has bullet component");
 
-                if(projectile.getComponent(PhysixModifierComponent.class) == null){
-                    projectile.add(new PhysixModifierComponent());
-                }
-                projectile.getComponent(PhysixModifierComponent.class).runnables.add(() -> {
-                    PhysixBodyComponent physixBodyComponent = projectile.getComponent(PhysixBodyComponent.class);
-                    physixBodyComponent.setAngle((float) (phxc.getAngle() + (Math.random() - 0.5f) * scatter));
-                    Vector2 v2 = new Vector2((float)Math.cos(physixBodyComponent.getAngle()), (float)Math.sin(physixBodyComponent.getAngle()));
-                    v2.nor().scl(power);
-                    projectile.getComponent(PhysixBodyComponent.class).applyImpulse(v2);
-                    physixBodyComponent.setLinearDamping(damping);//10 nur als vorläufiger. AUSTESTEN
-                });
+                createProjectile(projectile, (float) (phxc.getAngle() + (Math.random() - 0.5f) * scatter));
+
             }
             }catch (ClassCastException e){}
+    }
+
+    public static void createProjectile(Entity entity, float rotation){
+        if(entity.getComponent(PhysixModifierComponent.class) == null){
+            entity.add(new PhysixModifierComponent());
+        }
+
+        entity.getComponent(PhysixModifierComponent.class).runnables.add(() -> {
+            PhysixBodyComponent physixBodyComponent = entity.getComponent(PhysixBodyComponent.class);
+            entity.getComponent(BulletComponent.class).startpos = new Vector2(physixBodyComponent.getPosition());
+
+            physixBodyComponent.setAngle(rotation);
+            Vector2 v2 = new Vector2((float)Math.cos(physixBodyComponent.getAngle()), (float)Math.sin(physixBodyComponent.getAngle()));
+            v2.nor().scl(power);
+            entity.getComponent(PhysixBodyComponent.class).applyImpulse(v2);
+            physixBodyComponent.setLinearDamping(damping);
+        });
     }
 }
