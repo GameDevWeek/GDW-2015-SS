@@ -70,7 +70,7 @@ public class Game extends InputAdapter {
     private final DeathSystem deathSystem = new DeathSystem();
     private final ChangeAnimationStateSystem changeAnimSystem = new ChangeAnimationStateSystem();
 
-    private final HudSystem hudSystem = new HudSystem();
+    private final HudSystem hudSystem = new HudSystem(cameraSystem.getCamera().getOrthographicCamera());
 
     public Game() {
         // If this is a build jar file, disable hotkeys

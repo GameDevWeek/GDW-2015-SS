@@ -32,7 +32,7 @@ import de.hochschuletrier.gdw.ss15.game.systems.CameraSystem;
  */
 public class InputSystem extends IteratingSystem implements InputProcessor, ControllerListener {
 
-    Camera camera;
+    public Camera camera;
 
     private boolean isListener = false;
     private boolean controllerActive;
