@@ -222,8 +222,7 @@
                 "density": 10,
                 "friction": 0.5,
                 "restitution": 0.1,
-                "type": "dynamic",
-                "category": "BULLET"
+                "type": "dynamic"
             },
             "Damage": {
                 "damageValue": 10,
@@ -257,9 +256,9 @@
             "Position": {},
             "SpawnSatellite": {},
             "Inventory": {
-                "metalShards": 100,
+                "metalShards": 10,
                 "minMetalShards": 0,
-                "maxMetalShards": 100
+                "maxMetalShards": 700
             }
         }
     },
@@ -288,9 +287,9 @@
             },
             "SpawnSatellite": {},
             "Inventory": {
-                "metalShards": 100,
+                "metalShards": 10,
                 "minMetalShards": 0,
-                "maxMetalShards": 100
+                "maxMetalShards": 700
             },
             "SoundEmitter": {},
             "Mineable": {}
@@ -441,14 +440,14 @@
             },
             "PositionSynch": {
                 "clientname": "metalClient",
-                "updateDuration": 10000000,
+                "updateDuration": 1000,
                 "sendSave": true
             },
             "Pickable": {},
             "Inventory": {
-                "metalShards": 100,
+                "metalShards": 1,
                 "minMetalShards": 0,
-                "maxMetalShards": 100
+                "maxMetalShards": 1
             }
         }
     }

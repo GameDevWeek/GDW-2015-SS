@@ -191,6 +191,7 @@ public class Server implements Runnable
                     if(runningGame!=null)
                     {
                         logger.info("Insert player to game");
+                        sock.sendPacket(new SimplePacket(SimplePacket.SimplePacketId.StartGame.getValue(), 0));
                         runningGame.InsertPlayerInGame(sock,"test",true);
                     }
                     else
