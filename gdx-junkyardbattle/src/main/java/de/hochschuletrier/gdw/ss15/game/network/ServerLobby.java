@@ -98,7 +98,6 @@ public class ServerLobby
         }
         if(pack.getPacketId() == PacketIds.ChangeName.getValue())
         {
-            System.out.println("name changed");
             ChangeNamePacket nPack = (ChangeNamePacket)pack;
             client.name = nPack.name;
             SendChangePlayerStatusToAll(client);

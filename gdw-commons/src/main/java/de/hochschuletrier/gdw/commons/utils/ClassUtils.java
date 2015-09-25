@@ -78,6 +78,7 @@ public class ClassUtils {
                     findClassesInDir(file, packageName + "." + file.getName(), classes);
                 } else if (file.getName().endsWith(".class")) {
                     try {
+                        System.out.println(file.getName());
                         classes.add(Class.forName(packageName + '.' + file.getName().substring(0, file.getName().length() - 6)));
                     } catch (ClassNotFoundException ex) {
                     }

@@ -3,8 +3,17 @@ package de.hochschuletrier.gdw.ss15.game;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 
+import com.badlogic.gdx.assets.loaders.BitmapFontLoader;
+import com.badlogic.gdx.assets.loaders.TextureLoader;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import de.hochschuletrier.gdw.commons.gdx.ashley.EntityFactory;
+import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
+import de.hochschuletrier.gdw.commons.gdx.assets.loaders.AnimationExtendedLoader;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixComponentAwareContactListener;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.ss15.Main;
@@ -78,6 +87,7 @@ public class ServerGame{
 
     public ServerGame()
     {
+
     }
 
     public PooledEngine get_Engine(){return engine;}
@@ -99,17 +109,19 @@ public class ServerGame{
         NetworkNewPlayerEvent.emit(ent);
     }
 
-    public void init(AssetManagerX assetManager) {
+    public void init() {
         // Main.getInstance().console.register(physixDebug);
 
         addSystems();
         addContactListeners();
         setupPhysixWorld();
         networkSystem.init();
-        entityFactory.init(engine, assetManager);
+        entityFactory.init(engine, Main.getInstance().getAssetManager());
 
         mapLoader.listen(spawnSystem);
-        mapLoader.run( ( String name, float x, float y ) -> { return this.createEntity(name,  x, y); }, "data/maps/3v3Alpha.tmx",physixSystem,entityFactory,assetManager );
+        mapLoader.run((String name, float x, float y) -> {
+            return this.createEntity(name, x, y);
+        }, "data/maps/3v3Alpha.tmx", physixSystem, entityFactory, Main.getInstance().getAssetManager());
     }
 
     private void addSystems() {
@@ -161,6 +173,7 @@ public class ServerGame{
         //factoryParam.game = this;
         factoryParam.x = x;
         factoryParam.y = y;
+        System.out.println("Spawned entit with name: " + name);
         Entity entity = entityFactory.createEntity(name, factoryParam);
 
         engine.addEntity(entity);

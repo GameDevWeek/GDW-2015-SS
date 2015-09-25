@@ -73,6 +73,10 @@ public class Server implements Runnable
     ServerGame runningGame = null;
     MyTimer timer = new MyTimer();
 
+    private AtomicBoolean ToStartServer = new AtomicBoolean(false);
+
+    private AtomicBoolean loadfinisched = new AtomicBoolean(false);
+
     public Serverclientsocket LastConnectedClient = null;
 
     LinkedList<Serverclientsocket> clientSockets = new LinkedList<>();
@@ -97,10 +101,14 @@ public class Server implements Runnable
             return false;
         }
         lobby = new ServerLobby();
-        lobby.init();
         isRunning.set(true);
+
+        //runningGame = new ServerGame();
+        //runningGame.init();
+
         runThread = new Thread(this);
         runThread.start();
+
         return true;
     }
 
@@ -125,6 +133,33 @@ public class Server implements Runnable
         }
     }
 
+    public void RunFromMain()
+    {
+        if(ToStartServer.get())
+        {
+            lobby.SendStartGame();
+
+
+            Tools.Sleep(100);//all player initializie game mot verg good XD
+
+            //Main.getInstance().getCurrentState().
+
+            runningGame = new ServerGame();
+            runningGame.init();
+            runningGame.update(0);
+
+            for(LobyClient client : lobby.connectedClients)
+            {
+                runningGame.InsertPlayerInGame(client.socket,client.name,client.Team1);
+            }
+            lobby.remove();
+            lobby = null;
+
+            ToStartServer.set(false);
+            loadfinisched.set(true);
+        }
+    }
+
     public void run()
     {
         while(isRunning.get())
@@ -135,7 +170,7 @@ public class Server implements Runnable
             {
                 if(!lobby.update((float) timer.get_FrameSeconds()))
                 {
-                    startGame();
+                    startGameThreadsave();
                 }
             }
             else
@@ -188,6 +223,15 @@ public class Server implements Runnable
         return serversocket;
     }
 
+    public void startGameThreadsave()
+    {
+        ToStartServer.set(true);
+        while(loadfinisched.get() == false)
+        {
+            Tools.Sleep(1);
+        }
+    }
+
     public void startGame(){
         if(runningGame!=null)
         {
@@ -197,10 +241,13 @@ public class Server implements Runnable
 
         lobby.SendStartGame();
 
-        Tools.Sleep(1);//all player initializie game mot verg good XD
+
+        Tools.Sleep(100);//all player initializie game mot verg good XD
+
+        //Main.getInstance().getCurrentState().
 
         runningGame = new ServerGame();
-        runningGame.init(Main.getInstance().getAssetManager());
+        runningGame.init();
         runningGame.update(0);
 
         for(LobyClient client : lobby.connectedClients)
