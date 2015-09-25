@@ -46,7 +46,7 @@ public class ServerGame{
     private final NetworkServerSystem networkSystem = new NetworkServerSystem(this,GameConstants.PRIORITY_PHYSIX + 2);//todo magic numbers (santo hats vorgemacht)
     private final PositionSynchSystem syncPositionSystem = new PositionSynchSystem(this,GameConstants.PRIORITY_PHYSIX + 3);//todo magic numbers (boa ist das geil kann nicht mehr aufhoeren)
     private final LineOfSightSystem lineOfSightSystem = new LineOfSightSystem(physixSystem); // hier müssen noch Team-Listen übergeben werden
-    private final TestSatelliteSystem testSatelliteSystem = new TestSatelliteSystem(this);
+    private final TestSatelliteSystem testSatelliteSystem = new TestSatelliteSystem(this, engine);
     private final PlayerLifeSystem playerLifeSystem = new PlayerLifeSystem();
                                                                                  // (+ LineOfSightSystem-Konstruktor anpassen!)
     //private final BulletSystem bulletSystem = new BulletSystem();

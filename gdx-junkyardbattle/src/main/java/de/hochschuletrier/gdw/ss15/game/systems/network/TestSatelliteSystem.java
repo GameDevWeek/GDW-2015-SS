@@ -3,9 +3,12 @@ package de.hochschuletrier.gdw.ss15.game.systems.network;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.ashley.core.Engine;
 
+import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.events.network.client.SendPacketClientEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.Game;
@@ -31,10 +34,11 @@ public class TestSatelliteSystem extends IteratingSystem {
 	private ComponentMapper<InventoryComponent> inventory;
 	private ComponentMapper<PositionComponent> position;
 	private ComponentMapper<PositionSynchComponent> positionSynch;
+	private final PooledEngine engine;
 	boolean satellite = false;
-	public TestSatelliteSystem(ServerGame serverGame) {
+	public TestSatelliteSystem(ServerGame serverGame, PooledEngine engine) {
 		super(Family.all(SpawnSatelliteComponent.class).get());
-		
+		this.engine = engine;
 		this.serverGame = serverGame;
 		inventory = ComponentMappers.inventory;
 		position = ComponentMappers.position;
@@ -56,6 +60,7 @@ public class TestSatelliteSystem extends IteratingSystem {
 		    satellite = true;
             serverGame.createEntity("SatelliteSiteServer", x, y);
             System.out.println(x+" , "+ y);
+            
         }
 		
 		
@@ -69,7 +74,6 @@ public class TestSatelliteSystem extends IteratingSystem {
 	protected void processEntity(Entity entity, float deltaTime) 
 	{
 		
-		
 		PositionComponent posc = ComponentMappers.position.get(entity);
         InventoryComponent inventory = ComponentMappers.inventory.get(entity);
         PositionSynchComponent pos = ComponentMappers.positionSynch.get(entity);
@@ -82,9 +86,8 @@ public class TestSatelliteSystem extends IteratingSystem {
         	
         	if(inventory.getMetalShards()<1)
         	{
-        		entity.removeAll();
+        		engine.removeAllEntities();
         		satellite = false;
-        		super.update(deltaTime);
         		System.out.println("Ich bin hier");
         		
         	}
