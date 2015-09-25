@@ -3,21 +3,35 @@ package de.hochschuletrier.gdw.ss15.game;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 
+import com.badlogic.gdx.assets.loaders.BitmapFontLoader;
+import com.badlogic.gdx.assets.loaders.TextureLoader;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import de.hochschuletrier.gdw.commons.gdx.ashley.EntityFactory;
+import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
+import de.hochschuletrier.gdw.commons.gdx.assets.loaders.AnimationExtendedLoader;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixComponentAwareContactListener;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
+import de.hochschuletrier.gdw.ss15.Main;
+import de.hochschuletrier.gdw.ss15.events.network.server.NetworkNewPlayerEvent;
 import de.hochschuletrier.gdw.ss15.game.components.BulletComponent;
 import de.hochschuletrier.gdw.ss15.game.components.ImpactSoundComponent;
 import de.hochschuletrier.gdw.ss15.game.components.MetalShardSpawnComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PickableComponent;
 import de.hochschuletrier.gdw.ss15.game.components.TriggerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
+import de.hochschuletrier.gdw.ss15.game.components.factories.network.server.ClientComponentFactory;
+import de.hochschuletrier.gdw.ss15.game.components.network.server.ClientComponent;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.BulletListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.ImpactSoundListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.MetalShardSpawnListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.PickupListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.TriggerListener;
+import de.hochschuletrier.gdw.ss15.game.network.ClientConnection;
 import de.hochschuletrier.gdw.ss15.game.systems.BulletSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.LineOfSightSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.MetalShardSpawnSystem;
@@ -28,8 +42,11 @@ import de.hochschuletrier.gdw.ss15.game.systems.network.NetworkServerSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.PositionSynchSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.TestSatelliteSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.UpdatePhysixServer;
+import de.hochschuletrier.gdw.ss15.game.systems.network.UpdatePhysixSystem;
+import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serverclientsocket;
 import de.hochschuletrier.gdw.ss15.game.systems.network.*;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serversocket;
+import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.Tools;
 
 /**
  * Created by lukas on 21.09.15.
@@ -60,7 +77,6 @@ public class ServerGame{
     private final EntityFactoryParam factoryParam = new EntityFactoryParam();
     private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json", ServerGame.class);
 
-    private Serversocket serverSocket;
     
     private final MapLoader mapLoader = new MapLoader(); /// @author tobidot
     private UpdatePhysixServer updatePhysixServer;
@@ -69,31 +85,51 @@ public class ServerGame{
     
     private final SpawnSystem spawnSystem = new SpawnSystem();
 
-    public ServerGame(Serversocket socket)
+    public ServerGame()
     {
-        serverSocket = socket;
+
     }
 
     public PooledEngine get_Engine(){return engine;}
 
-    public void init(AssetManagerX assetManager) {
+    public void InsertPlayerInGame(Serverclientsocket sock,String name, boolean team)
+    {
+        Main.getInstance().getServer().LastConnectedClient = sock;
+
+        Entity ent = createEntity("player",0,0);
+        //ClientComponent comp = new ClientComponent();
+        //comp.client = sock;
+        //ent.add(comp);
+        Main.getInstance().getServer().LastConnectedClient = null;
+
+        //ComponentMappers.client.get(ent).client = sock;
+        ComponentMappers.player.get(ent).name = name;
+        ComponentMappers.player.get(ent).teamID = Tools.BoolToInt(team);
+
+        NetworkNewPlayerEvent.emit(ent);
+    }
+
+    public void init() {
         // Main.getInstance().console.register(physixDebug);
+
+        addSystems();
+        addContactListeners();
+        setupPhysixWorld();
+        networkSystem.init();
+        entityFactory.init(engine, Main.getInstance().getAssetManager());
+
+        mapLoader.listen(spawnSystem);
+        mapLoader.run((String name, float x, float y) -> {
+            return this.createEntity(name, x, y);
+        }, "data/maps/3v3Alpha.tmx", physixSystem, entityFactory, Main.getInstance().getAssetManager());
+    }
+
+    private void addSystems() {
 
         updatePhysixServer = new UpdatePhysixServer();
         fireServerListener = new FireServerListener(this);
         gatherServerListener = new GatherServerListener(physixSystem);
 
-        addSystems();
-        addContactListeners();
-        setupPhysixWorld();
-        networkSystem.init(serverSocket);
-        entityFactory.init(engine, assetManager);
-
-        mapLoader.listen(spawnSystem);
-        mapLoader.run( ( String name, float x, float y ) -> { return this.createEntity(name,  x, y); }, "data/maps/3v3Alpha.tmx",physixSystem,entityFactory,assetManager );
-    }
-
-    private void addSystems() {
         engine.addSystem(physixSystem);
         engine.addSystem(networkSystem);
         engine.addSystem(updatePositionSystem);
@@ -137,10 +173,16 @@ public class ServerGame{
         //factoryParam.game = this;
         factoryParam.x = x;
         factoryParam.y = y;
+        System.out.println("Spawned entit with name: " + name);
         Entity entity = entityFactory.createEntity(name, factoryParam);
 
         engine.addEntity(entity);
         return entity;
+    }
+
+    public void remove()
+    {
+
     }
 
 }

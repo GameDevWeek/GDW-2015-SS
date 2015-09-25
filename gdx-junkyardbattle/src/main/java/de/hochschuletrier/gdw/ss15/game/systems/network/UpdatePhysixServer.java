@@ -67,6 +67,7 @@ public class UpdatePhysixServer extends EntitySystem implements NetworkReceivedN
             
             phxc.setLinearVelocity(vel);
             //phxc.setAngle(p.rotation);
+            //System.out.println("fdsjklsdjfsdkl"+p.rotation);
             phxc.setAngle(p.rotation * MathUtils.degreesToRadians);
             }catch (ClassCastException e){}
     }

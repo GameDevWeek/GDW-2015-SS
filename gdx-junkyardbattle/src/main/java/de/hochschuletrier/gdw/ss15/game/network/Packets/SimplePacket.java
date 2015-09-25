@@ -18,6 +18,11 @@ public class SimplePacket extends Packet
     public enum SimplePacketId
     {
         RemoveEntity((short)0),
+        ConnectInitPacket((short)1),
+        ChangeTeamPacket((short)2),
+        StartGame((short)1337),
+        StopGame((short)42),
+        TimeMenuePacket((short)55),
         MetalShardsUpdate((short)10),
         BasePointsUpdate((short)20),
         MiningPacket((byte)21);

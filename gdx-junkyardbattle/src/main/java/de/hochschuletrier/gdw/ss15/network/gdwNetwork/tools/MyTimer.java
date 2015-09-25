@@ -95,11 +95,17 @@ public class MyTimer
 		m_Counting=true;
 		m_CountTime=start;
 	}
-	
+
 	public void StartCounterMS(double start)
 	{
 		m_Counting=true;
 		m_CountTime=(long)(start*1000000);
+	}
+
+	public void StartCounterS(double start)
+	{
+		m_Counting=true;
+		m_CountTime=(long)(start*1000000000);
 	}
 	
 	public void StartCounterMSandUpdate(double start)

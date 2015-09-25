@@ -107,8 +107,8 @@ public class CameraSystem extends EntitySystem
     }
     
     @Override
-    public void onWeaponCharging() { 
-        camera.zoomOut(true);
+    public void onWeaponCharging(float fireChannelAmount) { 
+        camera.zoomOut(fireChannelAmount);
     }
 
     @Override

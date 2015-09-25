@@ -5,16 +5,17 @@ import com.badlogic.gdx.utils.SnapshotArray;
 public class WeaponCharging {
 
     public static interface Listener {
-        void onWeaponCharging();
+    	//fireChannelAmount between 0 and 1
+        void onWeaponCharging(float fireChannelAmount);
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     private static final SnapshotArray<Listener> listeners = new SnapshotArray();
 
-    public static void emit() {
+    public static void emit(float fireChannelAmount) {
         Object[] items = listeners.begin();
         for (int i = 0, n = listeners.size; i < n; i++) {
-            ((Listener)items[i]).onWeaponCharging();
+            ((Listener)items[i]).onWeaponCharging(fireChannelAmount);
         }
         listeners.end();
     }

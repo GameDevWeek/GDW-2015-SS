@@ -16,6 +16,8 @@ import sun.java2d.pipe.SpanShapeRenderer;
 public class InventoryComponent extends Component implements Pool.Poolable {
 
     private int metalShards = 0;
+    public int minMetalShards = 0;
+    public int maxMetalShards = 100;
 
 
     @Override
@@ -26,7 +28,7 @@ public class InventoryComponent extends Component implements Pool.Poolable {
     public boolean setMetalShards(int shards)
     {
 
-        if(shards <= GameConstants.MAX_METALSHARDS && shards >= GameConstants.MIN_METALSHARDS)
+        if(shards <= maxMetalShards && shards >= minMetalShards)
         {
             metalShards = shards;
             SimplePacket packet = new SimplePacket(SimplePacket.SimplePacketId.MetalShardsUpdate.getValue(), metalShards);
@@ -45,22 +47,23 @@ public class InventoryComponent extends Component implements Pool.Poolable {
         int oldValueShards = metalShards;
         if (!setMetalShards(metalShards + shards))
         {
-            if (metalShards + shards > GameConstants.MAX_METALSHARDS)
+            if (metalShards + shards > maxMetalShards)
             {
-                metalShards = GameConstants.MAX_METALSHARDS;
+                metalShards = maxMetalShards;
             }
-            else if (metalShards - shards < 0)
+            else if (metalShards + shards < 0)
             {
                 metalShards = 0;
             }
+            return metalShards - oldValueShards;
 
         };
-        return metalShards - oldValueShards;
+        return shards;
     }
 
     public int subMetalShards(int shards)
     {
-        return addMetalShards(-shards);
+        return - addMetalShards(-shards);
     }
 
 

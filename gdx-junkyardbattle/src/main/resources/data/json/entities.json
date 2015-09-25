@@ -139,7 +139,9 @@
             },
             "Interpolate": {},
             "Inventory": {
-                "metalShards": 100
+                "metalShards": 100,
+                "minMetalShards": 0,
+                "maxMetalShards": 300
             },
             "Move": {
                 "speed": 300,
@@ -201,7 +203,9 @@
             "Input": {},
             "Interpolate": {},
             "Inventory": {
-                "metalShards": 0
+                "metalShards": 0,
+                "minMetalShards": 20,
+                "maxMetalShards": 180
             },
             "Weapon": {},
             "Health": {},
@@ -264,7 +268,9 @@
             "Position": {},
             "SpawnSatellite": {},
             "Inventory": {
-                "metalShards": 100
+                "metalShards": 100,
+                "minMetalShards": 0,
+                "maxMetalShards": 100
             }
         }
     },
@@ -279,11 +285,11 @@
             },
             "PhysixBody": {
                 "shape": "circle",
-                "size": 5,
+                "size": 10,
                 "density": 10,
                 "friction": 0.5,
                 "restitution": 0.1,
-                "sensor": true,
+                "sensor": false,
                 "type": "kinematic"
             },
             "Damage": {
@@ -293,7 +299,9 @@
             },
             "SpawnSatellite": {},
             "Inventory": {
-                "metalShards": 100
+                "metalShards": 100,
+                "minMetalShards": 0,
+                "maxMetalShards": 100
             },
             "SoundEmitter": {},
             "Mineable": {}
@@ -318,11 +326,11 @@
             "NetworkID": {},
             "PhysixBody": {
                 "shape": "circle",
-                "size": 90,
+                "size": 10,
                 "density": 10,
                 "friction": 0.5,
                 "restitution": 0.1,
-                "sensor": true,
+                "sensor": false,
                 "type": "kinematic"
             }
         }
@@ -442,7 +450,9 @@
             },
             "Pickable": {},
             "Inventory": {
-                "metalShards": 1
+                "metalShards": 100,
+                "minMetalShards": 0,
+                "maxMetalShards": 100
             }
         }
     }

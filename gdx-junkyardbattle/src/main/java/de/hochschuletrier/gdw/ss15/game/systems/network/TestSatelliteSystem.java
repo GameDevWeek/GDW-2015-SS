@@ -14,7 +14,6 @@ import de.hochschuletrier.gdw.ss15.events.SoundEvent;
 import de.hochschuletrier.gdw.ss15.events.network.client.SendPacketClientEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.Game;
-import de.hochschuletrier.gdw.ss15.game.GameConstants;
 import de.hochschuletrier.gdw.ss15.game.MapSpecialEntities.CreatorInfo;
 import de.hochschuletrier.gdw.ss15.game.ServerGame;
 import de.hochschuletrier.gdw.ss15.game.components.DamageComponent;
@@ -30,70 +29,74 @@ import de.hochschuletrier.gdw.ss15.game.MapSpecialEntities;
 import de.hochschuletrier.gdw.ss15.game.MapLoader;
 
 public class TestSatelliteSystem extends IteratingSystem {
-	
-    ServerGame serverGame;
-	float timer = GameConstants.SATELLITE_SPAWN_TIME;
-	float x = 0.f;
-    float y = 0.f;
-    
+	ServerGame serverGame;
+	MyTimer timer = new MyTimer(true);
+	float x;
+    float y;
 	private ComponentMapper<InventoryComponent> inventory;
 	private ComponentMapper<PositionComponent> position;
 	private ComponentMapper<PositionSynchComponent> positionSynch;
 	private final PooledEngine engine;
-	boolean satelliteOnField = false;
-    
+	boolean satellite = false;
 	public TestSatelliteSystem(ServerGame serverGame, PooledEngine engine) {
 		super(Family.all(SpawnSatelliteComponent.class).get());
-        
-        satelliteOnField = false;
 		this.engine = engine;
-        this.serverGame = serverGame;
-        
+		this.serverGame = serverGame;
 		inventory = ComponentMappers.inventory;
 		position = ComponentMappers.position;
 		positionSynch = ComponentMappers.positionSynch;
 
-		//timer.StartCounterandUpdate();
+		timer.StartCounterandUpdate();
 		
 	}
 	@Override
 	public void update(float deltaTime)
 	{
 	    super.update(deltaTime);
-
-        timer -= deltaTime;
-        
-		if(timer <= 0.f && !satelliteOnField)
+		timer.Update();
+		
+		
+		if(timer.get_CounterSeconds()>10 && satellite == false)
         {
-		    //System.out.println("Satellite spawned");
-		    satelliteOnField = true;
-            timer = GameConstants.SATELLITE_SPAWN_TIME;
-            
-            Entity satelliteEvent = serverGame.createEntity("SatelliteSiteServer", x, y);
+		    System.out.println("Satellite spawned");
+		    satellite = true;
+           Entity satelliteEvent = serverGame.createEntity("SatelliteSiteServer", x, y);
             SatelliteColliding.emit();
             SoundEvent.emit("sat_explode", satelliteEvent);
-
-            //System.out.println(x+" , "+ y);
+            System.out.println(x+" , "+ y);
+            
         }
+		
+		
+		
 	}
+	
+
+
 
 	@Override
 	protected void processEntity(Entity entity, float deltaTime) 
 	{
+		
 		PositionComponent posc = ComponentMappers.position.get(entity);
         InventoryComponent inventory = ComponentMappers.inventory.get(entity);
         PositionSynchComponent pos = ComponentMappers.positionSynch.get(entity);
 
-        x = posc.x;
-        y = posc.y;
-
+          x= posc.x;
+          y = posc.y;
+          
+          
           //System.out.println(x+" , "+y);
         	
-        if(inventory.getMetalShards()<1)
-        {
-            engine.removeAllEntities();
-            satelliteOnField = false;
-            System.out.println("Ich bin hier");
-        }
+        	if(inventory.getMetalShards()<1)
+        	{
+        		engine.removeEntity(entity);;
+        		satellite = false;
+        		System.out.println("Ich bin hier");
+        		timer.ResetTimer();
+        		
+        	}
+ 
 	}
+ 
 }
