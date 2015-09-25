@@ -113,16 +113,20 @@ public class BoundedCamera extends SmoothCamera {
             position.add(moveDir);
             setCameraPosition(position);
         }
-        
         if(resetZoom)
+        {
             zoomProgress -= zoomSpeed * delta;
-        else
-            zoomProgress += zoomSpeed * delta;
-        checkProgressBounds();
+            checkProgressBounds();
+            curZoom = Interpolation.pow4.apply(srcZoom, dstZoom, zoomProgress);
+            setZoom(curZoom);
+        }
+        System.out.println("Reset?"+resetZoom+"  Progress:"+zoomProgress);
+//        else
+//            zoomProgress += zoomSpeed * delta;
+        
         
         // change interpolation type for camera
-        curZoom = Interpolation.pow4.apply(srcZoom, dstZoom, zoomProgress);
-        setZoom(curZoom);        
+                
         
         camera.update(true);
     }
@@ -137,6 +141,22 @@ public class BoundedCamera extends SmoothCamera {
         else
             resetZoom = true;
     }
+    
+    
+    //used for zooming out while weapon charing
+    //value between 0..1
+    public void zoomOut(float zoomAmount)
+    {
+    	if(zoomAmount == 0.0f)
+    		resetZoom = true;
+    	else
+    	{
+    		resetZoom = false;
+    		zoomProgress = zoomAmount;
+    		setZoom(srcZoom + zoomAmount*(dstZoom-srcZoom));
+    	}
+    }
+    
     
     // Check if zoomProgress variable is out of bounds
     private void checkProgressBounds(){
