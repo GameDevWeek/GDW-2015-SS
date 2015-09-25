@@ -44,15 +44,21 @@ public class HudSystem extends IteratingSystem {
     protected void processEntity(Entity entity, float deltaTime) {
         PlayerComponent player = entity.getComponent(PlayerComponent.class);
         if (player.isLocalPlayer){
-            InputComponent input = entity.getComponent(InputComponent.class);
-            mouseScreenPos.x = input.posX;
-            mouseScreenPos.y = input.posY;
-            mouseScreenPos = camera.unproject(mouseScreenPos);
 
-            DrawUtil.batch.draw(assetManager.getTexture("crosshair"),mouseScreenPos.x,
-                    mouseScreenPos.y);
+            drawCrosshair(entity);
 
         }
+    }
+
+    private void drawCrosshair(Entity entity){
+
+        mouseScreenPos.x = entity.getComponent(InputComponent.class).posX;
+        mouseScreenPos.y = entity.getComponent(InputComponent.class).posY;
+        mouseScreenPos = camera.unproject(mouseScreenPos);
+
+        DrawUtil.batch.draw(assetManager.getTexture("crosshair"),mouseScreenPos.x,
+                mouseScreenPos.y);
+
     }
 
 }
