@@ -75,7 +75,11 @@ public class FireServerListener extends EntitySystem implements NetworkReceivedN
                 EntityFactoryParam param = new EntityFactoryParam();
                 Vector2 startPosition = playerLookDirection.add(phxc.getPosition()); // dir.setLength(projectPlayerDistance).add(phxc.getPosition());
 
+
                 invc.addMetalShards(-1);
+
+                //System.out.println(invc.getMetalShards());
+
                 Entity projectile = game.createEntity("projectile", startPosition.x, startPosition.y);
 
                 float rotation = (float) (phxc.getAngle() + (Math.random() - 0.5f) * scatter);

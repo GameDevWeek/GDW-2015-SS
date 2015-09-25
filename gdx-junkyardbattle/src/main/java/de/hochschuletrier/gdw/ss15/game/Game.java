@@ -69,6 +69,8 @@ public class Game extends InputAdapter {
     private final DeathSystem deathSystem = new DeathSystem();
     private final ChangeAnimationStateSystem changeAnimSystem = new ChangeAnimationStateSystem();
 
+    private final TestListenerClient TestoutputSystem = new TestListenerClient();
+
     public Game() {
         // If this is a build jar file, disable hotkeys
         if (!Main.IS_RELEASE) {
