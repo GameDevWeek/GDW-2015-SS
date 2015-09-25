@@ -1,22 +1,22 @@
 {
-	"footstepeffect":{
+    "footstepeffect": {
         "meta": {},
-        "components":{
-            "Position":{
+        "components": {
+            "Position": {
                 "layer": 1
             },
-            "ParticleEffect":{
+            "ParticleEffect": {
                 "effectname": "footsteps",
                 "offsetX": 0,
                 "offsetY": 0,
                 "initialRotation": 0
             },
-            "Death":{
-                 "dyingDuration": 0.3       
+            "Death": {
+                "dyingDuration": 0.3
             }
         }
     },
-   "smokescreen": {
+    "smokescreen": {
         "meta": {},
         "components": {
             "Position": {},
@@ -122,7 +122,7 @@
             },
             "Interpolate": {},
             "Inventory": {
-                "metalShards":100
+                "metalShards": 100
             },
             "Move": {
                 "speed": 300,
@@ -152,8 +152,8 @@
                 "animation_WALK": "character_blue_walk",
                 "initialRotation": 90
             },
-            "ParticleEffect":{
-                "effectname" : "thruster",
+            "ParticleEffect": {
+                "effectname": "thruster",
                 "offsetX": 64,
                 "offsetY": 0,
                 "initialRotation": 180
@@ -184,8 +184,8 @@
                 "animation_WALK": "character_orange_walk",
                 "initialRotation": 90
             },
-            "ParticleEffect":{
-                "effectname" : "thruster",
+            "ParticleEffect": {
+                "effectname": "thruster",
                 "offsetX": 64,
                 "offsetY": 0,
                 "initialRotation": 180
@@ -214,7 +214,7 @@
                 "friction": 0.5,
                 "restitution": 0.1,
                 "type": "dynamic",
-                "category":  "BULLET"
+                "category": "BULLET"
             },
             "Damage": {
                 "damageValue": 10,
@@ -248,7 +248,7 @@
             "Position": {},
             "SpawnSatellite": {},
             "Inventory": {
-                 "metalShards": 100
+                "metalShards": 100
             }
         }
     },
@@ -261,7 +261,6 @@
                 "updateDuration": 10000000,
                 "sendSave": true
             },
-
             "PhysixBody": {
                 "shape": "circle",
                 "size": 5,
@@ -276,18 +275,18 @@
                 "damageToPlayer": true,
                 "damageToTile": true
             },
-            "SpawnSatellite":{},
+            "SpawnSatellite": {},
             "Inventory": {
-            "metalShards": 100
+                "metalShards": 100
             },
-            "Mineable":{}
-
+            "SoundEmitter": {},
+            "Mineable": {}
         }
     },
     "SatelliteClient": {
         "meta": {},
         "components": {
-        	"Position":{},
+            "Position": {},
             "Texture": {
                 "texture": "satellite",
                 "width": 1600,
@@ -340,9 +339,9 @@
                 "friction": 0.5,
                 "restitution": 0.1,
                 "type": "static",
-                "sensor":  true
+                "sensor": true
             },
-            "Texture":{
+            "Texture": {
                 "texture": "junk_spawn",
                 "width": 120,
                 "height": 120,
@@ -353,8 +352,8 @@
                 "flipX": false,
                 "flipY": false
             },
-            "MetalShardSpawn":{
-            	"spawnTime": 5.0
+            "MetalShardSpawn": {
+                "spawnTime": 5
             }
         }
     },
@@ -381,7 +380,6 @@
             }
         }
     },
-
     "metalClient": {
         "meta": {},
         "components": {
@@ -396,7 +394,7 @@
                 "scaleY": 0.3,
                 "flipX": false,
                 "flipY": false
-            }, 
+            },
             "PhysixBody": {
                 "shape": "circle",
                 "size": 5,
@@ -405,12 +403,10 @@
                 "restitution": 0.2,
                 "type": "dynamic"
             },
-            "Pickable":{},
+            "Pickable": {},
             "NetworkID": {}
-       }
+        }
     },
-
-
     "metalServer": {
         "meta": {},
         "components": {
@@ -423,15 +419,14 @@
                 "restitution": 0.2,
                 "type": "dynamic"
             },
-            "PositionSynch":{
+            "PositionSynch": {
                 "clientname": "metalClient",
                 "updateDuration": 10000000,
                 "sendSave": true
-
             },
-            "Pickable":{},
-            "Inventory":{
-                "metalShards":1
+            "Pickable": {},
+            "Inventory": {
+                "metalShards": 1
             }
         }
     }
