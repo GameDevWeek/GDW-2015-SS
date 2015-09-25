@@ -89,8 +89,8 @@ public class GatherServerListener extends EntitySystem implements NetworkReceive
         Vector2 rayPos = new Vector2((float)Math.cos(rotation), (float)Math.sin(rotation));
         rayPos.nor();
         rayPos.scl(GameConstants.GATHERING_RANGE);
-        rayPos.add(pos);
         physixSystem.toBox2D(rayPos, rayPos);
+        rayPos.add(pos);
 
         //System.out.println("playerPos: " + pos);
         //System.out.println("rayPos: " + rayPos);
