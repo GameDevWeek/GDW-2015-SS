@@ -23,7 +23,7 @@ public class GameConstants {
     public static final int POSITION_ITERATIONS = 3;
     public static final int VELOCITY_ITERATIONS = 8;
     public static final int BOX2D_SCALE = 40;
-    public static final float GATHERING_RANGE = 10000f;
+    public static final float GATHERING_RANGE = 100000f;
     
     // Light parameters
     public static final int LIGHT_RAYS = 360;

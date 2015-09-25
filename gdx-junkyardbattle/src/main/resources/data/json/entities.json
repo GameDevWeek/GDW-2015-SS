@@ -248,7 +248,7 @@
             "Position": {},
             "SpawnSatellite": {},
             "Inventory": {
-                "metalShards": 3000
+                "metalShards": 1
             }
         }
     },
@@ -277,7 +277,7 @@
             },
             "SpawnSatellite": {},
             "Inventory": {
-                "metalShards": 300
+                "metalShards": 1
             },
             "SoundEmitter": {},
             "Mineable": {}
