@@ -141,9 +141,7 @@ public class SpawnSystem extends EntitySystem implements NetworkNewPlayerEvent.L
                     if(ComponentMappers.texture.has(entity))
                         ComponentMappers.texture.get(entity).draw = true;
 
-                    body.setPosition(1000.f, 1000.f);
-                    ComponentMappers.position.get(entity).x=1000;
-                    ComponentMappers.position.get(entity).y=1000;
+                    body.setPosition(spawnComponent.spawnPoint.x, spawnComponent.spawnPoint.y);
 
                     spawnComponent.respawnTimer = GameConstants.RESPAWN_TIMER;
                     spawnComponent.respawn = false;
