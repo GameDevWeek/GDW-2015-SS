@@ -33,6 +33,9 @@ public class GameConstants {
     public static final boolean LIGHT_SHADOW = true;
     public static final boolean LIGHT_DIFFUSE = false;
     
+    // Satellite
+    public static final float SATELLITE_SPAWN_TIME = 30.f;
+    
     // Music parameters
     public static float MUSIC_FADE_TIME = 2;
 
