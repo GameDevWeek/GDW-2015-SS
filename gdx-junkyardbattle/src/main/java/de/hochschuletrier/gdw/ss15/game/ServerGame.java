@@ -49,7 +49,7 @@ public class ServerGame{
                                                                                  // (+ LineOfSightSystem-Konstruktor anpassen!)
     //private final BulletSystem bulletSystem = new BulletSystem();
     private final MetalShardSpawnSystem metalShardSpawnSystem = new MetalShardSpawnSystem(this);
-    private final BulletSystem bulletSystem = new BulletSystem();
+    private final BulletSystem bulletSystem = new BulletSystem(engine, this);
     private final PickupSystem pickupSystem = new PickupSystem(engine);
 
     private final EntityFactoryParam factoryParam = new EntityFactoryParam();
