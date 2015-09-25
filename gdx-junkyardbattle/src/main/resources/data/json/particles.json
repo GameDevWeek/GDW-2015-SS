@@ -2,5 +2,6 @@
     "particle": "data/particles/particle.p",
     "smoke": "data/particles/smoke.p",
     "footsteps": "data/particles/footsteps.p",
-    "shoot": "data/particles/shoot.p"
+    "shoot": "data/particles/shoot.p",
+    "thruster": "data/particles/thruster.p"
 }

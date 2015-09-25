@@ -6,7 +6,10 @@
                 "layer": 1
             },
             "ParticleEffect":{
-                "effectname": "footsteps"
+                "effectname": "footsteps",
+                "offsetX": 0,
+                "offsetY": 0,
+                "initialRotation": 0
             },
             "Death":{
                  "dyingDuration": 0.3       
@@ -18,7 +21,10 @@
         "components": {
             "Position": {},
             "ParticleEffect": {
-                "effectname": "smoke"
+                "effectname": "smoke",
+                "offsetX": 0,
+                "offsetY": 0,
+                "initialRotation": 0
             }
         }
     },
@@ -39,7 +45,7 @@
                 "effectname": "particle",
                 "offsetX": 0,
                 "offsetY": 0,
-                "rotation": 0
+                "initialRotation": 0
             },
             "PhysixBody": {
                 "shape": "circle",
@@ -145,6 +151,12 @@
                 "animation_WALK": "character_blue_walk",
                 "initialRotation": 90
             },
+            "ParticleEffect":{
+                "effectname" : "thruster",
+                "offsetX": 64,
+                "offsetY": 0,
+                "initialRotation": 180
+            },
             "Interpolate": {},
             "SoundEmitter": {}
         }
@@ -170,6 +182,12 @@
                 "animation_IDLE": "character_orange_idle",
                 "animation_WALK": "character_orange_walk",
                 "initialRotation": 90
+            },
+            "ParticleEffect":{
+                "effectname" : "thruster",
+                "offsetX": 64,
+                "offsetY": 0,
+                "initialRotation": 180
             },
             "Move": {
                 "speed": 10
@@ -226,7 +244,10 @@
             },
             "NetworkID": {},
             "ParticleEffect":{
-                "effectname": "shoot"
+                "effectname": "shoot",
+                "offsetX": 0,
+                "offsetY": 0,
+                "initialRotation": 0
             },
             "Damage": {
                 "damageValue": 10,
@@ -278,7 +299,7 @@
                 "friction": 0.5,
                 "restitution": 0.1,
                 "sensor": true,
-                "type": "static"
+                "type": "kinematic"
             },
             "Damage": {
                 "damageValue": 100,
@@ -312,7 +333,7 @@
                 "friction": 0.5,
                 "restitution": 0.1,
                 "sensor": true,
-                "type": "static"
+                "type": "kinematic"
             }
         }
     },

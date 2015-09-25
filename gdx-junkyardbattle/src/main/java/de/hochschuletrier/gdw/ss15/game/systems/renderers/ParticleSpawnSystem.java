@@ -35,8 +35,8 @@ public class ParticleSpawnSystem implements NetworkReceivedNewPacketClientEvent.
             EntityUpdatePacket updatePacker = (EntityUpdatePacket)pack;
             
             if(Math.abs(updatePacker.velocityX) > 0.f || Math.abs(updatePacker.velocityY) > 0.f){
-                Entity particleEffect = game.createEntity("footstepeffect", updatePacker.xPos, updatePacker.yPos);
-                ComponentMappers.position.get(particleEffect).rotation = -updatePacker.rotation;
+                //Entity particleEffect = game.createEntity("footstepeffect", updatePacker.xPos, updatePacker.yPos);
+                //ComponentMappers.position.get(particleEffect).rotation = -updatePacker.rotation;
             } 
         }
     }
