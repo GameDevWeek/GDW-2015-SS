@@ -13,14 +13,14 @@ public class Bar extends Actor {
 	private  float heightBar = 0;
 	private  float widthBar = 0;
 	private int currentValue=0;
-	private int maxValue=0;
+	private int maxValue=50;
 	private int x,y;
 	
 	private TextureRegion region;
 	private ShapeRenderer drawer= new ShapeRenderer();
 	
-	private Color SoundbarColorLeft= Color.GREEN;
-	private Color SoundbarColorRight= Color.GREEN;
+	private Color SoundbarColorLeft= Color.RED;
+	private Color SoundbarColorRight= Color.RED;
 
 	public Bar(float height,float width,int x,int y)
 	{

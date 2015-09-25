@@ -13,7 +13,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import de.hochschuletrier.gdw.commons.gdx.menu.MenuManager;
+import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
 import de.hochschuletrier.gdw.ss15.Main;
+import de.hochschuletrier.gdw.ss15.menu.Actors.Bar;
 
 public class MenuPageHostGame extends MenuPage{
 	ArrayList<Actor> horizontalGroupeContent = new ArrayList<>();
@@ -45,6 +47,8 @@ super(skin, background);
 		});
 
 		TextButton textButtonAbort = new TextButton("Abbrechen", skin);
+		
+		
 		textButtonAbort.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float x, float y) {

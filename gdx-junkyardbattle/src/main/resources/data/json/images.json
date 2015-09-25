@@ -4,6 +4,14 @@
     "ball": "data/images/ball.png",
     "menu_bg": "data/ui/menu/Assets/MainMenu.png",
     "plus_ui": "data/ui/menu/Assets/menu_sound_UP.png",
-    "minus_ui": "data/ui/menu/Assets/menu_sound_DOWN.png"
-
+    "minus_ui": "data/ui/menu/Assets/menu_sound_DOWN.png",
+    "sound_bg": "data/ui/menu/Assets/Sound_menu.png",
+    "start_bg": "data/ui/menu/Assets/Start_menu.png",
+    "start_button":"data/ui/menu/Assets/Start.png",
+	"join_button": "data/ui/menu/Assets/join.png",
+	"host_button": "data/ui/menu/Assets/host.png",
+	"option_button":"data/ui/menu/Assets/Options.png",
+	"credits_button":"data/ui/menu/Assets/Options.png",
+	"join_bg":"data/ui/menu/Assets/Lobby.png",
+	"change_button":"data/ui/menu/Assets/change.png"
 }
