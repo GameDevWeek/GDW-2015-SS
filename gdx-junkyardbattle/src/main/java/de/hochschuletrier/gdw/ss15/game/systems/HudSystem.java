@@ -17,6 +17,7 @@ import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
 import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.game.GameConstants;
 import de.hochschuletrier.gdw.ss15.game.components.HealthComponent;
+import de.hochschuletrier.gdw.ss15.game.components.InventoryComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.components.input.InputComponent;
@@ -71,9 +72,9 @@ public class HudSystem extends IteratingSystem {
 
         mouseScreenPos.x = entity.getComponent(InputComponent.class).posX;
         mouseScreenPos.y = entity.getComponent(InputComponent.class).posY;
-        DrawUtil.batch.draw(crosshairTex,mouseScreenPos.x - crosshairTex.getWidth()/4,
-                mouseScreenPos.y - crosshairTex.getHeight()/4, crosshairTex.getWidth()/2, crosshairTex.getHeight()/2);
 
+        DrawUtil.batch.draw(crosshairTex, mouseScreenPos.x - crosshairTex.getWidth() / 4,
+                mouseScreenPos.y - crosshairTex.getHeight() / 4, crosshairTex.getWidth() / 2, crosshairTex.getHeight() / 2);
     }
     private void radar(Entity entity) {
 
@@ -97,6 +98,10 @@ public class HudSystem extends IteratingSystem {
         DrawUtil.fillRect(Gdx.graphics.getWidth() / 2 - HudDebug.health, Gdx.graphics.getHeight() - 20, 2 * HudDebug.health, 40, Color.RED);
         DrawUtil.drawRect(Gdx.graphics.getWidth() / 2 - 100, Gdx.graphics.getHeight() - 20, 200, 40, Color.WHITE);
 
+    }
+
+    private void schrottAnzeige(){
+        localPlayer.getComponent(InventoryComponent.class).getMetalShards();
     }
 
 }
