@@ -90,9 +90,10 @@ public class TestSatelliteSystem extends IteratingSystem {
         	
         	if(inventory.getMetalShards()<1)
         	{
-        		engine.removeAllEntities();
+        		engine.removeEntity(entity);;
         		satellite = false;
         		System.out.println("Ich bin hier");
+        		timer.ResetTimer();
         		
         	}
  

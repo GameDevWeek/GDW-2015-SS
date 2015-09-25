@@ -1,4 +1,4 @@
-package de.hochschuletrier.gdw.ss15.sandbox.camera;
+﻿package de.hochschuletrier.gdw.ss15.sandbox.camera;
 
 import java.util.HashMap;
 
@@ -202,7 +202,7 @@ public class CameraTest extends SandboxGame {
             cameraSystem.getCamera().getOrthographicCamera().unproject(target);
             
             if(Gdx.input.isButtonPressed(Buttons.LEFT)){
-               // WeaponCharging.emit();
+                //WeaponCharging.emit();
             } else if(!Gdx.input.isButtonPressed(Buttons.LEFT)){
                 WeaponUncharged.emit();
             }
