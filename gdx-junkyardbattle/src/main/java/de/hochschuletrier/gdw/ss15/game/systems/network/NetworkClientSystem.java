@@ -78,6 +78,9 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener,
 
 
             lastAddedEntityID = iPacket.entityID;
+
+            System.out.println(iPacket.xPos + " "+ iPacket.yPos);
+
             Entity ent = game.createEntity(iPacket.name,iPacket.xPos,iPacket.yPos);
 
             ComponentMappers.position.get(ent).rotation = iPacket.rotation;

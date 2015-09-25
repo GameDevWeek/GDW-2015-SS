@@ -22,6 +22,8 @@ import de.hochschuletrier.gdw.ss15.game.components.HealthComponent.HealthState;
 import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.components.SpawnComponent;
+import de.hochschuletrier.gdw.ss15.game.network.Packets.EntityUpdatePacket;
+
 import java.util.ArrayList;
 
 /**
@@ -138,9 +140,11 @@ public class SpawnSystem extends EntitySystem implements NetworkNewPlayerEvent.L
                     
                     if(ComponentMappers.texture.has(entity))
                         ComponentMappers.texture.get(entity).draw = true;
-                    
+
                     body.setPosition(1000.f, 1000.f);
-                    
+                    ComponentMappers.position.get(entity).x=1000;
+                    ComponentMappers.position.get(entity).y=1000;
+
                     spawnComponent.respawnTimer = GameConstants.RESPAWN_TIMER;
                     spawnComponent.respawn = false;
                 }

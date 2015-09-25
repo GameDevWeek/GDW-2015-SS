@@ -23,6 +23,8 @@ public class PositionSynchComponent extends Component implements Pool.Poolable {
     public float updateDuration;
     public boolean sendSave;
 
+    public boolean inited;
+
     @Override
     public void reset() {
         networkID = currentID++;
@@ -35,6 +37,7 @@ public class PositionSynchComponent extends Component implements Pool.Poolable {
         lastSendTimer=null;
         updateDuration=42;
         sendSave=false;
+        inited=false;
     }
 
     /*
