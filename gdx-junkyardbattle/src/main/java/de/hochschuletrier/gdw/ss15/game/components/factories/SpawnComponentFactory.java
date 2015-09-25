@@ -8,6 +8,7 @@ package de.hochschuletrier.gdw.ss15.game.components.factories;
 import com.badlogic.ashley.core.Entity;
 import de.hochschuletrier.gdw.commons.gdx.ashley.ComponentFactory;
 import de.hochschuletrier.gdw.commons.utils.SafeProperties;
+import de.hochschuletrier.gdw.ss15.game.GameConstants;
 import de.hochschuletrier.gdw.ss15.game.components.SpawnComponent;
 
 /**
@@ -28,7 +29,7 @@ public class SpawnComponentFactory extends ComponentFactory<EntityFactoryParam> 
         spawnComponent.respawn = false;
         spawnComponent.spawnPoint = null;
         
-        spawnComponent.respawnTimer =
+        spawnComponent.respawnTimer = GameConstants.RESPAWN_TIMER;
         
         entity.add(spawnComponent);
 	}
