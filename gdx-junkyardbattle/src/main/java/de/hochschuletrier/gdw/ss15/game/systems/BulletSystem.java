@@ -20,7 +20,6 @@ public class BulletSystem extends IteratingSystem{
     public void processEntity(Entity entity, float deltaTime) {
         PhysixBodyComponent physix = ComponentMappers.physixBody.get(entity);
         PositionComponent position = ComponentMappers.position.get(entity);
-        System.out.println("Bullet Pos " + position);
         if(physix.getLinearVelocity().len2() <= 0.0001f)//Bullet quasi stehengeblieben
         {
             System.out.println("transform bullet to metalshard");
