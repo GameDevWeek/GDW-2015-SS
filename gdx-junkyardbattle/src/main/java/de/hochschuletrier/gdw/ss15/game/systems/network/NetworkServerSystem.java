@@ -129,7 +129,9 @@ public class NetworkServerSystem extends EntitySystem implements SendPacketServe
     {
 
         int i = 0;
-        for(Entity entity : clients){
+        for(int j=0;j<clients.size();j++)
+        {
+            Entity entity = clients.get(j);
             if(entity != exept){
                 if(save) {
                     ComponentMappers.client.get(entity).client.sendPacketSave(pack, (i++ < 1));

@@ -6,10 +6,6 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.ContactImpulse;
-import com.badlogic.gdx.physics.box2d.ContactListener;
-import com.badlogic.gdx.physics.box2d.Manifold;
 
 import de.hochschuletrier.gdw.commons.gdx.ashley.EntityFactory;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
@@ -19,8 +15,6 @@ import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.game.components.PickableComponent;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
-import de.hochschuletrier.gdw.ss15.game.components.texture.TextureComponent;
-import de.hochschuletrier.gdw.ss15.game.contactlisteners.PickupListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.PickupListenerClient;
 import de.hochschuletrier.gdw.ss15.game.systems.input.InputSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.*;
@@ -29,8 +23,6 @@ import de.hochschuletrier.gdw.ss15.game.systems.renderers.ChangeAnimationStateSy
 import de.hochschuletrier.gdw.ss15.game.systems.renderers.ParticleSpawnSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.renderers.RenderSystem;
 import de.hochschuletrier.gdw.ss15.game.utils.TimerSystem;
-
-import java.util.function.Consumer;
 
 public class Game extends InputAdapter {
 
@@ -69,6 +61,8 @@ public class Game extends InputAdapter {
     private final DeathSystem deathSystem = new DeathSystem();
     private final ChangeAnimationStateSystem changeAnimSystem = new ChangeAnimationStateSystem();
 
+    private final TestListenerClient TestoutputSystem = new TestListenerClient();
+
     public Game() {
         // If this is a build jar file, disable hotkeys
         if (!Main.IS_RELEASE) {
@@ -98,7 +92,7 @@ public class Game extends InputAdapter {
 
     private void addSystems() {
         engine.addSystem(physixSystem);
-        engine.addSystem(physixDebugRenderSystem);
+        //engine.addSystem(physixDebugRenderSystem);
         engine.addSystem(updatePositionSystem);
         engine.addSystem(networksystem);
         engine.addSystem(inputSystem);
@@ -158,6 +152,7 @@ public class Game extends InputAdapter {
         Main.getInstance().screenCamera.bind();
         timerSystem.update(delta);
         engine.update(delta);
+        particleSpawner.update(delta);
     }
 
     public Entity createEntity(String name, float x, float y) {

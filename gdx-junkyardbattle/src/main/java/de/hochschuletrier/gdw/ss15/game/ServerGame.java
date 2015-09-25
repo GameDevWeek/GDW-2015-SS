@@ -40,6 +40,7 @@ import de.hochschuletrier.gdw.ss15.game.systems.PlayerLifeSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.SpawnSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.UpdatePhysixSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.InventorySystem;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serverclientsocket;
 import de.hochschuletrier.gdw.ss15.game.systems.network.*;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serversocket;
@@ -71,6 +72,7 @@ public class ServerGame{
     private final BulletSystem bulletSystem = new BulletSystem(engine, this);
     private final PickupSystem pickupSystem = new PickupSystem(engine);
     private final MiningSystem miningSystem = new MiningSystem();
+    private final InventorySystem inventorySystem = new InventorySystem();
     
     private final EntityFactoryParam factoryParam = new EntityFactoryParam();
     private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json", ServerGame.class);
@@ -144,6 +146,7 @@ public class ServerGame{
         engine.addSystem(spawnSystem);
         engine.addSystem(metalShardDropSystem);
         engine.addSystem(playerHurtSystem);
+        engine.addSystem(inventorySystem);
 
         //// ---- add listener to engine, to get an autoremove
         engine.addSystem(fireServerListener);
@@ -176,7 +179,7 @@ public class ServerGame{
         //factoryParam.game = this;
         factoryParam.x = x;
         factoryParam.y = y;
-        System.out.println("Spawned entit with name: " + name);
+        //System.out.println("Spawned entit with name: " + name);
         Entity entity = entityFactory.createEntity(name, factoryParam);
 
         engine.addEntity(entity);
