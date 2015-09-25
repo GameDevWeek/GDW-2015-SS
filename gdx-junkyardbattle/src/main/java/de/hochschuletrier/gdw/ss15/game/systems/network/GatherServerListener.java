@@ -2,6 +2,7 @@ package de.hochschuletrier.gdw.ss15.game.systems.network;
 
 import ch.qos.logback.core.net.SyslogOutputStream;
 
+import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
@@ -14,6 +15,7 @@ import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.ss15.events.network.server.NetworkReceivedNewPacketServerEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
+import de.hochschuletrier.gdw.ss15.game.components.PickableComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.network.PacketIds;
@@ -50,6 +52,8 @@ public class GatherServerListener extends EntitySystem implements NetworkReceive
                 //Gamelogik
                 //Strahl ein Entity getroffen
                 //prüfen ob Abbauschuss ein Objekt mit der Komponente Mineable getroffen hat etc.
+                if(entity.getComponent(PickableComponent.class) != null)
+                    System.out.println("pickable getroffen");
             }
 
         }catch(ClassCastException e){}
@@ -58,17 +62,18 @@ public class GatherServerListener extends EntitySystem implements NetworkReceive
 
     private Entity checkHarvestRayCollision(Entity entity){
         Entity hitEntity = null;
-        float range = 5f;
+        float range = 1000f;
 
         //player position
-        Vector2 pos =  ComponentMappers.physixBody.get(entity).getPosition();
+        Vector2 pos =  ComponentMappers.physixBody.get(entity).getBody().getPosition();
 
         //end of ray position
-        float rotation = entity.getComponent(PositionComponent.class).rotation;
+        float rotation = entity.getComponent(PhysixBodyComponent.class).getAngle();
         Vector2 rayPos = new Vector2((float)Math.cos(rotation), (float)Math.sin(rotation));
         rayPos.nor();
         rayPos.scl(range);
         rayPos.add(pos);
+        physixSystem.toBox2D(rayPos, rayPos);
 
         RayCastCallback lineOfSightCallback = new RayCastCallback() {
 
@@ -81,6 +86,7 @@ public class GatherServerListener extends EntitySystem implements NetworkReceive
         };
 
         closestFixture = null;
+        
         physixSystem.getWorld().rayCast(lineOfSightCallback,
                 pos, rayPos);
 
