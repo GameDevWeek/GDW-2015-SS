@@ -48,6 +48,6 @@ public enum PacketIds
         PacketFactory.registerPacket(MenuInfo.getValue(), MenuInfoPacket.class);
         PacketFactory.registerPacket(Gather.getValue(), GatherPacket.class);
         PacketFactory.registerPacket(Damage.getValue(), GatherPacket.class);
-        PacketFactory.registerPacket(SpawnBullet.getValue(), GatherPacket.class);
+        PacketFactory.registerPacket(SpawnBullet.getValue(), SpawnBulletPacket.class);
     }
 }

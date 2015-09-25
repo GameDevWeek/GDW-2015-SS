@@ -101,7 +101,7 @@ public class FireServerListener extends EntitySystem implements NetworkReceivedN
             Vector2 v2 = new Vector2((float)Math.cos(physixBodyComponent.getAngle()), (float)Math.sin(physixBodyComponent.getAngle()));
             v2.nor().scl(power);
             entity.getComponent(PhysixBodyComponent.class).applyImpulse(v2);
-            physixBodyComponent.setLinearDamping(damping);
+//            physixBodyComponent.setLinearDamping(damping);
         });
     }
 }
