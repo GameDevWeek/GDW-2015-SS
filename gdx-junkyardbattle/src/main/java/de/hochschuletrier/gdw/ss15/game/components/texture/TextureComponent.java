@@ -7,7 +7,6 @@ package de.hochschuletrier.gdw.ss15.game.components.texture;
 
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Pool;
 
 /**
@@ -25,6 +24,8 @@ public class TextureComponent extends Component implements Pool.Poolable{
     public float scaleY = 1;
     public boolean flipX = false;
     public boolean flipY = false;
+    public float initialRotation = 0;
+    public boolean draw = true;
     
     @Override
     public void reset() {

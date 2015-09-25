@@ -51,12 +51,12 @@ public class MyTimer
 	
 	public double get_FrameMilliseconds()
 	{
-		return (double)m_TimeLastFrame/1000000000;
+		return (double)m_TimeLastFrame/1000000;
 	}
 	
 	public double get_FrameSeconds()
 	{
-		return (double)m_TimeLastFrame/1000000;
+		return (double)m_TimeLastFrame/1000000000l;
 	}
 	
 	static public long get_TimestampNanoseconds()
@@ -72,6 +72,10 @@ public class MyTimer
 	public double get_CounterMilliseconds()
 	{
 		return (double)m_CountTime/1000000;
+	}
+	public double get_CounterSeconds()
+	{
+		return (double)m_CountTime/1000000000;
 	}
 	
 	public boolean IsCounting()
@@ -91,11 +95,17 @@ public class MyTimer
 		m_Counting=true;
 		m_CountTime=start;
 	}
-	
+
 	public void StartCounterMS(double start)
 	{
 		m_Counting=true;
 		m_CountTime=(long)(start*1000000);
+	}
+
+	public void StartCounterS(double start)
+	{
+		m_Counting=true;
+		m_CountTime=(long)(start*1000000000);
 	}
 	
 	public void StartCounterMSandUpdate(double start)

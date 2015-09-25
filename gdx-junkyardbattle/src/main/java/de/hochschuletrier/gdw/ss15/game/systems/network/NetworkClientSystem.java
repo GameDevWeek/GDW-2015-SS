@@ -31,7 +31,6 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener,
 
 
     private static final TestListenerClient testlistener = new TestListenerClient();
-    private MyTimer timer = new MyTimer(true);
     private long lastAddedEntityID = 0;
     private HashMap<Long, Entity> hashMap = new HashMap();
     private ImmutableArray<Entity> entities;
@@ -79,12 +78,13 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener,
 
 
             lastAddedEntityID = iPacket.entityID;
-            Entity ent = game.createEntity(iPacket.name,0,0);
 
-            ComponentMappers.position.get(ent).x = iPacket.xPos;
-            ComponentMappers.position.get(ent).y = iPacket.yPos;
+            System.out.println(iPacket.xPos + " "+ iPacket.yPos);
+
+            Entity ent = game.createEntity(iPacket.name,iPacket.xPos,iPacket.yPos);
+
             ComponentMappers.position.get(ent).rotation = iPacket.rotation;
-
+            //TODO find for rotatoin
 
             NetworkReceivedNewPacketClientEvent.emit(pack,ent);
         }

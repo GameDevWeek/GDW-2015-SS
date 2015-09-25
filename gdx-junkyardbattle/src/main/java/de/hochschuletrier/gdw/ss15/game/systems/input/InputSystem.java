@@ -4,18 +4,24 @@ import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.controllers.PovDirection;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.components.input.InputComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ss15.game.input.XBox360KeyMap;
+import de.hochschuletrier.gdw.ss15.game.systems.CameraSystem;
 
 /**
  * Created by David Siepen on 21.09.2015.
@@ -26,27 +32,31 @@ import de.hochschuletrier.gdw.ss15.game.input.XBox360KeyMap;
  */
 public class InputSystem extends IteratingSystem implements InputProcessor, ControllerListener {
 
+    Camera camera;
+
     private boolean isListener = false;
+    private boolean controllerActive;
 
     private final float STICKDEADZONE = 0.25f;
-    private final float RADIUS= 123.0f;
-    private double winkel;
+    private float radius = Gdx.graphics.getHeight() / 3;
+    private Vector2 rightStick = new Vector2();
 
     private float horizontal = 0.0f;
     private float vertical = 0.0f;
 
     private boolean leftMBDown = false;
     private boolean rightMBDown = false;
+    private boolean escape = false;
 
     private int posX;
     private int posY;
 
-    public InputSystem() {
-        this(0);
-    }
+    private float r1Horizontal;
+    private float r1Vertical;
 
-    public InputSystem(int priority) {
+    public InputSystem(int priority, OrthographicCamera camera) {
         super(Family.all(InputComponent.class, PlayerComponent.class).get(), priority);
+        this.camera = camera;
     }
 
     @Override
@@ -54,25 +64,34 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
         if (entity.getComponent(PlayerComponent.class).isLocalPlayer) {
             InputComponent input = entity.getComponent(InputComponent.class);
             PositionComponent position = entity.getComponent(PositionComponent.class);
+            Vector3 playerScreenpos = camera.project(new Vector3(position.x, position.y, 0));
 
             input.horizontal = horizontal;
             input.vertical = vertical;
 
             input.shoot = leftMBDown;
             input.gather = rightMBDown;
+            input.escape = escape;
 
-            posX = posX > position.x ? (int)position.x + posX : (int)position.x - posX;
-            posY = posY > position.y ? (int)position.y + posY : (int)position.y - posY;
+            input.rightStickAngle = rightStick.angle();
+            input.isController = controllerActive;
 
+            if(controllerActive){
+                rightStick.nor().scl(radius);
+                input.posX = (int)(rightStick.x + playerScreenpos.x);
+                input.posY = (int)(rightStick.y + playerScreenpos.y);
 
-            input.posX = posX;
-            input.posY = posY;
+            } else {
+                input.posX = posX;
+                input.posY = posY;
+            }
         }
     }
 
     @Override
     public boolean keyDown(int keycode) {
         // keyDown = ein knopf wurde gedrückt
+        controllerActive = false;
         switch (keycode) {
             case Input.Keys.W:
                 vertical -= 1.0f;
@@ -85,6 +104,9 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
                 break;
             case Input.Keys.A:
                 horizontal -= 1.0f;
+                break;
+            case Input.Keys.ESCAPE:
+                escape = true;
                 break;
         }
         //debug();
@@ -94,6 +116,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
     @Override
     public boolean keyUp(int keycode) {
         // keyUp = ein knopf wurde losgelassen
+        controllerActive = false;
         switch (keycode) {
             case Input.Keys.W:
                 vertical += 1.0f;
@@ -106,6 +129,9 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
                 break;
             case Input.Keys.A:
                 horizontal += 1.0f;
+                break;
+            case Input.Keys.ESCAPE:
+                escape = false;
                 break;
         }
         //debug();
@@ -119,6 +145,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        controllerActive = false;
         // touchDown = mouseClick
         switch (button) {
             case Input.Buttons.LEFT:
@@ -134,6 +161,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        controllerActive = false;
         // touchUp = mouseClick
         switch (button) {
             case Input.Buttons.LEFT:
@@ -150,12 +178,16 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        //brauchen wir nicht
-        return false;
+        //brauchen wir wohl
+        controllerActive = false;
+        posX = screenX;
+        posY = screenY;
+        return true;
     }
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
+        controllerActive = false;
         posX = screenX;
         posY = screenY;
         //debug();
@@ -180,7 +212,6 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
 
 
     // Controller
-
     //-------------------------------------------------------------------------------
 
 
@@ -192,22 +223,28 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
 
     @Override
     public void connected(Controller controller) {
+        //geht nicht
         System.out.println("Controller connected");
     }
 
     @Override
     public void disconnected(Controller controller) {
+        //geht auch nicht
         System.out.println("Controller disconnected");
     }
 
     @Override
     public boolean buttonDown(Controller controller, int buttonCode) {
+        controllerActive = true;
         switch (buttonCode) {
             case XBox360KeyMap.X:
                 leftMBDown = true;
                 break;
             case XBox360KeyMap.B:
                 rightMBDown = true;
+                break;
+            case XBox360KeyMap.START:
+                escape = true;
                 break;
             default:
                 rightMBDown = leftMBDown = false;
@@ -218,12 +255,16 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
 
     @Override
     public boolean buttonUp(Controller controller, int buttonCode) {
+        controllerActive = true;
         switch (buttonCode) {
             case XBox360KeyMap.X:
                 leftMBDown = false;
                 break;
             case XBox360KeyMap.B:
                 rightMBDown = false;
+                break;
+            case XBox360KeyMap.START:
+                escape = false;
                 break;
         }
         //debug();
@@ -232,6 +273,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
 
     @Override
     public boolean axisMoved(Controller controller, int axisCode, float value) {
+        controllerActive = true;
         switch (axisCode) {
             case XBox360KeyMap.TRIGGER: //Triggertasten
                 if (value < -0.1)
@@ -254,66 +296,61 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
                     vertical = 0.0f;
                 break;
             case XBox360KeyMap.R1X:
-                if (value > STICKDEADZONE || value < -STICKDEADZONE) {
-                    winkel = Math.cosh(value / vertical);
-                    posX = (int) (RADIUS * Math.cos(winkel));
-                    posY = (int) (RADIUS * Math.sin(winkel));
-                }
-                System.out.println("posX: " + posX + " posY: " + posY);
+                   r1Horizontal = value;
                 break;
             case XBox360KeyMap.R1Y:
-                if (value > STICKDEADZONE || value < -STICKDEADZONE) {
-                    winkel = Math.cosh(value / vertical);
-                    posX = (int) (RADIUS * Math.cos(winkel));
-                    posY = (int) (RADIUS * Math.sin(winkel));
-                    System.out.println("posX: " + posX + " posY: " + posY);
-                }
+                    r1Vertical = value;
                 break;
         }
-        //debug();
+        rightStick.set(r1Horizontal, r1Vertical);
         return false;
     }
 
     @Override
     public boolean povMoved(Controller controller, int povCode, PovDirection value) {
+        /*
+        controllerActive = true;
+        horizontal = vertical = 0.0f;
         switch (value) {
             case north:
                 vertical = -1.0f;
                 horizontal = 0.0f;
                 break;
             case northEast:
-                vertical = -0.5f;
-                horizontal = 0.5f;
-                break;
-            case east:
-                vertical = 0.0f;
+                vertical = -1.0f;
                 horizontal = 1.0f;
                 break;
+            case east:
+                horizontal = 1.0f;
+                vertical = 0.0f;
+                break;
             case southEast:
-                vertical = 0.5f;
-                horizontal = 0.5f;
+                vertical = 1.0f;
+                horizontal = 1.0f;
                 break;
             case south:
-                vertical = 1.0f;
                 horizontal = 0.0f;
+                vertical = 1.0f;
                 break;
             case southWest:
-                vertical = 0.5f;
-                horizontal = -0.5f;
-                break;
-            case west:
-                vertical = 0.0f;
+                vertical = 1.0f;
                 horizontal = -1.0f;
                 break;
-            case northWest:
-                vertical = -0.5f;
-                horizontal = -0.5f;
+            case west:
+                horizontal = -1.0f;
+                vertical = 0.0f;
                 break;
-            default:
+            case northWest:
+                vertical = -1.0f;
+                horizontal = -1.0f;
+                break;
+            case center:
                 vertical = 0.0f;
                 horizontal = 0.0f;
         }
-        //debug();
+        System.out.println("pocCode: " + povCode + "\npovDirection: " + value);
+        debug();
+        */
         return false;
     }
 
@@ -340,21 +377,27 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
         super.update(deltaTime);
         if (!this.isListener) {
             for (Controller controller : Controllers.getControllers()) {
-                if (!this.isListener)
+                if (!this.isListener){
                     Controllers.addListener(this);
+                 }
             }
         }
+
     }
 
     private void debug() {
-        System.out.println();
+        System.out.println("");
+        System.out.println("");
+        System.out.println("Controller active: " + controllerActive);
         System.out.println("horizontal: " + horizontal);
         System.out.println("vertical: " + vertical);
-
+        System.out.println("");
         System.out.println("shoot: " + leftMBDown);
         System.out.println("gather: " + rightMBDown);
-
+        System.out.println("");
         System.out.println("posX: " + posX);
         System.out.println("posY: " + posY);
+        System.out.println("");
+        System.out.println("rechter Stick Winkel: " + rightStick.angle());
     }
 }

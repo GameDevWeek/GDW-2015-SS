@@ -11,7 +11,7 @@ import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
 public class PlayerComponentFactory extends ComponentFactory<EntityFactoryParam> {
 
 
-    @Override
+    @Override()
     public String getType() {
         return "Player";
     }

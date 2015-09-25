@@ -10,28 +10,38 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntityListener;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
+import com.badlogic.gdx.math.Vector2;
 import de.hochschuletrier.gdw.commons.gdx.ashley.SortedSubIteratingSystem;
 import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
+import de.hochschuletrier.gdw.ss15.events.rendering.ChangeModeOnEffectEvent;
+import de.hochschuletrier.gdw.ss15.events.rendering.ChangePositionOnEffectEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
+import de.hochschuletrier.gdw.ss15.game.components.effects.EffectMode;
 import de.hochschuletrier.gdw.ss15.game.components.effects.ParticleEffectComponent;
 
 /**
  *
  * @author Julien Saevecke
  */
-public class ParticleEffectRenderer extends SortedSubIteratingSystem.SubSystem implements EntityListener{
+public class ParticleEffectRenderer extends SortedSubIteratingSystem.SubSystem implements EntityListener, ChangeModeOnEffectEvent.Listener, ChangePositionOnEffectEvent.Listener{
 
+    private Vector2 rotateVector = new Vector2(0, 1);
+    
     @SuppressWarnings("unchecked")
     public ParticleEffectRenderer(Engine engine) {
         super(Family.all(ParticleEffectComponent.class).get());
         engine.addEntityListener(Family.all(ParticleEffectComponent.class).get(), this);
+        
+         ChangeModeOnEffectEvent.register(this);
+         ChangePositionOnEffectEvent.register(this);
     }
     
     @Override
     public void finalize() throws Throwable{
         super.finalize();
-        
+        ChangeModeOnEffectEvent.unregister(this);
+        ChangePositionOnEffectEvent.unregister(this);
     }
 
     @Override
@@ -44,14 +54,17 @@ public class ParticleEffectRenderer extends SortedSubIteratingSystem.SubSystem i
                particleEmitter.durationTimer=0;
            }
         }
-        
+
         if(particleEffectComponent.isPlaying){
+            rotateVector.set(particleEffectComponent.positionOffsetX, particleEffectComponent.positionOffsetY);
+            rotateVector.rotate(particleEffectComponent.initialRotation + position.rotation);
+            
             particleEffectComponent.particleEffect.setPosition(
-                position.x + particleEffectComponent.positionOffsetX, 
-                position.y + particleEffectComponent.positionOffsetY
+                position.x + rotateVector.x, 
+                position.y + rotateVector.y
             );
             
-            particleEffectComponent.setRotation(position.rotation);
+            particleEffectComponent.setRotation(particleEffectComponent.initialRotation + position.rotation);
 
             particleEffectComponent.particleEffect.update(deltaTime);
             particleEffectComponent.particleEffect.draw(DrawUtil.batch);
@@ -73,5 +86,18 @@ public class ParticleEffectRenderer extends SortedSubIteratingSystem.SubSystem i
 
     @Override
     public void entityRemoved(Entity entity) {
+    }
+
+    @Override
+    public void onChangeModeOnEffect(EffectMode mode, Entity entity) {
+        ParticleEffectComponent particleEffectComponent = ComponentMappers.particleEffect.get(entity);
+        particleEffectComponent.changeMode(mode);
+    }
+
+    @Override
+    public void onChangePositionOnEffect(Vector2 position, Entity entity) {
+        PositionComponent positionComponent = ComponentMappers.position.get(entity);
+        positionComponent.x = position.x;
+        positionComponent.y = position.y;
     }
 }

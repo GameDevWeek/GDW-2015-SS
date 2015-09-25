@@ -6,9 +6,12 @@ import java.util.function.Consumer;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 
+import de.hochschuletrier.gdw.commons.gdx.ashley.EntityFactory;
+import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixBodyDef;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixFixtureDef;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
@@ -21,6 +24,7 @@ import de.hochschuletrier.gdw.commons.tiled.TiledMap;
 import de.hochschuletrier.gdw.commons.tiled.tmx.TmxImage;
 import de.hochschuletrier.gdw.commons.tiled.utils.RectangleGenerator;
 import de.hochschuletrier.gdw.commons.utils.Rectangle;
+import de.hochschuletrier.gdw.ss15.game.components.factories.PhysixBodyComponentFactory;
 
 /**
  * 
@@ -44,7 +48,6 @@ import de.hochschuletrier.gdw.commons.utils.Rectangle;
 public class MapLoader
 {    
     private static ArrayList<TileCreationListener> tileListeners = new ArrayList<TileCreationListener>();
-    private TileInfo ginfo = null; /// used for RectangleGeneraotr
     
     
     private TiledMap tiledMap;
@@ -85,7 +88,7 @@ public class MapLoader
      * @param game Spielstand fuer das die Entities geladen werden sollen
      * @param filename Name der Mapdatei die geladen werden soll
      */
-    public void run(EntityCreator creator, String filename,PhysixSystem pSystem)
+    public void run(EntityCreator creator, String filename,PhysixSystem pSystem,EntityFactory entityFactory,AssetManagerX aMana)
     {     
         /// Datei auslesen und in tiledMap packen
         try
@@ -96,7 +99,9 @@ public class MapLoader
             for (TileSet tileset : tiledMap.getTileSets()) {
                 TmxImage img = tileset.getImage();
                 String fn = CurrentResourceLocator.combinePaths(tileset.getFilename(), img.getSource());
-                tilesetImages.put(tileset, new Texture(fn));
+                Texture tex = new Texture(fn);
+                tex.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+                tilesetImages.put(tileset, tex);
             }
             for (TileSet tileset : tiledMap.getTileSets()) {
                 tileset.setAttachment(tilesetImages.get(tileset));
@@ -107,7 +112,7 @@ public class MapLoader
         }
         
         /// Objekte aus tiledMap laden und per Entitycreator im Game erstellen 
-        loadObjectsFromMap( pSystem,creator,tiledMap );
+        loadObjectsFromMap( pSystem,creator,tiledMap,entityFactory,aMana );
     }
 
     /**
@@ -116,17 +121,20 @@ public class MapLoader
      * @param tileWidth breite eines tile
      * @param tileHeight hoehe eines tile
      */
-    private void addShape(TileInfo info, PhysixSystem pSystem,Rectangle rect, int tileWidth, int tileHeight) {
+    private void addShape(PhysixSystem pSystem,Rectangle rect, int tileWidth, int tileHeight, boolean blockShoot) {
         float width = rect.width * tileWidth;
         float height = rect.height * tileHeight;
         float x = rect.x * tileWidth + width / 2;
         float y = rect.y * tileHeight + height / 2;
 
-        // noch spezialisieren auf Flags ( block pathing, block sight, block walking  )
-        
+        // TODO
+        // noch spezialisieren auf Flags ( block pathing, block sight, block shooting  )
         PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody, pSystem).position(x, y).fixedRotation(false);
         Body body = pSystem.getWorld().createBody(bodyDef);
-        body.createFixture(new PhysixFixtureDef(pSystem).density(1).friction(0.5f).shapeBox(width, height));
+        if(blockShoot)
+            body.createFixture(new PhysixFixtureDef(pSystem).density(1).friction(0.5f).category(PhysixBodyComponentFactory.ABGRUND).mask((short) ~PhysixBodyComponentFactory.BULLET).shapeBox(width, height));
+        else
+            body.createFixture(new PhysixFixtureDef(pSystem).density(1).friction(0.5f).shapeBox(width, height));
     }
     
     /** 
@@ -134,7 +142,7 @@ public class MapLoader
      * @param game Spiel das gefuellt werden soll
      * @param tiledMap Map die geladen wird
      */     
-    private void loadObjectsFromMap(PhysixSystem pSystem,EntityCreator entCreator,TiledMap tiledMap)
+    private void loadObjectsFromMap(PhysixSystem pSystem,EntityCreator entCreator,TiledMap tiledMap,EntityFactory entityFactory,AssetManagerX aMana)
     {
         
         
@@ -149,8 +157,14 @@ public class MapLoader
             // hier wegen Pathing und visual absprechen @render @physix @asset
             RectangleGenerator generator = new RectangleGenerator();
             generator.generate( tiledMap,
-                    (Layer layer, TileInfo info) -> { ginfo = info;return info.getBooleanProperty("BlockPath", false); },
-                    (Rectangle rect) -> addShape(ginfo,pSystem,rect, tileWidth, tileHeight) );
+                    (Layer layer, TileInfo info) -> {return info.getBooleanProperty("BlockPath", false) && info.getBooleanProperty("BlockShoot", false); },
+                    (Rectangle rect) -> addShape(pSystem,rect, tileWidth, tileHeight, true) );
+            
+
+            // hier wegen Pathing und visual absprechen @render @physix @asset
+            generator.generate( tiledMap,
+                    (Layer layer, TileInfo info) -> {return info.getBooleanProperty("BlockPath", false) && !info.getBooleanProperty("BlockShoot", false); },
+                    (Rectangle rect) -> addShape(pSystem,rect, tileWidth, tileHeight, false) );
         }
         
         /// fuer alles Layers 
@@ -163,11 +177,11 @@ public class MapLoader
                     
                     Entity resultEnt;
                     String objectName = obj.getName();
-                    float xPos = obj.getX();
-                    float yPos = obj.getY();
+                    float xPos = obj.getX() + (obj.getWidth() / 2);// / 2-tileWidth/2;
+                    float yPos = obj.getY() + (obj.getHeight() / 2);// / 2-tileHeight/2;
                     resultEnt = entCreator.createEntity(objectName, xPos, yPos);
 
-                    MapSpecialEntities.CreatorInfo info = new MapSpecialEntities.CreatorInfo(resultEnt,tiledMap,obj,layer);
+                    MapSpecialEntities.CreatorInfo info = new MapSpecialEntities.CreatorInfo(entCreator,entityFactory,resultEnt,tiledMap,obj,layer,aMana);
                     
                     MapSpecialEntities.forAllElements( info );
                     
@@ -193,7 +207,7 @@ public class MapLoader
                     {
                         TileInfo tileInfo = tiles[x][y];
                         
-                        MapSpecialEntities.CreatorInfo info = new MapSpecialEntities.CreatorInfo( x,y,tiledMap, tileInfo ,layer );
+                        MapSpecialEntities.CreatorInfo info = new MapSpecialEntities.CreatorInfo( entCreator,entityFactory,x,y,tiledMap, tileInfo ,layer,aMana );
 
                         MapSpecialEntities.forAllElements( info );
                         

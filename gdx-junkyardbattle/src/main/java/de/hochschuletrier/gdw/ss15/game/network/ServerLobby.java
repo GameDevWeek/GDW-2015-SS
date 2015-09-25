@@ -23,7 +23,7 @@ public class ServerLobby
 
     String Mapname;
     private int MaximumPlayers = 8;
-    private float SecondsToStart = 60;
+    private float SecondsToStart = 20;
     MyTimer timer = new MyTimer(true);
 
     public LinkedList<LobyClient> connectedClients = new LinkedList<>();
@@ -46,10 +46,10 @@ public class ServerLobby
 
     public void SendStartGame()
     {
-        SendPackettoAll(new SimplePacket(SimplePacket.SimplePacketId.StartGame.getValue(),0));
+        SendPackettoAll(new SimplePacket(SimplePacket.SimplePacketId.StartGame.getValue(), 0));
     }
 
-    public void update(float deltatime)
+    public boolean update(float deltatime)
     {
         Iterator<LobyClient> it = connectedClients.iterator();
         while(it.hasNext())
@@ -69,8 +69,19 @@ public class ServerLobby
         }
 
         timer.Update();
-        
-
+        if(timer.get_CounterSeconds()>SecondsToStart)
+        {
+            if(connectedClients.size()==0)
+            {
+                timer.StartCounterS(SecondsToStart);
+                SendPackettoAll(new SimplePacket(SimplePacket.SimplePacketId.TimeMenuePacket.getValue(),(long)SecondsToStart));
+            }
+            else
+            {
+                return false;
+            }
+        }
+        return true;
     }
 
     public void ReceivePacket(LobyClient client)
@@ -88,11 +99,12 @@ public class ServerLobby
         if(pack.getPacketId() == PacketIds.ChangeName.getValue())
         {
             System.out.println("name changed");
-            //ChangeNamePacket nPack = (ChangeNamePacket)pack;
-            //client.name = nPack.name;
-            //SendChangePlayerStatusToAll(client);
+            ChangeNamePacket nPack = (ChangeNamePacket)pack;
+            client.name = nPack.name;
+            SendChangePlayerStatusToAll(client);
 
-            SimplePacket sPack = new SimplePacket(SimplePacket.SimplePacketId.TimeMenuePacket.getValue(),(long)SecondsToStart);
+
+            SimplePacket sPack = new SimplePacket(SimplePacket.SimplePacketId.TimeMenuePacket.getValue(),(long)(SecondsToStart-timer.get_CounterSeconds()));
             client.socket.sendPacket(sPack, true);
         }
     }

@@ -12,7 +12,7 @@ import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 
 public class PlayerLifeSystem extends IteratingSystem {
 
-    public PlayerLifeSystem(Family family) {
+    public PlayerLifeSystem() {
         super(Family.all(HealthComponent.class).get());
     }
 
@@ -27,18 +27,13 @@ public class PlayerLifeSystem extends IteratingSystem {
                 hCom.healthState = HealthComponent.HealthState.DYING;
                 hCom.dyingTimer -= deltaTime;
             }
-            if (hCom.spawningTimer > 0)
-            {
-                hCom.spawningTimer -= deltaTime;
-            }
         }
         if (hCom.healthState == HealthComponent.HealthState.DYING)
         {
             if (hCom.dyingTimer <= 0)
             {
                 hCom.healthState = HealthComponent.HealthState.DEAD;
-                inventory.metalShards = 0;
-                hCom.deathTimer -= deltaTime;
+                inventory.setMetalShards(0);
                 hCom.dyingTimer = GameConstants.DYING_TIMER;
 
             }
@@ -46,15 +41,10 @@ public class PlayerLifeSystem extends IteratingSystem {
         }
         if (hCom.healthState == HealthComponent.HealthState.DEAD)
         {
-            if (hCom.deathTimer <= 0)
-            {
-                hCom.health = GameConstants.START_HEALTH;
-                hCom.deathTimer = GameConstants.DEATH_TIMER;
-                hCom.healthState = HealthComponent.HealthState.ALIVE;
-                hCom.spawningTimer = GameConstants.SPAWNING_DURATION;
-                position.x = GameConstants.START_X_POSITION;
-                position.y = GameConstants.START_Y_POSITION;
-            }
+            hCom.health = GameConstants.START_HEALTH;
+            hCom.healthState = HealthComponent.HealthState.ALIVE;
+            position.x = GameConstants.START_X_POSITION;
+            position.y = GameConstants.START_Y_POSITION;
         }
 
     }

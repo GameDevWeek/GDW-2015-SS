@@ -22,8 +22,10 @@ public class PositionSynchComponentFactory extends ComponentFactory<EntityFactor
         PositionSynchComponent component = engine.createComponent(PositionSynchComponent.class);
         component.reset(); // sollte funktionieren
         component.clientName=properties.getString("clientname");
+        component.updateDuration = properties.getFloat("updateDuration", 42);
+        component.sendSave = properties.getBoolean("sendSave", false);
         component.lastSendTimer = new MyTimer(true);
-        //System.out.println("Gelesen: "+ component.clientName);
+        //System.out.println("updateDuration: "+  component.updateDuration);
         entity.add(component);
     }
 }

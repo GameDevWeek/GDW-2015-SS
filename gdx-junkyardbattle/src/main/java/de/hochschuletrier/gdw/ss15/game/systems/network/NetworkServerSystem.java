@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.*;
 import com.badlogic.ashley.utils.ImmutableArray;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixModifierComponent;
+import de.hochschuletrier.gdw.ss15.events.network.server.NetworkNewPlayerEvent;
 import de.hochschuletrier.gdw.ss15.events.network.server.NetworkReceivedNewPacketServerEvent;
 import de.hochschuletrier.gdw.ss15.events.network.server.SendPacketServerEvent;
 import de.hochschuletrier.gdw.ss15.game.ServerGame;
@@ -18,6 +19,7 @@ import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serversocket;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 
 public class NetworkServerSystem extends EntitySystem implements SendPacketServerEvent.Listener{
@@ -57,14 +59,11 @@ public class NetworkServerSystem extends EntitySystem implements SendPacketServe
 
     @Override
     public void update(float deltaTime) {
-        //System.out.println("jfsdklfjsdaöklfjsdöklf rennt");
-        /*while (serverSocket.isNewClientAvaliable()) {
-            Entity e = game.createEntity("player", 200, 200);
-        }*/
 
         LinkedList<Entity> toDelete = new LinkedList<>();
-        for(Entity client:clients)
+        for(int i=0; i < clients.size(); ++i)
         {
+            Entity client = clients.get(i);
             Serverclientsocket sock = ComponentMappers.client.get(client).client;
             if(!sock.isConnected())
             {//client lost connection
@@ -91,16 +90,7 @@ public class NetworkServerSystem extends EntitySystem implements SendPacketServe
         //System.out.println("Received packet server");
         NetworkReceivedNewPacketServerEvent.emit(pack,ent);
         
-        if(pack.getPacketId()==PacketIds.Movement.getValue())
-        {
-        	
-        	//MovementPacket mPacket = (MovementPacket) pack;
-        	//PhysixBodyComponent comp = ComponentMappers.physixBody.get(ent);
-        	//comp.setPosition(mPacket.xPos, mPacket.yPos);
-        	//comp.setLinearVelocity(mPacket.xPos, mPacket.yPos);
-        	//comp.setAngle(mPacket.rotation);
-        	//System.out.println(mPacket.rotation);
-        }
+
         
     }
 
@@ -137,7 +127,7 @@ public class NetworkServerSystem extends EntitySystem implements SendPacketServe
 
     public void onSendServerPacket(Packet pack,boolean save,Entity exept)
     {
-        //System.out.print("dsklfjsdlkjfdl");
+
         int i = 0;
         for(Entity entity : clients){
             if(entity != exept){

@@ -28,7 +28,6 @@ public class AnimatorComponentFactory extends ComponentFactory<EntityFactoryPara
         AnimatorComponent component = engine.createComponent(AnimatorComponent.class);
 
         for(AnimationState state : AnimationState.values()){
-            
             String animationStateString = "animation_" + state.toString();
             String animation = properties.getString(animationStateString, null);
             
@@ -36,6 +35,8 @@ public class AnimatorComponentFactory extends ComponentFactory<EntityFactoryPara
                 component.animationStates.put(state, assetManager.getAnimation(animation));
             }
         }
+        
+        component.initialRotation = properties.getFloat("initialRotation", 0);
         
         entity.add(component);
     }

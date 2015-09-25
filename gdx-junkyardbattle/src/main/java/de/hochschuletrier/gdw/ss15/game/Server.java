@@ -129,11 +129,14 @@ public class Server implements Runnable
     {
         while(isRunning.get())
         {
-            Tools.Sleep(5);
+            Tools.Sleep(1);
             timer.Update();
             if(lobby!=null)
             {
-                lobby.update((float) timer.get_FrameSeconds());
+                if(!lobby.update((float) timer.get_FrameSeconds()))
+                {
+                    startGame();
+                }
             }
             else
             {

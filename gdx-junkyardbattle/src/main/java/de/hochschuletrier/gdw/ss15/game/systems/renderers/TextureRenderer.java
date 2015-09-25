@@ -30,6 +30,9 @@ public class TextureRenderer extends SortedSubIteratingSystem.SubSystem {
         TextureComponent texture = ComponentMappers.texture.get(entity);
         PositionComponent position = ComponentMappers.position.get(entity);
 
+        if(!texture.draw)
+            return;
+        
         DrawUtil.batch.draw(
                 texture.texture, 
                 position.x - (float)texture.width * 0.5f, 
@@ -40,7 +43,7 @@ public class TextureRenderer extends SortedSubIteratingSystem.SubSystem {
                 texture.height,
                 texture.scaleX, 
                 texture.scaleY, 
-                position.rotation,
+                texture.initialRotation + position.rotation,
                 texture.srcX, 
                 texture.srcY,
                 texture.width,

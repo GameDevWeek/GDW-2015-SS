@@ -19,6 +19,8 @@ public class AnimatorComponent extends Component implements Pool.Poolable
     public HashMap<AnimationState, AnimationExtended> animationStates = new HashMap<>();
     public AnimationState animationState = AnimationState.IDLE;
     public float stateTime = 0;
+    public float initialRotation = 0;
+    public boolean draw = true;
     
     public void changeAnimationState(AnimationState state)
     {

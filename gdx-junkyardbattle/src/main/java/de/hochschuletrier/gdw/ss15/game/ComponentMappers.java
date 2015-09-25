@@ -1,19 +1,22 @@
 package de.hochschuletrier.gdw.ss15.game;
 
 import com.badlogic.ashley.core.ComponentMapper;
+
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixModifierComponent;
 import de.hochschuletrier.gdw.ss15.game.components.*;
 import de.hochschuletrier.gdw.ss15.game.components.animation.AnimatorComponent;
 import de.hochschuletrier.gdw.ss15.game.components.effects.ParticleEffectComponent;
 import de.hochschuletrier.gdw.ss15.game.components.input.InputComponent;
-import de.hochschuletrier.gdw.ss15.game.components.light.*;
+import de.hochschuletrier.gdw.ss15.game.components.light.ChainLightComponent;
+import de.hochschuletrier.gdw.ss15.game.components.light.ConeLightComponent;
+import de.hochschuletrier.gdw.ss15.game.components.light.DirectionalLightComponent;
+import de.hochschuletrier.gdw.ss15.game.components.light.NormalMapComponent;
+import de.hochschuletrier.gdw.ss15.game.components.light.PointLightComponent;
 import de.hochschuletrier.gdw.ss15.game.components.network.client.NetworkIDComponent;
 import de.hochschuletrier.gdw.ss15.game.components.network.server.ClientComponent;
 import de.hochschuletrier.gdw.ss15.game.components.network.server.PositionSynchComponent;
 import de.hochschuletrier.gdw.ss15.game.components.texture.TextureComponent;
-
-import static com.badlogic.ashley.core.ComponentMapper.*;
 
 public class ComponentMappers {
     public static final ComponentMapper<PositionComponent> position = ComponentMapper.getFor(PositionComponent.class);
@@ -45,5 +48,10 @@ public class ComponentMappers {
     public static final ComponentMapper<LineOfSightComponent> lineOfSight = ComponentMapper.getFor(LineOfSightComponent.class);
     public static final ComponentMapper<InputComponent> input = ComponentMapper.getFor(InputComponent.class);
     public static final ComponentMapper<ParticleEffectComponent> particleEffect = ComponentMapper.getFor(ParticleEffectComponent.class);
+    public static final ComponentMapper<MineableComponent> mineable = ComponentMapper.getFor(MineableComponent.class);
     public static final ComponentMapper<InterpolatePositionComponent> interpolate = ComponentMapper.getFor(InterpolatePositionComponent.class);
+    public static final ComponentMapper<SpawnSatelliteComponent> spawnSatellite = ComponentMapper.getFor(SpawnSatelliteComponent.class);
+    public static final ComponentMapper<MetalShardSpawnComponent> metalShardSpawn = ComponentMapper.getFor(MetalShardSpawnComponent.class);
+    public static final ComponentMapper<BasePointComponent> basePoint = ComponentMapper.getFor(BasePointComponent.class);
+    public static final ComponentMapper<SpawnComponent> spawn = ComponentMapper.getFor(SpawnComponent.class);
 }
