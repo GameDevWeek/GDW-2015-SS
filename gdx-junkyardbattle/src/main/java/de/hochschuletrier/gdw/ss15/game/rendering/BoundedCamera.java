@@ -120,7 +120,6 @@ public class BoundedCamera extends SmoothCamera {
             curZoom = Interpolation.pow4.apply(srcZoom, dstZoom, zoomProgress);
             setZoom(curZoom);
         }
-        System.out.println("Reset?"+resetZoom+"  Progress:"+zoomProgress);
 //        else
 //            zoomProgress += zoomSpeed * delta;
         
@@ -147,7 +146,7 @@ public class BoundedCamera extends SmoothCamera {
     //value between 0..1
     public void zoomOut(float zoomAmount)
     {
-    	if(zoomAmount == 0.0f)
+    	if(zoomAmount <= 0.1f)
     		resetZoom = true;
     	else
     	{

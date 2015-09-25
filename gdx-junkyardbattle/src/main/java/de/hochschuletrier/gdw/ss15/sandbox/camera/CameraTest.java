@@ -202,7 +202,7 @@ public class CameraTest extends SandboxGame {
             cameraSystem.getCamera().getOrthographicCamera().unproject(target);
             
             if(Gdx.input.isButtonPressed(Buttons.LEFT)){
-               // WeaponCharging.emit();
+                WeaponCharging.emit(0.0f);
             } else if(!Gdx.input.isButtonPressed(Buttons.LEFT)){
                 WeaponUncharged.emit();
             }
