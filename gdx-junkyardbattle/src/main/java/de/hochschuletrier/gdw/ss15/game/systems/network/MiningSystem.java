@@ -20,6 +20,11 @@ public class MiningSystem extends EntitySystem implements MiningEvent.Listener {
 
     ComponentMapper<InventoryComponent> inventoryComp = ComponentMappers.inventory;
 
+    public MiningSystem()
+    {
+        MiningEvent.register(this);
+    }
+
     @Override
     public void onMiningEvent(Entity playerEnt, Entity mineableEnt, float channelTime) {
         int minedMetalShards = (int)(GameConstants.MINING_PER_SECOND * channelTime);
