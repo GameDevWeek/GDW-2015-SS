@@ -1,5 +1,8 @@
 package de.hochschuletrier.gdw.ss15.menu;
 
+import de.hochschuletrier.gdw.commons.gdx.state.transition.SplitHorizontalTransition;
+import de.hochschuletrier.gdw.ss15.game.Game;
+import de.hochschuletrier.gdw.ss15.states.GameplayState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -90,10 +93,14 @@ public class MenuPageJoinGame extends MenuPage implements DoNotTouchPacketEvent.
 		if (pack.getPacketId() == PacketIds.Simple.getValue()) {// einafche
 																// nachricht
 			SimplePacket sPack = (SimplePacket) pack;
-			if (sPack.m_SimplePacketId == SimplePacket.SimplePacketId.TimeToStartPacket.getValue()) {
+			if(sPack.m_SimplePacketId==SimplePacketId.StartGame.getValue())
+			{
+				startGame();
+			}
+			/*if (sPack.m_SimplePacketId == SimplePacket.SimplePacketId.TimeToStartPacket.getValue()) {
 				// team wechseln
 				long time = sPack.m_Moredata;
-			}
+			}*/
 		} else if (pack.getPacketId() == PacketIds.MenuInfo.getValue()) {
 
 			
@@ -225,6 +232,14 @@ public class MenuPageJoinGame extends MenuPage implements DoNotTouchPacketEvent.
 		hg.idPlayer = idPlayer;
 		hg.addActor(new Label("Name: " + name, skin));
 		return hg;
+	}
+
+	private void startGame() {
+		if (!main.isTransitioning()) {
+			Game game = new Game();
+			game.init(assetManager);
+			main.changeState(new GameplayState(assetManager, game), new SplitHorizontalTransition(500), null);
+		}
 	}
 
 	private void changeTeam(boolean team, int id) {

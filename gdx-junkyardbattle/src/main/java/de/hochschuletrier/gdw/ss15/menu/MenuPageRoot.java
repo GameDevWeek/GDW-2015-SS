@@ -107,21 +107,6 @@ public class MenuPageRoot extends MenuPage {
         addCenteredButton(menuManager.getWidth() - 80, 54, 100, 40, "Exit", () -> System.exit(-1));
     }
 
-    private void StartButtonClicked()
-    {
-        if(!Main.getInstance().getClientConnection().connect("localhost", 12345))
-        {
-            logger.warn("Connect hat  nicht gelapt");
-        }
-    }
-
-    private void startGame() {
-        if (!main.isTransitioning()) {
-            Game game = new Game();
-            game.init(assetManager);
-            main.changeState(new GameplayState(assetManager, game), new SplitHorizontalTransition(500), null);
-        }
-    }
 
     private void stopGame() {
         if (!main.isTransitioning()) {

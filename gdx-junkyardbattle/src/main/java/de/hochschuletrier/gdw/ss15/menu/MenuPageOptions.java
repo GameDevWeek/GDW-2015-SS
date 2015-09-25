@@ -1,4 +1,4 @@
-﻿package de.hochschuletrier.gdw.ss15.menu;
+package de.hochschuletrier.gdw.ss15.menu;
 
 import java.util.ArrayList;
 
