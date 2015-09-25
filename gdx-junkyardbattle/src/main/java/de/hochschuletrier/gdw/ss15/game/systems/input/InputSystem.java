@@ -46,6 +46,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
 
     private boolean leftMBDown = false;
     private boolean rightMBDown = false;
+    private boolean escape = false;
 
     private int posX;
     private int posY;
@@ -70,6 +71,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
 
             input.shoot = leftMBDown;
             input.gather = rightMBDown;
+            input.escape = escape;
 
             input.rightStickAngle = rightStick.angle();
             input.isController = controllerActive;
@@ -103,6 +105,9 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
             case Input.Keys.A:
                 horizontal -= 1.0f;
                 break;
+            case Input.Keys.ESCAPE:
+                escape = true;
+                break;
         }
         //debug();
         return true;
@@ -124,6 +129,9 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
                 break;
             case Input.Keys.A:
                 horizontal += 1.0f;
+                break;
+            case Input.Keys.ESCAPE:
+                escape = false;
                 break;
         }
         //debug();
@@ -235,6 +243,9 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
             case XBox360KeyMap.B:
                 rightMBDown = true;
                 break;
+            case XBox360KeyMap.START:
+                escape = true;
+                break;
             default:
                 rightMBDown = leftMBDown = false;
         }
@@ -251,6 +262,9 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
                 break;
             case XBox360KeyMap.B:
                 rightMBDown = false;
+                break;
+            case XBox360KeyMap.START:
+                escape = false;
                 break;
         }
         //debug();

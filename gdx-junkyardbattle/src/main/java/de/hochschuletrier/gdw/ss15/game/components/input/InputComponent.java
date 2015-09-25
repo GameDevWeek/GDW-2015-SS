@@ -8,17 +8,19 @@ import com.badlogic.gdx.utils.Pool;
  */
 public class InputComponent extends Component implements Pool.Poolable {
 
-    public float horizontal;
-    public float vertical;
+    public float horizontal; //Richtung horizontal, Range [-1, 1]: -1 links 0 neutral 1 rechts
+    public float vertical; //Richtung vertical, Range [-1, 1]: -1 hoch 0 neutral 1 runter
 
-    public boolean shoot;
-    public boolean gather;
+    public boolean shoot; //Schusstaste (linke Maustaste)
+    public boolean gather; //Gathertaste (rechte Maustaste)
+    public boolean escape; //Escapetaste (Menu, Pause, whatever ...)
 
+    //Mausposition für evtl Fadenkreuz
     public int posX;
     public int posY;
 
     public double rightStickAngle;
-    public boolean isController = false;
+    public boolean isController = false; //ob Controller aktiv ist
 
     @Override
     public void reset()
