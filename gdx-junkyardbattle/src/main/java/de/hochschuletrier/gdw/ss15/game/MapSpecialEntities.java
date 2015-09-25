@@ -145,10 +145,11 @@ public class MapSpecialEntities
     {
         public void accept(CreatorInfo info)
         {
-            
             /// eine Componente herraussuchen 
             EntityInfo entityInfo = (EntityInfo)info.factory.getEntityInfos().get( info.asObject.getName() );
             
+            System.out.println(info.asObject.getType());
+            System.out.println(info.asObject.getIntProperty("Player", 0));
             /// eine Componente herraussuchen 
             // ConeLightComponent light = info.entity.getComponent( ConeLightComponent.class );
             //SafeProperties sp = entityInfo.components.get("ConeLight");

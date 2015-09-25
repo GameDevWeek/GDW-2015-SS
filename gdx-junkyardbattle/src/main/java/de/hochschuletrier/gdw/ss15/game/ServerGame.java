@@ -20,7 +20,11 @@ import de.hochschuletrier.gdw.ss15.game.contactlisteners.ImpactSoundListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.MetalShardSpawnListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.PickupListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.TriggerListener;
-import de.hochschuletrier.gdw.ss15.game.systems.*;
+import de.hochschuletrier.gdw.ss15.game.systems.BulletSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.LineOfSightSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.MetalShardSpawnSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.SpawnSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.NetworkServerSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.PositionSynchSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.TestSatelliteSystem;
@@ -63,6 +67,8 @@ public class ServerGame{
     private UpdatePhysixServer updatePhysixServer;
     private FireServerListener fireServerListener;
     private GatherServerListener gatherServerListener;
+    
+    private final SpawnSystem spawnSystem = new SpawnSystem();
 
     public ServerGame(Serversocket socket)
     {

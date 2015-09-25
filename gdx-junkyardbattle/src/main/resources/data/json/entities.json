@@ -115,6 +115,7 @@
                 "fixedRotation": true,
                 "type": "dynamic"
             },
+            "Spawn":{},
             "Client": {},
             "PositionSynch": {
                 "clientname": "clientPlayer"
@@ -340,7 +341,18 @@
     "Spawn": {
         "meta": {},
         "components": {
-            "Position": {}
+            "Position": {},
+            "Texture":{
+                "texture": "junk_spawn",
+                "width": 120,
+                "height": 120,
+                "srcX": 0,
+                "srcY": 0,
+                "scaleX": 0.3,
+                "scaleY": 0.3,
+                "flipX": false,
+                "flipY": false
+            }
         }
     },
     "JunkSpawn": {
