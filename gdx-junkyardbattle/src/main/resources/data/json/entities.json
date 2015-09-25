@@ -367,7 +367,7 @@
                 "flipY": false
             },
             "MetalShardSpawn":{
-            	"shards": 1
+            	"spawnTime": 5.0
             }
         }
     },
