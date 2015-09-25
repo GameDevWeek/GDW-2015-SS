@@ -26,6 +26,10 @@ import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
 public class FireServerListener extends EntitySystem implements NetworkReceivedNewPacketServerEvent.Listener{
 
     private ServerGame game;
+    private static final float power = 5000;
+    private static final float damping = 8;
+    private static final float projectPlayerDistance = 55;
+
 
     public FireServerListener(ServerGame game){
         super();
@@ -54,7 +58,7 @@ public class FireServerListener extends EntitySystem implements NetworkReceivedN
 //            System.out.println("received fire package: " + packet.channeltime + "seconds channeld");
             for (int i = 0; i < WeaponComponent.ShardsPerShot; ++i) {
                 if(invc.getMetalShards() <= 0){
-//                    System.out.println("not enough metal shards");
+//                    System.out.println("not enough metal shards ("+invc.getMetalShards()+")");
                     return;
                 }
 //                System.out.println("shard shot");
@@ -64,21 +68,26 @@ public class FireServerListener extends EntitySystem implements NetworkReceivedN
                 // create projectile
                 //Components: Bullet, Damage, Physix
                 //physix component
-                float projectPlayerDistance = 55.f;
                 playerLookDirection.nor().scl(projectPlayerDistance);
-                float power = 50.f;
                 EntityFactoryParam param = new EntityFactoryParam();
                 Vector2 startPosition = playerLookDirection.add(phxc.getPosition()); // dir.setLength(projectPlayerDistance).add(phxc.getPosition());
 
-//                System.out.println("schuss server");
                 invc.addMetalShards(-1);
                 Entity projectile = game.createEntity("projectile", startPosition.x, startPosition.y);
 //                if(projectile.getComponent(BulletComponent.class) != null)
 //                	System.out.println("Has bullet component");
+
+                if(projectile.getComponent(PhysixModifierComponent.class) == null){
+                    projectile.add(new PhysixModifierComponent());
+                }
+
                 projectile.getComponent(PhysixModifierComponent.class).runnables.add(() -> {
-                    projectile.getComponent(PhysixBodyComponent.class).setAngle((float) (phxc.getAngle() + (Math.random() - 0.5f) * scatter));
-                    //projectile.getComponent(PhysixBodyComponent.class).applyImpulse(dir.setLength(power));
-                    //                 ComponentMappers.physixBody.get(projectile).setLinearDamping(10);//10 nur als vorläufiger. AUSTESTEN
+                    PhysixBodyComponent physixBodyComponent = projectile.getComponent(PhysixBodyComponent.class);
+                    physixBodyComponent.setAngle((float) (phxc.getAngle() + (Math.random() - 0.5f) * scatter));
+                    Vector2 v2 = new Vector2((float)Math.cos(physixBodyComponent.getAngle()), (float)Math.sin(physixBodyComponent.getAngle()));
+                    v2.nor().scl(power);
+                    projectile.getComponent(PhysixBodyComponent.class).applyImpulse(v2);
+                    physixBodyComponent.setLinearDamping(damping);//10 nur als vorläufiger. AUSTESTEN
                 });
             }
             }catch (ClassCastException e){}

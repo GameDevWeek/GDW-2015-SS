@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.*;
 import com.badlogic.ashley.utils.ImmutableArray;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixModifierComponent;
+import de.hochschuletrier.gdw.ss15.events.network.server.NetworkNewPlayerEvent;
 import de.hochschuletrier.gdw.ss15.events.network.server.NetworkReceivedNewPacketServerEvent;
 import de.hochschuletrier.gdw.ss15.events.network.server.SendPacketServerEvent;
 import de.hochschuletrier.gdw.ss15.game.ServerGame;
@@ -61,6 +62,7 @@ public class NetworkServerSystem extends EntitySystem implements SendPacketServe
     public void update(float deltaTime) {
         while (serverSocket.isNewClientAvaliable()) {
             Entity e = game.createEntity("player", 600, 600);
+            NetworkNewPlayerEvent.emit(e);
         }
 
         LinkedList<Entity> toDelete = new LinkedList<>();
