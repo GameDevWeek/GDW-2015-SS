@@ -47,6 +47,7 @@ public class GatherServerListener extends EntitySystem implements NetworkReceive
             Entity entity = checkHarvestRayCollision(ent);
             if(entity != null)
             {
+                //ent = Spieler, entity = Mineable
                 //Gamelogik
                 //Strahl ein Entity getroffen
                 //prüfen ob Abbauschuss ein Objekt mit der Komponente Mineable getroffen hat etc.
