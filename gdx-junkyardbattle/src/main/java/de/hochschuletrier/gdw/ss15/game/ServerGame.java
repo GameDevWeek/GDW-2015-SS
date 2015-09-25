@@ -111,8 +111,8 @@ public class ServerGame{
         contactListener.addListener(ImpactSoundComponent.class, new ImpactSoundListener());
         contactListener.addListener(TriggerComponent.class, new TriggerListener());
         contactListener.addListener(PickableComponent.class, new PickupListener(engine));
-        contactListener.addListener(BulletComponent.class, new BulletListener());
         contactListener.addListener(MetalShardSpawnComponent.class, new MetalShardSpawnListener());
+        contactListener.addListener(BulletComponent.class, new BulletListener(engine));
     }
 
     private void setupPhysixWorld() {

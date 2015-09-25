@@ -1,4 +1,4 @@
-﻿package de.hochschuletrier.gdw.ss15.game.systems;
+package de.hochschuletrier.gdw.ss15.game.systems;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
@@ -27,7 +27,7 @@ public class MetalShardSpawnSystem extends IteratingSystem{
 		MyTimer timer = ComponentMappers.metalShardSpawn.get(entity).timer;
 		timer.Update();
 		
-		//wenn die min. Zeit zwischen Spawns erreicht/überschritten wurde
+		//wenn die min. Zeit zwischen Spawns erreicht/?berschritten wurde
 		if (timer.get_CounterSeconds() > minTimeBetweenSpawns)
 		{
 	        //nur spawnen, wenn der Spawn aktuell frei ist, d.h. wenn kein Objekt darauf steht/liegt
