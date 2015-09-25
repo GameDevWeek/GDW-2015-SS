@@ -10,6 +10,7 @@ import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
 import de.hochschuletrier.gdw.ss15.game.GameConstants;
 import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
+import de.hochschuletrier.gdw.ss15.game.components.input.InputComponent;
 
 import javax.swing.text.Position;
 
@@ -32,9 +33,10 @@ public class HudSystem extends IteratingSystem {
     protected void processEntity(Entity entity, float deltaTime) {
         PositionComponent position = entity.getComponent(PositionComponent.class);
         PlayerComponent player = entity.getComponent(PlayerComponent.class);
+        InputComponent input = entity.getComponent(InputComponent.class);
         if (player.isLocalPlayer){
 
-            DrawUtil.drawRect(0.0f,0.0f,100.0f,100.0f,Color.WHITE);
+
 
         }
     }
