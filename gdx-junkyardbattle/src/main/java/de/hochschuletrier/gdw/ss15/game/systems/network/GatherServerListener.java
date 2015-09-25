@@ -49,17 +49,16 @@ public class GatherServerListener extends EntitySystem implements NetworkReceive
 
             Entity entity = checkHarvestRayCollision(ent);
 
+            if (entity != null)
                 //ent = spieler
                 //entity = objekt
-            if (ComponentMappers.player.has(ent) && ComponentMappers.mineable.has(entity))
             {
-                MiningEvent.emit(ent, entity, channelTime);
-            }
-
-            else if (ComponentMappers.player.has(ent))
-            {
-                SimplePacket miningPacket = new SimplePacket(SimplePacket.SimplePacketId.MiningPacket.getValue(), 1);
-                SendPacketServerEvent.emit(packet, true);
+                if (ComponentMappers.player.has(ent) && ComponentMappers.mineable.has(entity)) {
+                    MiningEvent.emit(ent, entity, channelTime);
+                } else if (ComponentMappers.player.has(ent)) {
+                    SimplePacket miningPacket = new SimplePacket(SimplePacket.SimplePacketId.MiningPacket.getValue(), 1);
+                    SendPacketServerEvent.emit(packet, true);
+                }
             }
 
 

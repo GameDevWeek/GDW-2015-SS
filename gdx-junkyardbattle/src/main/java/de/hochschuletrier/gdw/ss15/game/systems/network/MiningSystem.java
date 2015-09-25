@@ -25,7 +25,8 @@ public class MiningSystem extends EntitySystem implements MiningEvent.Listener {
         int minedMetalShards = (int)(GameConstants.MINING_PER_SECOND * channelTime);
 
         int actuallyMinedMetalShards = inventoryComp.get(mineableEnt).subMetalShards(minedMetalShards);
-        inventoryComp.get(playerEnt).addMetalShards(actuallyMinedMetalShards);
+        int collected = inventoryComp.get(playerEnt).addMetalShards(actuallyMinedMetalShards);
+        System.out.println("Sammeln " + collected);
 
 
     }
