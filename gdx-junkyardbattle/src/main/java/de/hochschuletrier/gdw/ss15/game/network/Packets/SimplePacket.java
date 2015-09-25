@@ -19,7 +19,8 @@ public class SimplePacket extends Packet
     {
         RemoveEntity((short)0),
         MetalShardsUpdate((short)10),
-        BasePointsUpdate((short)20);
+        BasePointsUpdate((short)20),
+        MiningPacket((byte)21);
 
         private final short m_Value;
         private SimplePacketId(short value)
