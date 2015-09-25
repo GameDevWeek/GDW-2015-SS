@@ -62,7 +62,7 @@ public class WeaponSystem extends IteratingSystem {
         if(input.shoot && wpc.fireCooldownReady){
         // left button is clicked
             wpc.fireChannelTime = Math.min(wpc.fireChannelTime + deltaTime, WeaponComponent.maximumFireTime);
-            WeaponCharging.emit();
+            WeaponCharging.emit((float)(wpc.fireChannelTime/wpc.maximumFireTime));
             return; // left mouse > right mouse
         } else {
             if(wpc.fireChannelTime > 0) { // left button is released
