@@ -207,7 +207,7 @@
             "Interpolate": {},
             "PositionSynch": {
                 "clientname": "clientProjectile",
-                "updateDuration": 10000000,
+                "updateDuration": 42,
                 "sendSave": true
             }
         }
