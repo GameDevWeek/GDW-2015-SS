@@ -277,7 +277,8 @@
             "SpawnSatellite":{},
             "Inventory": {
             "metalShards": 100
-            }
+            },
+            "Mineable":{}
 
         }
     },
