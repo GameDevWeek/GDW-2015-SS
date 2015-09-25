@@ -12,7 +12,7 @@ import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 
 public class PlayerLifeSystem extends IteratingSystem {
 
-    public PlayerLifeSystem(Family family) {
+    public PlayerLifeSystem() {
         super(Family.all(HealthComponent.class).get());
     }
 

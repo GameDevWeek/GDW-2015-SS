@@ -59,7 +59,7 @@ public class WeaponSystem extends IteratingSystem {
 
                 FirePacket fire = new FirePacket(wpc.fireChannelTime);
                 SendPacketClientEvent.emit(fire, true);
-                System.out.println("emit fire package! " + wpc.fireChannelTime);
+//                System.out.println("emit fire package! " + wpc.fireChannelTime);
 
                 wpc.fireChannelTime = 0f;
             }
