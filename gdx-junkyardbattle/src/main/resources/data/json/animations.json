@@ -15,8 +15,32 @@
         "columns": 2,
         "rows" : 1
     },
-    "character_idle": {
-        "filename": "data/animations/Charakter_Orange_Anim.png",
+    "character_blue_idle": {
+        "filename": "data/animations/Charakter_Blue_Idle.png",
+        "frames" : 1,
+        "frameDuration": [0.1],
+        "playType" : "LOOP",
+        "columns": 1,
+        "rows" : 1
+    },
+    "character_blue_walk": {
+        "filename": "data/animations/Charakter_Blue_Walk.png",
+        "frames" : 16,
+        "frameDuration": [0.1],
+        "playType" : "LOOP",
+        "columns": 16,
+        "rows" : 1
+    },
+    "character_orange_idle": {
+        "filename": "data/animations/Charakter_Orange_Idle.png",
+        "frames" : 1,
+        "frameDuration": [0.1],
+        "playType" : "LOOP",
+        "columns": 1,
+        "rows" : 1
+    },
+    "character_orange_walk": {
+        "filename": "data/animations/Charakter_Orange_Walk.png",
         "frames" : 16,
         "frameDuration": [0.1],
         "playType" : "LOOP",

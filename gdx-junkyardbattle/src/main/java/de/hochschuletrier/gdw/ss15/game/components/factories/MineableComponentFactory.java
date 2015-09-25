@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.Entity;
 
 import de.hochschuletrier.gdw.commons.gdx.ashley.ComponentFactory;
 import de.hochschuletrier.gdw.commons.utils.SafeProperties;
+import de.hochschuletrier.gdw.ss15.game.components.MineableComponent;
 
 public class MineableComponentFactory extends ComponentFactory<EntityFactoryParam>{
 
@@ -14,8 +15,8 @@ public class MineableComponentFactory extends ComponentFactory<EntityFactoryPara
 
 	@Override
 	public void run(Entity entity, SafeProperties meta, SafeProperties properties, EntityFactoryParam param) {
-		// TODO Auto-generated method stub
-		
+		MineableComponent comp = engine.createComponent(MineableComponent.class);
+		entity.add(comp);
 	}
 
 }

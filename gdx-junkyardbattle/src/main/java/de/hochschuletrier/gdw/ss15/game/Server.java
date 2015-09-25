@@ -71,7 +71,7 @@ public class Server implements Runnable
     {
         while(isRunning.get())
         {
-            Tools.Sleep(10);
+            Tools.Sleep(5);
             timer.Update();
             runningGame.update((float)timer.get_FrameSeconds());
             //runningGame.update(0);

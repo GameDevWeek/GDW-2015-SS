@@ -34,6 +34,8 @@ public class FireServerListener implements NetworkReceivedNewPacketServerEvent.L
     public void onReceivedNewPacket(Packet pack, Entity ent) {
         PhysixBodyComponent phxc = ComponentMappers.physixBody.get(ent);
         InventoryComponent invc = ComponentMappers.inventory.get(ent);
+        
+        //System.out.print("akjsdklasdjlaskdashkdjashkjdahjksad");
         try{
             FirePacket packet = (FirePacket)pack;
 

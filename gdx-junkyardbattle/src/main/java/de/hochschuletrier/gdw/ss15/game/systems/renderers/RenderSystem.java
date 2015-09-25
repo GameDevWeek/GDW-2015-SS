@@ -19,6 +19,7 @@ import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.GameConstants;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
+import de.hochschuletrier.gdw.ss15.game.network.PacketIds;
 import de.hochschuletrier.gdw.ss15.game.rendering.TileMapCreator;
 
 /**
@@ -27,7 +28,7 @@ import de.hochschuletrier.gdw.ss15.game.rendering.TileMapCreator;
  * If at least one of them is not provided the Entity won't be rendered.
  *
  */
-public class RenderSystem extends SortedSubIteratingSystem {
+public class RenderSystem extends SortedSubIteratingSystem{
     private static final class RenderComparator implements Comparator<Entity> {
         @Override
         public int compare(Entity e1, Entity e2) {
@@ -48,7 +49,6 @@ public class RenderSystem extends SortedSubIteratingSystem {
     @SuppressWarnings("unchecked")
 	public RenderSystem(PhysixSystem physixSystem, OrthographicCamera camera, Engine engine) {
         super(Family.all(PositionComponent.class).get(), renderComparator, GameConstants.PRIORITY_RENDER_SYSTEM);
-
         this.camera = camera;
         
         lightRenderer = new LightRenderer(new RayHandler(physixSystem.getWorld()));

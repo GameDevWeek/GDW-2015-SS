@@ -38,7 +38,7 @@ public class InventoryComponent extends Component implements Pool.Poolable {
     public int addMetalShards(int shards)
     {
         int oldValueShards = metalShards;
-        if (!setMetalShards(metalShards += shards))
+        if (!setMetalShards(metalShards + shards))
         {
             metalShards = GameConstants.MAX_METALSHARDS;
         };

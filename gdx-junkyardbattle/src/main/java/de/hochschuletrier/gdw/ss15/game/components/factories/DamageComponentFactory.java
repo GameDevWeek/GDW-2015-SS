@@ -21,7 +21,7 @@ public class DamageComponentFactory extends ComponentFactory<EntityFactoryParam>
 		component.damage = properties.getInt("damageValue");
 		component.damageToPlayer = properties.getBoolean("damageToPlayer");
 		component.damageToTile = properties.getBoolean("damageToTile");
-		component.radius = properties.getFloat("radius");
+		component.radiusInTiles = properties.getInt("radiusInTiles");
         entity.add(component);
 	}
 

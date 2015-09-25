@@ -42,6 +42,8 @@ public class PhysixBodyComponentFactory extends ComponentFactory<EntityFactoryPa
                 default: logger.error("Unknown type: {}", type); break;
             }
         });
+        
+        
         entity.add(modifyComponent);
     }
 
@@ -51,6 +53,8 @@ public class PhysixBodyComponentFactory extends ComponentFactory<EntityFactoryPa
                 .shapeCircle(properties.getFloat("size", 5));
         bodyComponent.createFixture(fixtureDef);
         bodyComponent.setPosition(param.x,param.y);
+        boolean isfixedRotation = properties.getBoolean("fixedRotation");
+        bodyComponent.getBody().setFixedRotation(isfixedRotation);
         entity.add(bodyComponent);
     }
 
@@ -60,6 +64,8 @@ public class PhysixBodyComponentFactory extends ComponentFactory<EntityFactoryPa
                 .shapeBox(properties.getFloat("size", 5), properties.getFloat("size", 5));
         bodyComponent.createFixture(fixtureDef);
         bodyComponent.setPosition(param.x,param.y);
+        boolean isfixedRotation = properties.getBoolean("fixedRotation");
+        bodyComponent.getBody().setFixedRotation(isfixedRotation);
         entity.add(bodyComponent);
     }
 
@@ -79,6 +85,7 @@ public class PhysixBodyComponentFactory extends ComponentFactory<EntityFactoryPa
         return new PhysixFixtureDef(physixSystem)
                 .density(properties.getFloat("density", 5))
                 .friction(properties.getFloat("friction", 5))
+                .sensor(properties.getBoolean("sensor", false) )
                 .restitution(properties.getFloat("restitution", 0));
     }
 }

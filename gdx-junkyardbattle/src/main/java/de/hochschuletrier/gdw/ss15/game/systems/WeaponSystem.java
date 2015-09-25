@@ -1,5 +1,9 @@
 package de.hochschuletrier.gdw.ss15.game.systems;
 
+import org.lwjgl.Sys;
+
+import ch.qos.logback.core.net.SyslogOutputStream;
+
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
@@ -9,17 +13,21 @@ import de.hochschuletrier.gdw.ss15.events.WeaponUncharged;
 import de.hochschuletrier.gdw.ss15.events.network.client.SendPacketClientEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.components.HealthComponent;
+import de.hochschuletrier.gdw.ss15.game.components.InventoryComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.components.WeaponComponent;
 import de.hochschuletrier.gdw.ss15.game.components.input.InputComponent;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.FirePacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.GatherPacket;
+import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.MyTimer;
 
 /**
  * Created by oliver on 21.09.15.
  */
 public class WeaponSystem extends IteratingSystem {
+    
+    MyTimer timer = new MyTimer(true);
 
     public WeaponSystem() {
         super(Family.all(PlayerComponent.class,
@@ -56,13 +64,34 @@ public class WeaponSystem extends IteratingSystem {
                 wpc.fireChannelTime = 0f;
             }
         }
-        if(input.gather){
+        /*if(input.gather){
+            // right button is clicked
+//            wpc.harvestChannelTime = Math.min(wpc.harvestChannelTime + deltaTime, WeaponComponent.maximumHarvestTime);
             wpc.harvestChannelTime += deltaTime;
-            GatherPacket gather = new GatherPacket(wpc.harvestChannelTime);
-            SendPacketClientEvent.emit(gather, true);
+        } else {
+            if(wpc.harvestChannelTime > 0) { // right button is released
+//                WeaponUncharged.emit(); // fürs harvesten?
+                GatherPacket gather = new GatherPacket(wpc.harvestChannelTime);
+                SendPacketClientEvent.emit(gather, true);
+                System.out.println("gathered for " + wpc.harvestChannelTime + "m/n/whatevsec");
+                
+                wpc.harvestChannelTime = 0f;
+            }
+        }*/
+        if(input.gather)
+        { // right button is clicked
+            wpc.harvestChannelTime += deltaTime;
+            timer.Update();
+            if(timer.get_CounterMilliseconds()>50)
+            {
+                timer.StartCounter();
+                GatherPacket gather = new GatherPacket(wpc.harvestChannelTime);
+                SendPacketClientEvent.emit(gather, true);
+            }
         }
-
-
+        else
+        { // right button is released
+            wpc.harvestChannelTime = 0f;
+        }
     }
-
 }
