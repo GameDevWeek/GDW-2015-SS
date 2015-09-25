@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
@@ -27,10 +28,13 @@ import javax.swing.text.Position;
  */
 public class HudSystem extends IteratingSystem {
 
+    Vector2 lineToPlayer = new Vector2(0,0);
     Vector3 mouseScreenPos = new Vector3(0,0,0);
     Camera camera;
     AssetManagerX assetManager;
     Texture crosshairTex;
+
+    Entity localPlayer;
 
     public HudSystem(Camera camera){
         this(Family.one(PlayerComponent.class).get(), GameConstants.PRIORITY_HUD);
@@ -48,23 +52,27 @@ public class HudSystem extends IteratingSystem {
     protected void processEntity(Entity entity, float deltaTime) {
         PlayerComponent player = entity.getComponent(PlayerComponent.class);
         if (player.isLocalPlayer){
-
+            if (localPlayer == null){
+                this.localPlayer = entity;
+            }
             drawCrosshair(entity);
-
         }
     }
 
     private void drawCrosshair(Entity entity){
-
         mouseScreenPos.x = entity.getComponent(InputComponent.class).posX;
         mouseScreenPos.y = entity.getComponent(InputComponent.class).posY;
         mouseScreenPos = camera.unproject(mouseScreenPos);
-
-
-
         DrawUtil.batch.draw(crosshairTex,mouseScreenPos.x - crosshairTex.getWidth()/2,
                 mouseScreenPos.y - crosshairTex.getHeight()/2);
+    }
+
+    private void radar(Entity entity){
+
+
+
 
     }
+
 
 }
