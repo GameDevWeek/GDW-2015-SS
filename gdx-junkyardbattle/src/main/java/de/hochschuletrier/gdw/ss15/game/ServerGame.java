@@ -9,22 +9,29 @@ import de.hochschuletrier.gdw.commons.gdx.ashley.EntityFactory;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixComponentAwareContactListener;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
+import de.hochschuletrier.gdw.ss15.Main;
+import de.hochschuletrier.gdw.ss15.events.network.server.NetworkNewPlayerEvent;
 import de.hochschuletrier.gdw.ss15.game.components.BulletComponent;
 import de.hochschuletrier.gdw.ss15.game.components.ImpactSoundComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PickableComponent;
 import de.hochschuletrier.gdw.ss15.game.components.TriggerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
+import de.hochschuletrier.gdw.ss15.game.components.factories.network.server.ClientComponentFactory;
+import de.hochschuletrier.gdw.ss15.game.components.network.server.ClientComponent;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.BulletListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.ImpactSoundListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.PickupListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.TriggerListener;
+import de.hochschuletrier.gdw.ss15.game.network.ClientConnection;
 import de.hochschuletrier.gdw.ss15.game.systems.LineOfSightSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.NetworkServerSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.PositionSynchSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.UpdatePhysixServer;
 import de.hochschuletrier.gdw.ss15.game.systems.network.UpdatePhysixSystem;
+import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serverclientsocket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serversocket;
+import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.Tools;
 
 /**
  * Created by lukas on 21.09.15.
@@ -48,7 +55,6 @@ public class ServerGame{
     private final EntityFactoryParam factoryParam = new EntityFactoryParam();
     private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json", ServerGame.class);
 
-    private Serversocket serverSocket;
     
     private final MapLoader mapLoader = new MapLoader(); /// @author tobidot
 
@@ -58,13 +64,30 @@ public class ServerGame{
 
     public PooledEngine get_Engine(){return engine;}
 
+    public void InsertPlayerInGame(Serverclientsocket sock,String name, boolean team)
+    {
+        Main.getInstance().getServer().LastConnectedClient = sock;
+
+        Entity ent = createEntity("player",0,0);
+        //ClientComponent comp = new ClientComponent();
+        //comp.client = sock;
+        //ent.add(comp);
+        Main.getInstance().getServer().LastConnectedClient = null;
+
+        //ComponentMappers.client.get(ent).client = sock;
+        ComponentMappers.player.get(ent).name = name;
+        ComponentMappers.player.get(ent).teamID = Tools.BoolToInt(team);
+
+        NetworkNewPlayerEvent.emit(ent);
+    }
+
     public void init(AssetManagerX assetManager) {
         // Main.getInstance().console.register(physixDebug);
 
         addSystems();
         addContactListeners();
         setupPhysixWorld();
-        networkSystem.init(serverSocket);
+        networkSystem.init();
         entityFactory.init(engine, assetManager);
 
         new UpdatePhysixServer(); // magic → registers itself as listener for network packets
@@ -137,6 +160,11 @@ public class ServerGame{
 
         engine.addEntity(entity);
         return entity;
+    }
+
+    public void remove()
+    {
+
     }
 
 }

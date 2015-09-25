@@ -8,6 +8,7 @@ import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class ServerLobby
     private int MaximumPlayers = 10000;
     private float SecondsToStart = 60;
 
-    LinkedList<LobyClient> connectedClients = new LinkedList<>();
+    public LinkedList<LobyClient> connectedClients = new LinkedList<>();
 
 
     public ServerLobby()
@@ -39,13 +40,27 @@ public class ServerLobby
 
     }
 
+    public void SendStartGame()
+    {
+        SendPackettoAll(new SimplePacket(SimplePacket.SimplePacketId.StartGame.getValue(),0));
+    }
+
     public void update(float deltatime)
     {
-        for(LobyClient client : connectedClients)
+        Iterator<LobyClient> it = connectedClients.iterator();
+        while(it.hasNext())
         {
-            while(client.socket.isPacketAvaliable())
+            LobyClient client = it.next();
+            if(!client.socket.isConnected())
             {
-                ReceivePacket(client);
+                it.remove();
+            }
+            else
+            {
+                while (client.socket.isPacketAvaliable())
+                {
+                    ReceivePacket(client);
+                }
             }
         }
     }
@@ -77,7 +92,11 @@ public class ServerLobby
 
     public void SendChangePlayerStatusToAll(LobyClient info)
     {
-        MenuePlayerChangedPacket pack = info.getPacket();
+        SendPackettoAll(info.getPacket());
+    }
+
+    public void SendPackettoAll(Packet pack)
+    {
         int i=0;
         for(LobyClient client : connectedClients) {
             client.socket.sendPacketSave(pack,i++==0);

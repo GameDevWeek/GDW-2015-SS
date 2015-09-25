@@ -3,6 +3,7 @@ package de.hochschuletrier.gdw.ss15.game;
 import de.hochschuletrier.gdw.commons.devcon.ConsoleCmd;
 import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.game.network.ClientConnection;
+import de.hochschuletrier.gdw.ss15.game.network.LobyClient;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
 import de.hochschuletrier.gdw.ss15.game.network.ServerLobby;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Clientsocket;
@@ -14,6 +15,8 @@ import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.Tools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.rmi.server.ServerCloneException;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -32,11 +35,9 @@ public class Server implements Runnable
         public void execute(List<String> list){
             String info = list.get(1);
             if(info.equals("startGame")){
-                logger.info("Spiel wird gestartet.");
                 startGame();
             }
             else if(info.equals("stopGame")){
-                logger.info("Spiel wird gestoppt.");
                 stopGame();
             }else if(info.equals("lobby")){
                 String info2 = list.get(2);
@@ -72,7 +73,9 @@ public class Server implements Runnable
     ServerGame runningGame = null;
     MyTimer timer = new MyTimer();
 
-    LinkedList<Clientsocket> clientSockets = new LinkedList<>();
+    public Serverclientsocket LastConnectedClient = null;
+
+    LinkedList<Serverclientsocket> clientSockets = new LinkedList<>();
 
     public Server()
     {
@@ -126,7 +129,7 @@ public class Server implements Runnable
     {
         while(isRunning.get())
         {
-            Tools.Sleep(10);
+            Tools.Sleep(5);
             timer.Update();
             if(lobby!=null)
             {
@@ -146,27 +149,36 @@ public class Server implements Runnable
             {
                 if(serversocket.isNewClientAvaliable())
                 {
-                    Serverclientsocket sockret = serversocket.getNewClient();
-                    if(runningGame != null)
+                    Serverclientsocket sock = serversocket.getNewClient();
+                    if(runningGame!=null)
                     {
-                        sockret.sendPacket(new SimplePacket(SimplePacket.SimplePacketId.ConnectInitPacket.getValue(),-1));
-                    }
-                    else if(lobby == null)
-                    {
-                        sockret.sendPacket(new SimplePacket(SimplePacket.SimplePacketId.ConnectInitPacket.getValue(),-2));
-                    }
-                    else if(!lobby.InserNewPlayer(sockret))
-                    {
-                        sockret.sendPacket(new SimplePacket(SimplePacket.SimplePacketId.ConnectInitPacket.getValue(),-3));
+                        logger.info("Insert player to game");
+                        runningGame.InsertPlayerInGame(sock,"test",true);
                     }
                     else
                     {
-                        sockret.sendPacket(new SimplePacket(SimplePacket.SimplePacketId.ConnectInitPacket.getValue(),1));
-                        SimplePacket packet = new SimplePacket(SimplePacket.SimplePacketId.ConnectInitPacket.getValue(),-1);
+                        logger.info("insert player to lobby");
+                        if((InsertInLobby(sock))) {
+                            clientSockets.push(sock);
+                        }
                     }
                 }
             }
         }
+    }
+
+    public boolean InsertInLobby(Serverclientsocket sock)
+    {
+        if(!lobby.InserNewPlayer(sock))
+        {
+            sock.sendPacket(new SimplePacket(SimplePacket.SimplePacketId.ConnectInitPacket.getValue(),-3));
+        }
+        else
+        {
+            sock.sendPacket(new SimplePacket(SimplePacket.SimplePacketId.ConnectInitPacket.getValue(),1));
+            return true;
+        }
+        return false;
     }
 
     public Serversocket getServersocket(){
@@ -174,11 +186,73 @@ public class Server implements Runnable
     }
 
     public void startGame(){
+        if(runningGame!=null)
+        {
+            logger.info("Spiel läuft bereits");
+            return;
+        }
 
+        lobby.SendStartGame();
+
+        Tools.Sleep(1);//all player initializie game mot verg good XD
+
+        runningGame = new ServerGame();
+        runningGame.init(Main.getInstance().getAssetManager());
+        runningGame.update(0);
+
+        for(LobyClient client : lobby.connectedClients)
+        {
+            runningGame.InsertPlayerInGame(client.socket,client.name,client.Team1);
+        }
+        lobby.remove();
+        lobby = null;
     }
 
     public void stopGame(){
+        if(runningGame == null)
+        {
+            logger.info("Kein laufendes spiel vorhanden");
+            return;
+        }
+        else
+        {
+            runningGame.remove();
+            runningGame = null;
+            Tools.Sleep(500);
+            lobby = new ServerLobby();
+            lobby.init();
+            SimplePacket pack = new SimplePacket(SimplePacket.SimplePacketId.StopGame.getValue(),0);
+            for(Serverclientsocket sock : clientSockets)
+            {
 
+                sock.sendPacketSave(pack);
+            }
+
+            Iterator<Serverclientsocket> it = clientSockets.iterator();
+            while(it.hasNext())
+            {
+                Serverclientsocket sock=it.next();
+                if(!sock.isConnected())
+                {
+                    it.remove();
+                }
+                else {
+                    sock.sendPacketSave(pack);
+                }
+            }
+
+            Tools.Sleep(500);
+
+            it = clientSockets.iterator();
+            while(it.hasNext())
+            {
+                Serverclientsocket sock=it.next();
+                if(InsertInLobby(sock))
+                {
+                    it.remove();
+                }
+            }
+        }
     }
 
     public void kickPlayer(String name){

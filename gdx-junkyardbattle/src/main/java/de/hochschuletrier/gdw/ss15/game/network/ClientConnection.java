@@ -64,6 +64,7 @@ public class ClientConnection implements SendPacketClientEvent.Listener,
         }
     };
 
+
     public void update()
     {
         if(clientSocket!=null) {
