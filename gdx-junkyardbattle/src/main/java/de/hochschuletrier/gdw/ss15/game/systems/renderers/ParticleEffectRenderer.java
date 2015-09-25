@@ -26,6 +26,8 @@ import de.hochschuletrier.gdw.ss15.game.components.effects.ParticleEffectCompone
  */
 public class ParticleEffectRenderer extends SortedSubIteratingSystem.SubSystem implements EntityListener, ChangeModeOnEffectEvent.Listener, ChangePositionOnEffectEvent.Listener{
 
+    private Vector2 rotateVector = new Vector2(0, 1);
+    
     @SuppressWarnings("unchecked")
     public ParticleEffectRenderer(Engine engine) {
         super(Family.all(ParticleEffectComponent.class).get());
@@ -52,14 +54,17 @@ public class ParticleEffectRenderer extends SortedSubIteratingSystem.SubSystem i
                particleEmitter.durationTimer=0;
            }
         }
-        
+
         if(particleEffectComponent.isPlaying){
+            rotateVector.set(particleEffectComponent.positionOffsetX, particleEffectComponent.positionOffsetY);
+            rotateVector.rotate(particleEffectComponent.initialRotation + position.rotation);
+            
             particleEffectComponent.particleEffect.setPosition(
-                position.x + particleEffectComponent.positionOffsetX, 
-                position.y + particleEffectComponent.positionOffsetY
+                position.x + rotateVector.x, 
+                position.y + rotateVector.y
             );
             
-            particleEffectComponent.setRotation(position.rotation);
+            particleEffectComponent.setRotation(particleEffectComponent.initialRotation + position.rotation);
 
             particleEffectComponent.particleEffect.update(deltaTime);
             particleEffectComponent.particleEffect.draw(DrawUtil.batch);

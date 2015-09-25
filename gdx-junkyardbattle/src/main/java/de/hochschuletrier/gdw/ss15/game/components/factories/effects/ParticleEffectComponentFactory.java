@@ -30,7 +30,7 @@ public class ParticleEffectComponentFactory extends ComponentFactory<EntityFacto
        particleEffectComponent.particleEffect = new ParticleEffect(assetManager.getParticleEffect(properties.getString("effectname")));
        particleEffectComponent.positionOffsetX = properties.getFloat("offsetX", 0.f);
        particleEffectComponent.positionOffsetY = properties.getFloat("offsetY", 0.f);
-       particleEffectComponent.setRotation(properties.getFloat("rotation", 90.f));
+       particleEffectComponent.initialRotation = properties.getFloat("initialRotation", 0.f);      
        
        entity.add(particleEffectComponent);
     }
