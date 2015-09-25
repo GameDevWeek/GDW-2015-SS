@@ -1,5 +1,6 @@
 package de.hochschuletrier.gdw.ss15.game.contactlisteners;
 
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.physics.box2d.Manifold;
 
@@ -7,9 +8,11 @@ import de.hochschuletrier.gdw.commons.gdx.physix.PhysixContact;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixContactAdapter;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.ss15.events.CollisionEvent;
+import de.hochschuletrier.gdw.ss15.events.PlayerHurtEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.components.BulletComponent;
 import de.hochschuletrier.gdw.ss15.game.components.InventoryComponent;
+import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
 
 public class BulletListener extends PhysixContactAdapter{
 
@@ -34,17 +37,29 @@ public class BulletListener extends PhysixContactAdapter{
     	
         PhysixBodyComponent otherComponent = contact.getOtherComponent();
         if (otherComponent != null) {
-            BulletComponent otherBulletComponent = ComponentMappers.bullet.get(contact.getOtherComponent().getEntity());
+            Entity otherEntity = otherComponent.getEntity();
+            BulletComponent otherBulletComponent = ComponentMappers.bullet.get(otherEntity);
             if(otherBulletComponent != null)
             {
+                // kollidiert mit Bullet
+                // Kollision nicht beachten
                 contact.setEnabled(false);
+            }
+            else
+            {
+                PlayerComponent otherPlayerComponent = ComponentMappers.player.get(otherEntity);
+                if(otherPlayerComponent != null)
+                {
+                    // kollidiert mit anderem Spieler
+                    PlayerHurtEvent.emit(contact.getMyComponent().getEntity(), otherEntity);
+//                    engine.removeEntity(contact.getMyComponent().getEntity()); // uebernimmt GameLogik
+                }
             }
         }
         else
         {
-            CollisionEvent.emit(contact);
+//            CollisionEvent.emit(contact); // wofuer wird das genutzt?
             engine.removeEntity(contact.getMyComponent().getEntity());
-
         }
     }
 
