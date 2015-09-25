@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
+import de.hochschuletrier.gdw.ss15.game.GameConstants;
 import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 
@@ -19,11 +20,12 @@ import javax.swing.text.Position;
 public class HudSystem extends IteratingSystem {
 
     public HudSystem(){
-        this(Family.one(PlayerComponent.class).get());
+        this(Family.one(PlayerComponent.class).get(), GameConstants.PRIORITY_HUD);
     }
 
-    public HudSystem(Family family) {
+    public HudSystem(Family family, int priority) {
         super(family);
+        this.priority = priority;
     }
 
     @Override
@@ -31,6 +33,8 @@ public class HudSystem extends IteratingSystem {
         PositionComponent position = entity.getComponent(PositionComponent.class);
         PlayerComponent player = entity.getComponent(PlayerComponent.class);
         if (player.isLocalPlayer){
+
+            DrawUtil.drawRect(0.0f,0.0f,100.0f,100.0f,Color.WHITE);
 
         }
     }
