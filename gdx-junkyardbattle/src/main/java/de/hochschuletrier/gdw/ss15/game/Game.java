@@ -13,11 +13,15 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 
 import de.hochschuletrier.gdw.commons.gdx.ashley.EntityFactory;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
+import de.hochschuletrier.gdw.commons.gdx.physix.PhysixComponentAwareContactListener;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixDebugRenderSystem;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.ss15.Main;
+import de.hochschuletrier.gdw.ss15.game.components.PickableComponent;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
 import de.hochschuletrier.gdw.ss15.game.components.texture.TextureComponent;
+import de.hochschuletrier.gdw.ss15.game.contactlisteners.PickupListener;
+import de.hochschuletrier.gdw.ss15.game.contactlisteners.PickupListenerClient;
 import de.hochschuletrier.gdw.ss15.game.systems.input.InputSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.NetworkClientSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.*;
@@ -108,11 +112,12 @@ public class Game extends InputAdapter {
     }
 
     private void addContactListeners() {
-        //PhysixComponentAwareContactListener contactListener = new PhysixComponentAwareContactListener();
-        //physixSystem.getWorld().setContactListener(contactListener);
+        PhysixComponentAwareContactListener contactListener = new PhysixComponentAwareContactListener();
+        physixSystem.getWorld().setContactListener(contactListener);
         //contactListener.addListener(ImpactSoundComponent.class, new ImpactSoundListener());
        // contactListener.addListener(TriggerComponent.class, new TriggerListener());
-    /*	ContactListener cl = new ContactListener() {
+    	contactListener.addListener(PickableComponent.class, new PickupListenerClient());
+    	/*ContactListener cl = new ContactListener() {
 			
 			@Override
 			public void preSolve(Contact contact, Manifold oldManifold) {

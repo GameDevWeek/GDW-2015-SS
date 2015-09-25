@@ -54,7 +54,8 @@ public class PositionSynchSystem extends EntitySystem implements EntityListener 
 //                System.out.println("New movment gecoginced: x"+pos.x+ " y"+pos.y);
                // System.out.println("New rotation: "+pos.rotation);
                 comp.lastSendTimer.Update();
-                if(comp.lastSendTimer.get_CounterMilliseconds()>comp.updateDuration)
+                
+                if(comp.lastSendTimer.get_CounterMilliseconds()>16 && physComp.isAwake() && !physComp.isAsleep())
                 {
                     comp.lastSendTimer.StartCounter();
                     comp.lastX=physComp.getPosition().x;
