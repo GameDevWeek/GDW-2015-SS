@@ -13,7 +13,6 @@ public enum AnimationState
 {
     IDLE,
     WALK,
-    STRAFE,
     FIRE,
     DEATH
 }

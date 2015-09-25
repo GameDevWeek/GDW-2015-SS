@@ -24,6 +24,7 @@ import de.hochschuletrier.gdw.ss15.game.systems.*;
 import de.hochschuletrier.gdw.ss15.game.systems.network.TestMovementSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.TestSatelliteSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.UpdatePhysixSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.renderers.ChangeAnimationStateSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.renderers.ParticleSpawnSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.renderers.RenderSystem;
 import de.hochschuletrier.gdw.ss15.game.utils.TimerSystem;
@@ -59,8 +60,11 @@ public class Game extends InputAdapter {
     private final InputSystem inputSystem = new InputSystem(0,cameraSystem.getCamera().getOrthographicCamera());
     private final SoundSystem soundSystem = new SoundSystem(cameraSystem.getCamera());
     private final MapLoader mapLoader = new MapLoader();
+    
+    
     private final ParticleSpawnSystem particleSpawner = new ParticleSpawnSystem(this);
     private final DeathSystem deathSystem = new DeathSystem();
+    private final ChangeAnimationStateSystem changeAnimSystem = new ChangeAnimationStateSystem();
 
     public Game() {
         // If this is a build jar file, disable hotkeys
