@@ -17,10 +17,10 @@ public class PlayerHurtEvent {
         void onPlayerHurt(Entity projectile, Entity hurtPlayer);
     }
 
-    public static void emit(Entity shootingPlayer, Entity hurtPlayer) {
+    public static void emit(Entity projectile, Entity hurtPlayer) {
         Object[] items = listeners.begin();
         for (int i = 0, n = listeners.size; i < n; i++) {
-            ((Listener)items[i]).onPlayerHurt(shootingPlayer, hurtPlayer);
+            ((Listener)items[i]).onPlayerHurt(projectile, hurtPlayer);
         }
         listeners.end();
     }

@@ -84,6 +84,8 @@ public class ServerGame{
     private final SpawnSystem spawnSystem = new SpawnSystem();
     private final MetalShardDropSystem metalShardDropSystem = new MetalShardDropSystem(this);
     
+    private final PlayerHurtSystem playerHurtSystem = new PlayerHurtSystem();
+    
     public ServerGame()
     {
 
@@ -141,6 +143,7 @@ public class ServerGame{
         engine.addSystem(playerLifeSystem);
         engine.addSystem(spawnSystem);
         engine.addSystem(metalShardDropSystem);
+        engine.addSystem(playerHurtSystem);
 
         //// ---- add listener to engine, to get an autoremove
         engine.addSystem(fireServerListener);
