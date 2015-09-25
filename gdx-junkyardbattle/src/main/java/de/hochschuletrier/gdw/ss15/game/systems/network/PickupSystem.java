@@ -47,6 +47,7 @@ public class PickupSystem extends IntervalIteratingSystem implements PickupEvent
              {
                  System.out.println("Pickup removed");
                  this.engine.removeEntity(pickup);
+
              }
 
 
