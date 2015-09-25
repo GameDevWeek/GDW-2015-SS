@@ -45,7 +45,7 @@ public class ServerLobby
         {
             while(client.socket.isPacketAvaliable())
             {
-
+                ReceivePacket(client);
             }
         }
     }
