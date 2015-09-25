@@ -26,6 +26,7 @@ public class GatherServerListener extends EntitySystem implements NetworkReceive
     private Fixture closestFixture;
 
     public GatherServerListener(PhysixSystem physixSystem){
+        super();
         this.physixSystem = physixSystem;
         NetworkReceivedNewPacketServerEvent.registerListener(PacketIds.Gather, this);
     }

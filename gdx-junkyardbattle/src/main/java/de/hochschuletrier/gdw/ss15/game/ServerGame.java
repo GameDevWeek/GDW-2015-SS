@@ -101,9 +101,9 @@ public class ServerGame{
         engine.addSystem(pickupSystem);
 
         //// ---- add listener to engine, to get an autoremove
-        engine.addSystem(fireServerListener);
-        engine.addSystem(updatePhysixServer);
-        engine.addSystem(gatherServerListener);
+//        engine.addSystem(fireServerListener);
+//        engine.addSystem(updatePhysixServer);
+//        engine.addSystem(gatherServerListener);
     }
 
     private void addContactListeners() {

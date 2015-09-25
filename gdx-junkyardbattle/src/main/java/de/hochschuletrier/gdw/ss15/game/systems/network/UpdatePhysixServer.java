@@ -26,6 +26,7 @@ public class UpdatePhysixServer extends EntitySystem implements NetworkReceivedN
 	
     public UpdatePhysixServer()
     {
+        super();
         NetworkReceivedNewPacketServerEvent.registerListener(PacketIds.Movement, this);
     }
 

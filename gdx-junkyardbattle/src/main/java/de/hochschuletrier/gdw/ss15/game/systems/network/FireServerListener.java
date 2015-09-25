@@ -28,7 +28,8 @@ public class FireServerListener extends EntitySystem implements NetworkReceivedN
     private ServerGame game;
 
     public FireServerListener(ServerGame game){
-         this.game = game;
+        super();
+        this.game = game;
         NetworkReceivedNewPacketServerEvent.registerListener(PacketIds.Fire, this);
     }
 
