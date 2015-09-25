@@ -2,6 +2,7 @@ package de.hochschuletrier.gdw.ss15.game.systems.network;
 
 import ch.qos.logback.core.net.SyslogOutputStream;
 
+import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
@@ -16,6 +17,7 @@ import de.hochschuletrier.gdw.ss15.events.MiningEvent;
 import de.hochschuletrier.gdw.ss15.events.network.server.NetworkReceivedNewPacketServerEvent;
 import de.hochschuletrier.gdw.ss15.events.network.server.SendPacketServerEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
+import de.hochschuletrier.gdw.ss15.game.components.PickableComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.network.PacketIds;
@@ -73,17 +75,18 @@ public class GatherServerListener extends EntitySystem implements NetworkReceive
     private Entity checkHarvestRayCollision(Entity entity){
         //System.out.println("checkHarvestRayCollision");
         Entity hitEntity = null;
-        float range = 10000f;
+        float range = 1000f;
 
         //player position
-        Vector2 pos =  ComponentMappers.physixBody.get(entity).getPosition();
+        Vector2 pos =  ComponentMappers.physixBody.get(entity).getBody().getPosition();
 
         //end of ray position
-        float rotation = entity.getComponent(PositionComponent.class).rotation;
+        float rotation = entity.getComponent(PhysixBodyComponent.class).getAngle();
         Vector2 rayPos = new Vector2((float)Math.cos(rotation), (float)Math.sin(rotation));
         rayPos.nor();
         rayPos.scl(range);
         rayPos.add(pos);
+        physixSystem.toBox2D(rayPos, rayPos);
 
         /*System.out.println("playerPos: " + pos);
         System.out.println("rayPos: " + rayPos);*/
@@ -101,6 +104,7 @@ public class GatherServerListener extends EntitySystem implements NetworkReceive
         };
 
         closestFixture = null;
+        
         physixSystem.getWorld().rayCast(lineOfSightCallback,
                 pos, rayPos);
 
