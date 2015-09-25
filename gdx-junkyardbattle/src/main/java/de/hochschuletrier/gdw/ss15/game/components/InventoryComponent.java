@@ -60,7 +60,7 @@ public class InventoryComponent extends Component implements Pool.Poolable {
 
     public int subMetalShards(int shards)
     {
-        return addMetalShards(-shards);
+        return - addMetalShards(-shards);
     }
 
 

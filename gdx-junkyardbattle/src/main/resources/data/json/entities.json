@@ -248,7 +248,7 @@
             "Position": {},
             "SpawnSatellite": {},
             "Inventory": {
-                "metalShards": 100
+                "metalShards": 3000
             }
         }
     },
@@ -263,11 +263,11 @@
             },
             "PhysixBody": {
                 "shape": "circle",
-                "size": 5,
+                "size": 10,
                 "density": 10,
                 "friction": 0.5,
                 "restitution": 0.1,
-                "sensor": true,
+                "sensor": false,
                 "type": "kinematic"
             },
             "Damage": {
@@ -277,7 +277,7 @@
             },
             "SpawnSatellite": {},
             "Inventory": {
-                "metalShards": 100
+                "metalShards": 300
             },
             "SoundEmitter": {},
             "Mineable": {}
@@ -302,11 +302,11 @@
             "NetworkID": {},
             "PhysixBody": {
                 "shape": "circle",
-                "size": 90,
+                "size": 10,
                 "density": 10,
                 "friction": 0.5,
                 "restitution": 0.1,
-                "sensor": true,
+                "sensor": false,
                 "type": "kinematic"
             }
         }

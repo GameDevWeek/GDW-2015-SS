@@ -23,6 +23,7 @@ public class GameConstants {
     public static final int POSITION_ITERATIONS = 3;
     public static final int VELOCITY_ITERATIONS = 8;
     public static final int BOX2D_SCALE = 40;
+    public static final float GATHERING_RANGE = 10000f;
     
     // Light parameters
     public static final int LIGHT_RAYS = 360;
@@ -37,7 +38,7 @@ public class GameConstants {
 
     // PlayerParameters
     public static final int START_HEALTH = 100;
-    public static final int MAX_METALSHARDS = 700;
+    public static final int MAX_METALSHARDS = 100000;
     public static final int MIN_METALSHARDS = 0;
     public static final float START_X_POSITION = 0;
     public static final float START_Y_POSITION = 0;
