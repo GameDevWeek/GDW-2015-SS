@@ -152,7 +152,6 @@ public class BoundedCamera extends SmoothCamera {
     	{
     		resetZoom = false;
     		float converted = (zoomAmount - deadZone) / (1.0f-deadZone);
-    		System.out.println(converted);
     		zoomProgress = converted;
     		setZoom(srcZoom + converted*(dstZoom-srcZoom));
     	}
