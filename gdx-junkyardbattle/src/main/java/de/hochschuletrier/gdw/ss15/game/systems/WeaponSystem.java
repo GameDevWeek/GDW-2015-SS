@@ -28,6 +28,7 @@ import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.MyTimer;
 public class WeaponSystem extends IteratingSystem {
     
     MyTimer timer = new MyTimer(true);
+    float attackCooldownTimer = 0;
 
     public WeaponSystem() {
         super(Family.all(PlayerComponent.class,
@@ -47,8 +48,18 @@ public class WeaponSystem extends IteratingSystem {
         WeaponComponent wpc = ComponentMappers.weapon.get(entity);
         PositionComponent psc = ComponentMappers.position.get(entity);
         InputComponent input = ComponentMappers.input.get(entity);
+        
+
+        
+        if(attackCooldownTimer < wpc.fireCooldown){
+        	attackCooldownTimer+= deltaTime;
+        	if(attackCooldownTimer >= wpc.fireCooldown){
+        		wpc.fireCooldownReady = true;
+        	}
+        }
+        
         // ask for left click
-        if(input.shoot){
+        if(input.shoot && wpc.fireCooldownReady){
         // left button is clicked
             wpc.fireChannelTime = Math.min(wpc.fireChannelTime + deltaTime, WeaponComponent.maximumFireTime);
             WeaponCharging.emit();
@@ -62,6 +73,8 @@ public class WeaponSystem extends IteratingSystem {
 //                System.out.println("emit fire package! " + wpc.fireChannelTime);
 
                 wpc.fireChannelTime = 0f;
+                attackCooldownTimer = 0.0f;
+                wpc.fireCooldownReady = false;
             }
         }
         /*if(input.gather){
