@@ -9,19 +9,23 @@ public class MetalShardSpawnComponent extends Component implements Pool.Poolable
 
 	//wie häufig soll gespawnt werden
 	public MyTimer timer;
-	//wieviel soll gespawnt werden
-	public int shards;
+	//wieviele Objekte stehen gerade auf dem Spawn
+	//nur wenn es 0 sind, darf der Spawner ein neues MetalShard spawnen
+	public int collidingObjects;
+	//Zeit zwischen Spawns
+	public float minTimeBetweenSpawns;
 	
 	public MetalShardSpawnComponent() {
 		timer = new MyTimer(true);
-		shards = 10;
-		//System.out.println("MetalShardSpawn");
+		collidingObjects = 0;
+		minTimeBetweenSpawns = 5.f;
 	}
 	
 	@Override
 	public void reset() {
 		timer.ResetTimer();
-		shards = 10;
+		collidingObjects = 0;
+        minTimeBetweenSpawns = 5.f;
 	}
 
 }

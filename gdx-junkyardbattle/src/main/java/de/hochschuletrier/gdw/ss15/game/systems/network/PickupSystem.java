@@ -24,8 +24,6 @@ public class PickupSystem extends IntervalIteratingSystem implements PickupEvent
         super(Family.all(PlayerComponent.class).get(), 10);
         inventory = ComponentMappers.inventory;
         player = ComponentMappers.player;
-        inventory = ComponentMappers.inventory;
-        player = ComponentMappers.player;
         PickupEvent.register(this);
         this.engine = engine;
     }

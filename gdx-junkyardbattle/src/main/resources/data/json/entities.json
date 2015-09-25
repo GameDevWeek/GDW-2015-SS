@@ -364,7 +364,8 @@
                 "density": 10,
                 "friction": 0.5,
                 "restitution": 0.1,
-                "type": "static"
+                "type": "static",
+                "sensor":  true
             },
             "Texture":{
                 "texture": "junk_spawn",
@@ -378,7 +379,7 @@
                 "flipY": false
             },
             "MetalShardSpawn":{
-            	"shards": 1
+            	"spawnTime": 5.0
             }
         }
     },
@@ -429,6 +430,7 @@
                 "restitution": 0.2,
                 "type": "dynamic"
             },
+            "Pickable":{},
             "NetworkID": {}
        }
     },
@@ -448,7 +450,7 @@
             },
             "PositionSynch":{
                 "clientname": "metalClient",
-                "updateDuration": 10000000,
+                "updateDuration": 40,
                 "sendSave": true
 
             },
