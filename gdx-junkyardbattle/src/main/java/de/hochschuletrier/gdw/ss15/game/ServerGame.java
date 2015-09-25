@@ -74,17 +74,15 @@ public class ServerGame{
     public void init(AssetManagerX assetManager) {
         // Main.getInstance().console.register(physixDebug);
 
+        updatePhysixServer = new UpdatePhysixServer();
+        fireServerListener = new FireServerListener(this);
+        gatherServerListener = new GatherServerListener(physixSystem);
+
         addSystems();
         addContactListeners();
         setupPhysixWorld();
         networkSystem.init(serverSocket);
         entityFactory.init(engine, assetManager);
-
-
-
-        updatePhysixServer = new UpdatePhysixServer();
-        fireServerListener = new FireServerListener(this);
-        gatherServerListener = new GatherServerListener(physixSystem);
 
         mapLoader.run( ( String name, float x, float y ) -> { return this.createEntity(name,  x, y); }, "data/maps/3v3Alpha.tmx",physixSystem,entityFactory,assetManager );
     }
@@ -101,9 +99,9 @@ public class ServerGame{
         engine.addSystem(pickupSystem);
 
         //// ---- add listener to engine, to get an autoremove
-//        engine.addSystem(fireServerListener);
-//        engine.addSystem(updatePhysixServer);
-//        engine.addSystem(gatherServerListener);
+        engine.addSystem(fireServerListener);
+        engine.addSystem(updatePhysixServer);
+        engine.addSystem(gatherServerListener);
     }
 
     private void addContactListeners() {

@@ -23,7 +23,8 @@ public class BulletSystem extends IteratingSystem{
         System.out.println("Bullet Pos " + position);
         if(physix.getLinearVelocity().len2() <= 0.0001f)//Bullet quasi stehengeblieben
         {
-        	entity.remove(BulletComponent.class);
+            System.out.println("transform bullet to metalshard");
+            entity.remove(BulletComponent.class);
         	entity.add(new PickableComponent());
         }
     }

@@ -9,7 +9,7 @@ import java.util.ArrayList;
  */
 public final class PhysixModifierComponent extends Component implements Poolable {
 
-    public final ArrayList<Runnable> runnables = new ArrayList();
+    public final ArrayList<Runnable> runnables = new ArrayList<>();
 
     @Override
     public void reset() {
