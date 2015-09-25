@@ -30,6 +30,7 @@ import javax.swing.text.Position;
  */
 public class HudSystem extends IteratingSystem {
 
+    private float radarScale = 0.1337f;
     Vector2 lineToPlayer = new Vector2(0,0);
     Vector3 mouseScreenPos = new Vector3(0,0,0);
     Camera camera;
@@ -74,7 +75,22 @@ public class HudSystem extends IteratingSystem {
     }
     private void radar(Entity entity) {
 
+        lineToPlayer.x = entity.getComponent(PositionComponent.class).x >
+                localPlayer.getComponent(PositionComponent.class).x ? entity.getComponent(PositionComponent.class).x -
+                localPlayer.getComponent(PositionComponent.class).x :
+                localPlayer.getComponent(PositionComponent.class).x - entity.getComponent(PositionComponent.class).x;
+        lineToPlayer.y = entity.getComponent(PositionComponent.class).y >
+                localPlayer.getComponent(PositionComponent.class).y ? entity.getComponent(PositionComponent.class).y -
+                localPlayer.getComponent(PositionComponent.class).y :
+                localPlayer.getComponent(PositionComponent.class).y - entity.getComponent(PositionComponent.class).y;
+
+        lineToPlayer.scl(radarScale);
+        //DrawUtil.batch.draw("icon für spieler", radarMitte + vector);
+
+        //Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()-Gdx.graphics.getHeight/4
     }
+
+
     private void lebensBalken() {
         DrawUtil.fillRect( Gdx.graphics.getWidth()/2 - 100,Gdx.graphics.getHeight() -20 , 200, 40, Color.RED);
     }
