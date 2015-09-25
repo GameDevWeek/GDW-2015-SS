@@ -212,7 +212,8 @@
                 "density": 10,
                 "friction": 0.5,
                 "restitution": 0.1,
-                "type": "dynamic"
+                "type": "dynamic",
+                "category":  "BULLET"
             },
             "Damage": {
                 "damageValue": 10,
