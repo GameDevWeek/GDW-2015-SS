@@ -109,7 +109,7 @@ public class ServerGame{
         entityFactory.init(engine, assetManager);
 
         mapLoader.listen(spawnSystem);
-        mapLoader.run( ( String name, float x, float y ) -> { return this.createEntity(name,  x, y); }, "data/maps/prototypeV2.tmx",physixSystem,entityFactory,assetManager );
+        mapLoader.run( ( String name, float x, float y ) -> { return this.createEntity(name,  x, y); }, "data/maps/3v3Alpha.tmx",physixSystem,entityFactory,assetManager );
     }
 
     private void addSystems() {
