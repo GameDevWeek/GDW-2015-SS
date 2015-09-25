@@ -1,6 +1,8 @@
 package de.hochschuletrier.gdw.ss15.game.systems.network;
 
+import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
@@ -19,12 +21,18 @@ import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
  *
  * Receives Movement packets and updates physixbody
  */
-public class UpdatePhysixServer implements NetworkReceivedNewPacketServerEvent.Listener{
+public class UpdatePhysixServer extends EntitySystem implements NetworkReceivedNewPacketServerEvent.Listener{
 
 	
     public UpdatePhysixServer()
     {
         NetworkReceivedNewPacketServerEvent.registerListener(PacketIds.Movement, this);
+    }
+
+    @Override
+    public void removedFromEngine(Engine engine) {
+        super.removedFromEngine(engine);
+        NetworkReceivedNewPacketServerEvent.unregisterListener(PacketIds.Movement, this);
     }
 
     /////////////////// SERVER

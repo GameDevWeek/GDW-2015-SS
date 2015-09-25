@@ -1,6 +1,8 @@
 package de.hochschuletrier.gdw.ss15.game.systems.network;
 
+import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.gdx.math.Vector2;
 import de.hochschuletrier.gdw.commons.gdx.ashley.EntityFactory;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
@@ -21,13 +23,19 @@ import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
  *
  * Server received Fire Package
  */
-public class FireServerListener implements NetworkReceivedNewPacketServerEvent.Listener{
+public class FireServerListener extends EntitySystem implements NetworkReceivedNewPacketServerEvent.Listener{
 
     private ServerGame game;
 
     public FireServerListener(ServerGame game){
          this.game = game;
         NetworkReceivedNewPacketServerEvent.registerListener(PacketIds.Fire, this);
+    }
+
+    @Override
+    public void removedFromEngine(Engine engine) {
+        super.removedFromEngine(engine);
+        NetworkReceivedNewPacketServerEvent.unregisterListener(PacketIds.Fire, this);
     }
 
     @Override
