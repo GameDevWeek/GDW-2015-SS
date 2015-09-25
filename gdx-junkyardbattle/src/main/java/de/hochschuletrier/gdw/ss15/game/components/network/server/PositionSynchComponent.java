@@ -19,6 +19,7 @@ public class PositionSynchComponent extends Component implements Pool.Poolable {
     public float lastVelocityX;
     public float lastVelocityY;
     public float lastRot;
+    public boolean wasActive = false;
     public MyTimer lastSendTimer;
     public float updateDuration;
     public boolean sendSave;
@@ -33,6 +34,7 @@ public class PositionSynchComponent extends Component implements Pool.Poolable {
         lastY=0;
         lastVelocityX = 0;
         lastVelocityY = 0;
+        wasActive = false;
         lastRot=0;
         lastSendTimer=null;
         updateDuration=42;

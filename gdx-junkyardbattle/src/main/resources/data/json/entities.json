@@ -223,39 +223,7 @@
             "Bullet": {
                 "playerID": -1
             },
-            "Interpolate": {},
-            "PositionSynch": {
-                "clientname": "clientProjectile",
-                "updateDuration": 42,
-                "sendSave": true
-            }
-        }
-    },
-    "clientProjectile": {
-        "meta": {},
-        "components": {
-            "Position": {},
-            "PhysixBody": {
-                "shape": "circle",
-                "size": 5,
-                "density": 10,
-                "friction": 0.5,
-                "restitution": 0.1,
-                "type": "dynamic"
-            },
-            "NetworkID": {},
-            "ParticleEffect":{
-                "effectname": "shoot",
-                "offsetX": 0,
-                "offsetY": 0,
-                "initialRotation": 0
-            },
-            "Damage": {
-                "damageValue": 10,
-                "damageToPlayer": true,
-                "damageToTile": false
-            },
-            "Bullet": {}
+            "Interpolate": {}
         }
     },
     "Base": {
@@ -279,7 +247,7 @@
             "Position": {},
             "SpawnSatellite": {},
             "Inventory": {
-                 "metalShards": 0
+                 "metalShards": 100
             }
         }
     },
@@ -306,6 +274,10 @@
                 "damageValue": 100,
                 "damageToPlayer": true,
                 "damageToTile": true
+            },
+            "SpawnSatellite":{},
+            "Inventory": {
+            "metalShards": 100
             }
 
         }
@@ -418,14 +390,14 @@
                 "height": 120,
                 "srcX": 0,
                 "srcY": 0,
-                "scaleX": 0.2,
-                "scaleY": 0.2,
+                "scaleX": 0.3,
+                "scaleY": 0.3,
                 "flipX": false,
                 "flipY": false
             }, 
             "PhysixBody": {
                 "shape": "circle",
-                "size": 3,
+                "size": 5,
                 "density": 2,
                 "friction": 0.3,
                 "restitution": 0.2,
@@ -443,7 +415,7 @@
             "Position": {},
             "PhysixBody": {
                 "shape": "circle",
-                "size": 3,
+                "size": 15,
                 "density": 2,
                 "friction": 0.3,
                 "restitution": 0.2,
@@ -451,13 +423,13 @@
             },
             "PositionSynch":{
                 "clientname": "metalClient",
-                "updateDuration": 40,
+                "updateDuration": 10000000,
                 "sendSave": true
 
             },
             "Pickable":{},
             "Inventory":{
-                "metalShards":115
+                "metalShards":1
             }
         }
     }

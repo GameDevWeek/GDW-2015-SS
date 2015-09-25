@@ -20,7 +20,8 @@ public enum PacketIds
     MenuInfo((short)7),
     Gather((short)8),
     Health((short)9),
-    Damage((short)10);
+    Damage((short)10),
+    SpawnBullet((short)11);
 
 
     private final short m_Value;
@@ -46,5 +47,7 @@ public enum PacketIds
         PacketFactory.registerPacket(Fire.getValue(), FirePacket.class);
         PacketFactory.registerPacket(MenuInfo.getValue(), MenuInfoPacket.class);
         PacketFactory.registerPacket(Gather.getValue(), GatherPacket.class);
+        PacketFactory.registerPacket(Damage.getValue(), GatherPacket.class);
+        PacketFactory.registerPacket(SpawnBullet.getValue(), SpawnBulletPacket.class);
     }
 }
