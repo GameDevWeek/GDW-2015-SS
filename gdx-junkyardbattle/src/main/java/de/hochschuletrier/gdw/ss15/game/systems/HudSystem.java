@@ -34,7 +34,7 @@ public class HudSystem extends IteratingSystem {
         PlayerComponent player = entity.getComponent(PlayerComponent.class);
         if (player.isLocalPlayer){
 
-            DrawUtil.drawRect(0.0f,0.0f,100.0f,100.0f,Color.WHITE);
+
 
         }
     }
