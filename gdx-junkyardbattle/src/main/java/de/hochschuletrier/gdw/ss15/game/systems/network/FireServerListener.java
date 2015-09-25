@@ -26,8 +26,8 @@ import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
 public class FireServerListener extends EntitySystem implements NetworkReceivedNewPacketServerEvent.Listener{
 
     private ServerGame game;
-    private static final float power = 5000;
-    private static final float damping = 8;
+    private static final float power = 4000;
+    private static final float damping = 10;
     private static final float projectPlayerDistance = 55;
 
 
@@ -53,9 +53,9 @@ public class FireServerListener extends EntitySystem implements NetworkReceivedN
             FirePacket packet = (FirePacket)pack;
 
             float p = packet.channeltime / WeaponComponent.maximumFireTime + 0.0001f;
-            float scatter = WeaponComponent.maximumScattering * (1-p);
+            float scatter = WeaponComponent.maximumScattering * (1.05f-p);
             Vector2 dir = Vector2.Zero;
-//            System.out.println("received fire package: " + packet.channeltime + "seconds channeld");
+//            System.out.printf("\n fireing: %.2f -> scattering: %.2f \n", packet.channeltime, scatter);
             for (int i = 0; i < WeaponComponent.ShardsPerShot; ++i) {
                 if(invc.getMetalShards() <= 0){
 //                    System.out.println("not enough metal shards ("+invc.getMetalShards()+")");
@@ -80,7 +80,6 @@ public class FireServerListener extends EntitySystem implements NetworkReceivedN
                 if(projectile.getComponent(PhysixModifierComponent.class) == null){
                     projectile.add(new PhysixModifierComponent());
                 }
-
                 projectile.getComponent(PhysixModifierComponent.class).runnables.add(() -> {
                     PhysixBodyComponent physixBodyComponent = projectile.getComponent(PhysixBodyComponent.class);
                     physixBodyComponent.setAngle((float) (phxc.getAngle() + (Math.random() - 0.5f) * scatter));

@@ -13,11 +13,11 @@ import de.hochschuletrier.gdw.ss15.game.components.InventoryComponent;
 
 public class BulletListener extends PhysixContactAdapter{
 
-//	private PooledEngine engine;
-//	
-//	public BulletListener(PooledEngine engine){
-//		this.engine = engine;
-//	}
+	private PooledEngine engine;
+	
+	public BulletListener(PooledEngine engine){
+		this.engine = engine;
+	}
 	
 	//Wird aufgerufen, wenn eine Bullet/Spielerschuss gegen ein Objekt trifft
 	//TO DO wo wird differenziert, was getroffen wurde. Hier oder im WeaponSystem?
@@ -35,7 +35,9 @@ public class BulletListener extends PhysixContactAdapter{
         }
         else
         {
-            CollisionEvent.emit(contact);            
+            CollisionEvent.emit(contact);
+            engine.removeEntity(contact.getMyComponent().getEntity());
+
         }
 	}
 	

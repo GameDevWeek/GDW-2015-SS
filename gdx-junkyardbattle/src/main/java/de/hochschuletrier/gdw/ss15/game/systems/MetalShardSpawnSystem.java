@@ -27,7 +27,7 @@ public class MetalShardSpawnSystem extends IteratingSystem{
 		MyTimer timer = ComponentMappers.metalShardSpawn.get(entity).timer;
 		timer.Update();
 		
-		//wenn die min. Zeit zwischen Spawns erreicht/überschritten wurde
+		//wenn die min. Zeit zwischen Spawns erreicht/?berschritten wurde
 		if (timer.get_CounterSeconds() > minTimeBetweenSpawns)
 		{
 	        //nur spawnen, wenn der Spawn aktuell frei ist, d.h. wenn kein Objekt darauf steht/liegt

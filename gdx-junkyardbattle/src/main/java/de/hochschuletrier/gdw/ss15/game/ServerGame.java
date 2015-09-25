@@ -51,7 +51,7 @@ public class ServerGame{
                                                                                  // (+ LineOfSightSystem-Konstruktor anpassen!)
     //private final BulletSystem bulletSystem = new BulletSystem();
     private final MetalShardSpawnSystem metalShardSpawnSystem = new MetalShardSpawnSystem(this);
-    private final BulletSystem bulletSystem = new BulletSystem();
+    private final BulletSystem bulletSystem = new BulletSystem(engine, this);
     private final PickupSystem pickupSystem = new PickupSystem(engine);
 
     private final EntityFactoryParam factoryParam = new EntityFactoryParam();
@@ -111,8 +111,8 @@ public class ServerGame{
         contactListener.addListener(ImpactSoundComponent.class, new ImpactSoundListener());
         contactListener.addListener(TriggerComponent.class, new TriggerListener());
         contactListener.addListener(PickableComponent.class, new PickupListener(engine));
-        contactListener.addListener(BulletComponent.class, new BulletListener());
         contactListener.addListener(MetalShardSpawnComponent.class, new MetalShardSpawnListener());
+        contactListener.addListener(BulletComponent.class, new BulletListener(engine));
     }
 
     private void setupPhysixWorld() {
