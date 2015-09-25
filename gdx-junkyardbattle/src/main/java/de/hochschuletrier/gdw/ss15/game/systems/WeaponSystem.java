@@ -48,7 +48,6 @@ public class WeaponSystem extends IteratingSystem {
         WeaponComponent wpc = ComponentMappers.weapon.get(entity);
         PositionComponent psc = ComponentMappers.position.get(entity);
         InputComponent input = ComponentMappers.input.get(entity);
-        
 
         
         if(attackCooldownTimer < wpc.fireCooldown){
