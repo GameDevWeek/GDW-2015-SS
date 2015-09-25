@@ -14,7 +14,7 @@ public class PlayerHurtEvent {
 
     public static interface Listener
     {
-        void onPlayerHurt(Entity shootingPlayer, Entity hurtPlayer);
+        void onPlayerHurt(Entity projectile, Entity hurtPlayer);
     }
 
     public static void emit(Entity shootingPlayer, Entity hurtPlayer) {
