@@ -60,6 +60,9 @@ public class ServerGame{
     private Serversocket serverSocket;
     
     private final MapLoader mapLoader = new MapLoader(); /// @author tobidot
+    private UpdatePhysixServer updatePhysixServer;
+    private FireServerListener fireServerListener;
+    private GatherServerListener gatherServerListener;
 
     public ServerGame(Serversocket socket)
     {
@@ -77,9 +80,11 @@ public class ServerGame{
         networkSystem.init(serverSocket);
         entityFactory.init(engine, assetManager);
 
-        new UpdatePhysixServer(); // magic → registers itself as listener for network packets
-        new FireServerListener(this); // ↑
-        new GatherServerListener(physixSystem);
+
+
+        updatePhysixServer = new UpdatePhysixServer();
+        fireServerListener = new FireServerListener(this);
+        gatherServerListener = new GatherServerListener(physixSystem);
 
         mapLoader.run( ( String name, float x, float y ) -> { return this.createEntity(name,  x, y); }, "data/maps/3v3Alpha.tmx",physixSystem,entityFactory,assetManager );
     }
@@ -94,6 +99,11 @@ public class ServerGame{
         engine.addSystem(bulletSystem);
         engine.addSystem(metalShardSpawnSystem);
         engine.addSystem(pickupSystem);
+
+        //// ---- add listener to engine, to get an autoremove
+//        engine.addSystem(fireServerListener);
+//        engine.addSystem(updatePhysixServer);
+//        engine.addSystem(gatherServerListener);
     }
 
     private void addContactListeners() {

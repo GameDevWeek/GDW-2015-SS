@@ -18,6 +18,7 @@ import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serversocket;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 
 public class NetworkServerSystem extends EntitySystem implements SendPacketServerEvent.Listener{

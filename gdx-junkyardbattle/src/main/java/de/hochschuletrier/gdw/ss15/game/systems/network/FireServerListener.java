@@ -1,13 +1,14 @@
 package de.hochschuletrier.gdw.ss15.game.systems.network;
 
+import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.gdx.math.Vector2;
 import de.hochschuletrier.gdw.commons.gdx.ashley.EntityFactory;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixModifierComponent;
 import de.hochschuletrier.gdw.ss15.events.network.server.NetworkReceivedNewPacketServerEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
-import de.hochschuletrier.gdw.ss15.game.Game;
 import de.hochschuletrier.gdw.ss15.game.ServerGame;
 import de.hochschuletrier.gdw.ss15.game.components.BulletComponent;
 import de.hochschuletrier.gdw.ss15.game.components.InventoryComponent;
@@ -22,13 +23,20 @@ import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
  *
  * Server received Fire Package
  */
-public class FireServerListener implements NetworkReceivedNewPacketServerEvent.Listener{
+public class FireServerListener extends EntitySystem implements NetworkReceivedNewPacketServerEvent.Listener{
 
     private ServerGame game;
 
     public FireServerListener(ServerGame game){
+        super();
         this.game = game;
         NetworkReceivedNewPacketServerEvent.registerListener(PacketIds.Fire, this);
+    }
+
+    @Override
+    public void removedFromEngine(Engine engine) {
+        super.removedFromEngine(engine);
+        NetworkReceivedNewPacketServerEvent.unregisterListener(PacketIds.Fire, this);
     }
 
     @Override
@@ -41,7 +49,7 @@ public class FireServerListener implements NetworkReceivedNewPacketServerEvent.L
             FirePacket packet = (FirePacket)pack;
 
             float p = packet.channeltime / WeaponComponent.maximumFireTime + 0.0001f;
-            float scatter = WeaponComponent.maximumScattering / p;
+            float scatter = WeaponComponent.maximumScattering * (1-p);
             Vector2 dir = Vector2.Zero;
 //            System.out.println("received fire package: " + packet.channeltime + "seconds channeld");
             for (int i = 0; i < WeaponComponent.ShardsPerShot; ++i) {
@@ -51,26 +59,24 @@ public class FireServerListener implements NetworkReceivedNewPacketServerEvent.L
                 }
 //                System.out.println("shard shot");
 
-                dir.set((float) Math.cos((Math.random() - 0.5f) * scatter),
-                        (float) Math.sin((Math.random() - 0.5f) * scatter));
-                dir.add((float) Math.cos(phxc.getAngle()), (float) Math.sin(phxc.getAngle()));
+                Vector2 playerLookDirection = new Vector2((float) Math.cos(phxc.getAngle()), (float) Math.sin(phxc.getAngle()));
+
                 // create projectile
                 //Components: Bullet, Damage, Physix
                 //physix component
-                float projectPlayerDistance = 5.f;
+                float projectPlayerDistance = 55.f;
+                playerLookDirection.nor().scl(projectPlayerDistance);
                 float power = 50.f;
-                //EntityFactoryParam param = new EntityFactoryParam();
-                Vector2 startPosition = phxc.getPosition(); //ent.getComponent(PhysixBodyComponent.class).getBody().getPosition()/*.add(dir.setLength(projectPlayerDistance))*/;
-                //param.x = startPosition.x;
-                //param.y = startPosition.y;
+                EntityFactoryParam param = new EntityFactoryParam();
+                Vector2 startPosition = playerLookDirection.add(phxc.getPosition()); // dir.setLength(projectPlayerDistance).add(phxc.getPosition());
 
 //                System.out.println("schuss server");
                 invc.addMetalShards(-1);
-                //System.out.println("projectil created");
                 Entity projectile = game.createEntity("projectile", startPosition.x, startPosition.y);
 //                if(projectile.getComponent(BulletComponent.class) != null)
 //                	System.out.println("Has bullet component");
                 projectile.getComponent(PhysixModifierComponent.class).runnables.add(() -> {
+                    projectile.getComponent(PhysixBodyComponent.class).setAngle((float) (phxc.getAngle() + (Math.random() - 0.5f) * scatter));
                     //projectile.getComponent(PhysixBodyComponent.class).applyImpulse(dir.setLength(power));
                     //                 ComponentMappers.physixBody.get(projectile).setLinearDamping(10);//10 nur als vorläufiger. AUSTESTEN
                 });
