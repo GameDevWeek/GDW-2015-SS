@@ -122,7 +122,9 @@
             },
             "Interpolate": {},
             "Inventory": {
-                "metalShards": 100
+                "metalShards": 100,
+                "minMetalShards": 0,
+                "maxMetalShards": 300
             },
             "Move": {
                 "speed": 300,
@@ -196,7 +198,9 @@
             "Input": {},
             "Interpolate": {},
             "Inventory": {
-                "metalShards": 0
+                "metalShards": 0,
+                "minMetalShards": 20,
+                "maxMetalShards": 180
             },
             "Weapon": {},
             "Health": {},
@@ -248,7 +252,9 @@
             "Position": {},
             "SpawnSatellite": {},
             "Inventory": {
-                "metalShards": 100
+                "metalShards": 100,
+                "minMetalShards": 0,
+                "maxMetalShards": 100
             }
         }
     },
@@ -277,7 +283,9 @@
             },
             "SpawnSatellite": {},
             "Inventory": {
-                "metalShards": 100
+                "metalShards": 100,
+                "minMetalShards": 0,
+                "maxMetalShards": 100
             },
             "SoundEmitter": {},
             "Mineable": {}
@@ -426,7 +434,9 @@
             },
             "Pickable": {},
             "Inventory": {
-                "metalShards": 1
+                "metalShards": 100,
+                "minMetalShards": 0,
+                "maxMetalShards": 100
             }
         }
     }
