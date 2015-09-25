@@ -48,6 +48,14 @@ public class PositionSynchSystem extends EntitySystem implements EntityListener 
             //System.out.println(physComp.getPosition());
 
             PositionSynchComponent comp = ComponentMappers.positionSynch.get(ent);
+            if(!comp.inited)
+            {
+                InitEnitity(ent);
+                comp.inited=true;
+            }
+
+
+
             if(ComponentMappers.position.has(ent))
             {
                 PositionComponent pos = ComponentMappers.position.get(ent);
@@ -86,6 +94,11 @@ public class PositionSynchSystem extends EntitySystem implements EntityListener 
     @Override
     public void entityAdded(Entity entity) {
 
+
+    }
+
+    public void InitEnitity(Entity entity)
+    {
         //dwwdaSystem.out.println("Size of list " + entities.size());
         Entity exept = null;
         if(ComponentMappers.client.has(entity))
@@ -97,10 +110,11 @@ public class PositionSynchSystem extends EntitySystem implements EntityListener 
             {
                 Entity sendEnd = entities.get(i);
                 PositionSynchComponent sendComp = ComponentMappers.positionSynch.get(sendEnd);
+                PhysixBodyComponent phcomp = ComponentMappers.physixBody.get(entity);
                 initPacket.entityID = sendComp.networkID;
-                initPacket.xPos = sendComp.lastX;
-                initPacket.yPos = sendComp.lastY;
-                initPacket.rotation = sendComp.lastRot;
+                initPacket.xPos = phcomp.getX();
+                initPacket.yPos = phcomp.getY();
+                initPacket.rotation = phcomp.getAngle();
                 initPacket.veloX = sendComp.lastVelocityX;
                 initPacket.veloY = sendComp.lastVelocityY;
                 if(sendEnd == entity) {//eigener spieler
@@ -128,13 +142,14 @@ public class PositionSynchSystem extends EntitySystem implements EntityListener 
         }
         //allen speielern neue entit mitteilen
 
-        //PhysixBodyComponent phcomp = ComponentMappers.physixBody.get(entity);
+        PhysixBodyComponent phcomp = ComponentMappers.physixBody.get(entity);
 
         //System.out.println(comp.x+" "+comp.y);
-       InitEntityPacket packet = new InitEntityPacket(ComponentMappers.positionSynch.get(entity).networkID,
-                ComponentMappers.positionSynch.get(entity).clientName, comp.x, comp.y, comp.rotation,0,0);
-     //   InitEntityPacket packet = new InitEntityPacket(ComponentMappers.positionSynch.get(entity).networkID,
-     //           ComponentMappers.positionSynch.get(entity).clientName, comp.x, comp.y, comp.rotation,phcomp.getLinearVelocity().x,phcomp.getLinearVelocity().y);
+       //InitEntityPacket packet = new InitEntityPacket(ComponentMappers.positionSynch.get(entity).networkID,
+       //         ComponentMappers.positionSynch.get(entity).clientName, comp.x, comp.y, comp.rotation,0,0);
+        //System.out.println(phcomp.getX() +" Postion server "+ phcomp.getY());
+        InitEntityPacket packet = new InitEntityPacket(ComponentMappers.positionSynch.get(entity).networkID,
+                ComponentMappers.positionSynch.get(entity).clientName, phcomp.getX(), phcomp.getY(), comp.rotation,phcomp.getLinearVelocity().x,phcomp.getLinearVelocity().y);
         SendPacketServerEvent.emit(packet, true, exept);
     }
 

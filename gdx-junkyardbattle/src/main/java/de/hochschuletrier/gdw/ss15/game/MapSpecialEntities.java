@@ -2,33 +2,23 @@ package de.hochschuletrier.gdw.ss15.game;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 
 import de.hochschuletrier.gdw.commons.gdx.ashley.EntityFactory;
 import de.hochschuletrier.gdw.commons.gdx.ashley.EntityInfo;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
-import de.hochschuletrier.gdw.commons.gdx.physix.PhysixBodyDef;
-import de.hochschuletrier.gdw.commons.gdx.physix.PhysixFixtureDef;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.commons.tiled.Layer;
 import de.hochschuletrier.gdw.commons.tiled.LayerObject;
 import de.hochschuletrier.gdw.commons.tiled.TileInfo;
 import de.hochschuletrier.gdw.commons.tiled.TiledMap;
 import de.hochschuletrier.gdw.commons.utils.SafeProperties;
-import de.hochschuletrier.gdw.ss15.game.MapLoader.TileCreationListener;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
-import de.hochschuletrier.gdw.ss15.game.components.SpawnComponent;
 import de.hochschuletrier.gdw.ss15.game.components.light.ConeLightComponent;
 import de.hochschuletrier.gdw.ss15.game.components.texture.TextureComponent;
 import de.hochschuletrier.gdw.ss15.game.utils.RenderUtil;
 
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 import java.util.function.Consumer;
-
-import org.w3c.dom.css.Rect;
 
 
 /**
@@ -145,12 +135,11 @@ public class MapSpecialEntities
     {
         public void accept(CreatorInfo info)
         {
-            
             /// eine Componente herraussuchen 
             EntityInfo entityInfo = (EntityInfo)info.factory.getEntityInfos().get( info.asObject.getName() );
-            
-            /// eine Componente herraussuchen 
-            // ConeLightComponent light = info.entity.getComponent( ConeLightComponent.class );
+      
+            ///eine Componente herraussuchen 
+            //ConeLightComponent light = info.entity.getComponent( ConeLightComponent.class );
             //SafeProperties sp = entityInfo.components.get("ConeLight");
             
             /// fuer wen spawn der Spawnpoint?
@@ -363,6 +352,5 @@ public class MapSpecialEntities
                 }
             }
         }
-        
     }
 }

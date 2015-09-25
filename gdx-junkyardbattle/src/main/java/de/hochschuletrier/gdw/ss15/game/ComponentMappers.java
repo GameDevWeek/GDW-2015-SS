@@ -53,4 +53,5 @@ public class ComponentMappers {
     public static final ComponentMapper<SpawnSatelliteComponent> spawnSatellite = ComponentMapper.getFor(SpawnSatelliteComponent.class);
     public static final ComponentMapper<MetalShardSpawnComponent> metalShardSpawn = ComponentMapper.getFor(MetalShardSpawnComponent.class);
     public static final ComponentMapper<BasePointComponent> basePoint = ComponentMapper.getFor(BasePointComponent.class);
+    public static final ComponentMapper<SpawnComponent> spawn = ComponentMapper.getFor(SpawnComponent.class);
 }

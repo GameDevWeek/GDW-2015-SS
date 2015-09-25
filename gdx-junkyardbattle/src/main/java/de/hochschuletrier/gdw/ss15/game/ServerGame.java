@@ -1,7 +1,5 @@
 package de.hochschuletrier.gdw.ss15.game;
 
-import java.util.function.Consumer;
-
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 
@@ -20,12 +18,16 @@ import de.hochschuletrier.gdw.ss15.game.contactlisteners.ImpactSoundListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.MetalShardSpawnListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.PickupListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.TriggerListener;
-import de.hochschuletrier.gdw.ss15.game.systems.*;
+import de.hochschuletrier.gdw.ss15.game.systems.BulletSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.LineOfSightSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.MetalShardSpawnSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.PlayerLifeSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.SpawnSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.NetworkServerSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.PositionSynchSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.TestSatelliteSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.UpdatePhysixServer;
-import de.hochschuletrier.gdw.ss15.game.systems.network.UpdatePhysixSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.*;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serversocket;
 
@@ -53,8 +55,8 @@ public class ServerGame{
     private final MetalShardSpawnSystem metalShardSpawnSystem = new MetalShardSpawnSystem(this);
     private final BulletSystem bulletSystem = new BulletSystem(engine, this);
     private final PickupSystem pickupSystem = new PickupSystem(engine);
-    private final MiningSystem miningSystem = new MiningSystem();
-
+    
+    
     private final EntityFactoryParam factoryParam = new EntityFactoryParam();
     private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json", ServerGame.class);
 
@@ -64,6 +66,8 @@ public class ServerGame{
     private UpdatePhysixServer updatePhysixServer;
     private FireServerListener fireServerListener;
     private GatherServerListener gatherServerListener;
+    
+    private final SpawnSystem spawnSystem = new SpawnSystem();
 
     public ServerGame(Serversocket socket)
     {
@@ -85,6 +89,7 @@ public class ServerGame{
         networkSystem.init(serverSocket);
         entityFactory.init(engine, assetManager);
 
+        mapLoader.listen(spawnSystem);
         mapLoader.run( ( String name, float x, float y ) -> { return this.createEntity(name,  x, y); }, "data/maps/3v3Alpha.tmx",physixSystem,entityFactory,assetManager );
     }
 
@@ -99,6 +104,7 @@ public class ServerGame{
         engine.addSystem(metalShardSpawnSystem);
         engine.addSystem(pickupSystem);
         engine.addSystem(playerLifeSystem);
+        engine.addSystem(spawnSystem);
 
         //// ---- add listener to engine, to get an autoremove
         engine.addSystem(fireServerListener);
