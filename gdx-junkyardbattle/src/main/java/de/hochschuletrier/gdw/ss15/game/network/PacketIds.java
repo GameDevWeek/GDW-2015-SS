@@ -20,7 +20,8 @@ public enum PacketIds
     MenuInfo((short)7),
     Gather((short)8),
     Health((short)9),
-    Damage((short)10);
+    Damage((short)10),
+    SpawnBullet((short)11);
 
 
     private final short m_Value;
