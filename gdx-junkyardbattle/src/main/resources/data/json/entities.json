@@ -42,7 +42,7 @@
                 "rotation": 0
             },
             "PhysixBody": {
-                "type": "circle",
+                "shape": "circle",
                 "size": 30,
                 "density": 5,
                 "friction": 0.2,
@@ -65,7 +65,7 @@
                 "animation_IDLE": "box"
             },
             "PhysixBody": {
-                "type": "box",
+                "shape": "box",
                 "size": 60,
                 "density": 10,
                 "friction": 0.5,
@@ -101,12 +101,13 @@
             "Player": {},
             "Position": {},
             "PhysixBody": {
-                "type": "circle",
+                "shape": "circle",
                 "size": 40,
                 "density": 10,
                 "friction": 0.5,
                 "restitution": 0.1,
-                "fixedRotation": true
+                "fixedRotation": true,
+                "type": "dynamic"
             },
             "Client": {},
             "PositionSynch": {
@@ -130,12 +131,13 @@
             "Player": {},
             "Health": {},
             "PhysixBody": {
-                "type": "circle",
+                "shape": "circle",
                 "size": 40,
                 "density": 10,
                 "friction": 0.5,
                 "restitution": 0.1,
-                "fixedRotation": true
+                "fixedRotation": true,
+                "type": "dynamic"
             },
             "NetworkID": {},
             "Animator": {
@@ -155,12 +157,13 @@
             },
             "Position": {},
             "PhysixBody": {
-                "type": "circle",
+                "shape": "circle",
                 "size": 40,
                 "density": 10,
                 "friction": 0.5,
                 "restitution": 0.1,
-                "fixedRotation": true
+                "fixedRotation": true,
+                "type": "dynamic"
             },
             "NetworkID": {},
             "Animator": {
@@ -186,11 +189,12 @@
         "components": {
             "Position": {},
             "PhysixBody": {
-                "type": "circle",
+                "shape": "circle",
                 "size": 5,
                 "density": 10,
                 "friction": 0.5,
-                "restitution": 0.1
+                "restitution": 0.1,
+                "type": "dynamic"
             },
             "Damage": {
                 "damageValue": 10,
@@ -213,11 +217,12 @@
         "components": {
             "Position": {},
             "PhysixBody": {
-                "type": "circle",
+                "shape": "circle",
                 "size": 5,
                 "density": 10,
                 "friction": 0.5,
-                "restitution": 0.1
+                "restitution": 0.1,
+                "type": "dynamic"
             },
             "NetworkID": {},
             "ParticleEffect":{
@@ -236,12 +241,13 @@
         "components": {
             "Position": {},
             "PhysixBody": {
-                "type": "box",
+                "shape": "box",
                 "size": 520,
                 "density": 100,
                 "friction": 0.5,
                 "restitution": 0,
-                "sensor": true
+                "sensor": true,
+                "type": "static"
             }
         }
     },
@@ -266,12 +272,13 @@
             },
 
             "PhysixBody": {
-                "type": "circle",
+                "shape": "circle",
                 "size": 5,
                 "density": 10,
                 "friction": 0.5,
                 "restitution": 0.1,
-                "sensor": true
+                "sensor": true,
+                "type": "static"
             },
             "Damage": {
                 "damageValue": 100,
@@ -299,12 +306,13 @@
             },
             "NetworkID": {},
             "PhysixBody": {
-                "type": "circle",
+                "shape": "circle",
                 "size": 90,
                 "density": 10,
                 "friction": 0.5,
                 "restitution": 0.1,
-                "sensor": true
+                "sensor": true,
+                "type": "static"
             }
         }
     },
@@ -319,11 +327,12 @@
         "components": {
             "Position": {},
             "PhysixBody": {
-                "type": "circle",
+                "shape": "circle",
                 "size": 5,
                 "density": 10,
                 "friction": 0.5,
-                "restitution": 0.1
+                "restitution": 0.1,
+                "type": "static"
             },
             "Texture":{
                 "texture": "junk_spawn",
@@ -381,11 +390,12 @@
                 "flipY": false
             }, 
             "PhysixBody": {
-                "type": "circle",
+                "shape": "circle",
                 "size": 3,
                 "density": 2,
                 "friction": 0.3,
-                "restitution": 0.2
+                "restitution": 0.2,
+                "type": "dynamic"
             },
             "NetworkID": {}
        }
@@ -397,11 +407,12 @@
         "components": {
             "Position": {},
             "PhysixBody": {
-                "type": "circle",
+                "shape": "circle",
                 "size": 3,
                 "density": 2,
                 "friction": 0.3,
-                "restitution": 0.2
+                "restitution": 0.2,
+                "type": "dynamic"
             },
             "PositionSynch":{
                 "clientname": "metalClient",
