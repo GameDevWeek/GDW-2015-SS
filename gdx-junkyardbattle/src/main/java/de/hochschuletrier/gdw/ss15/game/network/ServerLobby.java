@@ -7,6 +7,7 @@ import de.hochschuletrier.gdw.ss15.game.network.Packets.Menu.MenuePlayerChangedP
 import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serverclientsocket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
+import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.MyTimer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,6 +24,7 @@ public class ServerLobby
     String Mapname;
     private int MaximumPlayers = 8;
     private float SecondsToStart = 60;
+    MyTimer timer = new MyTimer(true);
 
     public LinkedList<LobyClient> connectedClients = new LinkedList<>();
 
@@ -65,6 +67,10 @@ public class ServerLobby
                 }
             }
         }
+
+        timer.Update();
+        
+
     }
 
     public void ReceivePacket(LobyClient client)
