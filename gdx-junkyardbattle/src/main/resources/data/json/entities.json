@@ -435,7 +435,7 @@
             "Inventory": {
                 "metalShards": 1,
                 "minMetalShards": 0,
-                "maxMetalShards": 100
+                "maxMetalShards": 1
             }
         }
     }
