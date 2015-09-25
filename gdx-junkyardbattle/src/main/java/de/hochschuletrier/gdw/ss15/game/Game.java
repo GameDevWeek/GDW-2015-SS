@@ -158,6 +158,7 @@ public class Game extends InputAdapter {
         Main.getInstance().screenCamera.bind();
         timerSystem.update(delta);
         engine.update(delta);
+        particleSpawner.update(delta);
     }
 
     public Entity createEntity(String name, float x, float y) {

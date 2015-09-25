@@ -3,6 +3,7 @@ package de.hochschuletrier.gdw.ss15.game.systems.network;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import de.hochschuletrier.gdw.commons.gdx.ashley.EntityFactory;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
@@ -29,7 +30,7 @@ import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
 public class FireServerListener extends EntitySystem implements NetworkReceivedNewPacketServerEvent.Listener{
 
     private ServerGame game;
-    private static final float power = 4000;
+    private static final float power = 1000;
     private static final float damping = 10;
     private static final float projectPlayerDistance = 55;
 
@@ -83,6 +84,9 @@ public class FireServerListener extends EntitySystem implements NetworkReceivedN
                 SpawnBulletPacket spawnBulletPacket = new SpawnBulletPacket();
                 spawnBulletPacket.position = new Vector2(startPosition.x, startPosition.y);
                 spawnBulletPacket.rotation = rotation;
+                spawnBulletPacket.playerPosition.set(phxc.getPosition());
+                spawnBulletPacket.playerRotation = phxc.getAngle() * MathUtils.radiansToDegrees;
+                
                 SendPacketServerEvent.emit(spawnBulletPacket, true);
             }
             }catch (ClassCastException e){}
