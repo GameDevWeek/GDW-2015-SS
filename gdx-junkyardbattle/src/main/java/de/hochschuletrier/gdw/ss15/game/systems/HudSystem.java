@@ -6,6 +6,7 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
@@ -16,6 +17,7 @@ import de.hochschuletrier.gdw.ss15.game.GameConstants;
 import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.components.input.InputComponent;
+import de.hochschuletrier.gdw.ss15.game.components.texture.TextureComponent;
 
 import javax.swing.text.Position;
 
@@ -28,10 +30,12 @@ public class HudSystem extends IteratingSystem {
     Vector3 mouseScreenPos = new Vector3(0,0,0);
     Camera camera;
     AssetManagerX assetManager;
+    Texture crosshairTex;
 
     public HudSystem(Camera camera){
         this(Family.one(PlayerComponent.class).get(), GameConstants.PRIORITY_HUD);
         this.camera = camera;
+        this.crosshairTex = assetManager.getTexture("crosshair");
     }
 
     public HudSystem(Family family, int priority) {
@@ -56,8 +60,10 @@ public class HudSystem extends IteratingSystem {
         mouseScreenPos.y = entity.getComponent(InputComponent.class).posY;
         mouseScreenPos = camera.unproject(mouseScreenPos);
 
-        DrawUtil.batch.draw(assetManager.getTexture("crosshair"),mouseScreenPos.x,
-                mouseScreenPos.y);
+
+
+        DrawUtil.batch.draw(crosshairTex,mouseScreenPos.x - crosshairTex.getWidth()/2,
+                mouseScreenPos.y - crosshairTex.getHeight()/2);
 
     }
 
