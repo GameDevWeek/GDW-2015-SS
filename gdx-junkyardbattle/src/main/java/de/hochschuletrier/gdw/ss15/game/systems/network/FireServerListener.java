@@ -55,7 +55,7 @@ public class FireServerListener extends EntitySystem implements NetworkReceivedN
             float p = packet.channeltime / WeaponComponent.maximumFireTime + 0.0001f;
             float scatter = WeaponComponent.maximumScattering * (1-p);
             Vector2 dir = Vector2.Zero;
-//            System.out.println("received fire package: " + packet.channeltime + "seconds channeld");
+//            System.out.printf("\n fireing: %.2f -> scattering: %.2f \n", packet.channeltime, scatter);
             for (int i = 0; i < WeaponComponent.ShardsPerShot; ++i) {
                 if(invc.getMetalShards() <= 0){
 //                    System.out.println("not enough metal shards ("+invc.getMetalShards()+")");
@@ -80,7 +80,6 @@ public class FireServerListener extends EntitySystem implements NetworkReceivedN
                 if(projectile.getComponent(PhysixModifierComponent.class) == null){
                     projectile.add(new PhysixModifierComponent());
                 }
-
                 projectile.getComponent(PhysixModifierComponent.class).runnables.add(() -> {
                     PhysixBodyComponent physixBodyComponent = projectile.getComponent(PhysixBodyComponent.class);
                     physixBodyComponent.setAngle((float) (phxc.getAngle() + (Math.random() - 0.5f) * scatter));

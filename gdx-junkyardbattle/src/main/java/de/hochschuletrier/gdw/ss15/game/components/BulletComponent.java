@@ -10,6 +10,7 @@ public class BulletComponent extends Component implements Poolable
 {
     public int playerID;
 
+
     @Override
     public void reset()
     {

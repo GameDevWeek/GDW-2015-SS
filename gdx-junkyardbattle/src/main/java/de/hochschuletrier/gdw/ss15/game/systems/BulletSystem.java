@@ -28,7 +28,7 @@ public class BulletSystem extends IteratingSystem{
     public void processEntity(Entity entity, float deltaTime) {
         PhysixBodyComponent physix = ComponentMappers.physixBody.get(entity);
         PositionComponent position = ComponentMappers.position.get(entity);
-        if(physix.getLinearVelocity().len2() <= 0.001f)//Bullet quasi stehengeblieben
+        if(physix.getLinearVelocity().len2() <= 1f)//Bullet quasi stehengeblieben
         {
             serverGame.createEntity("metalServer", physix.getPosition().x, physix.getPosition().y);
             engine.removeEntity(entity);
