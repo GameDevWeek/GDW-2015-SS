@@ -25,10 +25,13 @@ public class BulletListener extends PhysixContactAdapter{
 	public void beginContact(PhysixContact contact) {
 		//Kontakt weiterreichen an WeaponSystem
 		//TO DO Entity in WeaponSystem oder hier löschen?
-        BulletComponent otherBulletComponent = ComponentMappers.bullet.get(contact.getOtherComponent().getEntity());
-        if(otherBulletComponent != null)
-        {
-            contact.setEnabled(false);
+        PhysixBodyComponent otherComponent = contact.getOtherComponent();
+        if (otherComponent != null) {
+            BulletComponent otherBulletComponent = ComponentMappers.bullet.get(contact.getOtherComponent().getEntity());
+            if(otherBulletComponent != null)
+            {
+                contact.setEnabled(false);
+            }
         }
         else
         {
@@ -39,10 +42,13 @@ public class BulletListener extends PhysixContactAdapter{
 	@Override
 	public void preSolve(PhysixContact contact, Manifold oldManifold)
 	{
-	    BulletComponent otherBulletComponent = ComponentMappers.bullet.get(contact.getOtherComponent().getEntity());
-	    if(otherBulletComponent != null)
-	    {
-	        contact.setEnabled(false);
-	    }
+	    PhysixBodyComponent otherComponent = contact.getOtherComponent();
+        if (otherComponent != null) {
+            BulletComponent otherBulletComponent = ComponentMappers.bullet.get(contact.getOtherComponent().getEntity());
+            if(otherBulletComponent != null)
+            {
+                contact.setEnabled(false);
+            }
+        }
     }
 }
