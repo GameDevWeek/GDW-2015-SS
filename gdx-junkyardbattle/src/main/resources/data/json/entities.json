@@ -320,7 +320,9 @@
             "SpawnSatellite":{},
             "Inventory": {
             "metalShards": 100
-            }
+            },
+            "SoundEmitter": {}
+            
 
         }
     },
@@ -349,7 +351,7 @@
                 "restitution": 0.1,
                 "sensor": true,
                 "type": "kinematic"
-            }
+            }     
         }
     },
     "Spawn": {
