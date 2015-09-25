@@ -8,6 +8,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -37,6 +38,7 @@ public class HudSystem extends IteratingSystem {
     Camera camera;
     AssetManagerX assetManager;
     Texture crosshairTex;
+    BitmapFont font;
 
     Entity localPlayer;
 
@@ -44,6 +46,7 @@ public class HudSystem extends IteratingSystem {
         this(Family.one(PlayerComponent.class).get(), GameConstants.PRIORITY_HUD);
         this.camera = camera;
         this.crosshairTex = assetManager.getTexture("crosshair");
+        font = assetManager.getFont("quartz_40");
     }
 
     public HudSystem(Family family, int priority) {
@@ -78,9 +81,17 @@ public class HudSystem extends IteratingSystem {
 
     }
     private void lebensBalken() {
-        DrawUtil.fillRect(Gdx.graphics.getWidth() / 2 - HudDebug.health, Gdx.graphics.getHeight() - 20, 2 * HudDebug.health, 40, Color.RED);
-        DrawUtil.drawRect(Gdx.graphics.getWidth() / 2 - 100, Gdx.graphics.getHeight() - 20, 200, 40, Color.WHITE);
+        Color healthColor;
+        if (HudDebug.health >= 50 && HudDebug.health <= 100)
+            healthColor = Color.GREEN;
+        else if (HudDebug.health <= 50 && HudDebug.health >= 25)
+            healthColor = Color.YELLOW;
+        else
+            healthColor = Color.RED;
 
+        DrawUtil.fillRect(Gdx.graphics.getWidth() / 2 - HudDebug.health, Gdx.graphics.getHeight() - 20, 2 * HudDebug.health, 40, healthColor);
+        DrawUtil.drawRect(Gdx.graphics.getWidth() / 2 - 100, Gdx.graphics.getHeight() - 20, 200, 40, Color.WHITE);
+        font.draw(DrawUtil.batch, "" + HudDebug.health, Gdx.graphics.getWidth() / 2 - 120, Gdx.graphics.getHeight() - 20);
     }
 
 }

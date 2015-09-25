@@ -110,10 +110,10 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
                 escape = true;
                 break;
             case Input.Keys.PLUS:
-                HudDebug.health++;
+                HudDebug.health += 5;
                 break;
             case Input.Keys.MINUS:
-                HudDebug.health--;
+                HudDebug.health -= 5;
                 break;
         }
         //debug();
