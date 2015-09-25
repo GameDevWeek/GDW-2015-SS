@@ -58,6 +58,8 @@ public class UpdatePhysixSystem extends IteratingSystem
             if (phxc != null) {
             	if(p.getTimestamp()>lastTimestamp)
                 {
+                   // System.out.println("Entity update received");
+
                 	lastTimestamp = p.getTimestamp();
                 	float calcTimestamp = (float) (Main.getInstance().getClientConnection().getSocket().getTimeDifferenceMS(p.getTimestamp())/1000);
                 	//phxc.setPosition(p.xPos + calcTimestamp*p.velocityX , p.yPos + calcTimestamp*p.velocityY);

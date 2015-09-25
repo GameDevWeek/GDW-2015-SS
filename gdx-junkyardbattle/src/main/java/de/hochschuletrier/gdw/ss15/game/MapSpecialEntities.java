@@ -192,11 +192,32 @@ public class MapSpecialEntities
             {
                 x = minX + (float)(Math.random()*( maxX - minX ) );
                 y = minY + (float)(Math.random()*( maxY - minY ) );
-                Entity entity = info.creator.createEntity("Junk", x, y);
-                specialEntities.get("Junk").accept( new CreatorInfo( info.creator,info.factory, entity, info.tiledMap, null ,info.layer,info.assets ) );
+                //info.creator.createEntity("metal", x, y);
             }
+
+           // info.creator.createEntity("metal", 10, 10);
+            /// eine Componente herraussuchen 
+            // ConeLightComponent light = info.entity.getComponent( ConeLightComponent.class );
+            
+            
+            /// fuer wen spawn der Spawnpoint?
+            /*
+            if ( team != null ) {
+                /// erhaltenen Wert lesen 
+                int nr = info.asObject.getIntProperty("TeamID", 0);
+            
+                /// Komponente mit diesem Wert besetzten
+                /// team.flag = flag;
+            /// }
+             *
+             */
+            Entity entity = info.creator.createEntity("Junk", x, y);
+            specialEntities.get("Junk").accept( new CreatorInfo( info.creator,info.factory, entity, info.tiledMap, null ,info.layer,info.assets ) );
         }
+
     }
+
+
     
     public static class Junk implements Consumer<CreatorInfo>
     {
@@ -252,6 +273,8 @@ public class MapSpecialEntities
     }
     
     
+    
+    
     /**
      * Klasse zum laden eines 'Dummy' Objects
      * Diese Klasse kopieren um ein Object zu veraendern
@@ -279,6 +302,7 @@ public class MapSpecialEntities
             /// }
         }
     }
+   
     
     
     /**

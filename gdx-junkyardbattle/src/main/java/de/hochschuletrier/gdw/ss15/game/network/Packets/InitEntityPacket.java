@@ -15,18 +15,21 @@ public class InitEntityPacket extends Packet {
     public long entityID;
     public String name;
     public float xPos, yPos, rotation;
+    public float veloX,veloY;
 
     public InitEntityPacket(){
         super(PacketIds.InitEntity.getValue());
     }
 
-    public InitEntityPacket(long entityID, String name, float xPos, float yPos, float rotation){
+    public InitEntityPacket(long entityID, String name, float xPos, float yPos, float rotation,float veloX,float veloY){
         super(PacketIds.InitEntity.getValue());
         this.entityID = entityID;
         this.name = name;
         this.xPos = xPos;
         this.yPos = yPos;
         this.rotation = rotation;
+        this.veloX = veloX;
+        this.veloY = veloY;
     }
 
     @Override

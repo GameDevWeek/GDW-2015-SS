@@ -20,6 +20,8 @@ public class PositionSynchComponent extends Component implements Pool.Poolable {
     public float lastVelocityY;
     public float lastRot;
     public MyTimer lastSendTimer;
+    public float updateDuration;
+    public boolean sendSave;
 
     @Override
     public void reset() {
@@ -31,6 +33,8 @@ public class PositionSynchComponent extends Component implements Pool.Poolable {
         lastVelocityY = 0;
         lastRot=0;
         lastSendTimer=null;
+        updateDuration=42;
+        sendSave=false;
     }
 
     /*
