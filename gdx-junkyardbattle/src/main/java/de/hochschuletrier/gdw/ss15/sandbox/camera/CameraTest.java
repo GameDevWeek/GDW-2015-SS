@@ -203,6 +203,7 @@ public class CameraTest extends SandboxGame {
             
             if(Gdx.input.isButtonPressed(Buttons.LEFT)){
                // WeaponCharging.emit();
+
             } else if(!Gdx.input.isButtonPressed(Buttons.LEFT)){
                 WeaponUncharged.emit();
             }
