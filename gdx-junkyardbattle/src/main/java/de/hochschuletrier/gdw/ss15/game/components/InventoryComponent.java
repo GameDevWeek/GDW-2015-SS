@@ -1,5 +1,7 @@
 package de.hochschuletrier.gdw.ss15.game.components;
 
+import java.awt.SecondaryLoop;
+
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.utils.Pool;
 
@@ -18,6 +20,9 @@ public class InventoryComponent extends Component implements Pool.Poolable {
     private int metalShards = 0;
     public int minMetalShards = 0;
     public int maxMetalShards = 100;
+	public float secondsToRegeneration = 0.0f;
+    public float secondsToRegenerationMax = 0.0f;
+    public int shardRegeneration = 0;
 
 
     @Override
