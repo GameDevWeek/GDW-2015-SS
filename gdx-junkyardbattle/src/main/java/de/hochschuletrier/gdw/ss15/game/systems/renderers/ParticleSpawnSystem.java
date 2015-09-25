@@ -26,6 +26,7 @@ public class ParticleSpawnSystem implements NetworkReceivedNewPacketClientEvent.
         this.game = game;
         
         NetworkReceivedNewPacketClientEvent.registerListener(PacketIds.EntityUpdate, this);
+        NetworkReceivedNewPacketClientEvent.registerListener(PacketIds.Fire, this);
     }
             
     @Override
@@ -38,6 +39,12 @@ public class ParticleSpawnSystem implements NetworkReceivedNewPacketClientEvent.
                 //Entity particleEffect = game.createEntity("footstepeffect", updatePacker.xPos, updatePacker.yPos);
                 //ComponentMappers.position.get(particleEffect).rotation = -updatePacker.rotation;
             } 
+            return ;
+        }
+        
+        if(pack.getPacketId() == PacketIds.Fire.getValue() && ComponentMappers.player.has(ent))
+        {
+            
         }
     }
     
