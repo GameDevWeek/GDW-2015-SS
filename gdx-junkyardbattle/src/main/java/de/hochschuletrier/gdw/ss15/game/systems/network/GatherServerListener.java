@@ -46,14 +46,14 @@ public class GatherServerListener extends EntitySystem implements NetworkReceive
         try{
             GatherPacket packet = (GatherPacket)pack;
             float channelTime = packet.channelTime;
-            System.out.println("Sammeln0");
+            //System.out.println("Sammeln0");
             Entity entity = checkHarvestRayCollision(ent);
 
             if (entity != null)
                 //ent = spieler
                 //entity = objekt
             {
-                System.out.println("Sammeln1");
+                //System.out.println("Sammeln1");
                 if (ComponentMappers.player.has(ent) && ComponentMappers.mineable.has(entity)) {
                     MiningEvent.emit(ent, entity, channelTime);
                 } else if (ComponentMappers.player.has(ent)) {
@@ -71,9 +71,9 @@ public class GatherServerListener extends EntitySystem implements NetworkReceive
     }
 
     private Entity checkHarvestRayCollision(Entity entity){
-        System.out.println("checkHarvestRayCollision");
+        //System.out.println("checkHarvestRayCollision");
         Entity hitEntity = null;
-        float range = 5f;
+        float range = 10000f;
 
         //player position
         Vector2 pos =  ComponentMappers.physixBody.get(entity).getPosition();
@@ -85,12 +85,17 @@ public class GatherServerListener extends EntitySystem implements NetworkReceive
         rayPos.scl(range);
         rayPos.add(pos);
 
+        /*System.out.println("playerPos: " + pos);
+        System.out.println("rayPos: " + rayPos);*/
+
+
         RayCastCallback lineOfSightCallback = new RayCastCallback() {
 
             @Override
             public float reportRayFixture(Fixture fixture, Vector2 point,
                                           Vector2 normal, float fraction) {
                 closestFixture = fixture;
+                //System.out.println("PosFixture: " + fixture.getBody().getPosition());
                 return fraction;
             }
         };
@@ -101,6 +106,7 @@ public class GatherServerListener extends EntitySystem implements NetworkReceive
 
         if(closestFixture != null && closestFixture.getBody().getUserData() instanceof PhysixBodyComponent)
         {
+
             hitEntity = ((PhysixBodyComponent)closestFixture.getBody().getUserData()).getEntity();
         }
         return hitEntity;
