@@ -61,7 +61,7 @@ public class MenuPageJoinGame extends MenuPage implements DoNotTouchPacketEvent.
 	private float heightChange = 30;
 	private static final Logger logger = LoggerFactory.getLogger(ClientConnection.class);
 
-	public MenuPageJoinGame(Skin skin, MenuManager menuManager, String background) {
+	public MenuPageJoinGame(Skin skin, MenuManager menuManager, String background, String name) {
 		super(skin, background);
 
 		DoNotTouchPacketEvent.registerListener(this);
@@ -86,7 +86,7 @@ public class MenuPageJoinGame extends MenuPage implements DoNotTouchPacketEvent.
 		addUIActor(hgRed4, 700, (int) (150 - height), null);
 
 		// netzwerk
-		String name = "test spieler";
+		
 		ChangeNamePacket pack = new ChangeNamePacket(name);
 		SendPacketClientEvent.emit(pack, true);
 
@@ -121,11 +121,7 @@ public class MenuPageJoinGame extends MenuPage implements DoNotTouchPacketEvent.
 
 			//System.out.println("received simpile packet");
 			SimplePacket sPack = (SimplePacket) pack;
-			if(sPack.m_SimplePacketId==SimplePacketId.StartGame.getValue())
-			{
-				startGame();
-			}
-			else if(sPack.m_SimplePacketId == SimplePacketId.TimeMenuePacket.getValue())
+			if(sPack.m_SimplePacketId == SimplePacketId.TimeMenuePacket.getValue())
 			{//timer ist gespawned
 				//System.out.println("Received time: " + sPack.m_Moredata);
 				timetoStart=(int)sPack.m_Moredata;
@@ -154,26 +150,26 @@ public class MenuPageJoinGame extends MenuPage implements DoNotTouchPacketEvent.
 			if (hgBlue1.idPlayer == -1) {
 				hgBlue1.idPlayer = idPlayer;
 
-				((Label) (hgBlue1.getChildren().get(0))).setText("Name: " + name);
+				((Label) (hgBlue1.getChildren().get(0))).setText( name);
 				return;
 			}
 
 			if (hgBlue2.idPlayer == -1) {
 				hgBlue2.idPlayer = idPlayer;
 
-				((Label) (hgBlue2.getChildren().get(0))).setText("Name: " + name);
+				((Label) (hgBlue2.getChildren().get(0))).setText( name);
 				return;
 			}
 			if (hgBlue3.idPlayer == -1) {
 				hgBlue3.idPlayer = idPlayer;
 
-				((Label) (hgBlue3.getChildren().get(0))).setText("Name: " + name);
+				((Label) (hgBlue3.getChildren().get(0))).setText( name);
 				return;
 			}
 			if (hgBlue4.idPlayer == -1) {
 				hgBlue4.idPlayer = idPlayer;
 
-				((Label) (hgBlue4.getChildren().get(0))).setText("Name: " + name);
+				((Label) (hgBlue4.getChildren().get(0))).setText( name);
 				return;
 			}
 
@@ -181,23 +177,23 @@ public class MenuPageJoinGame extends MenuPage implements DoNotTouchPacketEvent.
 			if (hgRed1.idPlayer == -1) {
 				hgRed1.idPlayer = idPlayer;
 
-				((Label) (hgRed1.getChildren().get(0))).setText("Name: " + name);
+				((Label) (hgRed1.getChildren().get(0))).setText(name);
 				return;
 			}
 			if (hgRed2.idPlayer == -1) {
 				hgRed2.idPlayer = idPlayer;
 
-				((Label) (hgRed2.getChildren().get(0))).setText("Name: " + name);
+				((Label) (hgRed2.getChildren().get(0))).setText(name);
 				return;
 			}
 			if (hgRed3.idPlayer == -1) {
 				hgRed3.idPlayer = idPlayer;
-				((Label) (hgRed3.getChildren().get(0))).setText("Name: " + name);
+				((Label) (hgRed3.getChildren().get(0))).setText(name);
 				return;
 			}
 			if (hgRed4.idPlayer == -1) {
 				hgRed4.idPlayer = idPlayer;
-				((Label) (hgRed4.getChildren().get(0))).setText("Name: " + name);
+				((Label) (hgRed4.getChildren().get(0))).setText(name);
 				return;
 			}
 		}
@@ -267,13 +263,6 @@ public class MenuPageJoinGame extends MenuPage implements DoNotTouchPacketEvent.
 		return hg;
 	}
 
-	private void startGame() {
-		if (!main.isTransitioning()) {
-			Game game = new Game();
-			game.init(assetManager);
-			main.changeState(new GameplayState(assetManager, game), new SplitHorizontalTransition(500), null);
-		}
-	}
 
 	private void changeTeam(boolean team, int id) {
 		if (team) {

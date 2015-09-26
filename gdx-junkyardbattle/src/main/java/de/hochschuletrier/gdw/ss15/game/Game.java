@@ -1,7 +1,5 @@
 package de.hochschuletrier.gdw.ss15.game;
 
-import box2dLight.RayHandler;
-
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.InputAdapter;
@@ -14,9 +12,12 @@ import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixDebugRenderSystem
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.game.components.BulletComponent;
+import de.hochschuletrier.gdw.ss15.events.network.client.NetworkReceivedNewPacketClientEvent;
 import de.hochschuletrier.gdw.ss15.game.components.PickableComponent;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.PickupListenerClient;
+import de.hochschuletrier.gdw.ss15.game.systems.RealNetwork.NetworkClientSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.RealNetwork.TestListenerClient;
 import de.hochschuletrier.gdw.ss15.game.systems.input.InputSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.*;
 import de.hochschuletrier.gdw.ss15.game.systems.*;
@@ -80,6 +81,12 @@ public class Game extends InputAdapter {
 
     public void dispose() {
         //togglePhysixDebug.unregister();
+        ClearListener();
+    }
+
+    public void ClearListener()
+    {
+        NetworkReceivedNewPacketClientEvent.clearListeners();
     }
 
     public void init(AssetManagerX assetManager) {
@@ -90,8 +97,8 @@ public class Game extends InputAdapter {
         entityFactory.init(engine, assetManager);
         mapLoader.listen(renderSystem.getTileMapCreator());
         mapLoader.run((String name, float x, float y) -> createEntity(name, x, y),
-                "data/maps/3v3Alpha.tmx", physixSystem, entityFactory, assetManager );
-        
+                "data/maps/alpha_three_on_three.tmx", physixSystem, entityFactory, assetManager );
+
         renderSystem.init(mapLoader.getTiledMap(), this);
     }
 
@@ -176,9 +183,4 @@ public class Game extends InputAdapter {
     public InputProcessor getInputProcessor() {
         return this;
     }
-
-    public InputSystem getInputSystem(){
-        return inputSystem;
-    }
-
 }

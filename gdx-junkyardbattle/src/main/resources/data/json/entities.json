@@ -318,7 +318,7 @@
             },
             "PhysixBody": {
                 "shape": "circle",
-                "size": 10,
+                "size": 50,
                 "density": 10,
                 "friction": 0.5,
                 "restitution": 0.1,
@@ -359,7 +359,7 @@
             "NetworkID": {},
             "PhysixBody": {
                 "shape": "circle",
-                "size": 10,
+                "size": 50,
                 "density": 10,
                 "friction": 0.5,
                 "restitution": 0.1,
