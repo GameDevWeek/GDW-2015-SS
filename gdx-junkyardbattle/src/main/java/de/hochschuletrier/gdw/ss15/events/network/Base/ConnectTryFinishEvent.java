@@ -34,4 +34,8 @@ public class ConnectTryFinishEvent {
         listeners.removeValue(listener, true);
     }
 
+	public static void unregisterAll() {
+        listeners.clear();
+    }
+
 }

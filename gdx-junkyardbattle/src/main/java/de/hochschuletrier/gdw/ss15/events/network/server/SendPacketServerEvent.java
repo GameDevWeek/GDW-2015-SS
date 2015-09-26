@@ -38,4 +38,8 @@ public class SendPacketServerEvent{
         listeners.removeValue(listener, true);
     }
 
+	public static void unregisterAll() {
+		listeners.clear();
+	}
+
 }

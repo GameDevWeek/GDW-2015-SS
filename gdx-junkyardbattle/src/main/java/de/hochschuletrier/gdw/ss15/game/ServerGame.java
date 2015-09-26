@@ -2,14 +2,24 @@ package de.hochschuletrier.gdw.ss15.game;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
+
 import de.hochschuletrier.gdw.commons.gdx.ashley.EntityFactory;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixComponentAwareContactListener;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.events.*;
+import de.hochschuletrier.gdw.ss15.events.network.Base.ConnectTryFinishEvent;
+import de.hochschuletrier.gdw.ss15.events.network.Base.DisconnectEvent;
+import de.hochschuletrier.gdw.ss15.events.network.Base.DoNotTouchPacketEvent;
+import de.hochschuletrier.gdw.ss15.events.network.client.NetworkReceivedNewPacketClientEvent;
+import de.hochschuletrier.gdw.ss15.events.network.client.SendPacketClientEvent;
 import de.hochschuletrier.gdw.ss15.events.network.server.DoNotTouchServerPacketEvent;
 import de.hochschuletrier.gdw.ss15.events.network.server.NetworkNewPlayerEvent;
 import de.hochschuletrier.gdw.ss15.events.network.server.NetworkReceivedNewPacketServerEvent;
+import de.hochschuletrier.gdw.ss15.events.network.server.SendPacketServerEvent;
+import de.hochschuletrier.gdw.ss15.events.rendering.ChangeAnimationEvent;
+import de.hochschuletrier.gdw.ss15.events.rendering.ChangeModeOnEffectEvent;
+import de.hochschuletrier.gdw.ss15.events.rendering.ChangePositionOnEffectEvent;
 import de.hochschuletrier.gdw.ss15.game.components.*;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.BaseMetalShardDeliverListener;
@@ -232,15 +242,38 @@ public class ServerGame{
 
     public void clearAllListeners()
     {
-        NetworkReceivedNewPacketServerEvent.clearListeners();
-        DoNotTouchServerPacketEvent.clearListeners();
-        NetworkNewPlayerEvent.clearListeners();
+    	
+    	//Networkpackage
+    	//Base
+    	ConnectTryFinishEvent.unregisterAll();
+        DisconnectEvent.unregisterAll();
+        DoNotTouchPacketEvent.unregisterAll();
+        //Client
+        NetworkReceivedNewPacketClientEvent.unregisterAll();
+        SendPacketClientEvent.unregisterAll();
+        //Server
+        DoNotTouchServerPacketEvent.unregisterAll();
+        NetworkNewPlayerEvent.unregisterAll();
+        NetworkReceivedNewPacketServerEvent.unregisterAll();
+        SendPacketServerEvent.unregisterAll();
+        
+        
+        //Rendering Package
+        ChangeAnimationEvent.unregisterAll();
+        ChangeModeOnEffectEvent.unregisterAll();
+        ChangePositionOnEffectEvent.unregisterAll();
+        
+        //Rest
         CollisionEvent.unregisterAll();
         ComeToBaseEvent.unregisterAll();
-        PickupEvent.unregisterAll();
         MiningEvent.unregisterAll();
-        PlayerHurtEvent.unregisterAll();
+        PickupEvent.unregisterAll();
         PlayerDiedEvent.unregisterAll();
+        PlayerHurtEvent.unregisterAll();
+        SatelliteColliding.unregisterAll();
+        SoundEvent.unregisterAll();
+        WeaponCharging.unregisterAll();
+        WeaponUncharged.unregisterAll();
     }
 
 }

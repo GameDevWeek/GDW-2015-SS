@@ -14,7 +14,28 @@ import de.hochschuletrier.gdw.commons.gdx.physix.PhysixComponentAwareContactList
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixDebugRenderSystem;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.ss15.Main;
+import de.hochschuletrier.gdw.ss15.events.CollisionEvent;
+import de.hochschuletrier.gdw.ss15.events.ComeToBaseEvent;
+import de.hochschuletrier.gdw.ss15.events.MiningEvent;
+import de.hochschuletrier.gdw.ss15.events.PickupEvent;
+import de.hochschuletrier.gdw.ss15.events.PlayerDiedEvent;
+import de.hochschuletrier.gdw.ss15.events.PlayerHurtEvent;
+import de.hochschuletrier.gdw.ss15.events.SatelliteColliding;
+import de.hochschuletrier.gdw.ss15.events.SoundEvent;
+import de.hochschuletrier.gdw.ss15.events.WeaponCharging;
+import de.hochschuletrier.gdw.ss15.events.WeaponUncharged;
+import de.hochschuletrier.gdw.ss15.events.network.Base.ConnectTryFinishEvent;
+import de.hochschuletrier.gdw.ss15.events.network.Base.DisconnectEvent;
+import de.hochschuletrier.gdw.ss15.events.network.Base.DoNotTouchPacketEvent;
 import de.hochschuletrier.gdw.ss15.events.network.client.NetworkReceivedNewPacketClientEvent;
+import de.hochschuletrier.gdw.ss15.events.network.client.SendPacketClientEvent;
+import de.hochschuletrier.gdw.ss15.events.network.server.DoNotTouchServerPacketEvent;
+import de.hochschuletrier.gdw.ss15.events.network.server.NetworkNewPlayerEvent;
+import de.hochschuletrier.gdw.ss15.events.network.server.NetworkReceivedNewPacketServerEvent;
+import de.hochschuletrier.gdw.ss15.events.network.server.SendPacketServerEvent;
+import de.hochschuletrier.gdw.ss15.events.rendering.ChangeAnimationEvent;
+import de.hochschuletrier.gdw.ss15.events.rendering.ChangeModeOnEffectEvent;
+import de.hochschuletrier.gdw.ss15.events.rendering.ChangePositionOnEffectEvent;
 import de.hochschuletrier.gdw.ss15.game.components.BulletComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PickableComponent;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
@@ -102,12 +123,43 @@ public class Game extends InputAdapter {
 
     public void dispose() {
         togglePhysixDebug.unregister();
-        ClearListener();
+        clearAllListeners();
     }
 
-    public void ClearListener()
+    public void clearAllListeners()
     {
-        NetworkReceivedNewPacketClientEvent.clearListeners();
+    	
+    	//Networkpackage
+    	//Base
+    	ConnectTryFinishEvent.unregisterAll();
+        DisconnectEvent.unregisterAll();
+        DoNotTouchPacketEvent.unregisterAll();
+        //Client
+        NetworkReceivedNewPacketClientEvent.unregisterAll();
+        SendPacketClientEvent.unregisterAll();
+        //Server
+        DoNotTouchServerPacketEvent.unregisterAll();
+        NetworkNewPlayerEvent.unregisterAll();
+        NetworkReceivedNewPacketServerEvent.unregisterAll();
+        SendPacketServerEvent.unregisterAll();
+        
+        
+        //Rendering Package
+        ChangeAnimationEvent.unregisterAll();
+        ChangeModeOnEffectEvent.unregisterAll();
+        ChangePositionOnEffectEvent.unregisterAll();
+        
+        //Rest
+        CollisionEvent.unregisterAll();
+        ComeToBaseEvent.unregisterAll();
+        MiningEvent.unregisterAll();
+        PickupEvent.unregisterAll();
+        PlayerDiedEvent.unregisterAll();
+        PlayerHurtEvent.unregisterAll();
+        SatelliteColliding.unregisterAll();
+        SoundEvent.unregisterAll();
+        WeaponCharging.unregisterAll();
+        WeaponUncharged.unregisterAll();
     }
 
     public void init(AssetManagerX assetManager,int mapid) {

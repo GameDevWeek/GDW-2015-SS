@@ -35,4 +35,7 @@ public class DoNotTouchPacketEvent {
         listeners.removeValue(listener, true);
     }
 
+    public static void unregisterAll() {
+        listeners.clear();
+    }
 }
