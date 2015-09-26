@@ -147,7 +147,9 @@
                 "speed": 300,
                 "metalShards": 0
             },
-            "Health": {}
+            "Health": {
+                "health": 30
+            }
         }
     },
     "clientPlayer": {
@@ -155,7 +157,9 @@
         "components": {
             "Position": {},
             "Player": {},
-            "Health": {},
+            "Health": {
+                "health": 30
+            },
             "PhysixBody": {
                 "shape": "circle",
                 "size": 40,
@@ -222,7 +226,8 @@
                 "density": 10,
                 "friction": 0.5,
                 "restitution": 0.1,
-                "type": "dynamic"
+                "type": "dynamic",
+                "category": "BULLET"
             },
             "Damage": {
                 "damageValue": 10,
@@ -232,7 +237,13 @@
             "Bullet": {
                 "playerID": -1
             },
-            "Interpolate": {}
+            "Interpolate": {},
+            "ParticleEffect": {
+                "effectname": "glow",
+                "offsetX": 0,
+                "offsetY": 0,
+                "initialRotation": -90
+            }
         }
     },
     "Base": {

@@ -131,7 +131,7 @@ public class MapLoader
         // noch spezialisieren auf Flags ( block pathing, block sight, block shooting  )
         PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody, pSystem).position(x, y).fixedRotation(false);
         Body body = pSystem.getWorld().createBody(bodyDef);
-        if(blockShoot)
+        if(!blockShoot)
             body.createFixture(new PhysixFixtureDef(pSystem).density(1).friction(0.5f).category(PhysixBodyComponentFactory.ABGRUND).mask((short) ~PhysixBodyComponentFactory.BULLET).shapeBox(width, height));
         else
             body.createFixture(new PhysixFixtureDef(pSystem).density(1).friction(0.5f).shapeBox(width, height));

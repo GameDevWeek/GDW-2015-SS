@@ -2,7 +2,6 @@ package de.hochschuletrier.gdw.ss15.game;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
-
 import com.badlogic.gdx.assets.loaders.BitmapFontLoader;
 import com.badlogic.gdx.assets.loaders.TextureLoader;
 import com.badlogic.gdx.audio.Music;
@@ -10,6 +9,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+
 import de.hochschuletrier.gdw.commons.gdx.ashley.EntityFactory;
 import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
@@ -33,15 +33,14 @@ import de.hochschuletrier.gdw.ss15.game.contactlisteners.PickupListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.TriggerListener;
 import de.hochschuletrier.gdw.ss15.game.network.ClientConnection;
 import de.hochschuletrier.gdw.ss15.game.systems.BulletSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.DeathSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.HealthSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.MetalShardDropSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.LineOfSightSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.MetalShardSpawnSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.PlayerLifeSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.SpawnSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.network.NetworkServerSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.network.PositionSynchSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.network.TestSatelliteSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.network.UpdatePhysixServer;
 import de.hochschuletrier.gdw.ss15.game.systems.network.UpdatePhysixSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.InventorySystem;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serverclientsocket;
@@ -62,12 +61,13 @@ public class ServerGame{
     private final PhysixSystem physixSystem = new PhysixSystem(GameConstants.BOX2D_SCALE,
             GameConstants.VELOCITY_ITERATIONS, GameConstants.POSITION_ITERATIONS, GameConstants.PRIORITY_PHYSIX
     );
+    
     private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem();//todo magic numbers (von santo)
     private final NetworkServerSystem networkSystem = new NetworkServerSystem(this,GameConstants.PRIORITY_PHYSIX + 2);//todo magic numbers (santo hats vorgemacht)
     private final PositionSynchSystem syncPositionSystem = new PositionSynchSystem(this,GameConstants.PRIORITY_PHYSIX + 3);//todo magic numbers (boa ist das geil kann nicht mehr aufhoeren)
     private final LineOfSightSystem lineOfSightSystem = new LineOfSightSystem(physixSystem); // hier müssen noch Team-Listen übergeben werden
     private final TestSatelliteSystem testSatelliteSystem = new TestSatelliteSystem(this, engine);
-    private final PlayerLifeSystem playerLifeSystem = new PlayerLifeSystem();
+//    private final PlayerLifeSystem playerLifeSystem = new PlayerLifeSystem();
                                                                                  // (+ LineOfSightSystem-Konstruktor anpassen!)
     //private final BulletSystem bulletSystem = new BulletSystem();
     private final MetalShardSpawnSystem metalShardSpawnSystem = new MetalShardSpawnSystem(this);
@@ -86,7 +86,12 @@ public class ServerGame{
     private GatherServerListener gatherServerListener;
     
     private final SpawnSystem spawnSystem = new SpawnSystem();
-
+    private final MetalShardDropSystem metalShardDropSystem = new MetalShardDropSystem(this);
+    
+    private final PlayerHurtSystem playerHurtSystem = new PlayerHurtSystem();
+    private final HealthSystem healthSystem = new HealthSystem(engine);
+    private final DeathSystem deathSystem = new DeathSystem();
+    
     public ServerGame()
     {
 
@@ -141,9 +146,13 @@ public class ServerGame{
         engine.addSystem(bulletSystem);
         engine.addSystem(metalShardSpawnSystem);
         engine.addSystem(pickupSystem);
-        engine.addSystem(playerLifeSystem);
+//        engine.addSystem(playerLifeSystem);
         engine.addSystem(spawnSystem);
+        engine.addSystem(metalShardDropSystem);
+        engine.addSystem(playerHurtSystem);
         engine.addSystem(inventorySystem);
+        engine.addSystem(healthSystem);
+        engine.addSystem(deathSystem);
 
         //// ---- add listener to engine, to get an autoremove
         engine.addSystem(fireServerListener);
