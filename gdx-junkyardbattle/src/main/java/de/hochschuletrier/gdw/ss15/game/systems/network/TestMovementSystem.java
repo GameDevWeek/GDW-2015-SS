@@ -1,10 +1,9 @@
-package de.hochschuletrier.gdw.ss15.game.systems.network;
+﻿package de.hochschuletrier.gdw.ss15.game.systems.network;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
-
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -32,8 +31,8 @@ public class TestMovementSystem extends IteratingSystem{
     private Vector2 vectorToAdd = new Vector2(0,0);
     private ComponentMapper<InputComponent> input;
     private ComponentMapper<SoundEmitterComponent> soundEmitter;
+    private ComponentMapper<MoveComponent> move;
     public static boolean interpolate = true;
-    
     public TestMovementSystem(Game game, Camera cam)
     {
         super(Family.all(MoveComponent.class).get());
@@ -41,9 +40,15 @@ public class TestMovementSystem extends IteratingSystem{
         this.camera = cam;
         input = ComponentMappers.input;
         soundEmitter = ComponentMappers.soundEmitter;
+        move = ComponentMappers.move;
+
+        
     }
 
 	protected void processEntity(Entity entity, float deltaTime) {
+
+	    InventoryComponent inventory = ComponentMappers.inventory.get(entity);
+	    MoveComponent move = ComponentMappers.move.get(entity);
 		timer.Update();
         if(timer.get_CounterMilliseconds()>50)
         {
