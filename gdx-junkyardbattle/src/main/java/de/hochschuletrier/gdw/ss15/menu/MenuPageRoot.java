@@ -35,7 +35,7 @@ public class MenuPageRoot extends MenuPage {
 	private final DecoImage imageStart = new DecoImage(assetManager.getTexture("start_button"));
 	private final DecoImage imageOption = new DecoImage(assetManager.getTexture("option_button"));
 	private final DecoImage imageCredits = new DecoImage(assetManager.getTexture("credits_button"));
-	private final DecoImage imageChange= new DecoImage(assetManager.getTexture("change_button"));
+	private final DecoImage imageQuit= new DecoImage(assetManager.getTexture("quit_button"));
 	MenuManager menuManager;
     public enum Type {
 
@@ -83,8 +83,10 @@ public class MenuPageRoot extends MenuPage {
         imageStart.setHeight(height);
         imageOption.setWidth(width);
         imageOption.setHeight(height);
-        imageCredits.setWidth(width);
-        imageCredits.setHeight(height);
+        imageQuit.setWidth(width);   
+        imageQuit.setHeight(height-10); 
+        imageCredits.setWidth(115);
+        imageCredits.setHeight(30);
         
         int x = 100;
         int i = 0;
@@ -95,7 +97,8 @@ public class MenuPageRoot extends MenuPage {
         	
             addCenteredImage(390, 350-height, width, height, imageStart, runnableStart);
             addCenteredImage(390, 250-height, width, height,imageOption,runnableOption);
-            addCenteredImage(390, 150-height, width, height, imageCredits, runnableCredits);
+            addCenteredImage(390, 150-height+10, width, height, imageQuit, ()->System.exit(-1));
+            addCenteredImage(825, 125-30, 115, 30, imageCredits, runnableCredits);
          
            
             
@@ -104,7 +107,7 @@ public class MenuPageRoot extends MenuPage {
             addLeftAlignedButton(x, y - YSTEP_BUTTON * (i++), WIDTH_BUTTON, HEIGHT_BUTTON, "Spiel verlassen", this::stopGame);
         }
        
-        addCenteredButton(menuManager.getWidth() - 80, 54, 100, 40, "Exit", () -> System.exit(-1));
+       // addCenteredButton(menuManager.getWidth() - 80, 54, 100, 40, "Exit", () -> System.exit(-1));
     }
 
 
