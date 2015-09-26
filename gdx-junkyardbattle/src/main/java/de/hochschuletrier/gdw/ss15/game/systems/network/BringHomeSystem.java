@@ -29,16 +29,15 @@ public class BringHomeSystem extends EntitySystem implements ComeToBaseEvent.Lis
         ComeToBaseEvent.register(this);
     }
 
-    public void onComeToBase(PhysixContact contact) {
-        if (player.has(contact.getOtherComponent().getEntity())) {
-            Entity playerEntity = contact.getOtherComponent().getEntity();
-            Entity basePointEntity = contact.getMyComponent().getEntity();
 
-            basePoint.get(basePointEntity).points += inventory.get(playerEntity).getMetalShards();
-            inventory.get(playerEntity).setMetalShards(0);
-            SimplePacket packet = new SimplePacket(SimplePacket.SimplePacketId.BasePointsUpdate.getValue(), basePoint.get(basePointEntity).points);
-            SendPacketServerEvent.emit(packet, true);
-        }
+    @Override
+    public void onComeToBase(Entity playerEntity, Entity basePointEntity) {
+        int basePointsToAdd = Math.max(0, inventory.get(playerEntity).getMetalShards() - inventory.get(playerEntity).minMetalShardsForBase);
+        inventory.get(playerEntity).subMetalShards(basePointsToAdd);
+        basePoint.get(basePointEntity).points += basePointsToAdd;
+        System.out.println("InventarPlayer: " + inventory.get(playerEntity).getMetalShards());
+        System.out.println("BasePoints: " + basePoint.get(basePointEntity).points);
+        SimplePacket packet = new SimplePacket(SimplePacket.SimplePacketId.BasePointsUpdate.getValue(), basePoint.get(basePointEntity).points);
+        SendPacketServerEvent.emit(packet, true);
     }
-
 }
