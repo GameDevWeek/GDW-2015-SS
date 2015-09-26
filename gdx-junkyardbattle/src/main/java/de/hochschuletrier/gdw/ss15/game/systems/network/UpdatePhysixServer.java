@@ -49,10 +49,9 @@ public class UpdatePhysixServer extends EntitySystem implements NetworkReceivedN
             
             Vector2 vel = new Vector2(p.xPos,p.yPos);
 
-			if(inventory.getMetalShards()<=inventory.maxMetalShards && inventory.getMetalShards()>0)
+			if( (inventory.getMetalShards()<=inventory.maxMetalShards) && (inventory.getMetalShards()>0) )
             {
-            	float invtemp = inventory.getMetalShards()/inventory.maxMetalShards;
-            	
+            	float invtemp = (float)inventory.getMetalShards()/(float)inventory.maxMetalShards;
             	vel.scl(move.speed-move.speed*(invtemp*0.75f));
             }
             else
