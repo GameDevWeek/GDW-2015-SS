@@ -2,27 +2,21 @@ package de.hochschuletrier.gdw.ss15.game.systems.network;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
+
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
-import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.ss15.events.SoundEvent;
 import de.hochschuletrier.gdw.ss15.events.network.client.SendPacketClientEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.Game;
 import de.hochschuletrier.gdw.ss15.game.components.*;
 import de.hochschuletrier.gdw.ss15.game.components.input.InputComponent;
-import de.hochschuletrier.gdw.ss15.game.network.Packets.EntityUpdatePacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.MovementPacket;
-import de.hochschuletrier.gdw.ss15.game.systems.network.UpdatePhysixServer;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.MyTimer;
-import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.Tools;
 
 /**
  * Created by lukas on 22.09.15.
@@ -57,7 +51,6 @@ public class TestMovementSystem extends IteratingSystem{
 
         	InputComponent input = ComponentMappers.input.get(entity);
 	        PositionComponent posc = ComponentMappers.position.get(entity);
-            ComponentMapper<SoundEmitterComponent> soundEmitter;
 
             Vector3 mousepos = camera.unproject(new Vector3(input.posX, input.posY,0));
 	        Vector2 mousepos2 = new Vector2(mousepos.x, mousepos.y);

@@ -20,7 +20,8 @@ public enum PacketIds
     Gather((short)8),
     ChangeName((short)9),
     Damage((short)10),
-    SpawnBullet((short)11);
+    SpawnBullet((short)11),
+    Highscore((short)12);
 
 
 
@@ -48,5 +49,6 @@ public enum PacketIds
         PacketFactory.registerPacket(Gather.getValue(), GatherPacket.class);
         PacketFactory.registerPacket(Damage.getValue(), GatherPacket.class);
         PacketFactory.registerPacket(SpawnBullet.getValue(), SpawnBulletPacket.class);
+        PacketFactory.registerPacket(Highscore.getValue(), HighscorePacket.class);
     }
 }
