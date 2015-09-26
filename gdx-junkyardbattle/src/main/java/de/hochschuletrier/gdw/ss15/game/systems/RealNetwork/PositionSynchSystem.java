@@ -46,7 +46,6 @@ public class PositionSynchSystem extends EntitySystem implements EntityListener 
             Entity ent = entities.get(i);
             PhysixBodyComponent physComp = ComponentMappers.physixBody.get(ent);
             //physComp.setGravityScale(0);
-            //System.out.println(physComp.getPosition());
 
             PositionSynchComponent comp = ComponentMappers.positionSynch.get(ent);
             if(!comp.inited)
@@ -59,9 +58,7 @@ public class PositionSynchSystem extends EntitySystem implements EntityListener 
 
             if(ComponentMappers.position.has(ent))
             {
-                PositionComponent pos = ComponentMappers.position.get(ent);
-//                System.out.println("New movment recognised: x"+pos.x+ " y"+pos.y);
-               // System.out.println("New rotation: "+pos.rotation);
+                PositionComponent pos = ComponentMappers.position.get(ent);
                 comp.lastSendTimer.Update();
                 if(comp.lastSendTimer.get_CounterMilliseconds()>comp.updateDuration)
                 {
@@ -72,9 +69,7 @@ public class PositionSynchSystem extends EntitySystem implements EntityListener 
                     comp.lastVelocityY =physComp.getLinearVelocity().y;
                     comp.lastRot=pos.rotation;
 
-                    //System.out.println("PositionSync Velocity:"+physComp.getLinearVelocity());
 
-                    //System.out.println("befor send");
                     EntityUpdatePacket pack = new EntityUpdatePacket(comp.networkID,comp.lastX,comp.lastY,comp.lastVelocityX,  comp.lastVelocityY,comp.lastRot);
                     SendPacketServerEvent.emit(pack, comp.sendSave);
                }
@@ -100,11 +95,9 @@ public class PositionSynchSystem extends EntitySystem implements EntityListener 
 
     public void InitEnitity(Entity entity)
     {
-        //dwwdaSystem.out.println("Size of list " + entities.size());
         Entity exept = null;
         if(ComponentMappers.client.has(entity))
         {//es ist ein neuer client -> diese alle bestehenden sync objects senden
-            //System.out.println("Send all enteties to new Player");
             Serverclientsocket client = ComponentMappers.client.get(entity).client;
             InitEntityPacket initPacket = new InitEntityPacket(0,"",0,0,0,0,0);
             for(int i=0;i<entities.size();i++)
@@ -119,16 +112,13 @@ public class PositionSynchSystem extends EntitySystem implements EntityListener 
                 initPacket.veloX = sendComp.lastVelocityX;
                 initPacket.veloY = sendComp.lastVelocityY;
                 if(sendEnd == entity) {//eigener spieler
-                    //System.out.println("Send own player to client");
                     initPacket.name = "clientOwnPlayer";
                     exept=entity;
                 }
                 else
                 {
-                    //System.out.println("Send other player to client");
                     initPacket.name = sendComp.clientName;
                 }
-                //System.out.println();
                 client.sendPacketSave(initPacket,true);
             }
         }
@@ -143,10 +133,8 @@ public class PositionSynchSystem extends EntitySystem implements EntityListener 
 
         PhysixBodyComponent phcomp = ComponentMappers.physixBody.get(entity);
 
-        //System.out.println(comp.x+" "+comp.y);
        //InitEntityPacket packet = new InitEntityPacket(ComponentMappers.positionSynch.get(entity).networkID,
        //         ComponentMappers.positionSynch.get(entity).clientName, comp.x, comp.y, comp.rotation,0,0);
-        //System.out.println(phcomp.getX() +" Postion server "+ phcomp.getY());
         InitEntityPacket packet = new InitEntityPacket(ComponentMappers.positionSynch.get(entity).networkID,
                 ComponentMappers.positionSynch.get(entity).clientName, phcomp.getX(), phcomp.getY(), comp.rotation,phcomp.getLinearVelocity().x,phcomp.getLinearVelocity().y);
         SendPacketServerEvent.emit(packet, true, exept);
@@ -167,7 +155,6 @@ public class PositionSynchSystem extends EntitySystem implements EntityListener 
 
     @Override
     public void entityRemoved(Entity entity) {
-        //System.out.println("Position sync component removed");
         SimplePacket spacket = new SimplePacket(SimplePacket.SimplePacketId.RemoveEntity.getValue(),ComponentMappers.positionSynch.get(entity).networkID);
         SendPacketServerEvent.emit(spacket, true,entity);
 

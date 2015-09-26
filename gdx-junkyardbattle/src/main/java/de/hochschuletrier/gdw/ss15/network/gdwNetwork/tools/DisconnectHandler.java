@@ -50,7 +50,6 @@ public class DisconnectHandler
 			m_Status.set(DisconnectStatus.WaitForFinAck);
 			SendMessage((byte)0);
 		}
-		System.out.println("Disconnect handler created");
 	}
 	
 	public boolean update()
@@ -63,7 +62,6 @@ public class DisconnectHandler
 		if(m_GiveUpTimer.get_CounterMilliseconds()>m_TimeUntilGiveUp)
 		{//if the programm closes by disconect
 			m_Status.set(DisconnectStatus.Finished);
-			System.out.println("Disconnect timed out");
 			return true;
 		}
 		m_TimoutTimer.Update();
@@ -71,7 +69,6 @@ public class DisconnectHandler
 		{
 			if(m_TimoutTimer.get_CounterMilliseconds()>=m_TimeUntilDisconnectResend)
 			{
-				System.out.println("resend Fin");
 				SendMessage((byte)0);
 				m_TimoutTimer.StartCounter();
 			}
@@ -80,7 +77,6 @@ public class DisconnectHandler
 		{
 			if(m_TimoutTimer.get_CounterMilliseconds()>=m_TimeUntilDisconnectResend)
 			{
-				System.out.println("resend FinAck");
 				SendMessage((byte)1);
 				m_TimoutTimer.StartCounter();
 			}
@@ -104,20 +100,17 @@ public class DisconnectHandler
 			int flag = input.read();
 			if(flag == 0)
 			{//Fin
-				System.out.println("Received Fin");
 				SendMessage((byte)1);//send FinAck
 				m_TimoutTimer.StartCounter();
 			}
 			else if(flag == 1)
 			{//FinAck
-				System.out.println("Received FinAck");
 				m_Status.set(DisconnectStatus.WaitForTimeout_BecauseAckCouldGetLost);
 				SendMessage((byte)2);//send Ack
 				m_TimoutTimer.StartCounter();
 			}
 			else if(flag == 2)
 			{//Ack
-				System.out.println("Received Ack");
 				m_Status.set(DisconnectStatus.Finished);
 			}
 		}

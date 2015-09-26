@@ -17,7 +17,6 @@ public class HighscoreSyncListener extends EntitySystem implements NetworkReceiv
 
     public HighscoreSyncListener(){
         NetworkReceivedNewPacketClientEvent.registerListener(PacketIds.Highscore, this);
-        //System.out.println("registered spawnbullet listener");
     }
 
     @Override

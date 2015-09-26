@@ -49,19 +49,15 @@ public class GatherServerListener extends EntitySystem implements NetworkReceive
         try{
             GatherPacket packet = (GatherPacket)pack;
             float channelTime = packet.channelTime;
-            //System.out.println("Sammeln0");
             Entity entity = checkHarvestRayCollision(ent);
 
             if (entity != null)
                 //ent = spieler
                 //entity = objekt
             {
-                //System.out.println("checkHarvestEntity != null");
                 //for (int i = 0; i < entity.getComponents().size(); i++) {
-                //    System.out.println(entity.getComponents().get(i));
                 //}
                 if (ComponentMappers.player.has(ent) && ComponentMappers.mineable.has(entity)) {
-                    //System.out.println("checkHarvestEntity mineable");
                     MiningEvent.emit(ent, entity, channelTime);
                 } else if (ComponentMappers.player.has(ent)) {
                     SimplePacket miningPacket = new SimplePacket(SimplePacket.SimplePacketId.MiningPacket.getValue(), 1);
@@ -78,7 +74,6 @@ public class GatherServerListener extends EntitySystem implements NetworkReceive
     }
 
     private Entity checkHarvestRayCollision(Entity entity){
-        //System.out.println("checkHarvestRayCollision");
         Entity hitEntity = null;
 
         //player position
@@ -91,9 +86,7 @@ public class GatherServerListener extends EntitySystem implements NetworkReceive
         rayPos.scl(GameConstants.GATHERING_RANGE);
         physixSystem.toBox2D(rayPos, rayPos);
         rayPos.add(pos);
-
-        //System.out.println("playerPos: " + pos);
-        //System.out.println("rayPos: " + rayPos);
+
 
 
         RayCastCallback lineOfSightCallback = new RayCastCallback() {
@@ -103,10 +96,8 @@ public class GatherServerListener extends EntitySystem implements NetworkReceive
                                           Vector2 normal, float fraction) {
                 //if(fixture.getBody().getUserData() != null && ((PhysixBodyComponent)fixture.getBody().getUserData()).getEntity() != entity)
                 {
-                    //System.out.println("setting closestFixture");
                     closestFixture = fixture;
                 }
-                //System.out.println("PosFixture: " + fixture.getBody().getPosition());
                 return fraction;
             }
         };

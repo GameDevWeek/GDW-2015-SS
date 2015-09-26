@@ -80,7 +80,6 @@ public class Serversocket implements Closeable
 				}
 				catch(InterruptedException ex)
 				{
-					System.out.println("Thread wurde per interrupt fehlerhafterweise durch Interrupt beendet");
 				}
 			}
 		}
@@ -92,7 +91,6 @@ public class Serversocket implements Closeable
 		}
 		catch(InterruptedException ex)
 		{
-			System.out.println("Threadpool wurde per interrupt fehlerhafterweise durch Interrupt beendet");
 		}
 		
 		for(int i=0;i<3;i++)
@@ -125,10 +123,8 @@ public class Serversocket implements Closeable
 			}
 			catch(SocketException ex)
 			{
-				System.out.println("Konnte socket "+i+" auf port "+m_Ports[i]+" nicht erstellen");
 				return false;
 			}
-			System.out.println("Socken listening on port: "+m_Ports[i]);
 		}
 		
 		m_Threads[Sockettypes.SaveSocket.getValue()] = new Thread(()->this.RunReceiveSave());
@@ -142,7 +138,6 @@ public class Serversocket implements Closeable
 			m_Threads[i].start();
 		}
 		
-		System.out.println("Serversocket succesfully startet");
 		
 		return true;
 	}
@@ -152,7 +147,6 @@ public class Serversocket implements Closeable
 		m_Running.set(false);
 		ClearSocketsAndThreads();
 		m_NewClients.clear();
-		System.out.println("Server socket was succesfully closed");
 	}	
 	
 	public void RegisterClient(Serverclientsocket client)
@@ -218,14 +212,12 @@ public class Serversocket implements Closeable
 			catch(IOException ex)
 			{//todo later remove
 				m_Running.set(false);
-				System.out.println("Internal Error by creating inputstream");
 				ex.printStackTrace();
 				break;
 			}
 
 			if(input.available()>0)
 			{//daten empfangen
-				//System.out.println("Rceived data Save");
 
 				Serverclientsocket client;
 				synchronized (m_HashMapClientsSave)
@@ -234,7 +226,6 @@ public class Serversocket implements Closeable
 				}
 				if(client != null)
 				{
-					//System.out.println("Client save found");
 					byte arr[] = new byte[input.available()];
 					input.read(arr, 0, input.available());
 					ByteArrayInputStream newinput = new ByteArrayInputStream(arr);
@@ -258,14 +249,12 @@ public class Serversocket implements Closeable
 			catch(IOException ex)
 			{
 				m_Running.set(false);
-				System.out.println("Internal Error by creating inputstream");
 				ex.printStackTrace();
 				break;
 			}
 			
 			if(input.available()>0)
 			{
-				//System.out.println("Rceived data Unsave");
 				
 				int flag = input.read();
 				if(flag == UnsaveSocketFlag.Login1.getValue())
@@ -286,7 +275,6 @@ public class Serversocket implements Closeable
 					}
 					if(client != null)
 					{
-						//System.out.println("Client unsave found");
 						byte arr[] = new byte[input.available()];
 						input.read(arr, 0, input.available());
 						ByteArrayInputStream newinput = new ByteArrayInputStream(arr);
@@ -301,14 +289,12 @@ public class Serversocket implements Closeable
 	{
 		while(m_Running.get())
 		{
-			//System.out.println("clock rennt");
 			//Tools.Sleep(1);
 			try
 			{
 				ByteArrayInputStream input = m_Sockets[Sockettypes.ClockSocket.getValue()].ReceiveByte();
 				if(input.available()==m_SizeClockSyncRequest)
 				{
-					//System.out.println("Received clock reqest");
 					ByteArrayOutputStream output = new ByteArrayOutputStream();
 					byte arr[] = new byte[m_SizeClockSyncRequest];
 					input.read(arr);
@@ -322,7 +308,6 @@ public class Serversocket implements Closeable
 			catch(IOException ex)
 			{
 				m_Running.set(false);
-				System.out.println("Internal Error by creating inputstream");
 				ex.printStackTrace();
 				break;
 			}
@@ -331,10 +316,8 @@ public class Serversocket implements Closeable
 	
 	private void ReceivedLoginPart1(ByteArrayInputStream input,UdpData udpdata)
 	{
-		//System.out.println("received Login Part 1 threticls");
 		if(input.available()>=Packet.getMainheadersize())
 		{
-			System.out.println("received Login Part 1");
 			DataInputStream datainput = new DataInputStream(input);
 			short sh;
 			long lh;
@@ -358,19 +341,16 @@ public class Serversocket implements Closeable
 					m_Timer.schedule(new TimerTask() {
 						@Override
 						public void run() {
-							//System.out.println("Client connect timed out");
 							LoginTimedOut(); 
 						}
 					}, 2000);//TODO magic number
 					
-					//System.out.println("Send return from login part 1");
 					m_Sockets[Sockettypes.UnsaveSocket.getValue()].Send(output);
 				}
 			}
 			catch(IOException ex)
 			{
 				ex.printStackTrace();
-				System.out.println("Error by reading data by fist login step");
 			}
 		}
 	}
@@ -384,7 +364,6 @@ public class Serversocket implements Closeable
 	
 	private void ReceivedLoginPart2(ByteArrayInputStream input,UdpData udpdata)
 	{
-		System.out.println("received Login Part 2");
 		DataInputStream datainput = new DataInputStream(input);
 		short sh;
 		long lh;
@@ -394,7 +373,6 @@ public class Serversocket implements Closeable
 			lh = datainput.readLong();
 			if(sh == m_LoginKey1 + m_LoginKeySend1)
 			{//right key
-				//System.out.println("keys are right");
 				Serverclientsocket alreadyfinischedclient;
 				synchronized (m_HashMapClientsSave)
 				{
@@ -402,7 +380,6 @@ public class Serversocket implements Closeable
 				}
 				if(alreadyfinischedclient != null)
 				{//client already accepted
-					System.out.println("Client allready loged in send succes again");
 					ByteArrayOutputStream output = new ByteArrayOutputStream();
 					DataOutputStream outputdata = new DataOutputStream(output);
 					outputdata.writeByte(UnsaveSocketFlag.Login2.getValue());
@@ -434,14 +411,12 @@ public class Serversocket implements Closeable
 			
 					
 					m_Sockets[Sockettypes.UnsaveSocket.getValue()].Send(output,client.get_UdpDataUnsave());
-					System.out.println("Neuer client hat sich angemeldet");
 				}
 			}
 		}
 		catch(IOException ex)
 		{
 			ex.printStackTrace();
-			System.out.println("Error by reading data by fist login step");
 		}
 	}
 }

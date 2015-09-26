@@ -29,7 +29,6 @@ public class HealthSystem extends IteratingSystem {
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
         HealthComponent healthComp = ComponentMappers.health.get(entity);
-//        System.out.println(healthComp.health);
         if(healthComp.health <= 0 && !ComponentMappers.death.has(entity)) {
             DeathComponent deathComp = engine.createComponent(DeathComponent.class);
             deathComp.dyingDuration = GameConstants.DYING_TIMER;

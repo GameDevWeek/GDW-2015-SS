@@ -113,17 +113,14 @@ public class MenuPageJoinGame extends MenuPage implements DoNotTouchPacketEvent.
 	@Override
 	public void onDoNotTouchPacket(Packet pack) {
 		// TODO Auto-generated method stub
-		//System.out.println("test");
 		//System.out.print(pack.getPacketId());
 		if (pack.getPacketId() == PacketIds.Simple.getValue())
 		{// einafche
 																// nachricht
 
-			//System.out.println("received simpile packet");
 			SimplePacket sPack = (SimplePacket) pack;
 			if(sPack.m_SimplePacketId == SimplePacketId.TimeMenuePacket.getValue())
 			{//timer ist gespawned
-				//System.out.println("Received time: " + sPack.m_Moredata);
 				timetoStart=(int)sPack.m_Moredata;
 			}
 			/*if (sPack.m_SimplePacketId == SimplePacket.SimplePacketId.TimeToStartPacket.getValue()) {
@@ -136,9 +133,7 @@ public class MenuPageJoinGame extends MenuPage implements DoNotTouchPacketEvent.
 			MenuePlayerChangedPacket pPack = (MenuePlayerChangedPacket) pack;
 			int idPlayer = pPack.id;
 			String name = pPack.name;
-			boolean team = pPack.team; // false RED
-			//System.out.println("team:" + team);
-			//System.out.println("ID: " + idPlayer);
+			boolean team = pPack.team; // false RED
 			deletePlayer(idPlayer, team);
 			addPlayer(idPlayer, name, team);
 

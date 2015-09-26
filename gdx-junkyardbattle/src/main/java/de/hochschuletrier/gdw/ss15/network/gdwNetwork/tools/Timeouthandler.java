@@ -58,7 +58,6 @@ public class Timeouthandler
 			m_TimerResendIsAlive.Update();
 			if(m_TimerResendIsAlive.get_CounterMilliseconds()>=m_IsAlivePacketSendAgain)
 			{
-				//System.out.println("send is alive packet");
 				ByteArrayOutputStream output = new ByteArrayOutputStream();
 				DataOutputStream outputdata = new DataOutputStream(output);
 				outputdata.writeByte(m_Flagbyte);
@@ -73,7 +72,6 @@ public class Timeouthandler
 	
 	public void ReceivedIsAliveAswer(ByteArrayInputStream input) throws IOException
 	{
-		//System.out.println("Avalibale: "+input.available());
 		if(input.available()==Long.SIZE/8)
 		{
 			DataInputStream datainput = new DataInputStream(input);
@@ -81,7 +79,6 @@ public class Timeouthandler
 			m_LastLatenzNS = MyTimer.get_TimestampNanoseconds() - oldtimestamp;
 			m_TimerSendAlive.UpdateAndStartCounter();
 			m_TimerResendIsAlive.UpdateAndStartCounter();
-			//System.out.println("New latenz is : "+m_LastLatenzNS);
 		}
 	}
 	

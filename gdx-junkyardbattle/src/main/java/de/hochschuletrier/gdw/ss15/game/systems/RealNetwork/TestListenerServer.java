@@ -18,6 +18,5 @@ public class TestListenerServer implements DoNotTouchPacketEvent.Listener
     @Override
     public void onDoNotTouchPacket(Packet pack) {
 
-        //System.out.println("Receive packet on server: "+pack.getPacketId());
     }
 }

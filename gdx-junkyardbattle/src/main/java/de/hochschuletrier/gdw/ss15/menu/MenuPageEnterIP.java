@@ -63,11 +63,8 @@ public class MenuPageEnterIP extends MenuPage
 				}
 
 				if (Main.getInstance().getClientConnection().connect(ip, port) == false) {
-					System.out.println("Could not Connect to Server");
 				}
-			} catch (Exception e) {
-				System.out.println(e);
-				System.out.println("port Wrong");
+			} catch (Exception e) {
 			}
 
 			// TODO Auto-generated method stub
@@ -113,7 +110,6 @@ public class MenuPageEnterIP extends MenuPage
 		if (!status) {
 
 		}
-		System.out.println(status);
 	}
 
 }

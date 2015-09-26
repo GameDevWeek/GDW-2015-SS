@@ -83,7 +83,6 @@ public abstract class BaseClient implements Closeable
 				Map.Entry<Integer, HolderSocketListener<Object>> pair = (Map.Entry<Integer, HolderSocketListener<Object>>)it.next();
 				if(pair.getValue().isEnqueued())
 				{
-					System.out.println("Removed invalid Listner");
 					it.remove();
 				}
 				else
@@ -96,14 +95,12 @@ public abstract class BaseClient implements Closeable
 		while(isUnsavePacketAvaliable())
 		{
 			Packet packet = getUnsaveReceivedPacket();
-			//System.out.println("Size = "+m_Listeners.size());
 			Iterator<Entry<Integer, HolderSocketListener<Object>>> it = m_Listeners.entrySet().iterator();
 			while(it.hasNext())
 			{
 				Map.Entry<Integer, HolderSocketListener<Object>> pair = (Map.Entry<Integer, HolderSocketListener<Object>>)it.next();
 				if(pair.getValue().isEnqueued())
 				{
-					System.out.println("Removed invalid Listner");
 					it.remove();
 				}
 				else
@@ -117,19 +114,15 @@ public abstract class BaseClient implements Closeable
 
 	public void justCallDisconnectHandler()
 	{
-		//System.out.println("rennt");
 		if(m_CalledDisconnectlistener.get() == false)
 		{
-			//System.out.println("Called disconnect stuff");
 			m_CalledDisconnectlistener.set(true);
-			//System.out.println("Called");
 			Iterator<Entry<Integer, HolderSocketDisconnectListener<Object>>> it = m_DisconnectListeners.entrySet().iterator();
 			while(it.hasNext())
 			{
 				Map.Entry<Integer, HolderSocketDisconnectListener<Object>> pair = (Map.Entry<Integer, HolderSocketDisconnectListener<Object>>)it.next();
 				if(pair.getValue().get() == null || pair.getValue().isEnqueued())
 				{
-					System.out.println("Removed invalid Listner");
 					it.remove();
 				}
 				else
@@ -149,7 +142,6 @@ public abstract class BaseClient implements Closeable
 	
 	protected void RunReceiveDisconnect()
 	{
-		//System.out.println("rennt");
 		if(m_ByDisconned.get())
 		{
 			UdpData from = new UdpData();
@@ -160,7 +152,6 @@ public abstract class BaseClient implements Closeable
 			
 				if(input.available()>0)
 				{
-					//System.out.println("receive data "+input.available());
 				}
 				if(input.available() ==2)//todo savty missing check socket my clientclient
 				{//data available and come from right socket
@@ -180,7 +171,6 @@ public abstract class BaseClient implements Closeable
 			catch (IOException e)
 			{
 				// TODO Auto-generated catch block
-				System.out.println("Stream feherl beim disconnect empfangen wird abgeborchen");
 				m_DisconnectHandler=null;
 				m_ByDisconned.set(false);
 				e.printStackTrace();
@@ -245,11 +235,9 @@ public abstract class BaseClient implements Closeable
 			{
 				m_ReceivedPacketsUnsave.addLast(pack);
 			}
-			//System.out.println("ReceivedPacket");
 		}
 		else
 		{
-			System.out.println("Packet wurde verworfen nicht genug daten oder packet nicht vorhanden oder packet nicht registriert -> unsave");
 		}
 	}
 	
@@ -269,22 +257,16 @@ public abstract class BaseClient implements Closeable
 			
 			Packet pack = PacketFactory.createPacket(packetid);
 			if(pack != null && (pack.getSize()==-1 || pack.getSize() == input.available()))
-			{
-				//System.out.println("timestamp from packet: "+timestamp);
-				//System.out.println("difference to servertimestamp: "+getTimeDifference(timestamp));
-				//System.out.println("difference to servertimestamp: "+getTimeDifferenceMS(timestamp));
-				//System.out.println();
+			{
 				pack.setTimestamp(timestamp);
 				pack.buildPacketOnData(datainput);
 				synchronized (m_ReceivedPacketsSave)
 				{
 					m_ReceivedPacketsSave.addLast(pack);
 				}
-				//System.out.println("ReceivedPacket save");
 			}
 			else
 			{
-				System.out.println("Packet wurde verworfen nicht genug daten oder packet nicht vorhanden oder packet nicht registriert -> save");
 			}
 		}
 	}
@@ -376,10 +358,8 @@ public abstract class BaseClient implements Closeable
 	{//Senden packet ueber sicheren socket, rebuild sollte nur dann true sein wenn packet neu gebaut werden muss (performance)
 		if(m_Connected.get())
 		{
-			//System.out.println("Befor");
 			if(rebuildPacket && m_InsertTimestampAutomaticly)
 			{
-				//System.out.println("timestamp: "+getTimestamp());
 				pack.setTimestamp(getTimestamp());
 			}
 			return m_ReliablePackethandler.SendPacket(pack, rebuildPacket);
@@ -409,7 +389,6 @@ public abstract class BaseClient implements Closeable
 			}
 			catch (IOException ex)
 			{
-				System.out.println("Konnte packet nicht versendne weil Stream fehler auftrat");
 				ex.printStackTrace();
 				return false;
 			}

@@ -30,16 +30,10 @@ public class BringHomeSystem extends EntitySystem implements ComeToBaseEvent.Lis
 
     @Override
     public void onComeToBase(Entity playerEntity, Entity basePointEntity) {
-        //System.out.println("ComeBackToBase");
         int basePointsToAdd = Math.max(0, inventory.get(playerEntity).getMetalShards() - inventory.get(playerEntity).minMetalShardsForBase);
         inventory.get(playerEntity).subMetalShards(basePointsToAdd);
-        //System.out.println(basePoint.get(basePointEntity));
         int teamid = player.get(playerEntity).teamID;
-        //Highscore.Get().setTeamStat(teamid, "points", Highscore.Get().getTeamStat(teamid, "points") + basePointsToAdd);
-        //System.out.println("Team 0: " + Highscore.Get().getTeamStat(0, "points"));
-        //System.out.println("Team 1: " + Highscore.Get().getTeamStat(1, "points"));
-        //basePoint.get(basePointEntity).points += basePointsToAdd;
-        //System.out.println("InventarPlayer: " + inventory.get(playerEntity).getMetalShards());
-        //System.out.println("BasePoints: " + basePoint.get(basePointEntity).points);
+        //Highscore.Get().setTeamStat(teamid, "points", Highscore.Get().getTeamStat(teamid, "points") + basePointsToAdd);
+        //basePoint.get(basePointEntity).points += basePointsToAdd;
     }
 }

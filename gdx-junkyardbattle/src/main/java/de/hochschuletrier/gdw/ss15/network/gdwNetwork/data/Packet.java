@@ -33,7 +33,6 @@ public abstract class Packet
 	
 	public void setTimestamp(long timestamp)
 	{
-		//System.out.println("timestamp set to: "+timestamp);
 		m_Timestmp = timestamp;
 	}
 	

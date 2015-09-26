@@ -34,7 +34,6 @@ public class InventoryComponent extends Component implements Pool.Poolable {
             metalShards = shards;
             send();
 
-            //System.out.println("Shards: " + shards);
             return true;
         }
         return false;
@@ -62,12 +61,10 @@ public class InventoryComponent extends Component implements Pool.Poolable {
                 metalShards = 0;
             }
             send();
-            //System.out.println("Shards: " + shards);
             return metalShards - oldValueShards;
 
         };
 
-        //System.out.println("Shards: " + shards);
         return shards;
     }
 

@@ -25,7 +25,6 @@ public class PositionSynchComponentFactory extends ComponentFactory<EntityFactor
         component.updateDuration = properties.getFloat("updateDuration", 42);
         component.sendSave = properties.getBoolean("sendSave", false);
         component.lastSendTimer = new MyTimer(true);
-        //System.out.println("updateDuration: "+  component.updateDuration);
         entity.add(component);
     }
 }

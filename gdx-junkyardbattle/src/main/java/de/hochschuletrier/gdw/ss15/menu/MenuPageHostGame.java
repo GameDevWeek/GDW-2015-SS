@@ -91,7 +91,6 @@ super(skin, background);
 		try {
 			port = Integer.getInteger(textAreaPort.getText());
 		} catch (Exception e) {
-			System.out.println("LOG: UI : Wrong Port");
 			port=-1;
 		}
 		// Connected?

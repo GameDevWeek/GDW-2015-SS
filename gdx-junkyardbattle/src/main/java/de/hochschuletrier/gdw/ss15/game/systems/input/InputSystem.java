@@ -395,19 +395,6 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
 
     }
 
-    private void debug() {
-        System.out.println("");
-        System.out.println("");
-        System.out.println("Controller active: " + controllerActive);
-        System.out.println("horizontal: " + horizontal);
-        System.out.println("vertical: " + vertical);
-        System.out.println("");
-        System.out.println("shoot: " + leftMBDown);
-        System.out.println("gather: " + rightMBDown);
-        System.out.println("");
-        System.out.println("posX: " + posX);
-        System.out.println("posY: " + posY);
-        System.out.println("");
-        System.out.println("rechter Stick Winkel: " + rightStick.angle());
+    private void debug() {
     }
 }

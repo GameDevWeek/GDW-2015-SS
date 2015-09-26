@@ -80,7 +80,6 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener,
 
     private void ReceivedPacket(Packet pack)
     {
-        //System.out.println("received packet");
         if(pack.getPacketId()== PacketIds.InitEntity.getValue())
         {
             InitEntityPacket iPacket = (InitEntityPacket) pack;
@@ -89,7 +88,6 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener,
 
             lastAddedEntityID = iPacket.entityID;
 
-            //System.out.println(iPacket.xPos + " "+ iPacket.yPos);
 
             Entity ent = game.createEntity(iPacket.name,iPacket.xPos,iPacket.yPos);
 
@@ -103,16 +101,13 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener,
         }
         else if(pack.getPacketId() == PacketIds.EntityUpdate.getValue())
         {//positino update packet
-            //System.out.println("update packet received");
             EntityUpdatePacket euPacket = (EntityUpdatePacket) pack;
             Entity ent = hashMap.get(euPacket.entityID);
             if(ent!=null)
             {
-                //System.out.println("Old postion: "+ComponentMappers.physixBody.get(ent).getPosition());
 
                 NetworkReceivedNewPacketClientEvent.emit(pack, ent);
 
-                //System.out.println("new postion: "+ComponentMappers.physixBody.get(ent).getPosition());
             }
         }
         else if(pack.getPacketId()==PacketIds.Simple.getValue())
@@ -135,7 +130,6 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener,
             if(e != null)
                 NetworkReceivedNewPacketClientEvent.emit(pack, e);
 //            else
-//                System.out.println("spawnbullet packet illegal entity, id:" + packet.bulletID);
         }
         else if(pack.getPacketId() == PacketIds.Health.getValue())
         {
