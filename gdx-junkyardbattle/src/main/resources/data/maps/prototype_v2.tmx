@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="128" tileheight="128" nextobjectid="96">
- <tileset firstgid="1" source="tilesets/Tank_Body.tsx"/>
- <tileset firstgid="13" source="tilesets/Terrain.tsx"/>
+ <tileset firstgid="1" source="tilesets/tank_body.tsx"/>
+ <tileset firstgid="13" source="tilesets/terrain.tsx"/>
  <tileset firstgid="52" source="tilesets/base_rohr.tsx"/>
- <tileset firstgid="64" source="tilesets/Krater.tsx"/>
+ <tileset firstgid="64" source="tilesets/krater.tsx"/>
  <tileset firstgid="80" source="tilesets/tileset_ground_ambience.tsx"/>
- <tileset firstgid="90" source="tilesets/Mauer_Bruecke.tsx"/>
- <tileset firstgid="114" source="tilesets/Mauer_Bruecke90Grad.tsx"/>
- <tileset firstgid="138" source="tilesets/Abyss.tsx"/>
- <tileset firstgid="159" source="tilesets/Auto.tsx"/>
- <tileset firstgid="165" source="tilesets/Auto90grad.tsx"/>
+ <tileset firstgid="90" source="tilesets/mauer_bruecke.tsx"/>
+ <tileset firstgid="114" source="tilesets/mauer_bruecke90grad.tsx"/>
+ <tileset firstgid="138" source="tilesets/abyss.tsx"/>
+ <tileset firstgid="159" source="tilesets/auto.tsx"/>
+ <tileset firstgid="165" source="tilesets/auto90grad.tsx"/>
  <tileset firstgid="171" source="tilesets/tileset_ground_wall001.tsx"/>
  <layer name="Floor" width="30" height="30">
   <data>

@@ -98,7 +98,17 @@ public class Game extends InputAdapter {
         NetworkReceivedNewPacketClientEvent.clearListeners();
     }
 
-    public void init(AssetManagerX assetManager) {
+    public void init(AssetManagerX assetManager,int mapid) {
+
+        String mapname = new String("");
+        if(mapid == 1)
+        {
+            mapname = "prototype_v2";
+        }
+        else
+        {
+            mapname = "alpha_three_on_three";
+        }
 
         addSystems();
         addContactListeners();
@@ -106,7 +116,8 @@ public class Game extends InputAdapter {
         entityFactory.init(engine, assetManager);
         mapLoader.listen(renderSystem.getTileMapCreator());
         mapLoader.run((String name, float x, float y) -> createEntity(name, x, y),
-        		"data/maps/royalrubble_v2.tmx", physixSystem, entityFactory, assetManager );
+                "data/maps/royalrubble_v2.tmx", physixSystem, entityFactory, assetManager );
+
 
         renderSystem.init(mapLoader.getTiledMap(), this);
     }
