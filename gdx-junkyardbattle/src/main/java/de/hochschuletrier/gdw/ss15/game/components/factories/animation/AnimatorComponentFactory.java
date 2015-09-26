@@ -37,6 +37,7 @@ public class AnimatorComponentFactory extends ComponentFactory<EntityFactoryPara
         }
         
         component.initialRotation = properties.getFloat("initialRotation", 0);
+        component.draw = properties.getBoolean("draw", true);
         
         entity.add(component);
     }

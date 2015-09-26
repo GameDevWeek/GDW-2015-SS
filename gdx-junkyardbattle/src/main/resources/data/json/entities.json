@@ -174,7 +174,8 @@
             "Animator": {
                 "animation_IDLE": "character_blue_idle",
                 "animation_WALK": "character_blue_walk",
-                "initialRotation": 90
+                "initialRotation": 90,
+                "draw": false
             },
             "Interpolate": {},
             "SoundEmitter": {}
@@ -201,9 +202,10 @@
             },
             "NetworkID": {},
             "Animator": {
-                "animation_IDLE": "character_orange_idle",
-                "animation_WALK": "character_orange_walk",
-                "initialRotation": 90
+                "animation_IDLE": "character_blue_idle",
+                "animation_WALK": "character_blue_walk",
+                "initialRotation": 90,
+                "draw": false
             },
             "Move": {
                 "speed": 500
