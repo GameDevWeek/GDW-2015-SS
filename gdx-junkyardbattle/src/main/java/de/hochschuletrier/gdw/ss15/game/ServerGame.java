@@ -121,7 +121,7 @@ public class ServerGame{
         entityFactory.init(engine, Main.getInstance().getAssetManager());
 
         mapLoader.listen(spawnSystem);
-        mapLoader.run(this::createEntity, "data/maps/alpha_three_on_three.tmx", physixSystem, entityFactory, Main.getInstance().getAssetManager());
+        mapLoader.run(this::createEntity, "data/maps/royalrubble_v2.tmx", physixSystem, entityFactory, Main.getInstance().getAssetManager());
 
 
         Highscore.reset();

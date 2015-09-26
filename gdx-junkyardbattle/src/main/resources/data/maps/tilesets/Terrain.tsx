@@ -85,7 +85,7 @@
  </tile>
  <tile id="14">
   <properties>
-   <property name="BlockPath" value="true"/>
+   <property name="BlockPath" value=""/>
   </properties>
  </tile>
  <tile id="15">

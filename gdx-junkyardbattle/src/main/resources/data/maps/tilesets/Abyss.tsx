@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset name="Abyss" tilewidth="128" tileheight="128" tilecount="21">
+<tileset name="abyss" tilewidth="128" tileheight="128" tilecount="21">
  <image source="tileset003_abyss_trans.png" width="896" height="384"/>
  <tile id="0">
   <properties>
