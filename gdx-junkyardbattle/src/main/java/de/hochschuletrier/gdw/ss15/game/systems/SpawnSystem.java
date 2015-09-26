@@ -33,6 +33,7 @@ import de.hochschuletrier.gdw.ss15.game.components.animation.AnimatorComponent;
 import de.hochschuletrier.gdw.ss15.game.components.effects.ParticleEffectComponent;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.EntityUpdatePacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.HealthPacket;
+import de.hochschuletrier.gdw.ss15.game.systems.network.TestMovementSystem;
 
 import java.util.ArrayList;
 
@@ -69,6 +70,7 @@ public class SpawnSystem extends EntitySystem implements PlayerDiedEvent.Listene
         
         PhysixBodyComponent body = ComponentMappers.physixBody.get(player);
         body.setActive(false);
+        TestMovementSystem.interpolate = false;
     }
     
     public static class SpawnInfo
@@ -173,6 +175,7 @@ public class SpawnSystem extends EntitySystem implements PlayerDiedEvent.Listene
                     
                     body.setActive(true);
                     body.setPosition(spawnComponent.spawnPoint.x, spawnComponent.spawnPoint.y);
+                    TestMovementSystem.interpolate = true;
                     
                     HealthPacket healthPacket = new HealthPacket();
                     healthPacket.health = ComponentMappers.health.get(entity).health;

@@ -89,15 +89,14 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener,
             lastAddedEntityID = iPacket.entityID;
 
             boolean WasLowId = lastAddedEntityID<0;
-            Math.abs(lastAddedEntityID);
+            lastAddedEntityID = Math.abs(lastAddedEntityID);
 
             //System.out.println(iPacket.xPos + " "+ iPacket.yPos);
 
             Entity ent = game.createEntity(iPacket.name,iPacket.xPos,iPacket.yPos);
 
             if(WasLowId) {
-                System.out.println("Team flagged");
-                ComponentMappers.player.get(ent).teamID = 1;
+                ComponentMappers.player.get(ent).teamID = 0;
             }
 
             //if(iPacket.name.equals())

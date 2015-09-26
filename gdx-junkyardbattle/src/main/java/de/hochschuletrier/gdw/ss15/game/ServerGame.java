@@ -154,7 +154,7 @@ public class ServerGame{
             return this.createEntity(name, x, y);
         }, "data/maps/"+mapname+".tmx", physixSystem, entityFactory, Main.getInstance().getAssetManager());
     */
-        mapLoader.run(this::createEntity, "data/maps/royalrubbel.tmx", physixSystem, entityFactory, Main.getInstance().getAssetManager());
+        mapLoader.run(this::createEntity, "data/maps/salvage_shootout.tmx", physixSystem, entityFactory, Main.getInstance().getAssetManager());
 
 
 //        Highscore.reset();

@@ -96,7 +96,7 @@ public class Game extends InputAdapter {
 
     private final ParticleSpawnSystem particleSpawner = new ParticleSpawnSystem(this);
     private final DeathSystem deathSystem = new DeathSystem();
-    private final ChangeAnimationStateSystem changeAnimSystem = new ChangeAnimationStateSystem();
+    private ChangeAnimationStateSystem changeAnimSystem;
     
     private final TestListenerClient TestoutputSystem = new TestListenerClient();
     private final EffectAddSystem effectAddSystem = new EffectAddSystem(engine);
@@ -169,12 +169,14 @@ public class Game extends InputAdapter {
         entityFactory.init(engine, assetManager);
         mapLoader.listen(renderSystem.getTileMapCreator());
         mapLoader.run((String name, float x, float y) -> createEntity(name, x, y),
-                "data/maps/royalrubbel.tmx", physixSystem, entityFactory, assetManager );
+                "data/maps/salvage_shootout.tmx", physixSystem, entityFactory, assetManager );
 
 
         renderSystem.init(mapLoader.getTiledMap(), this);
         debugDraw = false;
         physixDebugRenderSystem.setProcessing(debugDraw);
+        
+        changeAnimSystem = new ChangeAnimationStateSystem(assetManager);
     }
 
     private void addSystems() {
