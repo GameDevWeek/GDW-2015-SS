@@ -6,7 +6,7 @@ import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serverclientsocket;
 
 public class LobyClient
 {
-    public String name = "no name";
+    public String name = "Noob";
     public Serverclientsocket socket;
     public boolean Team1 = true;
     private static int nextid = 0;

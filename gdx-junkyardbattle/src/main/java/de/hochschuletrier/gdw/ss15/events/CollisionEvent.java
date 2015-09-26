@@ -15,6 +15,7 @@ public class CollisionEvent {
         void onCollisionEvent(PhysixContact physixContact);
     }
 
+
     public static void emit(PhysixContact physixContact) {
         Object[] items = listeners.begin();
         for (int i = 0, n = listeners.size; i < n; i++) {

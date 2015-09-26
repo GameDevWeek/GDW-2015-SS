@@ -1,4 +1,4 @@
-package de.hochschuletrier.gdw.ss15.game.systems.network;
+package de.hochschuletrier.gdw.ss15.game.systems.RealNetwork;
 
 import com.badlogic.ashley.core.Entity;
 import de.hochschuletrier.gdw.ss15.events.network.client.NetworkReceivedNewPacketClientEvent;
@@ -17,11 +17,11 @@ public class TestListenerClient implements NetworkReceivedNewPacketClientEvent.L
     }
     @Override
     public void onReceivedNewPacket(Packet pack,Entity ent) {
-        System.out.print("Called");
+        //System.out.print("Called");
         SimplePacket sPack = (SimplePacket) pack;
         if(sPack.m_SimplePacketId == SimplePacket.SimplePacketId.MetalShardsUpdate.getValue())
         {
-            System.out.println("Metal chards Update: "+sPack.m_Moredata);
+            //System.out.println("Metal chards Update: "+sPack.m_Moredata);
         }
     }
 }
