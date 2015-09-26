@@ -26,12 +26,12 @@ public class MiningSystem extends EntitySystem implements MiningEvent.Listener {
     }
 
     @Override
-    public void onMiningEvent(Entity playerEnt, Entity mineableEnt, float channelTime) {
+    public void onMiningEvent(Entity playerEnt, Entity mineableEnt, float channelTime) {
         int minedMetalShards = (int)Math.ceil((GameConstants.MINING_PER_SECOND * channelTime));
-
+
 
         transferMines(mineableEnt, playerEnt, minedMetalShards);
-
+
         int actuallyMinedMetalShards = inventoryComp.get(mineableEnt).subMetalShards(minedMetalShards);
         int collected = inventoryComp.get(playerEnt).addMetalShards(actuallyMinedMetalShards);
 
