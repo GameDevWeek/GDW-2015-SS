@@ -22,6 +22,7 @@ import de.hochschuletrier.gdw.ss15.game.components.effects.ParticleEffectCompone
 import de.hochschuletrier.gdw.ss15.game.components.input.InputComponent;
 import de.hochschuletrier.gdw.ss15.game.components.light.ConeLightComponent;
 import de.hochschuletrier.gdw.ss15.game.components.light.PointLightComponent;
+import de.hochschuletrier.gdw.ss15.game.rendering.ZoomingModes;
 
 public class EffectAddSystem extends IteratingSystem implements EntityListener, WeaponCharging.Listener, WeaponUncharged.Listener {
     private final PooledEngine engine;
@@ -123,7 +124,9 @@ public class EffectAddSystem extends IteratingSystem implements EntityListener, 
         if(player != null) {
             PointLightComponent pointLightComp = ComponentMappers.pointLight.get(player);
             if(pointLightComp != null) {
-                pointLightComp.pointLight.setDistance(GameConstants.PLAYER_POINT_LIGHT_DISTANCE * (1.f - fireChannelAmount * 0.5f));
+                float distance = ZoomingModes.interpolate(GameConstants.ZOOM_MODE, GameConstants.PLAYER_POINT_LIGHT_DISTANCE, 
+                        GameConstants.PLAYER_POINT_LIGHT_DISTANCE_CHARGED, fireChannelAmount);
+                pointLightComp.pointLight.setDistance(distance);
                 pointLightComp.pointLight.getColor().a = GameConstants.PLAYER_POINT_LIGHT_ALPHA 
                         + fireChannelAmount;
             } 

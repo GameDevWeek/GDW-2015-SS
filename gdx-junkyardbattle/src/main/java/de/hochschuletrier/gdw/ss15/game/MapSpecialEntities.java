@@ -254,7 +254,7 @@ public class MapSpecialEntities
             PhysixBodyComponent body = ComponentMappers.physixBody.get(info.entity);
             //SafeProperties sp = entityInfo.components.get("ConeLight");
             BasePointComponent baseComp = ComponentMappers.basePoint.get(info.entity);
-            String teamStr = info.asObject.getProperty("Base", "A");
+            String teamStr = info.asObject.getProperty("Base", "UNKNOWN");
             switch(teamStr) {
             case "A":
                 baseComp.teamID = 0;
