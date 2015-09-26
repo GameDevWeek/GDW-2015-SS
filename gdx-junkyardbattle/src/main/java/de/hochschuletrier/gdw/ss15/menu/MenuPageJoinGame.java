@@ -121,11 +121,7 @@ public class MenuPageJoinGame extends MenuPage implements DoNotTouchPacketEvent.
 
 			//System.out.println("received simpile packet");
 			SimplePacket sPack = (SimplePacket) pack;
-			if(sPack.m_SimplePacketId==SimplePacketId.StartGame.getValue())
-			{
-				startGame();
-			}
-			else if(sPack.m_SimplePacketId == SimplePacketId.TimeMenuePacket.getValue())
+			if(sPack.m_SimplePacketId == SimplePacketId.TimeMenuePacket.getValue())
 			{//timer ist gespawned
 				//System.out.println("Received time: " + sPack.m_Moredata);
 				timetoStart=(int)sPack.m_Moredata;
@@ -267,13 +263,6 @@ public class MenuPageJoinGame extends MenuPage implements DoNotTouchPacketEvent.
 		return hg;
 	}
 
-	private void startGame() {
-		if (!main.isTransitioning()) {
-			Game game = new Game();
-			game.init(assetManager);
-			main.changeState(new GameplayState(assetManager, game), new SplitHorizontalTransition(500), null);
-		}
-	}
 
 	private void changeTeam(boolean team, int id) {
 		if (team) {
