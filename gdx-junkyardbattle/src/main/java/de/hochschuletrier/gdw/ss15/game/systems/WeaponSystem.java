@@ -1,16 +1,15 @@
 package de.hochschuletrier.gdw.ss15.game.systems;
 
+import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
+import de.hochschuletrier.gdw.ss15.events.SoundEvent;
 import de.hochschuletrier.gdw.ss15.events.WeaponCharging;
 import de.hochschuletrier.gdw.ss15.events.WeaponUncharged;
 import de.hochschuletrier.gdw.ss15.events.network.client.SendPacketClientEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
-import de.hochschuletrier.gdw.ss15.game.components.HealthComponent;
-import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
-import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
-import de.hochschuletrier.gdw.ss15.game.components.WeaponComponent;
+import de.hochschuletrier.gdw.ss15.game.components.*;
 import de.hochschuletrier.gdw.ss15.game.components.input.InputComponent;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.FirePacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.GatherPacket;
@@ -33,6 +32,7 @@ public class WeaponSystem extends IteratingSystem {
 
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
+
         PlayerComponent plc = ComponentMappers.player.get(entity);
         if(! plc.isLocalPlayer) return;
 
@@ -42,6 +42,9 @@ public class WeaponSystem extends IteratingSystem {
         WeaponComponent wpc = ComponentMappers.weapon.get(entity);
         PositionComponent psc = ComponentMappers.position.get(entity);
         InputComponent input = ComponentMappers.input.get(entity);
+        Entity weaponSound = new Entity();
+        weaponSound.add(new SoundEmitterComponent());
+        ComponentMappers.soundEmitter.get(weaponSound).emitter.setGlobalVolume(100);
 
         
         if(attackCooldownTimer < wpc.fireCooldown){
@@ -55,10 +58,17 @@ public class WeaponSystem extends IteratingSystem {
         if(input.shoot && wpc.fireCooldownReady){
         // left button is clicked
             wpc.fireChannelTime = Math.min(wpc.fireChannelTime + deltaTime, WeaponComponent.maximumFireTime);
-            WeaponCharging.emit((float)(wpc.fireChannelTime/wpc.maximumFireTime));
+            WeaponCharging.emit((float) (wpc.fireChannelTime / wpc.maximumFireTime));
+
+            //SoundEvent.emit("shotgun_shoot", entity, false);
+            //SoundEvent.emit("streetSteps", entity, true);
             return; // left mouse > right mouse
         } else {
             if(wpc.fireChannelTime > 0) { // left button is released
+                if (ComponentMappers.soundEmitter.has(entity)) {
+                    System.out.println("Shotgun");
+                    SoundEvent.emit("shotgun_shoot", weaponSound);
+                }
                 WeaponUncharged.emit();
 
                 FirePacket fire = new FirePacket(wpc.fireChannelTime);

@@ -76,12 +76,15 @@ public class TestMovementSystem extends IteratingSystem{
             if (ComponentMappers.soundEmitter.has(entity) && !soundEmitter.get(entity).isPlaying) {
 
                 SoundEvent.emit("streetSteps", entity, true);
+
+                //SoundEvent.emit("shotgun_shoot", entity, false);
                 soundEmitter.get(entity).isPlaying = true;
             }
         }
         else
         {
-            SoundEvent.stopSound(entity);
+            if (soundEmitter.get(entity).isPlaying)
+                SoundEvent.stopSound(entity);
             soundEmitter.get(entity).isPlaying = false;
         }
 
