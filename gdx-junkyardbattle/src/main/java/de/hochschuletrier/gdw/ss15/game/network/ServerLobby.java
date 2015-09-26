@@ -23,15 +23,40 @@ public class ServerLobby
 
     String Mapname;
     private int MaximumPlayers = 8;
-    private float SecondsToStart = 5;
+    private float SecondsToStart = 40;
     MyTimer timer = new MyTimer(true);
 
     public LinkedList<LobyClient> connectedClients = new LinkedList<>();
 
 
+    public int mapId = 1;
+
+
     public ServerLobby()
     {
 
+    }
+
+    public boolean ChangeMap(String s)
+    {
+        if(s.isEmpty())
+        {
+            if(s.equals("1"))
+            {
+                mapId = 1;
+            }
+            else if(s.equals("2"))
+            {
+                mapId = 2;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        SimplePacket spack = new SimplePacket(SimplePacket.SimplePacketId.MenueMapChange.getValue(),mapId);
+        SendPackettoAll(spack);
+        return true;
     }
 
     public void init()
@@ -46,7 +71,7 @@ public class ServerLobby
 
     public void SendStartGame()
     {
-        SendPackettoAll(new SimplePacket(SimplePacket.SimplePacketId.StartGame.getValue(), 0));
+        SendPackettoAll(new SimplePacket(SimplePacket.SimplePacketId.StartGame.getValue(), mapId));
     }
 
     public boolean update(float deltatime)

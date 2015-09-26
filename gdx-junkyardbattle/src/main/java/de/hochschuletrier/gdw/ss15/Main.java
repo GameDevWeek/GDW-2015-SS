@@ -161,7 +161,7 @@ public class Main extends StateBasedGame {
     }
 
     private void onLoadComplete() {
-        final MainMenuState mainMenuState = new MainMenuState(assetManager,0);
+        final MainMenuState mainMenuState = new MainMenuState(assetManager);
         addPersistentState(mainMenuState);
         changeState(mainMenuState, null, null);
         SandboxCommand.init(assetManager);

@@ -43,6 +43,8 @@ import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.Tools;
 
 /**
  * Created by lukas on 21.09.15.
+ *
+ *
  */
 public class ServerGame{
 
@@ -84,6 +86,9 @@ public class ServerGame{
     private final PlayerHurtSystem playerHurtSystem = new PlayerHurtSystem();
     private final HealthSystem healthSystem = new HealthSystem(engine);
     private final DeathSystem deathSystem = new DeathSystem();
+
+    private float maxTimeGameIsRunning = 10;
+    private float timeGameRunns = 0;
     
     public ServerGame()
     {
@@ -109,8 +114,18 @@ public class ServerGame{
         NetworkNewPlayerEvent.emit(ent);
     }
 
-    public void init() {
+    public void init(int mapid) {
         // Main.getInstance().console.register(physixDebug);
+
+        String mapname = new String("");
+        if(mapid == 1)
+        {
+            mapname = "prototype_v2";
+        }
+        else
+        {
+            mapname = "alpha_three_on_three";
+        }
 
         addSystems();
         addContactListeners();
@@ -121,7 +136,7 @@ public class ServerGame{
         mapLoader.listen(spawnSystem);
         mapLoader.run((String name, float x, float y) -> {
             return this.createEntity(name, x, y);
-        }, "data/maps/alpha_three_on_three.tmx", physixSystem, entityFactory, Main.getInstance().getAssetManager());
+        }, "data/maps/"+mapname+".tmx", physixSystem, entityFactory, Main.getInstance().getAssetManager());
     }
 
     private void addSystems() {
@@ -168,9 +183,17 @@ public class ServerGame{
         physixSystem.setGravity(0, 0);
     }
 
-    public void update(float delta) {
+    public boolean update(float delta) {
         //Main.getInstance().screenCamera.bind();
         engine.update(delta);
+
+        //System.out.println(timeGameRunns);
+        timeGameRunns += delta;
+        if(timeGameRunns>maxTimeGameIsRunning)
+        {//game is ending
+            return false;
+        }
+        return true;
     }
 
     public Entity createEntity(String name, float x, float y)

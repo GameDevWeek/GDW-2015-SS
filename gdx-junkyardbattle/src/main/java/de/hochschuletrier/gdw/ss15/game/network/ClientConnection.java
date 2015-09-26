@@ -9,6 +9,7 @@ import de.hochschuletrier.gdw.ss15.events.network.Base.DoNotTouchPacketEvent;
 import de.hochschuletrier.gdw.ss15.events.network.client.SendPacketClientEvent;
 import de.hochschuletrier.gdw.ss15.game.Game;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
+import de.hochschuletrier.gdw.ss15.menu.MenuPageEnterIP;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Clientsocket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.basic.SocketConnectListener;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.basic.SocketDisconnectListener;
@@ -122,11 +123,19 @@ public class ClientConnection implements SendPacketClientEvent.Listener,
             clientSocket=null;
             logger.info("Connection beendet");
 
-            final MainMenuState mainMenuState = new MainMenuState(Main.getInstance().getAssetManager(),1);
+            //final MainMenuState mainMenuState = new MainMenuState(Main.getInstance().getAssetManager(),1);
             //Main.getInstance().addPersistentState(mainMenuState);
             //Main.getInstance().changeState(Main.getInstance().get, null, null);
+           // MainMenuState state = (MainMenuState) Main.getInstance().getPersistentState(MainMenuState.class);
 
-            Main.getInstance().changeState(new MainMenuState(Main.getInstance().getAssetManager(),1), new SplitHorizontalTransition(500), null);
+
+           // MenuPageEnterIP page= new MenuPageEnterIP( state.getSkin(), state.getMenumanager(), "menu_bg");
+            //state.getMenumanager().addLayer(page);
+            //state.getMenumanager().pushPage(page);
+
+            MainMenuState state = (MainMenuState) Main.getInstance().getPersistentState(MainMenuState.class);
+            state.getMenumanager().popPage();
+            Main.getInstance().changeState(Main.getInstance().getPersistentState(MainMenuState.class));
         }
     }
 
@@ -169,13 +178,16 @@ public class ClientConnection implements SendPacketClientEvent.Listener,
             if(pack.m_SimplePacketId == SimplePacket.SimplePacketId.StartGame.getValue())
             {
                 if (!Main.getInstance().isTransitioning()) {
-                    Game game = new Game();
-                    game.init(Main.getInstance().getAssetManager());
+                     Game game = new Game();
+                    game.init(Main.getInstance().getAssetManager(),(int)pack.m_Moredata);
                     Main.getInstance().changeState(new GameplayState(Main.getInstance().getAssetManager(), game), new SplitHorizontalTransition(500), null);
                 }
             }
-            else if(pack.m_SimplePacketId == SimplePacket.SimplePacketId.StartGame.getValue()) {
+            else if(pack.m_SimplePacketId == SimplePacket.SimplePacketId.StopGame.getValue()) {
                 //stop game
+                //to lobby
+                //MainMenuState state = (MainMenuState) Main.getInstance().getPersistentState(MainMenuState.class);
+                Main.getInstance().changeState(Main.getInstance().getPersistentState(MainMenuState.class));
             }
         }
 
