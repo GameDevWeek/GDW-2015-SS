@@ -10,7 +10,10 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 
+import de.hochschuletrier.gdw.ss15.events.WeaponCharging;
+import de.hochschuletrier.gdw.ss15.events.WeaponUncharged;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
+import de.hochschuletrier.gdw.ss15.game.GameConstants;
 import de.hochschuletrier.gdw.ss15.game.GameGlobals;
 import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
@@ -20,8 +23,9 @@ import de.hochschuletrier.gdw.ss15.game.components.input.InputComponent;
 import de.hochschuletrier.gdw.ss15.game.components.light.ConeLightComponent;
 import de.hochschuletrier.gdw.ss15.game.components.light.PointLightComponent;
 
-public class EffectAddSystem extends IteratingSystem implements EntityListener {
+public class EffectAddSystem extends IteratingSystem implements EntityListener, WeaponCharging.Listener, WeaponUncharged.Listener {
     private final PooledEngine engine;
+    private Entity player;
     
     @SuppressWarnings("unchecked")
     public EffectAddSystem(PooledEngine engine) {
@@ -34,6 +38,14 @@ public class EffectAddSystem extends IteratingSystem implements EntityListener {
     public void addedToEngine(Engine engine) {
         super.addedToEngine(engine);
         engine.addEntityListener(Family.all(PlayerComponent.class, InputComponent.class).get(), this);
+        
+        WeaponCharging.register(this);
+        WeaponUncharged.register(this);
+    }
+    
+    public void removedFromEngine(Engine engine) {
+        WeaponCharging.unregister(this);
+        WeaponUncharged.unregister(this);
     }
     
     @Override
@@ -56,6 +68,7 @@ public class EffectAddSystem extends IteratingSystem implements EntityListener {
     @Override
     public void entityAdded(Entity entity) {
         PositionComponent entityPos = ComponentMappers.position.get(entity);
+        player = entity;
         
         if(!ComponentMappers.coneLight.has(entity)) {
             ConeLightComponent coneLightComp = engine.createComponent(ConeLightComponent.class);
@@ -65,7 +78,8 @@ public class EffectAddSystem extends IteratingSystem implements EntityListener {
         
         if(!ComponentMappers.pointLight.has(entity)) {
             PointLightComponent pointLightComponent = engine.createComponent(PointLightComponent.class);
-            pointLightComponent.set(new Color(1.f, 1.f, 0.f, 0.7f), 8.f);
+            pointLightComponent.set(new Color(1.f, 1.f, 0.f, GameConstants.PLAYER_POINT_LIGHT_ALPHA), 
+                    GameConstants.PLAYER_POINT_LIGHT_DISTANCE);
             pointLightComponent.pointLight.setXray(true);
             entity.add(pointLightComponent);
         }
@@ -94,6 +108,26 @@ public class EffectAddSystem extends IteratingSystem implements EntityListener {
 
     @Override
     public void entityRemoved(Entity entity) {
+    }
+
+    @Override
+    public void onWeaponUncharged() {
+        if(player != null) {
+            PointLightComponent pointLightComp = ComponentMappers.pointLight.get(player);
+            pointLightComp.pointLight.setDistance(GameConstants.PLAYER_POINT_LIGHT_DISTANCE);
+        }
+    }
+
+    @Override
+    public void onWeaponCharging(float fireChannelAmount) {
+        if(player != null) {
+            PointLightComponent pointLightComp = ComponentMappers.pointLight.get(player);
+            if(pointLightComp != null) {
+                pointLightComp.pointLight.setDistance(GameConstants.PLAYER_POINT_LIGHT_DISTANCE * (1.f - fireChannelAmount * 0.5f));
+                pointLightComp.pointLight.getColor().a = GameConstants.PLAYER_POINT_LIGHT_ALPHA 
+                        + fireChannelAmount;
+            } 
+        }
     }
 
 }
