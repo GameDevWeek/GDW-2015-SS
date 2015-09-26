@@ -22,7 +22,6 @@ import de.hochschuletrier.gdw.ss15.game.contactlisteners.PickupListenerClient;
 import de.hochschuletrier.gdw.ss15.game.systems.CameraSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.DeathSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.HealthUpdateSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.HudSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.RenderStateUpdateSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.SoundSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;

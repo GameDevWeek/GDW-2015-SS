@@ -1,5 +1,5 @@
 {
-    "walking": {
+	"walking": {
         "filename": "data/animations/walking.png",
         "frames" : 7,
         "frameDuration": [0.15, 0.15, 0.15, 0.15, 0.15, 0.15, 0.15],
@@ -62,5 +62,21 @@
         "playType" : "LOOP",
         "columns": 7,
         "rows" : 6
+        },
+    "charge_red":{
+     	"filename":"data/animations/charge_red.png",
+        "frames" : 21,
+        "frameDuration": [0.1, 0.1],
+        "playType" : "LOOP",
+        "columns": 7,
+        "rows" : 3
+        },
+    "charge_blue":{
+     	"filename":"data/animations/charge_blue.png",
+        "frames" : 21,
+        "frameDuration": [0.1, 0.1],
+        "playType" : "LOOP",
+        "columns": 7,
+        "rows" : 3
         }
 }
