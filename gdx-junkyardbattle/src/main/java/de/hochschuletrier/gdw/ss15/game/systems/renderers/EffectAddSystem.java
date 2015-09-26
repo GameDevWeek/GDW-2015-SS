@@ -201,7 +201,7 @@ public class EffectAddSystem extends IteratingSystem implements EntityListener, 
             if(attachedEntityComp != null) {
                 for(Entity attachedEntity : attachedEntityComp.entities) {
                     AnimatorComponent animComp = ComponentMappers.animator.get(attachedEntity);
-                    if(animComp != null) {
+                    if(animComp != null && ComponentMappers.chargeEffect.has(attachedEntity)) {
                         animComp.scaleX = animComp.scaleY = ZoomingModes.interpolate(GameConstants.ZOOM_MODE, 0.1f, 
                                 0.5f, fireChannelAmount);
                     }
