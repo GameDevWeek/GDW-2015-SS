@@ -2,7 +2,6 @@ package de.hochschuletrier.gdw.ss15.game;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
-
 import de.hochschuletrier.gdw.commons.gdx.ashley.EntityFactory;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixComponentAwareContactListener;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
@@ -11,13 +10,7 @@ import de.hochschuletrier.gdw.ss15.events.*;
 import de.hochschuletrier.gdw.ss15.events.network.server.DoNotTouchServerPacketEvent;
 import de.hochschuletrier.gdw.ss15.events.network.server.NetworkNewPlayerEvent;
 import de.hochschuletrier.gdw.ss15.events.network.server.NetworkReceivedNewPacketServerEvent;
-import de.hochschuletrier.gdw.ss15.game.components.BasePointComponent;
-import de.hochschuletrier.gdw.ss15.game.components.BulletComponent;
-import de.hochschuletrier.gdw.ss15.game.components.ImpactSoundComponent;
-import de.hochschuletrier.gdw.ss15.game.components.MetalShardSpawnComponent;
-import de.hochschuletrier.gdw.ss15.game.components.PickableComponent;
-import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
-import de.hochschuletrier.gdw.ss15.game.components.TriggerComponent;
+import de.hochschuletrier.gdw.ss15.game.components.*;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.BaseMetalShardDeliverListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.BulletListener;
@@ -28,20 +21,18 @@ import de.hochschuletrier.gdw.ss15.game.contactlisteners.TriggerListener;
 import de.hochschuletrier.gdw.ss15.game.systems.BulletSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.DeathSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.HealthSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.InventorySystem;
 import de.hochschuletrier.gdw.ss15.game.systems.MetalShardDropSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.LineOfSightSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.MetalShardSpawnSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.PlayerLifeSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.SpawnSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.RealNetwork.NetworkServerSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.RealNetwork.PositionSynchSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.network.TestSatelliteSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.network.UpdatePhysixServer;
-import de.hochschuletrier.gdw.ss15.game.systems.network.UpdatePhysixSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.InventorySystem;
-import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serverclientsocket;
+import de.hochschuletrier.gdw.ss15.game.systems.SyncHighscoreSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.*;
+import de.hochschuletrier.gdw.ss15.game.utils.TimerSystem;
+import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serverclientsocket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.Tools;
 
 /**
@@ -74,13 +65,16 @@ public class ServerGame{
     private final BringHomeSystem bringHomeSystem = new BringHomeSystem();
     
     private final EntityFactoryParam factoryParam = new EntityFactoryParam();
+
+    private final TimerSystem timerSystem = new TimerSystem();
+    private final SyncHighscoreSystem syncHighscoreSystem = new SyncHighscoreSystem(timerSystem);
     private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json", ServerGame.class);
 
     
     private final MapLoader mapLoader = new MapLoader(); /// @author tobidot
-    private UpdatePhysixServer updatePhysixServer;
-    private FireServerListener fireServerListener;
-    private GatherServerListener gatherServerListener;
+    private UpdatePhysixServer updatePhysixServer = new UpdatePhysixServer();
+    private FireServerListener fireServerListener = new FireServerListener(this);
+    private GatherServerListener gatherServerListener = new GatherServerListener(physixSystem);
     
     private final SpawnSystem spawnSystem = new SpawnSystem();
     private final MetalShardDropSystem metalShardDropSystem = new MetalShardDropSystem(this);
@@ -108,7 +102,11 @@ public class ServerGame{
 
         //ComponentMappers.client.get(ent).client = sock;
         ComponentMappers.player.get(ent).name = name;
+        ComponentMappers.player.get(ent).playerID = name.hashCode();
         ComponentMappers.player.get(ent).teamID = Tools.BoolToInt(team);
+
+        Highscore.Get().addPlayer(name.hashCode());
+        //Highscore.Get().setPlayerStat(name.hashCode(), "team", ComponentMappers.player.get(ent).teamID);
 
         NetworkNewPlayerEvent.emit(ent);
     }
@@ -123,16 +121,20 @@ public class ServerGame{
         entityFactory.init(engine, Main.getInstance().getAssetManager());
 
         mapLoader.listen(spawnSystem);
-        mapLoader.run((String name, float x, float y) -> {
-            return this.createEntity(name, x, y);
-        }, "data/maps/alpha_three_on_three.tmx", physixSystem, entityFactory, Main.getInstance().getAssetManager());
+        mapLoader.run(this::createEntity, "data/maps/alpha_three_on_three.tmx", physixSystem, entityFactory, Main.getInstance().getAssetManager());
+
+
+        Highscore.reset();
+        Highscore.Get().addPlayerCategory("team");
+        Highscore.Get().addPlayerCategory("kills");
+        Highscore.Get().addPlayerCategory("deaths");
+        Highscore.Get().addPlayerCategory("shards");
+        Highscore.Get().addTeamCategory("points");
+        Highscore.Get().addTeam(0);
+        Highscore.Get().addTeam(1);
     }
 
     private void addSystems() {
-
-        updatePhysixServer = new UpdatePhysixServer();
-        fireServerListener = new FireServerListener(this);
-        gatherServerListener = new GatherServerListener(physixSystem);
 
         engine.addSystem(physixSystem);
         engine.addSystem(networkSystem);
@@ -156,6 +158,8 @@ public class ServerGame{
         engine.addSystem(updatePhysixServer);
         engine.addSystem(gatherServerListener);
         engine.addSystem(miningSystem);
+        
+        PlayerDiedEvent.register(spawnSystem);
         engine.addSystem(bringHomeSystem);
     }
 
@@ -177,6 +181,7 @@ public class ServerGame{
     public void update(float delta) {
         //Main.getInstance().screenCamera.bind();
         engine.update(delta);
+        timerSystem.update(delta);
     }
 
     public Entity createEntity(String name, float x, float y)
@@ -206,6 +211,7 @@ public class ServerGame{
         PickupEvent.unregisterAll();
         MiningEvent.unregisterAll();
         PlayerHurtEvent.unregisterAll();
+        PlayerDiedEvent.unregisterAll();
     }
 
 }
