@@ -63,7 +63,6 @@ public class WeaponSystem extends IteratingSystem {
 
                 FirePacket fire = new FirePacket(wpc.fireChannelTime);
                 SendPacketClientEvent.emit(fire, true);
-//                System.out.println("emit fire package! " + wpc.fireChannelTime);
 
                 wpc.fireChannelTime = 0f;
                 attackCooldownTimer = 0.0f;
@@ -79,7 +78,6 @@ public class WeaponSystem extends IteratingSystem {
 //                WeaponUncharged.emit(); // fürs harvesten?
                 GatherPacket gather = new GatherPacket(wpc.harvestChannelTime);
                 SendPacketClientEvent.emit(gather, true);
-                System.out.println("gathered for " + wpc.harvestChannelTime + "m/n/whatevsec");
                 
                 wpc.harvestChannelTime = 0f;
             }
@@ -94,7 +92,6 @@ public class WeaponSystem extends IteratingSystem {
                 GatherPacket gather = new GatherPacket(wpc.harvestChannelTime);
                 SendPacketClientEvent.emit(gather, true);
             }
-            //System.out.println("gather: " + wpc.harvestChannelTime);
         }
         else
         { // right button is released

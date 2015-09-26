@@ -58,7 +58,6 @@ public class UpdatePhysixSystem extends IteratingSystem
             if (phxc != null) {
             	if(p.getTimestamp()>lastTimestamp)
                 {
-                   // System.out.println("Entity update received");
 
                 	lastTimestamp = p.getTimestamp();
                 	float calcTimestamp = (float) (Main.getInstance().getClientConnection().getSocket().getTimeDifferenceMS(p.getTimestamp())/1000);
@@ -70,7 +69,6 @@ public class UpdatePhysixSystem extends IteratingSystem
 
                     phxc.setAngle(p.rotation*MathUtils.degreesToRadians);
                 	
-                	//System.out.println("velo" +p.velocityX+ " "+ p.velocityY);
                     
                 }
             }

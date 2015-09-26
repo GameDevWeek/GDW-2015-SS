@@ -203,7 +203,6 @@ public class Server implements Runnable
 
 
             //runningGame.update(0);
-            //System.out.println("runn");
             //engine.update();
 
             if(serversocket.isNewClientAvaliable())

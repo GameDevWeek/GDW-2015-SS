@@ -21,6 +21,7 @@ public class PlayerComponentFactory extends ComponentFactory<EntityFactoryParam>
         PlayerComponent component = engine.createComponent(PlayerComponent.class);
         component.name = properties.getString("name");
         component.isLocalPlayer = properties.getBoolean("isLocalPlayer", false);
+        component.teamID = 0;
         entity.add(component);
     }
 }

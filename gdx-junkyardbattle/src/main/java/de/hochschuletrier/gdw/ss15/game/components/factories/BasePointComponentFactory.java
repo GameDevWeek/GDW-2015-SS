@@ -20,7 +20,6 @@ public class BasePointComponentFactory extends ComponentFactory<EntityFactoryPar
     {
         BasePointComponent component = engine.createComponent(BasePointComponent.class);
         entity.add(component);
-//        System.out.println("BULLET");
     }
 
 }

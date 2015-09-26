@@ -26,7 +26,6 @@ public class HolderSocketListener<T> extends WeakReference<T>
         }
         else
     	{
-        	System.out.println("target collected");
     	}
     }
 }

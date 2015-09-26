@@ -44,14 +44,12 @@ public class UpdatePhysixServer extends EntitySystem implements NetworkReceivedN
         try{
         	
             MovementPacket p = (MovementPacket)pack;
-        	//System.out.println("Received rotation"+ p.rotation);
             InventoryComponent inventory = new InventoryComponent(); // what the fuck?
             //InventoryComponent inventory = ComponentMappers.inventory.get(ent);
             MoveComponent move = ComponentMappers.move.get(ent);
             
             Vector2 vel = new Vector2(p.xPos,p.yPos);
 
-           // System.out.println("Base : "+vel);
 			if(inventory.getMetalShards()<=700 && inventory.getMetalShards()>0)
             {
             	float invtemp = inventory.getMetalShards()/700;
@@ -63,11 +61,9 @@ public class UpdatePhysixServer extends EntitySystem implements NetworkReceivedN
         	    vel.scl(move.speed);
             }
 
-            //System.out.println(vel);
             
             phxc.setLinearVelocity(vel);
             //phxc.setAngle(p.rotation);
-            //System.out.println("fdsjklsdjfsdkl"+p.rotation);
             phxc.setAngle(p.rotation * MathUtils.degreesToRadians);
             }catch (ClassCastException e){}
     }

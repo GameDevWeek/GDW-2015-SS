@@ -80,11 +80,9 @@ public class Clientsocket extends BaseClient implements Closeable
 		{
 			return false;
 		}
-		//System.out.println("Connect is called");
 		
 		if(!ClearSocketsAndThreads())
 		{
-			System.out.println("Konnte noch laufenden socket nicht schliesen");
 			return false;
 		}
 		
@@ -102,13 +100,11 @@ public class Clientsocket extends BaseClient implements Closeable
 		}
 		catch (SocketException ex)
 		{
-			System.out.println("Fehler beim erstellen der Sockets");
 			ex.printStackTrace();
 			return false;
 		}
 		catch (IOException ex)
 		{
-			System.out.println("Fehler beim erstellen der Sockets");
 			ex.printStackTrace();
 			return false;
 		}
@@ -125,7 +121,6 @@ public class Clientsocket extends BaseClient implements Closeable
 		m_Connectstatus=ConnectStatus.ByConnect;
 		m_ConnectTimer.StartCounterMS(m_TimeToResendHandshake);
 		
-		System.out.println("Connect should be started");
 		m_ThreadPool.execute(()->RunConnect());
 		
 		return true;
@@ -135,7 +130,6 @@ public class Clientsocket extends BaseClient implements Closeable
 	{//Disconnected den clienten vom Server blockeiert bis alle threads ausgelaufen sind, gibt fall zurueck fall es nicht gelapt hat (socket errors ohter threads)sollte nicht passieren
 		if(m_Connected.get() && !m_ByDisconned.get())
 		{
-			System.out.println("trigget");
 			m_ByDisconned.set(true);
 			m_Connected.set(false);
 			m_DisconnectHandler = new DisconnectHandler(m_Sockets[Sockettypes.UnsaveSocket.getValue()], false);
@@ -158,19 +152,16 @@ public class Clientsocket extends BaseClient implements Closeable
 	@Override
 	public void callListeners()
 	{//ruft alle registrieren connect und packet callback funktionen auf (extra funktion damit nicht threadet)
-		//System.out.println(this);
 		//Tools.Sleep(1000);
 		if(m_CalledConnectListeners.get() == false)
 		{
 			m_CalledConnectListeners.set(true);
-			//System.out.println("Called");
 			Iterator<Entry<Integer, HolderSocketConnectListener<Object>>> it = m_ConnectListeners.entrySet().iterator();
 			while(it.hasNext())
 			{
 				Map.Entry<Integer, HolderSocketConnectListener<Object>> pair = (Map.Entry<Integer, HolderSocketConnectListener<Object>>)it.next();
 				if(pair.getValue().get() == null || pair.getValue().isEnqueued())
 				{
-					System.out.println("Removed invalid Listner");
 					it.remove();
 				}
 				else
@@ -210,7 +201,6 @@ public class Clientsocket extends BaseClient implements Closeable
 					}
 					else if(rc == -1)
 					{
-						System.out.println("Time Synconization failed");
 						FinishConnectTry(ConnectStatus.ErrorClockSync);
 						return;
 					}
@@ -218,7 +208,6 @@ public class Clientsocket extends BaseClient implements Closeable
 				else
 				{
 					UdpData from = new UdpData();
-					//System.out.println();
 					ByteArrayInputStream input = m_Sockets[Sockettypes.UnsaveSocket.getValue()].ReceiveByte(from);
 									
 					if(input.available()==Packet.getMainheadersize()+Byte.SIZE/8 &&
@@ -235,11 +224,9 @@ public class Clientsocket extends BaseClient implements Closeable
 							m_HandshakePart1 = false;
 							m_ConnectTimer.StartCounterMS(m_TimeToResendHandshake);
 							m_AcctualLoginTry=0;
-							System.out.println("received LoginPart 1");
 						}
 						else if(flag == UnsaveSocketFlag.Login2.getValue() && sh == m_LoginKeyReceived2 && lh == m_Logintoken + m_LoginKey1 + m_LoginKeyReceived1)
 						{
-							System.out.println("received LoginPart 2");
 					
 							m_Timeouthandlers[Sockettypes.SaveSocket.getValue()] = new Timeouthandler(m_Sockets[Sockettypes.SaveSocket.getValue()], (byte)SaveSocketFlag.IsAlive.getValue());
 							m_Timeouthandlers[Sockettypes.UnsaveSocket.getValue()] = new Timeouthandler(m_Sockets[Sockettypes.UnsaveSocket.getValue()], (byte)UnsaveSocketFlag.IsAlive.getValue());
@@ -253,17 +240,14 @@ public class Clientsocket extends BaseClient implements Closeable
 							FinishConnectTry(ConnectStatus.Succes);
 						}
 						
-						//System.out.println(""+flag+" "+sh+" "+lh);
 						
 					}
 				
 					m_ConnectTimer.Update();
 					if(m_ConnectTimer.get_CounterMilliseconds()>m_TimeToResendHandshake)
 					{
-						//System.out.println("Incresed count");
 						if(m_AcctualLoginTry > m_MaxTrysResendHandshake)
 						{
-							System.out.println("Connect timed out");
 							FinishConnectTry(ConnectStatus.ErrorNoConnection);
 						}
 						else
@@ -278,7 +262,6 @@ public class Clientsocket extends BaseClient implements Closeable
 			}
 			catch(IOException ex)
 			{
-				System.out.println("Connect failed");
 				ex.printStackTrace();
 				FinishConnectTry(ConnectStatus.ErrorInternal);
 				return;
@@ -290,8 +273,6 @@ public class Clientsocket extends BaseClient implements Closeable
 	{
 		m_Connectstatus = status;
 		m_CalledConnectListeners.set(false);
-		//System.out.println("is false");
-		//System.out.println(this);
 	}
 	
 	private void RunReceiveSave()
@@ -304,9 +285,7 @@ public class Clientsocket extends BaseClient implements Closeable
 				ByteArrayInputStream input = m_Sockets[Sockettypes.SaveSocket.getValue()].ReceiveByte(from);
 				if(input.available() > 0 && from.get_InetAdress().equals(m_Sockets[Sockettypes.SaveSocket.getValue()].get_InetAdress()))
 				{//data available and come from right socket
-					//System.out.println("Received data on save socket");
 					int flag = input.read();
-					//System.out.println(""+flag+" "+SaveSocketFlag.IsAlive.getValue());
 					if(flag == SaveSocketFlag.Ack.getValue() && input.available() == Long.SIZE/8)
 					{
 						DataInputStream datainput = new DataInputStream(input);
@@ -324,13 +303,11 @@ public class Clientsocket extends BaseClient implements Closeable
 				
 				if(!m_Timeouthandlers[Sockettypes.SaveSocket.getValue()].Update())
 				{
-					System.out.println("Socket closed because lost connection on Save port");
 					finishDisconnect();
 				}
 			}
 			catch (IOException ex)
 			{
-				System.out.println("Error by receiveing data on save port -> Client stoped working");
 				ex.printStackTrace();
 			}
 			m_ThreadPool.execute(()->RunReceiveSave());
@@ -347,13 +324,10 @@ public class Clientsocket extends BaseClient implements Closeable
 				ByteArrayInputStream input = m_Sockets[Sockettypes.UnsaveSocket.getValue()].ReceiveByte(from);
 				if(input.available()>0)
 				{
-					//System.out.println("receive data "+input.available());
 				}
 				if(input.available() > 0 && from.get_InetAdress().equals(m_Sockets[Sockettypes.UnsaveSocket.getValue()].get_InetAdress()))
 				{//data available and come from right socket
-					//System.out.println("Received data on unsave socket");
 					int flag = input.read();
-					//System.out.println(""+flag+" "+UnsaveSocketFlag.IsAlive.getValue());
 					if(flag == UnsaveSocketFlag.IsAlive.getValue())
 					{
 						m_Timeouthandlers[Sockettypes.UnsaveSocket.getValue()].ReceivedIsAliveAswer(input);
@@ -373,13 +347,11 @@ public class Clientsocket extends BaseClient implements Closeable
 				
 				if(!m_Timeouthandlers[Sockettypes.UnsaveSocket.getValue()].Update())
 				{
-					System.out.println("Socket closed because lost connection on Save port");
 					finishDisconnect();
 				}
 			}
 			catch (IOException ex)
 			{
-				System.out.println("Error by receiveing data on save port -> Client stoped working");
 				ex.printStackTrace();
 				finishDisconnect();
 			}
@@ -396,16 +368,13 @@ public class Clientsocket extends BaseClient implements Closeable
 	{
 		try
 		{
-			//System.out.println(m_ThreadPool.getActiveCount());
 			while(m_ThreadPool.getActiveCount() != 0)
 			{
 				m_ThreadPool.awaitTermination(100, TimeUnit.MICROSECONDS);
 			}
-			//System.out.println("after");
 		}
 		catch(InterruptedException ex)
 		{
-			System.out.println("Thread pool konnte nicht ordnungsemaess beendet werden!");
 		}
 		
 		try

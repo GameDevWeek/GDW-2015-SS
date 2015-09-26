@@ -216,7 +216,6 @@ public class ServerGame{
         engine.update(delta);
         timerSystem.update(delta);
 
-        //System.out.println(timeGameRunns);
         timeGameRunns += delta;
         if(timeGameRunns>maxTimeGameIsRunning)
         {//game is ending
@@ -230,7 +229,6 @@ public class ServerGame{
         //factoryParam.game = this;
         factoryParam.x = x;
         factoryParam.y = y;
-        //System.out.println("Spawned entit with name: " + name);
         Entity entity = entityFactory.createEntity(name, factoryParam);
 
         engine.addEntity(entity);
