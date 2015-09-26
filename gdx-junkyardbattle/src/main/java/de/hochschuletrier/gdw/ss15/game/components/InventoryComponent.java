@@ -1,4 +1,4 @@
-﻿package de.hochschuletrier.gdw.ss15.game.components;
+package de.hochschuletrier.gdw.ss15.game.components;
 
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.utils.Pool;

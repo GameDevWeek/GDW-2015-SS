@@ -1,4 +1,4 @@
-﻿package de.hochschuletrier.gdw.ss15.game.systems.hud;
+package de.hochschuletrier.gdw.ss15.game.systems.hud;
 
 import java.nio.channels.NetworkChannel;
 
