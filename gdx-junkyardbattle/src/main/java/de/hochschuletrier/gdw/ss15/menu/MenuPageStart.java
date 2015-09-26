@@ -13,26 +13,25 @@ import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket.SimplePacke
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.enums.ConnectStatus;
 
-public class MenuPageStart extends MenuPage implements ConnectTryFinishEvent.Listener , DoNotTouchPacketEvent.Listener {
+public class MenuPageStart extends MenuPage /*implements ConnectTryFinishEvent.Listener , DoNotTouchPacketEvent.Listener*/ {
 	private final DecoImage imageJoin = new DecoImage(assetManager.getTexture("join_button"));
 	private final DecoImage imageHost = new DecoImage(assetManager.getTexture("host_button"));
+	
+	private final DecoImage imageBack= new DecoImage(assetManager.getTexture("back_button"));
+	
 	private MenuManager menuManager;
 	
 	private int buttonImageWidth=100;
 	private int buttonImageHeight=30;
+
 	
-	private String ip = "localhost";
-	private int port = 12345;
-	
-	Runnable connectToServer = new Runnable() {
+	Runnable runnablejoin = new Runnable() {
 		
 		@Override
 		public void run() {
-			// TODO Auto-generated method stub
-			if(Main.getInstance().getClientConnection().connect(ip, port)==false)
-			{
-				//fehler anzeigen
-			}
+			MenuPageEnterIP page= new MenuPageEnterIP(skin, menuManager, "menu_bg");
+			menuManager.addLayer(page);
+			menuManager.pushPage(page);
 		}
 	};
 	public MenuPageStart(Skin skin, MenuManager menuManager, String background) {
@@ -42,12 +41,17 @@ public class MenuPageStart extends MenuPage implements ConnectTryFinishEvent.Lis
 		imageJoin.setHeight(buttonImageHeight);
 		imageHost.setWidth(buttonImageWidth);
 		imageHost.setHeight(buttonImageHeight);
-		addCenteredImage(460, 315, buttonImageWidth,(int)imageJoin.getHeight(), imageJoin,connectToServer);/**/;
+		imageBack.setWidth(60);
+		imageBack.setHeight(30);
+		addCenteredImage(460, 315, buttonImageWidth,(int)imageJoin.getHeight(), imageJoin,runnablejoin);/**/;
 		addCenteredImage(460, 215, buttonImageWidth,buttonImageHeight, imageHost,()->{/*Change Screen*/});
-		
+		addCenteredImage(355, 40, 60,30, imageBack, ()-> menuManager.popPage());
+		/*
 		ConnectTryFinishEvent.registerListener(this);
 		DoNotTouchPacketEvent.registerListener(this);
+		*/
 	}
+	/*
 	@Override
 	public void onConnectFinishPacket(boolean status)
 	{
@@ -67,13 +71,15 @@ public class MenuPageStart extends MenuPage implements ConnectTryFinishEvent.Lis
 			{
 				if(sPack.m_Moredata==1)
 				{	
-				MenuPage page= new MenuPageJoinGame(skin, menuManager, "join_bg");
+				//MenuPage page= new MenuPageJoinGame(skin, menuManager, "join_bg");
+					MenuPage page = new MenuPageEnterIP(skin, menuManager, "menu_bg");
 					menuManager.addLayer(page);
 					menuManager.pushPage(page);
 				}
 			}
 		}
 	}
+	*/
 
 	
 	

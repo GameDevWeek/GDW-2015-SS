@@ -14,6 +14,7 @@ public class GatherDownEvent {
 
     private static final SnapshotArray<Listener> listeners = new SnapshotArray();
 
+
     // name ändern???
     public static void emit(int xPos, int yPos) {
         Object[] items = listeners.begin();
