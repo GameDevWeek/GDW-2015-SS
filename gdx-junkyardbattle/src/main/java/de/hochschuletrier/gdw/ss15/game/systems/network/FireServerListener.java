@@ -28,7 +28,7 @@ public class FireServerListener extends EntitySystem implements NetworkReceivedN
 
     private ServerGame game;
     private static final float power = 1000;
-    private static final float damping = 10;
+    private static final float damping = 5;
     private static final float projectPlayerDistance = 55;
 
 
@@ -49,34 +49,22 @@ public class FireServerListener extends EntitySystem implements NetworkReceivedN
         PhysixBodyComponent phxc = ComponentMappers.physixBody.get(ent);
         InventoryComponent invc = ComponentMappers.inventory.get(ent);
         
-        //System.out.print("akjsdklasdjlaskdashkdjashkjdahjksad");
         try{
             FirePacket packet = (FirePacket)pack;
 
             float p = packet.channeltime / WeaponComponent.maximumFireTime + 0.0001f;
             float scatter = WeaponComponent.maximumScattering * (1.05f-p);
             Vector2 dir = Vector2.Zero;
-//            System.out.printf("\n fireing: %.2f -> scattering: %.2f \n", packet.channeltime, scatter);
-
-
+            
             int shootshards = Math.min(invc.getMetalShards(), WeaponComponent.ShardsPerShot);
             invc.addMetalShards(-shootshards);
+            
             for (int i = 0; i < shootshards; ++i) {
-//                System.out.println("shard shot");
-
                 Vector2 playerLookDirection = new Vector2((float) Math.cos(phxc.getAngle()), (float) Math.sin(phxc.getAngle()));
 
-                // create projectile
-                //Components: Bullet, Damage, Physix
-                //physix component
                 playerLookDirection.nor().scl(projectPlayerDistance);
                 EntityFactoryParam param = new EntityFactoryParam();
-                Vector2 startPosition = playerLookDirection.add(phxc.getPosition()); // dir.setLength(projectPlayerDistance).add(phxc.getPosition());
-
-
-
-
-                //System.out.println(invc.getMetalShards());
+                Vector2 startPosition = playerLookDirection.add(phxc.getPosition());
 
                 Entity projectile = game.createEntity("projectile", startPosition.x, startPosition.y);
 
@@ -90,11 +78,6 @@ public class FireServerListener extends EntitySystem implements NetworkReceivedN
                 bullet.power = chargepower;
                 bullet.playerrotation = phxc.getAngle() * MathUtils.radiansToDegrees;
                 bullet.playerpos = phxc.getPosition();
-//
-//                SpawnBulletPacket spawnBulletPacket = new SpawnBulletPacket();
-////                spawnBulletPacket.position = new Vector2(startPosition.x, startPosition.y);
-//                spawnBulletPacket.bulletID = projectile.getComponent(PositionSynchComponent.class).networkID;
-//                SendPacketServerEvent.emit(spawnBulletPacket, true);
             }
             }catch (ClassCastException e){}
     }
@@ -114,7 +97,7 @@ public class FireServerListener extends EntitySystem implements NetworkReceivedN
             physixBodyComponent.applyImpulse(v2);
 //            physixBodyComponent.setLinearVelocity(v2.x, v2.y);
 
-//            physixBodyComponent.setLinearDamping(damping);
+            physixBodyComponent.setLinearDamping(damping);
         });
     }
 }
