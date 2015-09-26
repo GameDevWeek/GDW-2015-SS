@@ -144,8 +144,7 @@
                 "maxMetalShards": 300
             },
             "Move": {
-                "speed": 300,
-                "metalShards": 0
+                "speed": 500
             },
             "Health": {
                 "health": 30
@@ -202,7 +201,7 @@
                 "initialRotation": 90
             },
             "Move": {
-                "speed": 10
+                "speed": 500
             },
             "Input": {},
             "Interpolate": {},
@@ -229,20 +228,54 @@
                 "type": "dynamic",
                 "category": "BULLET"
             },
+            "PositionSynch": {
+                "clientname": "projectileClient",
+                "updateDuration": 10000000,
+                "sendSave": true
+            },
             "Damage": {
                 "damageValue": 10,
                 "damageToPlayer": true,
                 "damageToTile": false
             },
             "Bullet": {
-                "playerID": -1
+            }
+        }
+    },
+    "projectileClient": {
+        "meta": {},
+        "components": {
+            "Position": {
+                "layer": 1
             },
-            "Interpolate": {},
+            "PhysixBody": {
+                "shape": "circle",
+                "size": 5,
+                "density": 10,
+                "friction": 0.5,
+                "restitution": 0.1,
+                "type": "dynamic",
+                "category": "BULLET"
+            },
+            "Bullet": {
+            },
+            "NetworkID": {},
             "ParticleEffect": {
                 "effectname": "glow",
                 "offsetX": 0,
                 "offsetY": 0,
                 "initialRotation": -90
+            },
+            "Texture": {
+                "texture": "junk0",
+                "width": 120,
+                "height": 120,
+                "srcX": 0,
+                "srcY": 0,
+                "scaleX": 0.3,
+                "scaleY": 0.3,
+                "flipX": false,
+                "flipY": false
             }
         }
     },

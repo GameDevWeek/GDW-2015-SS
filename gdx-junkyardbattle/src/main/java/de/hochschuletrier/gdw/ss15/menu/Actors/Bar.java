@@ -46,15 +46,22 @@ public class Bar extends Actor {
 		drawer.end();
 		batch.begin();
 	}
-	public void increaseMaxValue(int increase)
+	public boolean increaseMaxValue(int increase)
 	{
 		if(maxValue<=widthBar)
+		{
 		maxValue+=increase;
+		return true;
+		}
+		return false;
 	}
-	public void decreaseMaxValue(int decrease)
+
+	public boolean decreaseMaxValue(int decrease)
 	{
 		if(maxValue>0)
-		maxValue-=decrease;
+		{
+		maxValue-=decrease;return true;}
+		return false;
 	}
 	
 	public Actor hit(float x, float y, boolean touchable) {
