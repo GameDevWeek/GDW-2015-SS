@@ -24,6 +24,7 @@ import de.hochschuletrier.gdw.ss15.game.GameGlobals;
 import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.components.effects.ParticleEffectComponent;
+import de.hochschuletrier.gdw.ss15.game.components.effects.SmokeComponent;
 import de.hochschuletrier.gdw.ss15.game.rendering.FogMaskEffect;
 import de.hochschuletrier.gdw.ss15.game.rendering.FrustumUtil;
 
