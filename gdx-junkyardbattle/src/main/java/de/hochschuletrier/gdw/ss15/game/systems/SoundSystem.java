@@ -8,6 +8,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector3;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.audio.SoundEmitter;
+import de.hochschuletrier.gdw.commons.gdx.audio.SoundInstance;
 import de.hochschuletrier.gdw.commons.gdx.cameras.orthogonal.SmoothCamera;
 import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.events.SoundEvent;
@@ -63,7 +64,10 @@ public class SoundSystem extends IteratingSystem implements SoundEvent.Listener 
     public void onSoundEvent(String sound, Entity entity, boolean b) {
         SoundEmitterComponent soundEmitter = ComponentMappers.soundEmitter.get(entity);
         //System.out.println(soundEmitter.emitter);
-        soundEmitter.emitter.play(assetManager.getSound(sound), b);
+        SoundInstance soundInstance = soundEmitter.emitter.play(assetManager.getSound(sound), b);
+        if(soundInstance != null) {
+            soundInstance.setVolume(50.f);
+        }
 
     }
 

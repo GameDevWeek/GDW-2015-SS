@@ -22,17 +22,24 @@ public class WeaponSystem extends IteratingSystem {
     
     MyTimer timer = new MyTimer(true);
     float attackCooldownTimer = 0;
+    Entity tractorSound = new Entity();
 
     public WeaponSystem() {
         super(Family.all(PlayerComponent.class,
-                         WeaponComponent.class,
-                         HealthComponent.class,
-                         InputComponent.class).get());
+                WeaponComponent.class,
+                HealthComponent.class,
+                InputComponent.class).get());
+        tractorSound.add(new SoundEmitterComponent());
+        ComponentMappers.soundEmitter.get(tractorSound).isPlaying = false;
+        //ComponentMappers.soundEmitter.get(tractorSound).emitter.
+        //System.out.println("TractorVol: " + ComponentMappers.soundEmitter.get(tractorSound).emitter.getGlobalVolume());
+        //ComponentMappers.soundEmitter.get(tractorSound).emitter.setGlobalVolume(100);
     }
 
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
 
+        //System.out.println("GatherBoolean: " + ComponentMappers.soundEmitter.get(tractorSound).isPlaying);
         PlayerComponent plc = ComponentMappers.player.get(entity);
         if(! plc.isLocalPlayer) return;
 
@@ -44,7 +51,8 @@ public class WeaponSystem extends IteratingSystem {
         InputComponent input = ComponentMappers.input.get(entity);
         Entity weaponSound = new Entity();
         weaponSound.add(new SoundEmitterComponent());
-        ComponentMappers.soundEmitter.get(weaponSound).emitter.setGlobalVolume(100);
+
+        //ComponentMappers.soundEmitter.get(weaponSound).emitter.setGlobalVolume(100);
 
         
         if(attackCooldownTimer < wpc.fireCooldown){
@@ -66,7 +74,7 @@ public class WeaponSystem extends IteratingSystem {
         } else {
             if(wpc.fireChannelTime > 0) { // left button is released
                 if (ComponentMappers.soundEmitter.has(entity)) {
-                    System.out.println("Shotgun");
+                    //System.out.println("Shotgun");
                     SoundEvent.emit("shotgun_shoot", weaponSound);
                 }
                 WeaponUncharged.emit();
@@ -105,10 +113,28 @@ public class WeaponSystem extends IteratingSystem {
                 SendPacketClientEvent.emit(gather, true);
             }
             //System.out.println("gather: " + wpc.harvestChannelTime);
+
+            //System.out.println("Gathersound");
+            //System.out.println("GatherBoolean: " + ComponentMappers.soundEmitter.get(tractorSound).isPlaying);
+            //SoundEvent.emit("magnet_beam1", tractorSound, true);
+
+            if(!ComponentMappers.soundEmitter.get(tractorSound).isPlaying)
+            {
+                //System.out.println("Gathersound is playing");
+                SoundEvent.emit("magnet_beam1", tractorSound, true);
+                ComponentMappers.soundEmitter.get(tractorSound).isPlaying = true;
+            }
+
         }
         else
         { // right button is released
             wpc.harvestChannelTime = 0f;
+            SoundEvent.stopSound(tractorSound);
+            if (ComponentMappers.soundEmitter.get(tractorSound).isPlaying) {
+                //System.out.println("Gathersound is stopping");
+                SoundEvent.stopSound(tractorSound);
+                ComponentMappers.soundEmitter.get(tractorSound).isPlaying = false;
+            }
         }
     }
 }

@@ -71,6 +71,7 @@ public class TestMovementSystem extends IteratingSystem{
        // vectorToAdd.add(velVector);
 
         vectorToAdd.set(input.get(entity).horizontal, input.get(entity).vertical);
+        //System.out.println("StreetStepVolume: " + ComponentMappers.soundEmitter.get(entity).emitter.getGlobalVolume());
         if (!vectorToAdd.isZero())
         {
             if (ComponentMappers.soundEmitter.has(entity) && !soundEmitter.get(entity).isPlaying) {
@@ -83,9 +84,10 @@ public class TestMovementSystem extends IteratingSystem{
         }
         else
         {
-            if (soundEmitter.get(entity).isPlaying)
+            if (soundEmitter.get(entity).isPlaying) {
                 SoundEvent.stopSound(entity);
-            soundEmitter.get(entity).isPlaying = false;
+                soundEmitter.get(entity).isPlaying = false;
+            }
         }
 
 
