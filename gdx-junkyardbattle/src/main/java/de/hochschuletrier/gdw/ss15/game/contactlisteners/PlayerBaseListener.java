@@ -11,8 +11,9 @@ public class PlayerBaseListener extends PhysixContactAdapter {
     {
         if(contact.getOtherComponent() != null)
         {
-            if(ComponentMappers.basePoint.get(contact.getOtherComponent().getEntity()) != null)
+            if (ComponentMappers.basePoint.has(contact.getOtherComponent().getEntity()))
             {
+//                System.out.println("basePoint contact (PlayerBaseListener)");
                 // "myEntity" - Player, "otherEntity" - Base
 //                ComeToBaseEvent.emit(contact.getMyComponent().getEntity(), contact.getMyComponent().getEntity());
             }
