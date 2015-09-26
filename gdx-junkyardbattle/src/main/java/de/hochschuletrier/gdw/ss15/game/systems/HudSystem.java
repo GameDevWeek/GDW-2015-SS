@@ -67,10 +67,11 @@ public class HudSystem extends IteratingSystem {
             if (localPlayer == null){
                 this.localPlayer = entity;
             }
-            System.out.println("test");
             drawCrosshair(entity);
             lebensBalken();
             showHudOverlay();
+            schrottAnzeige();
+            timer();
             radar(entity);
         }
     }
@@ -91,13 +92,14 @@ public class HudSystem extends IteratingSystem {
 
         lineToPlayer.scl(radarScale);
         //DrawUtil.batch.draw("icon für spieler", radarMitte + vector);
-        DrawUtil.drawRect(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2,10,10);
+        DrawUtil.drawRect(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 10, 10);
         //Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()-Gdx.graphics.getHeight/4
     }
 
 
     private void lebensBalken() {
         Color healthColor;
+        int health = localPlayer.getComponent(HealthComponent.class).health;
         if (HudDebug.health >= 50 && HudDebug.health <= 100)
             healthColor = Color.GREEN;
         else if (HudDebug.health <= 50 && HudDebug.health >= 25)
@@ -108,19 +110,32 @@ public class HudSystem extends IteratingSystem {
 
         float healthSizeFactor = (float) HudDebug.health / 100.0f;
         float scaleXFactor = 392.0f / (float) hudoverlay.getWidth();
-        float relativeXPos = 646.0f / hudoverlay.getWidth() * Gdx.graphics.getWidth();
-        float relativeYPos = Gdx.graphics.getHeight() - 51.0f / hudoverlay.getHeight() * Gdx.graphics.getHeight();
+        float relativeXPosLeft = 646.0f / hudoverlay.getWidth() * Gdx.graphics.getWidth();
+        float relativeYPosLeft = Gdx.graphics.getHeight() - 51.0f / hudoverlay.getHeight() * Gdx.graphics.getHeight();
+        float relativeXPosRight = 646.0f / hudoverlay.getWidth() * Gdx.graphics.getWidth();
+        float relativeYPosRight = Gdx.graphics.getHeight() - 51.0f / hudoverlay.getHeight() * Gdx.graphics.getHeight();
         float barHeight = 28.0f / hudoverlay.getHeight() * Gdx.graphics.getHeight();
         float barWidth = 392.0f / hudoverlay.getWidth() * Gdx.graphics.getWidth();
 
-        DrawUtil.fillRect(relativeXPos, relativeYPos, barWidth * healthSizeFactor, barHeight, healthColor);
+        //linkeBox
+        DrawUtil.fillRect(relativeXPosLeft - (barWidth * (healthSizeFactor -1)), relativeYPosLeft, barWidth * healthSizeFactor, barHeight, healthColor);
+        //rechteBox
+        //DrawUtil.fillRect(relativeXPosRight, relativeYPosRight, barWidth * healthSizeFactor, barHeight, healthColor);
 
-        //font.draw(DrawUtil.batch, "scaleXFactor: " + scaleXFactor, 0, Gdx.graphics.getHeight() / 2);
+        //font.draw(DrawUtil.batch, "health: " + health, 0, Gdx.graphics.getHeight() / 2);
         //font.draw(DrawUtil.batch, "barWidth: " + barWidth , 0, Gdx.graphics.getHeight() / 2 + 200);
     }
 
     private void schrottAnzeige(){
-        localPlayer.getComponent(InventoryComponent.class).getMetalShards();
+        int schrottcount = localPlayer.getComponent(InventoryComponent.class).getMetalShards();
+        float relativeXPos = 646.0f / hudoverlay.getWidth() * Gdx.graphics.getWidth();
+        float relativeYPos = Gdx.graphics.getHeight() - 51.0f / hudoverlay.getHeight() * Gdx.graphics.getHeight();
+
+        //font.draw(DrawUtil.batch, "" + schrottcount, 0, Gdx.graphics.getHeight() / 2);
+    }
+
+    private void timer() {
+
     }
 
     private void showHudOverlay() {
