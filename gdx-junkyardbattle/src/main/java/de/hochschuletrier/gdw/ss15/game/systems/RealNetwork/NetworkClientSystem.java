@@ -37,8 +37,6 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener,
     private ImmutableArray<Entity> entities;
     private Family family;
 
-    private Entity TestBullet = null;
-
     private LinkedList<Packet> packetBuffer = new LinkedList<>();
 
     boolean fistUpdate = true;
