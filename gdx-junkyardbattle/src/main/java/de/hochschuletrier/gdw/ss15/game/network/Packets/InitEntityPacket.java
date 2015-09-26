@@ -23,7 +23,7 @@ public class InitEntityPacket extends Packet {
 
     public InitEntityPacket(long entityID, String name, float xPos, float yPos, float rotation,float veloX,float veloY){
         super(PacketIds.InitEntity.getValue());
-        this.entityID = entityID;
+        this.entityID = entityID;//- value if extra flaggd
         this.name = name;
         this.xPos = xPos;
         this.yPos = yPos;

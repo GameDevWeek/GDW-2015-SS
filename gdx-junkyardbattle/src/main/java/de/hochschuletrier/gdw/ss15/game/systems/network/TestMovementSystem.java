@@ -25,13 +25,15 @@ import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.MyTimer;
  */
 public class TestMovementSystem extends IteratingSystem{
 
-    Game game;
-    Camera camera;
-    MyTimer timer = new MyTimer(true);
-    Vector2 velVector = new Vector2();
-    Vector2 vectorToAdd = new Vector2(0,0);
+    private Game game;
+    private Camera camera;
+    private MyTimer timer = new MyTimer(true);
+    private Vector2 velVector = new Vector2();
+    private Vector2 vectorToAdd = new Vector2(0,0);
     private ComponentMapper<InputComponent> input;
     private ComponentMapper<SoundEmitterComponent> soundEmitter;
+    public static boolean interpolate = true;
+    
     public TestMovementSystem(Game game, Camera cam)
     {
         super(Family.all(MoveComponent.class).get());
@@ -39,13 +41,9 @@ public class TestMovementSystem extends IteratingSystem{
         this.camera = cam;
         input = ComponentMappers.input;
         soundEmitter = ComponentMappers.soundEmitter;
-
-        
     }
 
 	protected void processEntity(Entity entity, float deltaTime) {
-
-		
 		timer.Update();
         if(timer.get_CounterMilliseconds()>50)
         {
@@ -60,7 +58,6 @@ public class TestMovementSystem extends IteratingSystem{
 	        mousepos2.sub(new Vector2(posc.x,posc.y));
 	        float angle = mousepos2.angle();
 
-            //System.out.println("Client vel: "+vectorToAdd);
 	        MovementPacket packet = new MovementPacket(vectorToAdd.x,vectorToAdd.y,angle);
 	        SendPacketClientEvent.emit(packet, true);
 
@@ -75,22 +72,27 @@ public class TestMovementSystem extends IteratingSystem{
        // vectorToAdd.add(velVector);
 
         vectorToAdd.set(input.get(entity).horizontal, input.get(entity).vertical);
+        //System.out.println("StreetStepVolume: " + ComponentMappers.soundEmitter.get(entity).emitter.getGlobalVolume());
         if (!vectorToAdd.isZero())
         {
             if (ComponentMappers.soundEmitter.has(entity) && !soundEmitter.get(entity).isPlaying) {
 
                 SoundEvent.emit("streetSteps", entity, true);
+
+                //SoundEvent.emit("shotgun_shoot", entity, false);
                 soundEmitter.get(entity).isPlaying = true;
             }
         }
         else
         {
-            SoundEvent.stopSound(entity);
-            soundEmitter.get(entity).isPlaying = false;
+            if (soundEmitter.get(entity).isPlaying) {
+                SoundEvent.stopSound(entity);
+                soundEmitter.get(entity).isPlaying = false;
+            }
         }
 
         PhysixBodyComponent comp = ComponentMappers.physixBody.get(entity);
-        if(comp != null && comp.getLinearVelocity().len()<0.001)
+        if(comp != null && comp.getLinearVelocity().len()<0.001 && interpolate)
         {
             comp.setLinearVelocity(new Vector2(vectorToAdd).scl(500));
         }

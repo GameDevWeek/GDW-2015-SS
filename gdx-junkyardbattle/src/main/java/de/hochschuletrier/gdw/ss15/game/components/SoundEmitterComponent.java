@@ -12,5 +12,6 @@ public class SoundEmitterComponent extends Component implements Pool.Poolable {
     @Override
     public void reset() {
         emitter.dispose();
+        isPlaying = false;
     }
 }

@@ -80,7 +80,6 @@ public class Serverclientsocket extends BaseClient
 			}
 			catch (IOException ex)
 			{
-				System.out.println("Stream fehler bie senden eines packets");
 				ex.printStackTrace();
 				return false;
 			}
@@ -136,7 +135,6 @@ public class Serverclientsocket extends BaseClient
 		{
 			while(!m_BuffersSave.isEmpty())
 			{
-				//System.out.println("Client received data save");
 				ByteArrayInputStream stream;
 				synchronized (m_BuffersSave)
 				{
@@ -148,7 +146,6 @@ public class Serverclientsocket extends BaseClient
 			m_TimeoutTimers[Sockettypes.SaveSocket.getValue()].Update();
 			if(m_TimeoutTimers[Sockettypes.SaveSocket.getValue()].get_CounterMilliseconds() > m_Timouttime)
 			{
-				//System.out.println("Client timed out from save socket");
 				finishDisconnect();
 			}
 			
@@ -162,7 +159,6 @@ public class Serverclientsocket extends BaseClient
 		{
 			while(!m_BuffersUnsave.isEmpty())
 			{
-				//System.out.println("Client received data unsave");
 				ByteArrayInputStream stream;
 				synchronized (m_BuffersUnsave)
 				{
@@ -174,7 +170,6 @@ public class Serverclientsocket extends BaseClient
 			m_TimeoutTimers[Sockettypes.UnsaveSocket.getValue()].Update();
 			if(m_TimeoutTimers[Sockettypes.UnsaveSocket.getValue()].get_CounterMilliseconds() > m_Timouttime)
 			{
-				//System.out.println("Client timed out from unsave socket");
 				finishDisconnect();
 			}
 			
@@ -187,7 +182,6 @@ public class Serverclientsocket extends BaseClient
 		try
 		{
 			int flag = input.read();
-			//System.out.println(" " + flag +" "+SaveSocketFlag.IsAlive.getValue()+" "+input.available()+" "+m_SizeOfIsAliveMessage);
 			if(flag == SaveSocketFlag.Ack.getValue() && input.available() == Long.SIZE/8)
 			{
 				DataInputStream datainput = new DataInputStream(input);
@@ -195,12 +189,10 @@ public class Serverclientsocket extends BaseClient
 			}
 			else if(flag == SaveSocketFlag.Packet.getValue())
 			{
-				//System.out.println("Recived packet on save socket");
 				receivePacketSave(input);
 			}
 			else if(flag == SaveSocketFlag.IsAlive.getValue() && input.available() == m_SizeOfIsAliveMessage)
 			{//received is alive Packet
-				//System.out.println("Send is Alive packet back on Save socket");
 				byte arr[] = new byte[m_SizeOfIsAliveMessage];
 				input.read(arr,0,m_SizeOfIsAliveMessage);
 				ByteArrayOutputStream output = new ByteArrayOutputStream();
@@ -212,7 +204,6 @@ public class Serverclientsocket extends BaseClient
 		}
 		catch (IOException ex)
 		{
-			System.out.println("Strem exeptio biem empfangen von daten geflogen");
 			ex.printStackTrace();
 		}
 	}
@@ -222,10 +213,8 @@ public class Serverclientsocket extends BaseClient
 		try
 		{
 			int flag = input.read();
-			//System.out.println(" " + flag +" "+UnsaveSocketFlag.IsAlive.getValue()+" "+input.available()+" "+m_SizeOfIsAliveMessage);
 			if(flag == UnsaveSocketFlag.IsAlive.getValue() && input.available() == m_SizeOfIsAliveMessage)
 			{//received is alive Packet
-				//System.out.println("Send is Alive packet back on unsave socket");
 				byte arr[] = new byte[m_SizeOfIsAliveMessage];
 				input.read(arr,0,m_SizeOfIsAliveMessage);
 				ByteArrayOutputStream output = new ByteArrayOutputStream();
@@ -240,7 +229,6 @@ public class Serverclientsocket extends BaseClient
 			}
 			else if(flag == UnsaveSocketFlag.Disconnect.getValue() && input.available() == 1 && input.read() == 0)
 			{
-				System.out.println("received disconnect");
 				m_ByDisconned.set(true);
 				m_Connected.set(false);
 				m_DisconnectHandler = new DisconnectHandler(m_Sockets[Sockettypes.UnsaveSocket.getValue()],m_UdpData[Sockettypes.UnsaveSocket.getValue()],true);
@@ -249,7 +237,6 @@ public class Serverclientsocket extends BaseClient
 		}
 		catch (IOException ex)
 		{
-			System.out.println("Strem exeptio biem empfangen von daten geflogen");
 			ex.printStackTrace();
 		}
 	}

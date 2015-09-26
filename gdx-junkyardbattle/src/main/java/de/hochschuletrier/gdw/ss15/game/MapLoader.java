@@ -138,7 +138,6 @@ public class MapLoader
                 body.getFixtureList().get(i).setUserData(new AboveAbyssComponent());
             }
             
-            //System.out.println(body.getClass());
         }
         else
             body.createFixture(new PhysixFixtureDef(pSystem).density(1).friction(0.5f).shapeBox(width, height));
