@@ -1,5 +1,8 @@
 package de.hochschuletrier.gdw.ss15.game.systems.input;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
@@ -20,6 +23,7 @@ import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.components.input.InputComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
+import de.hochschuletrier.gdw.ss15.game.hudDebugTemporary.HudDebug;
 import de.hochschuletrier.gdw.ss15.game.input.XBox360KeyMap;
 import de.hochschuletrier.gdw.ss15.game.systems.CameraSystem;
 
@@ -32,7 +36,9 @@ import de.hochschuletrier.gdw.ss15.game.systems.CameraSystem;
  */
 public class InputSystem extends IteratingSystem implements InputProcessor, ControllerListener {
 
-    Camera camera;
+    private final Logger logger = LoggerFactory.getLogger(getClass());
+    
+    public Camera camera;
 
     private boolean isListener = false;
     private boolean controllerActive;
@@ -107,6 +113,12 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
                 break;
             case Input.Keys.ESCAPE:
                 escape = true;
+                break;
+            case Input.Keys.PLUS:
+                HudDebug.health += 5;
+                break;
+            case Input.Keys.MINUS:
+                HudDebug.health -= 5;
                 break;
         }
         //debug();
@@ -224,13 +236,11 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
     @Override
     public void connected(Controller controller) {
         //geht nicht
-        System.out.println("Controller connected");
     }
 
     @Override
     public void disconnected(Controller controller) {
         //geht auch nicht
-        System.out.println("Controller disconnected");
     }
 
     @Override
@@ -348,7 +358,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
                 vertical = 0.0f;
                 horizontal = 0.0f;
         }
-        System.out.println("pocCode: " + povCode + "\npovDirection: " + value);
+        logger.debug("pocCode: " + povCode + "\npovDirection: " + value);
         debug();
         */
         return false;

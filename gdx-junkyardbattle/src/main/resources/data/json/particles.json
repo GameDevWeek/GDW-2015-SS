@@ -6,4 +6,5 @@
     "glow": "data/particles/glow.p",
     "spawn": "data/particles/spawn.p",
     "particleglow": "data/particles/particleglow.p"
+    "traktorParticle": "data/particles/traktor_particle.p"
 }

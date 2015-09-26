@@ -36,7 +36,7 @@ import de.hochschuletrier.gdw.ss15.game.rendering.FrustumUtil;
  * @author compie
  *
  */
-public class FogRenderer extends SortedSubIteratingSystem.SubSystem implements EntityListener {
+public class FogRenderer extends SortedSubIteratingSystem.SubSystem implements EntityListener{
     private SpriteBatch batch = new SpriteBatch();
     private OrthographicCamera cam = new OrthographicCamera();
 
@@ -68,8 +68,6 @@ public class FogRenderer extends SortedSubIteratingSystem.SubSystem implements E
         ALPHA_MASK_SHADER.setUniformi("u_texture", 0);
         ALPHA_MASK_SHADER.setUniformi("u_alphaMask", 1);
         ALPHA_MASK_SHADER.end();
-        
-        System.out.println(ALPHA_MASK_SHADER.getLog());
         
         maskEffect = new FogMaskEffect(new ParticleEffect(GameGlobals.assetManager.getParticleEffect("smoke")));
     }

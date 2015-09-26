@@ -60,11 +60,11 @@ import java.util.List;
  */
 public class Main extends StateBasedGame {
 
-
     //-----------------------------------------server on off-------------------
     private static final boolean m_StartServerByGameStart = true;
     //-------------------------------------------------------------------------
 
+    private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
     public static CommandLine cmdLine;
 
@@ -188,7 +188,7 @@ public class Main extends StateBasedGame {
 
         if(server!=null)
         {
-            System.out.println("Server stoped by closing");
+            logger.debug("Server stoped by closing");
             server.stop();
         }
     }
@@ -282,7 +282,6 @@ public class Main extends StateBasedGame {
     //----------------------------------------server stuff---------------------------------------
 
     //Server stuff
-    private static final Logger logger = LoggerFactory.getLogger(Main.class);
     Serversocket serverSocket = null;
 
     ConsoleCmd serverCommand = new ConsoleCmd("server", 0, "startet oder beendet server", 1) {
