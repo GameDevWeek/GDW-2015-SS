@@ -8,10 +8,11 @@ import de.hochschuletrier.gdw.commons.utils.pool.Poolable;
  */
 public class BasePointComponent extends Component implements Poolable {
 
-    public int teamID;
-    public int points;
+    public int teamID = 0;
+    public int points = 0;
     @Override
     public void reset() {
         teamID = -1;
+        points = 0;
     }
 }

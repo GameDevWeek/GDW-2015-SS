@@ -32,8 +32,10 @@ public class BringHomeSystem extends EntitySystem implements ComeToBaseEvent.Lis
 
     @Override
     public void onComeToBase(Entity playerEntity, Entity basePointEntity) {
+        System.out.println("ComeBackToBase");
         int basePointsToAdd = Math.max(0, inventory.get(playerEntity).getMetalShards() - inventory.get(playerEntity).minMetalShardsForBase);
         inventory.get(playerEntity).subMetalShards(basePointsToAdd);
+        System.out.println(basePoint.get(basePointEntity));
         basePoint.get(basePointEntity).points += basePointsToAdd;
         System.out.println("InventarPlayer: " + inventory.get(playerEntity).getMetalShards());
         System.out.println("BasePoints: " + basePoint.get(basePointEntity).points);
