@@ -11,5 +11,6 @@
     "junk3": "data/images/trash_small_gear.png",
     "junk4": "data/images/trash_small_screwship.png",
     "satellite": "data/images/Satellit.png",
-    "crosshair": "data/images/crosshair.png"
+    "crosshair": "data/images/crosshair.png",
+    "hudoverlay": "data/images/hudoverlay.png"
 }

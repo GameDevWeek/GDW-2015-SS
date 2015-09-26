@@ -40,6 +40,7 @@ public class HudSystem extends IteratingSystem {
     Camera camera;
     AssetManagerX assetManager;
     Texture crosshairTex;
+    Texture hudoverlay;
     BitmapFont font;
 
     Entity localPlayer;
@@ -48,6 +49,7 @@ public class HudSystem extends IteratingSystem {
         this(Family.one(PlayerComponent.class).get(), GameConstants.PRIORITY_HUD);
         this.camera = camera;
         this.crosshairTex = assetManager.getTexture("crosshair");
+        this.hudoverlay = assetManager.getTexture("hudoverlay");
         font = assetManager.getFont("quartz_40");
     }
 
@@ -67,6 +69,7 @@ public class HudSystem extends IteratingSystem {
             }
             drawCrosshair(entity);
             lebensBalken();
+            showHudOverlay();
             radar(entity);
 
         }
@@ -101,13 +104,21 @@ public class HudSystem extends IteratingSystem {
         else
             healthColor = Color.RED;
 
-        DrawUtil.fillRect(Gdx.graphics.getWidth() / 2 - HudDebug.health, Gdx.graphics.getHeight() - 20, 2 * HudDebug.health, 40, healthColor);
-        DrawUtil.drawRect(Gdx.graphics.getWidth() / 2 - 100, Gdx.graphics.getHeight() - 20, 200, 40, Color.WHITE);
-        font.draw(DrawUtil.batch, "" + HudDebug.health, Gdx.graphics.getWidth() / 2 - 120, Gdx.graphics.getHeight() - 20);
+
+        float healthSizeFactor = (float) HudDebug.health / 100.0f;
+        float scaleYFactor = 995.0f / 1920.0f;
+
+        DrawUtil.fillRect(Gdx.graphics.getWidth() / 2 - HudDebug.health * 2, Gdx.graphics.getHeight() - 40, healthSizeFactor * 995 * scaleYFactor, 75, healthColor);
+
+        font.draw(DrawUtil.batch, "healthSizeFactor: " + healthSizeFactor + " scaleYFactor: " + scaleYFactor + " width: " + Gdx.graphics.getWidth(), 0, Gdx.graphics.getHeight() / 2);
     }
 
     private void schrottAnzeige(){
         localPlayer.getComponent(InventoryComponent.class).getMetalShards();
+    }
+
+    private void showHudOverlay() {
+        DrawUtil.batch.draw(hudoverlay, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), - Gdx.graphics.getWidth(), - Gdx.graphics.getHeight());
     }
 
 }
