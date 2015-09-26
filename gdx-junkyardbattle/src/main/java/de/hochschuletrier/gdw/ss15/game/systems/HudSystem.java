@@ -67,6 +67,7 @@ public class HudSystem extends IteratingSystem {
             }
             drawCrosshair(entity);
             lebensBalken();
+            radar(entity);
 
         }
     }
@@ -81,18 +82,12 @@ public class HudSystem extends IteratingSystem {
     }
     private void radar(Entity entity) {
 
-        lineToPlayer.x = entity.getComponent(PositionComponent.class).x >
-                localPlayer.getComponent(PositionComponent.class).x ? entity.getComponent(PositionComponent.class).x -
-                localPlayer.getComponent(PositionComponent.class).x :
-                localPlayer.getComponent(PositionComponent.class).x - entity.getComponent(PositionComponent.class).x;
-        lineToPlayer.y = entity.getComponent(PositionComponent.class).y >
-                localPlayer.getComponent(PositionComponent.class).y ? entity.getComponent(PositionComponent.class).y -
-                localPlayer.getComponent(PositionComponent.class).y :
-                localPlayer.getComponent(PositionComponent.class).y - entity.getComponent(PositionComponent.class).y;
+        lineToPlayer.x = entity.getComponent(PositionComponent.class).x - localPlayer.getComponent(PositionComponent.class).x;
+        lineToPlayer.y = entity.getComponent(PositionComponent.class).y - localPlayer.getComponent(PositionComponent.class).y;
 
         lineToPlayer.scl(radarScale);
         //DrawUtil.batch.draw("icon für spieler", radarMitte + vector);
-
+        DrawUtil.drawRect(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2,10,10);
         //Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()-Gdx.graphics.getHeight/4
     }
 
