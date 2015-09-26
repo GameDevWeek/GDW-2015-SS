@@ -25,21 +25,13 @@ import de.hochschuletrier.gdw.ss15.game.contactlisteners.ImpactSoundListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.MetalShardSpawnListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.PickupListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.TriggerListener;
-import de.hochschuletrier.gdw.ss15.game.systems.BulletSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.DeathSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.HealthSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.MetalShardDropSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.LineOfSightSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.MetalShardSpawnSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.PlayerLifeSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.SpawnSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.*;
 import de.hochschuletrier.gdw.ss15.game.systems.RealNetwork.NetworkServerSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.RealNetwork.PositionSynchSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.TestSatelliteSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.UpdatePhysixServer;
 import de.hochschuletrier.gdw.ss15.game.systems.network.UpdatePhysixSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.InventorySystem;
+import de.hochschuletrier.gdw.ss15.game.utils.TimerSystem;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serverclientsocket;
 import de.hochschuletrier.gdw.ss15.game.systems.network.*;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.Tools;
@@ -73,13 +65,16 @@ public class ServerGame{
     private final InventorySystem inventorySystem = new InventorySystem();
     
     private final EntityFactoryParam factoryParam = new EntityFactoryParam();
+
+    private final TimerSystem timerSystem = new TimerSystem();
+    private final SyncHighscoreSystem syncHighscoreSystem = new SyncHighscoreSystem(timerSystem);
     private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json", ServerGame.class);
 
     
     private final MapLoader mapLoader = new MapLoader(); /// @author tobidot
-    private UpdatePhysixServer updatePhysixServer;
-    private FireServerListener fireServerListener;
-    private GatherServerListener gatherServerListener;
+    private UpdatePhysixServer updatePhysixServer = new UpdatePhysixServer();
+    private FireServerListener fireServerListener = new FireServerListener(this);
+    private GatherServerListener gatherServerListener = new GatherServerListener(physixSystem);
     
     private final SpawnSystem spawnSystem = new SpawnSystem();
     private final MetalShardDropSystem metalShardDropSystem = new MetalShardDropSystem(this);
@@ -111,7 +106,7 @@ public class ServerGame{
         ComponentMappers.player.get(ent).teamID = Tools.BoolToInt(team);
 
         Highscore.Get().addPlayer(name.hashCode());
-        Highscore.Get().setPlayerStat(name.hashCode(), "team", ComponentMappers.player.get(ent).teamID);
+        //Highscore.Get().setPlayerStat(name.hashCode(), "team", ComponentMappers.player.get(ent).teamID);
 
         NetworkNewPlayerEvent.emit(ent);
     }
@@ -126,9 +121,7 @@ public class ServerGame{
         entityFactory.init(engine, Main.getInstance().getAssetManager());
 
         mapLoader.listen(spawnSystem);
-        mapLoader.run((String name, float x, float y) -> {
-            return this.createEntity(name, x, y);
-        }, "data/maps/alpha_three_on_three.tmx", physixSystem, entityFactory, Main.getInstance().getAssetManager());
+        mapLoader.run(this::createEntity, "data/maps/alpha_three_on_three.tmx", physixSystem, entityFactory, Main.getInstance().getAssetManager());
 
 
         Highscore.reset();
@@ -142,10 +135,6 @@ public class ServerGame{
     }
 
     private void addSystems() {
-
-        updatePhysixServer = new UpdatePhysixServer();
-        fireServerListener = new FireServerListener(this);
-        gatherServerListener = new GatherServerListener(physixSystem);
 
         engine.addSystem(physixSystem);
         engine.addSystem(networkSystem);
@@ -189,6 +178,7 @@ public class ServerGame{
     public void update(float delta) {
         //Main.getInstance().screenCamera.bind();
         engine.update(delta);
+        timerSystem.update(delta);
     }
 
     public Entity createEntity(String name, float x, float y)
