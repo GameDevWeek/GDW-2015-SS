@@ -44,7 +44,7 @@ public class GameConstants {
     public static final int START_HEALTH = 10000;
     public static final float START_X_POSITION = 0;
     public static final float START_Y_POSITION = 0;
-    public static final float DYING_TIMER = 1000;
+    public static final float DYING_TIMER = 2;
     public static final float MINING_PER_SECOND = 20;
     public static final float RESPAWN_TIMER = 30000;
     public static final float PROTECTION_DURATION = 4000;

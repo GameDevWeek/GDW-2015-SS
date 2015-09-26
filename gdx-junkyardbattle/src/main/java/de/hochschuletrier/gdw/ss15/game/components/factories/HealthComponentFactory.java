@@ -21,7 +21,7 @@ public class HealthComponentFactory extends ComponentFactory<EntityFactoryParam>
     
     public void run(Entity entity, SafeProperties meta, SafeProperties properties, EntityFactoryParam param) {
         HealthComponent component = engine.createComponent(HealthComponent.class);
-        //component.health = Integer.parseInt(properties.getString("health"));
+        component.health = properties.getInt("health", 1);
         entity.add(component);
     }
 }
