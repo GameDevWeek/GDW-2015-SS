@@ -44,7 +44,7 @@ public class RenderSystem extends SortedSubIteratingSystem{
     private final OrthographicCamera camera;
     private final LightRenderer lightRenderer;
     private final TileMapCreator tileMapCreator = new TileMapCreator();
-    private final FogRenderer fogRenderer = new FogRenderer();
+    private final FogRenderer fogRenderer;
     
     @SuppressWarnings("unchecked")
 	public RenderSystem(PhysixSystem physixSystem, OrthographicCamera camera, Engine engine) {
@@ -53,11 +53,14 @@ public class RenderSystem extends SortedSubIteratingSystem{
         
         lightRenderer = new LightRenderer(new RayHandler(physixSystem.getWorld()));
         
+        ParticleEffectRenderer particleEffectRenderer = new ParticleEffectRenderer(engine);
+        fogRenderer = new FogRenderer(engine, camera, particleEffectRenderer);
+        
         // Order of adding = order of renderer selection for the entity
         addSubSystem(new TextureRenderer());
         addSubSystem(new AnimatorRenderer());
         addSubSystem(new NormalMapRenderer());
-        addSubSystem(new ParticleEffectRenderer(engine));
+        addSubSystem(particleEffectRenderer);
         addSubSystem(lightRenderer);
     }
     
@@ -95,7 +98,7 @@ public class RenderSystem extends SortedSubIteratingSystem{
         
         super.update(deltaTime);
         lightRenderer.render(camera);
-//        fogRenderer.preRender();
+        fogRenderer.render(deltaTime);
 	}
 }
 
