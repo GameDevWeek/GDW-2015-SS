@@ -44,16 +44,14 @@ public class UpdatePhysixServer extends EntitySystem implements NetworkReceivedN
         try{
         	
             MovementPacket p = (MovementPacket)pack;
-            InventoryComponent inventory = new InventoryComponent(); // what the fuck?
-            //InventoryComponent inventory = ComponentMappers.inventory.get(ent);
+            InventoryComponent inventory = ComponentMappers.inventory.get(ent);
             MoveComponent move = ComponentMappers.move.get(ent);
             
             Vector2 vel = new Vector2(p.xPos,p.yPos);
 
-			if(inventory.getMetalShards()<=700 && inventory.getMetalShards()>0)
+			if( (inventory.getMetalShards()<=inventory.maxMetalShards) && (inventory.getMetalShards()>0) )
             {
-            	float invtemp = inventory.getMetalShards()/700;
-            	
+            	float invtemp = (float)inventory.getMetalShards()/(float)inventory.maxMetalShards;
             	vel.scl(move.speed-move.speed*(invtemp*0.75f));
             }
             else

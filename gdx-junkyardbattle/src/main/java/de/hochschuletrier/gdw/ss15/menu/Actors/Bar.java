@@ -12,11 +12,10 @@ import com.badlogic.gdx.scenes.scene2d.Touchable;
 public class Bar extends Actor {
 	private  float heightBar = 0;
 	private  float widthBar = 0;
-	private int currentValue=0;
-	private int maxValue=50;
+	private float currentValue=50;
 	private int x,y;
 	
-	private TextureRegion region;
+	
 	private ShapeRenderer drawer= new ShapeRenderer();
 	
 	private Color SoundbarColorLeft= Color.RED;
@@ -42,15 +41,16 @@ public class Bar extends Actor {
 		
 		drawer.rect(x, y, 0, 0, widthBar , heightBar, 1, 1, 0,Color.BLACK,Color.BLACK,Color.BLACK,Color.BLACK);
 		drawer.set(ShapeType.Filled);
-		drawer.rect(x, y, 0, 0, maxValue, heightBar, 1, 1, 0, SoundbarColorLeft, SoundbarColorRight ,SoundbarColorRight,SoundbarColorLeft);
+		drawer.rect(x, y, 0, 0, currentValue, heightBar, 1, 1, 0, SoundbarColorLeft, SoundbarColorRight ,SoundbarColorRight,SoundbarColorLeft);
 		drawer.end();
 		batch.begin();
 	}
 	public boolean increaseMaxValue(int increase)
 	{
-		if(maxValue<=widthBar)
+		int plus=(int) (widthBar/increase);
+		if(currentValue<=widthBar)
 		{
-		maxValue+=increase;
+		currentValue+=plus;
 		return true;
 		}
 		return false;
@@ -58,9 +58,10 @@ public class Bar extends Actor {
 
 	public boolean decreaseMaxValue(int decrease)
 	{
-		if(maxValue>0)
+		int minus=(int) (widthBar/decrease);
+		if(currentValue>0)
 		{
-		maxValue-=decrease;return true;}
+		currentValue-=minus;return true;}
 		return false;
 	}
 	
@@ -71,11 +72,11 @@ public class Bar extends Actor {
 	}
 
 	public int getCurrentValue() {
-		return currentValue;
+		return (int) currentValue;
 	}
 
-	public void setCurrentValue(int currentValue) {
-		this.currentValue = currentValue;
+	public void setCurrentValue(float percent) {
+		this.currentValue = widthBar*percent;
 	}
 
 	public float getHeightBar() {
@@ -92,13 +93,7 @@ public class Bar extends Actor {
 	public void setWidthtBar(int maxValue) {
 		this.heightBar = maxValue;
 	}
-	public int getMaxValue() {
-		return maxValue;
-	}
-
-	public void setMaxValue(int maxValue) {
-		this.maxValue = maxValue;
-	}
+	
 }
 /*
 

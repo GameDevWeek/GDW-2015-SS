@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="128" tileheight="128" nextobjectid="96">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="128" tileheight="128">
  <tileset firstgid="1" source="tilesets/tank_body.tsx"/>
  <tileset firstgid="13" source="tilesets/terrain.tsx"/>
  <tileset firstgid="52" source="tilesets/base_rohr.tsx"/>
@@ -1820,114 +1820,113 @@
   </data>
  </layer>
  <objectgroup name="Spawn/Goods">
-  <object id="1" name="Base" type="TeamA" x="18" y="-4" width="650" height="650">
+  <object name="Base" type="TeamA" x="18" y="-4" width="650" height="650">
    <properties>
     <property name="Base" value="A"/>
    </properties>
   </object>
-  <object id="2" name="Base" type="TeamB" x="3216" y="3212" width="650" height="650">
+  <object name="Base" type="TeamB" x="3216" y="3212" width="650" height="650">
    <properties>
     <property name="Base" value="B"/>
    </properties>
   </object>
-  <object id="20" name="Spawn" type="TeamA" x="570" y="184.455" width="10" height="10">
+  <object name="Spawn" type="TeamA" x="570" y="184.455" width="10" height="10">
    <properties>
     <property name="Spawn" value="1"/>
     <property name="Team" value="A"/>
    </properties>
   </object>
-  <object id="21" name="Spawn" type="TeamA" x="573" y="437" width="10" height="10">
+  <object name="Spawn" type="TeamA" x="573" y="437" width="10" height="10">
    <properties>
     <property name="Spawn" value="2"/>
     <property name="Team" value="A"/>
    </properties>
   </object>
-  <object id="22" name="Spawn" type="TeamA" x="446" y="572" width="10" height="10">
+  <object name="Spawn" type="TeamA" x="446" y="572" width="10" height="10">
    <properties>
     <property name="Spawn" value="3"/>
     <property name="Team" value="A"/>
    </properties>
   </object>
-  <object id="23" name="Spawn" type="TeamA" x="192.576" y="570" width="10" height="10">
+  <object name="Spawn" type="TeamA" x="192.576" y="570" width="10" height="10">
    <properties>
     <property name="Spawn" value="4"/>
     <property name="Team" value="A"/>
    </properties>
   </object>
-  <object id="24" name="Spawn" type="TeamB" x="3643.36" y="3259" width="10" height="10">
+  <object name="Spawn" type="TeamB" x="3643.36" y="3259" width="10" height="10">
    <properties>
     <property name="Spawn" value="1"/>
     <property name="Team" value="B"/>
    </properties>
   </object>
-  <object id="25" name="Spawn" type="TeamB" x="3388.91" y="3261" width="10" height="10">
+  <object name="Spawn" type="TeamB" x="3388.91" y="3261" width="10" height="10">
    <properties>
     <property name="Spawn" value="2"/>
     <property name="Team" value="B"/>
    </properties>
   </object>
-  <object id="26" name="Spawn" type="TeamB" x="3259" y="3383.88" width="10" height="10">
+  <object name="Spawn" type="TeamB" x="3259" y="3383.88" width="10" height="10">
    <properties>
     <property name="Spawn" value="3"/>
     <property name="Team" value="B"/>
    </properties>
   </object>
-  <object id="27" name="Spawn" type="TeamB" x="3258" y="3640.12" width="10" height="10">
+  <object name="Spawn" type="TeamB" x="3258" y="3640.12" width="10" height="10">
    <properties>
     <property name="Spawn" value="4"/>
     <property name="Team" value="B"/>
    </properties>
   </object>
-  <object id="34" name="JunkSpawn" type="Schrott" x="974" y="830"/>
-  <object id="35" name="JunkSpawn" type="Schrott" x="890" y="832"/>
-  <object id="36" name="JunkSpawn" type="Schrott" x="970" y="730"/>
-  <object id="37" name="JunkSpawn" type="Schrott" x="1448" y="940"/>
-  <object id="38" name="JunkSpawn" type="Schrott" x="1456" y="856"/>
-  <object id="39" name="JunkSpawn" type="Schrott" x="1512" y="968"/>
-  <object id="40" name="JunkSpawn" type="Schrott" x="2856" y="2984"/>
-  <object id="41" name="JunkSpawn" type="Schrott" x="2924" y="2988"/>
-  <object id="42" name="JunkSpawn" type="Schrott" x="2864" y="3056"/>
-  <object id="43" name="JunkSpawn" type="Schrott" x="2268" y="2832"/>
-  <object id="44" name="JunkSpawn" type="Schrott" x="2304" y="2844"/>
-  <object id="45" name="JunkSpawn" type="Schrott" x="2368" y="2924"/>
-  <object id="46" name="JunkSpawn" type="Schrott" x="1096" y="3380"/>
-  <object id="47" name="JunkSpawn" type="Schrott" x="1164" y="3396"/>
-  <object id="48" name="JunkSpawn" type="Schrott" x="1248" y="3384"/>
-  <object id="49" name="JunkSpawn" type="Schrott" x="384" y="2688"/>
-  <object id="50" name="JunkSpawn" type="Schrott" x="384" y="2756"/>
-  <object id="51" name="JunkSpawn" type="Schrott" x="368" y="2864"/>
-  <object id="52" name="JunkSpawn" type="Schrott" x="708" y="1844"/>
-  <object id="53" name="JunkSpawn" type="Schrott" x="784" y="1844"/>
-  <object id="54" name="JunkSpawn" type="Schrott" x="716" y="1932"/>
-  <object id="55" name="JunkSpawn" type="Schrott" x="772" y="1952"/>
-  <object id="56" name="JunkSpawn" type="Schrott" x="3004" y="1872"/>
-  <object id="57" name="JunkSpawn" type="Schrott" x="3068" y="1880"/>
-  <object id="58" name="JunkSpawn" type="Schrott" x="3012" y="1928"/>
-  <object id="59" name="JunkSpawn" type="Schrott" x="3100" y="1956"/>
-  <object id="60" name="JunkSpawn" type="Schrott" x="2476" y="396"/>
-  <object id="61" name="JunkSpawn" type="Schrott" x="2548" y="400"/>
-  <object id="62" name="JunkSpawn" type="Schrott" x="2608" y="400"/>
-  <object id="63" name="JunkSpawn" type="Schrott" x="3372" y="968"/>
-  <object id="64" name="JunkSpawn" type="Schrott" x="3364" y="1036"/>
-  <object id="65" name="JunkSpawn" type="Schrott" x="3356" y="1148"/>
-  <object id="66" name="JunkSpawn" type="Schrott" x="1380" y="2428"/>
-  <object id="67" name="JunkSpawn" type="Schrott" x="1428" y="2444"/>
-  <object id="68" name="JunkSpawn" type="Schrott" x="1364" y="2332"/>
-  <object id="69" name="JunkSpawn" type="Schrott" x="2356" y="1396"/>
-  <object id="70" name="JunkSpawn" type="Schrott" x="2420" y="1392"/>
-  <object id="71" name="JunkSpawn" type="Schrott" x="2440" y="1488"/>
-  <object id="75" name="SatelliteSite" type="Satellite" x="1923.27" y="1920.36">
+  <object name="JunkSpawn" type="Schrott" x="974" y="830"/>
+  <object name="JunkSpawn" type="Schrott" x="890" y="832"/>
+  <object name="JunkSpawn" type="Schrott" x="970" y="730"/>
+  <object name="JunkSpawn" type="Schrott" x="1448" y="940"/>
+  <object name="JunkSpawn" type="Schrott" x="1456" y="856"/>
+  <object name="JunkSpawn" type="Schrott" x="1512" y="968"/>
+  <object name="JunkSpawn" type="Schrott" x="2856" y="2984"/>
+  <object name="JunkSpawn" type="Schrott" x="2924" y="2988"/>
+  <object name="JunkSpawn" type="Schrott" x="2864" y="3056"/>
+  <object name="JunkSpawn" type="Schrott" x="2268" y="2832"/>
+  <object name="JunkSpawn" type="Schrott" x="2304" y="2844"/>
+  <object name="JunkSpawn" type="Schrott" x="2368" y="2924"/>
+  <object name="JunkSpawn" type="Schrott" x="1096" y="3380"/>
+  <object name="JunkSpawn" type="Schrott" x="1164" y="3396"/>
+  <object name="JunkSpawn" type="Schrott" x="1248" y="3384"/>
+  <object name="JunkSpawn" type="Schrott" x="384" y="2688"/>
+  <object name="JunkSpawn" type="Schrott" x="384" y="2756"/>
+  <object name="JunkSpawn" type="Schrott" x="368" y="2864"/>
+  <object name="JunkSpawn" type="Schrott" x="708" y="1844"/>
+  <object name="JunkSpawn" type="Schrott" x="784" y="1844"/>
+  <object name="JunkSpawn" type="Schrott" x="716" y="1932"/>
+  <object name="JunkSpawn" type="Schrott" x="772" y="1952"/>
+  <object name="JunkSpawn" type="Schrott" x="3004" y="1872"/>
+  <object name="JunkSpawn" type="Schrott" x="3068" y="1880"/>
+  <object name="JunkSpawn" type="Schrott" x="3012" y="1928"/>
+  <object name="JunkSpawn" type="Schrott" x="3100" y="1956"/>
+  <object name="JunkSpawn" type="Schrott" x="2476" y="396"/>
+  <object name="JunkSpawn" type="Schrott" x="2548" y="400"/>
+  <object name="JunkSpawn" type="Schrott" x="2608" y="400"/>
+  <object name="JunkSpawn" type="Schrott" x="3372" y="968"/>
+  <object name="JunkSpawn" type="Schrott" x="3364" y="1036"/>
+  <object name="JunkSpawn" type="Schrott" x="3356" y="1148"/>
+  <object name="JunkSpawn" type="Schrott" x="1380" y="2428"/>
+  <object name="JunkSpawn" type="Schrott" x="1428" y="2444"/>
+  <object name="JunkSpawn" type="Schrott" x="1364" y="2332"/>
+  <object name="JunkSpawn" type="Schrott" x="2356" y="1396"/>
+  <object name="JunkSpawn" type="Schrott" x="2420" y="1392"/>
+  <object name="JunkSpawn" type="Schrott" x="2440" y="1488"/>
+  <object name="SatelliteSite" type="Satellite" x="1923.27" y="1920.36">
    <ellipse/>
   </object>
-  <object id="82" name="SatelliteZone" type="Satellite" x="1643.7" y="1643.88" width="550" height="550"/>
-  <object id="88" name="JunkPile" type="Schrotthauffen" x="2860.61" y="2390.91"/>
-  <object id="89" name="JunkPile" type="Schrotthauffen" x="1104.61" y="2794.91"/>
-  <object id="90" name="JunkPile" type="Schrotthauffen" x="280.606" y="3494.91"/>
-  <object id="91" name="JunkPile" type="Schrotthauffen" x="560.606" y="3558.91"/>
-  <object id="92" name="JunkPile" type="Schrotthauffen" x="968.606" y="1370.91"/>
-  <object id="93" name="JunkPile" type="Schrotthauffen" x="2764.61" y="1002.91"/>
-  <object id="94" name="JunkPile" type="Schrotthauffen" x="3276.61" y="226.909"/>
-  <object id="95" name="JunkPile" type="Schrotthauffen" x="3612.61" y="306.909"/>
+  <object name="SpawnCar" type="Schrotthauffen" x="2860.61" y="2390.91"/>
+  <object name="SpawnCar" type="Schrotthauffen" x="1104.61" y="2794.91"/>
+  <object name="SpawnCar" type="Schrotthauffen" x="280.606" y="3494.91"/>
+  <object name="SpawnCar" type="Schrotthauffen" x="560.606" y="3558.91"/>
+  <object name="SpawnCar" type="Schrotthauffen" x="968.606" y="1370.91"/>
+  <object name="SpawnCar" type="Schrotthauffen" x="2764.61" y="1002.91"/>
+  <object name="SpawnCar" type="Schrotthauffen" x="3276.61" y="226.909"/>
+  <object name="SpawnCar" type="Schrotthauffen" x="3612.61" y="306.909"/>
  </objectgroup>
  <layer name="Above" width="30" height="30">
   <data>

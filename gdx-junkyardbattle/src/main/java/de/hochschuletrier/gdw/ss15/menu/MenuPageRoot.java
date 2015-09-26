@@ -98,6 +98,7 @@ public class MenuPageRoot extends MenuPage {
             addCenteredImage(390, 250-height, width, height,imageOption,runnableOption);
             addCenteredImage(390, 150-height+10, width, height, imageQuit, ()->System.exit(-1));
             addCenteredImage(825, 125-30, 115, 30, imageCredits, runnableCredits);
+            
          
            
             

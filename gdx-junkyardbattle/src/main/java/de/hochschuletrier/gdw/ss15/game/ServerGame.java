@@ -131,15 +131,6 @@ public class ServerGame{
     public void init(int mapid) {
         // Main.getInstance().console.register(physixDebug);
 
-        String mapname = new String("");
-        if(mapid == 1)
-        {
-            mapname = "prototype_v2";
-        }
-        else
-        {
-            mapname = "alpha_three_on_three";
-        }
 
         addSystems();
         addContactListeners();
@@ -154,8 +145,9 @@ public class ServerGame{
             return this.createEntity(name, x, y);
         }, "data/maps/"+mapname+".tmx", physixSystem, entityFactory, Main.getInstance().getAssetManager());
     */
-        mapLoader.run(this::createEntity, "data/maps/salvage_shootout.tmx", physixSystem, entityFactory, Main.getInstance().getAssetManager());
+        System.out.println("Load map with id: "+mapid);
 
+        mapLoader.run(this::createEntity,  Main.maps.get("map"+mapid).file, physixSystem, entityFactory, Main.getInstance().getAssetManager());
 
 //        Highscore.reset();
 //        Highscore.Get().addPlayerCategory("team");
@@ -191,7 +183,7 @@ public class ServerGame{
         engine.addSystem(updatePhysixServer);
         engine.addSystem(gatherServerListener);
         engine.addSystem(miningSystem);
-        
+
         PlayerDiedEvent.register(spawnSystem);
         engine.addSystem(bringHomeSystem);
     }

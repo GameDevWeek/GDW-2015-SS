@@ -33,13 +33,16 @@ import de.hochschuletrier.gdw.ss15.states.GameplayState;
 public class MenuPageEnterIP extends MenuPage
 		implements ConnectTryFinishEvent.Listener, DoNotTouchPacketEvent.Listener {
 
-	ArrayList<Actor> horizontalGroupeContent = new ArrayList<>();
+	//ArrayList<Actor> horizontalGroupeContent = new ArrayList<>();
 
 	MenuManager menuManager;
 
 	TextArea textAreaPort = new TextArea("12345", skin);
-	TextArea textAreaName = new TextArea("Julien ist dumm", skin);
+	TextArea textAreaName = new TextArea("Noob", skin);
 	TextArea textAreaIP = new TextArea("localhost", skin);
+
+
+	Label labelError= new Label("", skin);
 	private int width = 235, height = 45;
 
 	private final DecoImage imageStart = new DecoImage(assetManager.getTexture("start_button"));
@@ -54,6 +57,7 @@ public class MenuPageEnterIP extends MenuPage
 		@Override
 		public void run() {
 			try {
+				
 				String temp = textAreaPort.getText();
 				String ip = "localhost";
 				int port = Integer.parseInt((temp.trim()));
@@ -63,8 +67,15 @@ public class MenuPageEnterIP extends MenuPage
 				}
 
 				if (Main.getInstance().getClientConnection().connect(ip, port) == false) {
+					System.out.println("Could not Connect to Server");
+					labelError.setText("Error");
+				}
+				else{
+					labelError.setText("Connecting");
 				}
 			} catch (Exception e) {
+				System.out.println(e);
+				labelError.setText("Wrong Port");
 			}
 
 			// TODO Auto-generated method stub
@@ -79,10 +90,15 @@ public class MenuPageEnterIP extends MenuPage
 		imageStart.setHeight(height);
 		textAreaName.setWidth(234);
 		textAreaPort.setWidth(234);
-		addCenteredImage(390, 350 - height, width, height, imageStart, runnableStart);
-		addUIActor(textAreaName, 390, (int) (250 - textAreaName.getHeight()), null);
-		addUIActor(textAreaPort, 390, (int) (150 - textAreaPort.getHeight()), null);
-		addUIActor(textAreaIP, 390, (int) (100 - textAreaIP.getHeight()), null);
+		textAreaIP.setWidth(234);
+		addCenteredImage(390, 375 - height, width, height, imageStart, runnableStart);
+		addUIActor(textAreaName, 385, (int) (297 - textAreaName.getHeight()), null);
+		addUIActor(textAreaPort, 385, (int) (221 - textAreaPort.getHeight()), null);
+		addUIActor(textAreaIP, 385, (int) (142 - textAreaIP.getHeight()), null);
+		addUIActor(labelError, 786, (int) (101-labelError.getHeight()), null);
+
+		ConnectTryFinishEvent.unregisterAll();
+		ConnectTryFinishEvent.unregisterAll();
 
 		ConnectTryFinishEvent.registerListener(this);
 		DoNotTouchPacketEvent.registerListener(this);
@@ -101,6 +117,18 @@ public class MenuPageEnterIP extends MenuPage
 					menuManager.addLayer(page);
 					menuManager.pushPage(page);
 				}
+				else if(sPack.m_Moredata == -1)
+				{
+					labelError.setText("Spiel voll");
+				}
+				else if(sPack.m_Moredata == -2)
+				{
+					labelError.setText("Spiel läuft schon");
+				}
+				else
+				{
+					labelError.setText("Interner Fehler");
+				}
 			}
 		}
 	}
@@ -108,7 +136,7 @@ public class MenuPageEnterIP extends MenuPage
 	@Override
 	public void onConnectFinishPacket(boolean status) {
 		if (!status) {
-
+			labelError.setText("Verbindungsfehler");
 		}
 	}
 
