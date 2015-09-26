@@ -14,7 +14,6 @@ public class BaseMetalShardDeliverListener extends PhysixContactAdapter {
         {
             if (ComponentMappers.player.has(contact.getOtherComponent().getEntity()))
             {
-                System.out.println("player hit base");
                 // "otherEntity" - Player, "myEntity" - Base
                 ComeToBaseEvent.emit(contact.getOtherComponent().getEntity(), contact.getMyComponent().getEntity());
             }
