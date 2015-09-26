@@ -130,8 +130,8 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener,
             Entity e = hashMap.get(packet.bulletID);
             if(e != null)
                 NetworkReceivedNewPacketClientEvent.emit(pack, e);
-            else
-                System.out.println("spawnbullet packet illegal entity, id:" + packet.bulletID);
+//            else
+//                System.out.println("spawnbullet packet illegal entity, id:" + packet.bulletID);
         }
         else
         {

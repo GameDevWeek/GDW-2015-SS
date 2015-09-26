@@ -144,8 +144,7 @@
                 "maxMetalShards": 300
             },
             "Move": {
-                "speed": 300,
-                "metalShards": 0
+                "speed": 500
             },
             "Health": {
                 "health": 30
@@ -202,7 +201,7 @@
                 "initialRotation": 90
             },
             "Move": {
-                "speed": 10
+                "speed": 500
             },
             "Input": {},
             "Interpolate": {},
