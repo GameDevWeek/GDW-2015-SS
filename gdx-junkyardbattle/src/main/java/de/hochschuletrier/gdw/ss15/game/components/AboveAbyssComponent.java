@@ -6,15 +6,15 @@ import de.hochschuletrier.gdw.commons.utils.pool.Poolable;
 
 public class AboveAbyssComponent extends Component implements Poolable{
 
-    public boolean above;
+    public int above;
     
     public AboveAbyssComponent() {
-        this.above = false;
+        this.above = 0;
     }
     
     @Override
     public void reset() {
-       above = false;
+       above = 0;
     }
 
 }

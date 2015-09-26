@@ -57,7 +57,7 @@ public class BulletListener extends PhysixContactAdapter{
             if(contact.getOtherFixture() != null){
                 if(contact.getOtherFixture().getBody().getFixtureList().get(0).getUserData() instanceof AboveAbyssComponent)
                   {
-                    ComponentMappers.abyss.get(contact.getMyComponent().getEntity()).above = true;
+                    ComponentMappers.abyss.get(contact.getMyComponent().getEntity()).above++;
                     contact.setEnabled(false);
                   }
                 else
@@ -74,7 +74,7 @@ public class BulletListener extends PhysixContactAdapter{
         if(contact.getOtherFixture() != null){
             if(contact.getOtherFixture().getBody().getFixtureList().get(0).getUserData() instanceof AboveAbyssComponent)
               {
-                ComponentMappers.abyss.get(contact.getMyComponent().getEntity()).above = false;
+                ComponentMappers.abyss.get(contact.getMyComponent().getEntity()).above--;
                 contact.setEnabled(false);
               }            
         }
