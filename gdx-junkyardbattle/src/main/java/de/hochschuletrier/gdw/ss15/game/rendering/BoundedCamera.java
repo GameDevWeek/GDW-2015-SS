@@ -97,7 +97,6 @@ public class BoundedCamera extends SmoothCamera {
         
         zoomMode.addListener((CVar cvar) -> {
             mode = zoomMode.get();
-            System.out.println("mode nr.: " + mode);
         });
         
     }

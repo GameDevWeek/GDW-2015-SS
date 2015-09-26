@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset name="Terrain" tilewidth="128" tileheight="128" tilecount="39">
- <image source="./TileSets_Ground.png" width="1664" height="384"/>
+<tileset name="terrain" tilewidth="128" tileheight="128" tilecount="39">
+ <image source="tilesets_ground.png" width="1664" height="384"/>
  <tile id="0">
   <properties>
    <property name="BlockPath" value="true"/>
