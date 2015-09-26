@@ -19,7 +19,9 @@ import com.badlogic.gdx.math.collision.BoundingBox;
 
 import de.hochschuletrier.gdw.commons.gdx.ashley.SortedSubIteratingSystem;
 import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
+import de.hochschuletrier.gdw.commons.tiled.TiledMap;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
+import de.hochschuletrier.gdw.ss15.game.Game;
 import de.hochschuletrier.gdw.ss15.game.GameGlobals;
 import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
@@ -51,8 +53,8 @@ public class FogRenderer extends SortedSubIteratingSystem.SubSystem implements E
     private float alphaModifier = 2.f; // in [0, infinity], 0 = no alpha influence, > 0 less smoke
     
     private final BoundingBox fogBBox = new BoundingBox();
-    private final float fogWidth = 800.f;
-    private final float fogHeight = 800.f;
+    private final float fogWidth = 1000.f;
+    private final float fogHeight = 1000.f;
     
     @SuppressWarnings("unchecked")
     public FogRenderer(Engine engine, OrthographicCamera gameCamera, ParticleEffectRenderer particleRenderer) {
@@ -72,6 +74,15 @@ public class FogRenderer extends SortedSubIteratingSystem.SubSystem implements E
         maskEffect = new FogMaskEffect(new ParticleEffect(GameGlobals.assetManager.getParticleEffect("smoke")));
     }
     
+    public void init(TiledMap map, Game game) {
+        for(int x = 0; x < map.getWidth(); ++x)
+            for(int y = 0; y < map.getHeight(); ++y) {
+                Entity smoke = game.createEntity("smokescreen", x * 128.f, y * 128.f);
+                SmokeComponent smokeComponent = game.getEngine().createComponent(SmokeComponent.class);
+                smoke.add(smokeComponent);
+            }
+    }
+    
     private void renderFog(float deltaTime) {
         maskEffect.apply(player, gameCamera, deltaTime);  
         
@@ -88,8 +99,8 @@ public class FogRenderer extends SortedSubIteratingSystem.SubSystem implements E
                 for(Entity smoke : smokeEffects) {
                     PositionComponent posComp = ComponentMappers.position.get(smoke);
                     
-                    fogBBox.min.set(posComp.x - fogWidth * 0.5f, posComp.y - fogHeight * 0.5f, 0.f);
-                    fogBBox.max.set(posComp.x + fogWidth * 0.5f, posComp.y + fogHeight * 0.5f, 0.f);
+                    fogBBox.min.set(posComp.x - fogWidth * gameCamera.zoom * 0.5f, posComp.y - fogHeight * gameCamera.zoom * 0.5f, 0.f);
+                    fogBBox.max.set(posComp.x + fogWidth * gameCamera.zoom * 0.5f, posComp.y + fogHeight * gameCamera.zoom * 0.5f, 0.f);
                     
                     if(!FrustumUtil.inFrustum(fogBBox)) {
                         continue;

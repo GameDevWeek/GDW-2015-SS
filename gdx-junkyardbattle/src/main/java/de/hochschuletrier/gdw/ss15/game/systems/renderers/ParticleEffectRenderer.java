@@ -11,6 +11,7 @@ import com.badlogic.ashley.core.EntityListener;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.math.Vector2;
+
 import de.hochschuletrier.gdw.commons.gdx.ashley.SortedSubIteratingSystem;
 import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
 import de.hochschuletrier.gdw.ss15.events.rendering.ChangeModeOnEffectEvent;
@@ -19,6 +20,7 @@ import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.components.effects.EffectMode;
 import de.hochschuletrier.gdw.ss15.game.components.effects.ParticleEffectComponent;
+import de.hochschuletrier.gdw.ss15.game.components.effects.SmokeComponent;
 
 /**
  *
@@ -30,7 +32,7 @@ public class ParticleEffectRenderer extends SortedSubIteratingSystem.SubSystem i
     
     @SuppressWarnings("unchecked")
     public ParticleEffectRenderer(Engine engine) {
-        super(Family.all(ParticleEffectComponent.class).get());
+        super(Family.all(ParticleEffectComponent.class).exclude(SmokeComponent.class).get());
         engine.addEntityListener(Family.all(ParticleEffectComponent.class).get(), this);
         
          ChangeModeOnEffectEvent.register(this);

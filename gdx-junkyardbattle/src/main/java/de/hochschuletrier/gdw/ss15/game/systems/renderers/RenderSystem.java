@@ -2,24 +2,22 @@ package de.hochschuletrier.gdw.ss15.game.systems.renderers;
 
 import java.util.Comparator;
 
-import org.lwjgl.opengl.GL11;
-
 import box2dLight.RayHandler;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.core.PooledEngine;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
 import de.hochschuletrier.gdw.commons.gdx.ashley.SortedSubIteratingSystem;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
+import de.hochschuletrier.gdw.commons.tiled.TiledMap;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
+import de.hochschuletrier.gdw.ss15.game.Game;
 import de.hochschuletrier.gdw.ss15.game.GameConstants;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
-import de.hochschuletrier.gdw.ss15.game.network.PacketIds;
 import de.hochschuletrier.gdw.ss15.game.rendering.TileMapCreator;
 
 /**
@@ -64,6 +62,10 @@ public class RenderSystem extends SortedSubIteratingSystem{
         addSubSystem(lightRenderer);
     }
     
+    public void init(TiledMap map, Game game) {
+        fogRenderer.init(map, game);
+    }
+    
     public TileMapCreator getTileMapCreator() {
         return tileMapCreator;
     }
@@ -95,7 +97,6 @@ public class RenderSystem extends SortedSubIteratingSystem{
     
     @Override
 	public void update (float deltaTime) {
-        
         super.update(deltaTime);
         lightRenderer.render(camera);
         fogRenderer.render(deltaTime);
