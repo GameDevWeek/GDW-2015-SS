@@ -1,15 +1,17 @@
 package de.hochschuletrier.gdw.ss15.game.components.effects;
 
+import java.util.ArrayList;
+
 import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.utils.Pool;
 
-public class AttachedParticleEntityComponent extends Component implements Pool.Poolable {
-    public Entity entity;
+public class AttachedEntityComponent extends Component implements Pool.Poolable {
+    public ArrayList<Entity> entities = new ArrayList<>();
     
     @Override
     public void reset() {
-        entity = null;
+        entities.clear();
     }
     
 }
