@@ -9,10 +9,12 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
+
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
 import de.hochschuletrier.gdw.ss15.Main;
@@ -46,7 +48,8 @@ public class HudSystem extends IteratingSystem {
     BitmapFont font;
 
     Entity localPlayer;
-
+    SpriteBatch batch = new SpriteBatch();
+    
     public HudSystem(Camera camera) {
         this(Family.one((PlayerComponent.class), (SpawnSatelliteComponent.class)).get(), GameConstants.PRIORITY_HUD);
         this.camera = camera;
@@ -66,6 +69,9 @@ public class HudSystem extends IteratingSystem {
 
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
+        DrawUtil.safeEnd();
+        DrawUtil.setCustomBatch(batch);
+        DrawUtil.safeBegin();
         Main.getInstance().screenCamera.bind();
         if (entity.getComponent(PlayerComponent.class) != null) {
 
@@ -88,6 +94,9 @@ public class HudSystem extends IteratingSystem {
                 lineToSatellite(entity);
             }
         }
+        DrawUtil.safeEnd();
+        DrawUtil.setCustomBatch(null);
+        DrawUtil.safeBegin();
     }
 
     private void drawCrosshair(Entity entity) {
