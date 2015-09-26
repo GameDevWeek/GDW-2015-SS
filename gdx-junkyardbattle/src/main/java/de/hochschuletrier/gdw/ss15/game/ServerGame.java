@@ -2,14 +2,24 @@ package de.hochschuletrier.gdw.ss15.game;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
+
 import de.hochschuletrier.gdw.commons.gdx.ashley.EntityFactory;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixComponentAwareContactListener;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.events.*;
+import de.hochschuletrier.gdw.ss15.events.network.Base.ConnectTryFinishEvent;
+import de.hochschuletrier.gdw.ss15.events.network.Base.DisconnectEvent;
+import de.hochschuletrier.gdw.ss15.events.network.Base.DoNotTouchPacketEvent;
+import de.hochschuletrier.gdw.ss15.events.network.client.NetworkReceivedNewPacketClientEvent;
+import de.hochschuletrier.gdw.ss15.events.network.client.SendPacketClientEvent;
 import de.hochschuletrier.gdw.ss15.events.network.server.DoNotTouchServerPacketEvent;
 import de.hochschuletrier.gdw.ss15.events.network.server.NetworkNewPlayerEvent;
 import de.hochschuletrier.gdw.ss15.events.network.server.NetworkReceivedNewPacketServerEvent;
+import de.hochschuletrier.gdw.ss15.events.network.server.SendPacketServerEvent;
+import de.hochschuletrier.gdw.ss15.events.rendering.ChangeAnimationEvent;
+import de.hochschuletrier.gdw.ss15.events.rendering.ChangeModeOnEffectEvent;
+import de.hochschuletrier.gdw.ss15.events.rendering.ChangePositionOnEffectEvent;
 import de.hochschuletrier.gdw.ss15.game.components.*;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.*;
@@ -42,9 +52,6 @@ public class ServerGame{
     private final PositionSynchSystem syncPositionSystem = new PositionSynchSystem(this,GameConstants.PRIORITY_PHYSIX + 3);//todo magic numbers (boa ist das geil kann nicht mehr aufhoeren)
     private final LineOfSightSystem lineOfSightSystem = new LineOfSightSystem(physixSystem); // hier müssen noch Team-Listen übergeben werden
     private final TestSatelliteSystem testSatelliteSystem = new TestSatelliteSystem(this, engine);
-//    private final PlayerLifeSystem playerLifeSystem = new PlayerLifeSystem();
-                                                                                 // (+ LineOfSightSystem-Konstruktor anpassen!)
-    //private final BulletSystem bulletSystem = new BulletSystem();
     private final MetalShardSpawnSystem metalShardSpawnSystem = new MetalShardSpawnSystem(this);
     private final BulletSystem bulletSystem = new BulletSystem(engine, this);
     private final PickupSystem pickupSystem = new PickupSystem(engine);
@@ -55,10 +62,8 @@ public class ServerGame{
     private final EntityFactoryParam factoryParam = new EntityFactoryParam();
 
     private final TimerSystem timerSystem = new TimerSystem();
-    private final SyncHighscoreSystem syncHighscoreSystem = new SyncHighscoreSystem(timerSystem);
     private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json", ServerGame.class);
 
-    
     private final MapLoader mapLoader = new MapLoader(); /// @author tobidot
     private UpdatePhysixServer updatePhysixServer = new UpdatePhysixServer();
     private FireServerListener fireServerListener = new FireServerListener(this);
@@ -131,14 +136,14 @@ public class ServerGame{
         mapLoader.run(this::createEntity, "data/maps/royalrubble_v2.tmx", physixSystem, entityFactory, Main.getInstance().getAssetManager());
 
 
-        Highscore.reset();
-        Highscore.Get().addPlayerCategory("team");
-        Highscore.Get().addPlayerCategory("kills");
-        Highscore.Get().addPlayerCategory("deaths");
-        Highscore.Get().addPlayerCategory("shards");
-        Highscore.Get().addTeamCategory("points");
-        Highscore.Get().addTeam(0);
-        Highscore.Get().addTeam(1);
+//        Highscore.reset();
+//        Highscore.Get().addPlayerCategory("team");
+//        Highscore.Get().addPlayerCategory("kills");
+//        Highscore.Get().addPlayerCategory("deaths");
+//        Highscore.Get().addPlayerCategory("shards");
+//        Highscore.Get().addTeamCategory("points");
+//        Highscore.Get().addTeam(0);
+//        Highscore.Get().addTeam(1);
     }
 
     private void addSystems() {
@@ -218,15 +223,38 @@ public class ServerGame{
 
     public void clearAllListeners()
     {
-        NetworkReceivedNewPacketServerEvent.clearListeners();
-        DoNotTouchServerPacketEvent.clearListeners();
-        NetworkNewPlayerEvent.clearListeners();
+    	
+    	//Networkpackage
+    	//Base
+    	ConnectTryFinishEvent.unregisterAll();
+        DisconnectEvent.unregisterAll();
+        DoNotTouchPacketEvent.unregisterAll();
+        //Client
+        NetworkReceivedNewPacketClientEvent.unregisterAll();
+        SendPacketClientEvent.unregisterAll();
+        //Server
+        DoNotTouchServerPacketEvent.unregisterAll();
+        NetworkNewPlayerEvent.unregisterAll();
+        NetworkReceivedNewPacketServerEvent.unregisterAll();
+        SendPacketServerEvent.unregisterAll();
+        
+        
+        //Rendering Package
+        ChangeAnimationEvent.unregisterAll();
+        ChangeModeOnEffectEvent.unregisterAll();
+        ChangePositionOnEffectEvent.unregisterAll();
+        
+        //Rest
         CollisionEvent.unregisterAll();
         ComeToBaseEvent.unregisterAll();
-        PickupEvent.unregisterAll();
         MiningEvent.unregisterAll();
-        PlayerHurtEvent.unregisterAll();
+        PickupEvent.unregisterAll();
         PlayerDiedEvent.unregisterAll();
+        PlayerHurtEvent.unregisterAll();
+        SatelliteColliding.unregisterAll();
+        SoundEvent.unregisterAll();
+        WeaponCharging.unregisterAll();
+        WeaponUncharged.unregisterAll();
     }
 
 }

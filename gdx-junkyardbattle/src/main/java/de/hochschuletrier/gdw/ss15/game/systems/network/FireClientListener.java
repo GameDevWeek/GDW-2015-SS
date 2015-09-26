@@ -22,7 +22,6 @@ public class FireClientListener extends EntitySystem implements NetworkReceivedN
         super();
         this.game = game;
         NetworkReceivedNewPacketClientEvent.registerListener(PacketIds.SpawnBullet, this);
-        //System.out.println("registered spawnbullet listener");
     }
 
     @Override
@@ -33,16 +32,11 @@ public class FireClientListener extends EntitySystem implements NetworkReceivedN
 
     @Override
     public void onReceivedNewPacket(Packet pack, Entity ent) {
-//        System.out.println("received packet");
         try {
             SpawnBulletPacket packet = (SpawnBulletPacket) pack;
 
             FireServerListener.createProjectile(ent, packet.rotation, packet.power);
-            //Entity et = game.createEntity("projectile", packet.position.x, packet.position.y);
-            //FireServerListener.createProjectile(et, packet.rotation);
 
         }catch (ClassCastException ex){}
-
     }
-
 }
