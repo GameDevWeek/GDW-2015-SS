@@ -1,6 +1,7 @@
 package de.hochschuletrier.gdw.ss15.game;
 
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
@@ -71,6 +72,7 @@ public class Game extends InputAdapter {
     
 
     private final HudSystem hudSystem = new HudSystem(cameraSystem.getCamera().getOrthographicCamera());
+    private HighscoreSyncListener highscoreSyncListener = new HighscoreSyncListener();
 
     public Game() {
         // If this is a build jar file, disable hotkeys
@@ -126,6 +128,7 @@ public class Game extends InputAdapter {
 
         // add to engine to get removed from listeners:
         engine.addSystem(fireClientListener);
+        engine.addSystem(highscoreSyncListener);
     }
 
     private void addContactListeners() {

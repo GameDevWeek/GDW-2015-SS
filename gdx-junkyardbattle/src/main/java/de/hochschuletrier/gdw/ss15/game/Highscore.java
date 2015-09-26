@@ -29,8 +29,8 @@ public class Highscore {
     }
 
     ///
-    public HashSet<String> dirtyTeamStats = new HashSet<>();
-    public HashSet<String> dirtyPlayerStats = new HashSet<>();
+    public HashMap<String, Integer> dirtyTeamStats = new HashMap<>();
+    public HashMap<String, Integer> dirtyPlayerStats = new HashMap<>();
 
     private HashMap<Integer, HashMap<String, Integer>> teamstats = new HashMap<>();
     private HashMap<Integer, HashMap<String, Integer>> playerstats = new HashMap<>();
@@ -41,6 +41,12 @@ public class Highscore {
     public void addTeam(int teamId){
         teamstats.put(teamId, new HashMap<>());
     }
+
+    public boolean hasPlayer(int player){ return playerstats.containsKey(player); }
+    public boolean hasTeam(int team){ return teamstats.containsKey(team); }
+
+    public boolean hasPlayerCategory(String s){ return playercategories.contains(s); }
+    public boolean hasTeamCategory(String s){ return teamcategories.contains(s); }
 
     public void addPlayer(int player){
         playerstats.put(player, new HashMap<>());
@@ -69,7 +75,7 @@ public class Highscore {
         if(! teamcategories.contains(category))
             throw new IllegalArgumentException("Highscore does not contain category: " + category);
 
-        teamcategories.add(category);
+        dirtyPlayerStats.put(category, team);
 
         teamstats.get(team).put(category, value);
     }
@@ -91,7 +97,7 @@ public class Highscore {
         if(! playercategories.contains(category))
             throw new IllegalArgumentException("Highscore does not contain category: " + category);
 
-        playercategories.add(category);
+        dirtyPlayerStats.put(category, player);
 
         playerstats.get(player).put(category, value);    }
 
