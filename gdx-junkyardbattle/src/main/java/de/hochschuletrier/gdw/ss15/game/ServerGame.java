@@ -84,7 +84,7 @@ public class ServerGame{
     private final HealthSystem healthSystem = new HealthSystem(engine);
     private final DeathSystem deathSystem = new DeathSystem();
 
-    private float maxTimeGameIsRunning = 10;
+    private float maxTimeGameIsRunning = 10*60;
     private float timeGameRunns = 0;
     
     public ServerGame()
