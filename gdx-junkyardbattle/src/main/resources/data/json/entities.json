@@ -294,7 +294,8 @@
                 "restitution": 0,
                 "sensor": true,
                 "type": "static"
-            }
+            },
+            "BasePoint": {}
         }
     },
     "SatelliteSite": {
