@@ -326,6 +326,8 @@
             "PhysixBody": {
                 "shape": "circle",
                 "size": 75,
+                "offsetX": 10,
+                "offsetY": 30,
                 "density": 10,
                 "friction": 0.5,
                 "restitution": 0.1,
@@ -367,6 +369,8 @@
             "PhysixBody": {
                 "shape": "circle",
                 "size": 75,
+                "offsetX": 10,
+                "offsetY": 30,
                 "density": 10,
                 "friction": 0.5,
                 "restitution": 0.1,
@@ -497,8 +501,10 @@
         "components": {
             "Position": {},
             "PhysixBody": {
-                "shape": "box",
-                "size": 40,
+                "shape": "rectangle",
+                "width": 300,
+                "height": 125,
+                "offsetY": 25,
                 "density": 2,
                 "friction": 0.3,
                 "restitution": 0.2,
