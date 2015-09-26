@@ -354,10 +354,11 @@
                 "height": 800,
                 "srcX": 0,
                 "srcY": 0,
-                "scaleX": 0.25,
-                "scaleY": 0.25,
+                "scaleX": 0.5,
+                "scaleY": 0.5,
                 "flipX": false,
                 "flipY": false,
+                "offsetY":-100,
                 "initialRotation": 180
             },
             "NetworkID": {},
@@ -513,12 +514,11 @@
                 "flipY": false
             },
             "Inventory": {
-                "metalShards": 5,
+                "metalShards": 70,
                 "minMetalShards": 0,
                 "maxMetalShards": 70,
-                "secondsToRegeneration": 1,
-                "secondsToRegenerationMax": 1,
-                "shardRegeneration": 5
+                "secondsToRegenerate": 3,
+                "amountToRegenerate": 5
             },
             "Mineable": {},
             "AboveAbyss": {}
