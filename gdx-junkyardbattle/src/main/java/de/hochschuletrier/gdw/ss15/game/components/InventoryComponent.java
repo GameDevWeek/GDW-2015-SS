@@ -1,4 +1,4 @@
-package de.hochschuletrier.gdw.ss15.game.components;
+﻿package de.hochschuletrier.gdw.ss15.game.components;
 
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.utils.Pool;
@@ -34,6 +34,7 @@ public class InventoryComponent extends Component implements Pool.Poolable {
         if(shards <= maxMetalShards && shards >= minMetalShards)
         {
             metalShards = shards;
+            //System.out.println("Shards: " + shards);
             return true;
         }
         return false;
@@ -60,10 +61,12 @@ public class InventoryComponent extends Component implements Pool.Poolable {
             {
                 metalShards = 0;
             }
+            //System.out.println("Shards: " + shards);
             return metalShards - oldValueShards;
 
         };
 
+        //System.out.println("Shards: " + shards);
         return shards;
     }
 

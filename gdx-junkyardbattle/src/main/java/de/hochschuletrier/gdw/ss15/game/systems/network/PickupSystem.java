@@ -1,4 +1,4 @@
-package de.hochschuletrier.gdw.ss15.game.systems.network;
+﻿package de.hochschuletrier.gdw.ss15.game.systems.network;
 
 import com.badlogic.ashley.core.*;
 import com.badlogic.ashley.systems.IntervalIteratingSystem;
@@ -38,8 +38,6 @@ public class PickupSystem extends IntervalIteratingSystem implements PickupEvent
             Entity player = physixContact.getOtherComponent().getEntity();
             InventoryComponent invPickup = inventoryComp.get(pickup);
             InventoryComponent invPlayer = inventoryComp.get(player);
-             System.out.println(invPlayer.getMetalShards());
-
              if (invPlayer.addMetalShards(invPickup.getMetalShards()) > 0)
              {
                  this.engine.removeEntity(pickup);
