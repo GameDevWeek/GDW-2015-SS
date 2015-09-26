@@ -1,6 +1,5 @@
 package de.hochschuletrier.gdw.ss15.game.systems;
 
-import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.core.PooledEngine;
@@ -11,7 +10,6 @@ import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.ServerGame;
 import de.hochschuletrier.gdw.ss15.game.components.BulletComponent;
-import de.hochschuletrier.gdw.ss15.game.components.PickableComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 
 public class BulletSystem extends IteratingSystem{
@@ -33,10 +31,10 @@ public class BulletSystem extends IteratingSystem{
         PositionComponent position = ComponentMappers.position.get(entity);
         BulletComponent bullet = ComponentMappers.bullet.get(entity);
         Vector2 dst = new Vector2(physix.getPosition().x, physix.getPosition().y);
-        dst.sub(bullet.startpos);
+        dst.sub(bullet.playerpos);
         if(dst.len2() > maxrange*maxrange)//Bullet quasi stehengeblieben
         {
-            System.out.println("bullet got to slow");
+//            System.out.println("bullet got to slow");
             serverGame.createEntity("metalServer", physix.getPosition().x, physix.getPosition().y);
             engine.removeEntity(entity);
         }

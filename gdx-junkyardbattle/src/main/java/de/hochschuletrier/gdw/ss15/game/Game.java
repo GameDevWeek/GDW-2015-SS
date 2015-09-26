@@ -13,6 +13,7 @@ import de.hochschuletrier.gdw.commons.gdx.physix.PhysixComponentAwareContactList
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixDebugRenderSystem;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.ss15.Main;
+import de.hochschuletrier.gdw.ss15.game.components.BulletComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PickableComponent;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.PickupListenerClient;
@@ -56,7 +57,7 @@ public class Game extends InputAdapter {
     private final MapLoader mapLoader = new MapLoader();
     
     private final FireClientListener fireClientListener = new FireClientListener(this);
-    private final BulletClientSystem bulletClientSystem = new BulletClientSystem(engine);
+//    private final BulletClientSystem bulletClientSystem = new BulletClientSystem(engine);
 
     private final ParticleSpawnSystem particleSpawner = new ParticleSpawnSystem(this);
     private final DeathSystem deathSystem = new DeathSystem();
@@ -96,7 +97,7 @@ public class Game extends InputAdapter {
 
     private void addSystems() {
         engine.addSystem(physixSystem);
-        //engine.addSystem(physixDebugRenderSystem);
+        engine.addSystem(physixDebugRenderSystem);
         engine.addSystem(updatePositionSystem);
         engine.addSystem(networksystem);
         engine.addSystem(inputSystem);
@@ -107,7 +108,7 @@ public class Game extends InputAdapter {
         engine.addSystem(testMovementSystem);
         engine.addSystem(updatePhysixSystem);
         engine.addSystem(soundSystem);
-        engine.addSystem(bulletClientSystem);
+//        engine.addSystem(bulletClientSystem);
         engine.addSystem(effectAddSystem);
 
         // add to engine to get removed from listeners:
@@ -120,6 +121,7 @@ public class Game extends InputAdapter {
         //contactListener.addListener(ImpactSoundComponent.class, new ImpactSoundListener());
        // contactListener.addListener(TriggerComponent.class, new TriggerListener());
     	contactListener.addListener(PickableComponent.class, new PickupListenerClient());
+    	contactListener.addListener(BulletComponent.class, new PickupListenerClient());
     	/*ContactListener cl = new ContactListener() {
 			
 			@Override
