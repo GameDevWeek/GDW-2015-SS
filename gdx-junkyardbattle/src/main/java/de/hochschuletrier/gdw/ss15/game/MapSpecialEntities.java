@@ -12,6 +12,7 @@ import de.hochschuletrier.gdw.commons.tiled.LayerObject;
 import de.hochschuletrier.gdw.commons.tiled.TileInfo;
 import de.hochschuletrier.gdw.commons.tiled.TiledMap;
 import de.hochschuletrier.gdw.commons.utils.SafeProperties;
+import de.hochschuletrier.gdw.ss15.game.components.BasePointComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.components.light.ConeLightComponent;
 import de.hochschuletrier.gdw.ss15.game.components.texture.TextureComponent;
@@ -246,13 +247,24 @@ public class MapSpecialEntities
             /// eine Componente herraussuchen             
             EntityInfo entityInfo = (EntityInfo)info.factory.getEntityInfos().get( info.asObject.getName() );
             
-            
            //team
             
             /// eine Componente herraussuchen 
             
             PhysixBodyComponent body = ComponentMappers.physixBody.get(info.entity);
             //SafeProperties sp = entityInfo.components.get("ConeLight");
+            BasePointComponent baseComp = ComponentMappers.basePoint.get(info.entity);
+            String teamStr = info.asObject.getProperty("Base", "A");
+            switch(teamStr) {
+            case "A":
+                baseComp.teamID = 0;
+                break;
+            case "B":
+                baseComp.teamID = 1;
+                break;
+            default:
+                assert(false);  
+            }
             
             if ( body != null ) {
             

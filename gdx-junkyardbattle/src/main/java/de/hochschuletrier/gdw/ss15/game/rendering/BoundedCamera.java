@@ -44,7 +44,7 @@ public class BoundedCamera extends SmoothCamera {
     protected float zoomSpeed = 0.75f, zoomProgress = 0.f;
     protected float curZoom = srcZoom, deadZone = .15f;
     private boolean resetZoom = true;
-    protected modes mode = modes.pow5;
+    protected modes mode = modes.circle;
     
     // < 1 slow follow || > 1 fast follow
     protected float followFactor = 1.f;
