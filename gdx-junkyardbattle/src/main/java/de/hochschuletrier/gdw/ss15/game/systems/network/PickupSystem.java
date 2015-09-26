@@ -45,6 +45,7 @@ public class PickupSystem extends IntervalIteratingSystem implements PickupEvent
                  this.engine.removeEntity(pickup);
 
              }
+             //System.out.println("InventarPlayer: " + invPlayer.getMetalShards());
 
 
 

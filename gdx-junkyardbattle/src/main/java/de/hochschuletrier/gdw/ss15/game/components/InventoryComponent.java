@@ -1,14 +1,9 @@
 package de.hochschuletrier.gdw.ss15.game.components;
 
-import java.awt.SecondaryLoop;
-
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.utils.Pool;
-
 import de.hochschuletrier.gdw.ss15.events.network.server.SendPacketServerEvent;
-import de.hochschuletrier.gdw.ss15.game.GameConstants;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
-import sun.java2d.pipe.SpanShapeRenderer;
 
 /**
  * Stores the number of MetallShards some object contains.

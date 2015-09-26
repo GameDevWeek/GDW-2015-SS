@@ -22,9 +22,10 @@ public class SimplePacket extends Packet
         ChangeTeamPacket((short)2),
         StartGame((short)1337),
         StopGame((short)42),
+        MenueMapChange((short)66),
         TimeMenuePacket((short)55),
         MetalShardsUpdate((short)10),
-        BasePointsUpdate((short)20),
+        TeamPointsUpdate((short)20),
         MiningPacket((byte)21);
 
         private final short m_Value;
