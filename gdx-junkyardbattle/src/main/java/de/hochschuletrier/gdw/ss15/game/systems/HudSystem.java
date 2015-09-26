@@ -67,7 +67,6 @@ public class HudSystem extends IteratingSystem {
             if (localPlayer == null){
                 this.localPlayer = entity;
             }
-            System.out.println("test");
             drawCrosshair(entity);
             lebensBalken();
             showHudOverlay();
