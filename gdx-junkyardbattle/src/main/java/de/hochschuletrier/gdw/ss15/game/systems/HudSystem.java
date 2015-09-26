@@ -107,14 +107,16 @@ public class HudSystem extends IteratingSystem {
 
 
         float healthSizeFactor = (float) HudDebug.health / 100.0f;
-        float scaleXFactor = 391.0f / (float) hudoverlay.getWidth();
+        float scaleXFactor = 392.0f / (float) hudoverlay.getWidth();
         float relativeXPos = 646.0f / hudoverlay.getWidth() * Gdx.graphics.getWidth();
-        float relativeYPos = Gdx.graphics.getHeight() - 23 / hudoverlay.getHeight() * Gdx.graphics.getHeight();
+        float relativeYPos = Gdx.graphics.getHeight() - 51.0f / hudoverlay.getHeight() * Gdx.graphics.getHeight();
+        float barHeight = 28.0f / hudoverlay.getHeight() * Gdx.graphics.getHeight();
+        float barWidth = 392.0f / hudoverlay.getWidth() * Gdx.graphics.getWidth();
 
-        DrawUtil.fillRect(relativeXPos, relativeYPos, healthSizeFactor * 995 * scaleXFactor, 75, healthColor);
+        DrawUtil.fillRect(relativeXPos, relativeYPos, barWidth * healthSizeFactor, barHeight, healthColor);
 
-        //font.draw(DrawUtil.batch, "healthSizeFactor: " + healthSizeFactor + " scaleYFactor: " + scaleXFactor + " width: " + Gdx.graphics.getWidth(), 0, Gdx.graphics.getHeight() / 2);
-        font.draw(DrawUtil.batch, "relativeYPos: " + relativeYPos , 0, Gdx.graphics.getHeight() / 2);
+        //font.draw(DrawUtil.batch, "scaleXFactor: " + scaleXFactor, 0, Gdx.graphics.getHeight() / 2);
+        //font.draw(DrawUtil.batch, "barWidth: " + barWidth , 0, Gdx.graphics.getHeight() / 2 + 200);
     }
 
     private void schrottAnzeige(){
