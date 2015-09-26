@@ -12,6 +12,7 @@ import de.hochschuletrier.gdw.commons.devcon.cvar.CVarFloat;
 import de.hochschuletrier.gdw.commons.devcon.cvar.CVarInt;
 import de.hochschuletrier.gdw.commons.gdx.cameras.orthogonal.SmoothCamera;
 import de.hochschuletrier.gdw.ss15.Main;
+import de.hochschuletrier.gdw.ss15.game.GameConstants;
 import de.hochschuletrier.gdw.ss15.game.rendering.ZoomingModes.modes;
 
 /**
@@ -36,7 +37,7 @@ public class BoundedCamera extends SmoothCamera {
     private boolean useBounds = false;
     
     // Viewport settings
-    boolean fixedViewport = true;
+    boolean fixedViewport = false;
     int viewportX = 1920, viewportY = 1080;
 
     // Camera zoom settings
@@ -44,7 +45,7 @@ public class BoundedCamera extends SmoothCamera {
     protected float zoomSpeed = 0.75f, zoomProgress = 0.f;
     protected float curZoom = srcZoom, deadZone = .15f;
     private boolean resetZoom = true;
-    protected modes mode = modes.circle;
+    protected modes mode = GameConstants.ZOOM_MODE;
     
     // < 1 slow follow || > 1 fast follow
     protected float followFactor = 1.f;

@@ -38,7 +38,10 @@ public class Server implements Runnable
         public void execute(List<String> list){
             String info = list.get(1);
             if(info.equals("startGame")){
-                startGame();
+                if(lobby!=null)
+                {
+                    lobby.actualTime=lobby.SecondsToStart;
+                }
             }
             else if(info.equals("stopGame")){
                 stopGame();
@@ -205,26 +208,22 @@ public class Server implements Runnable
 
 
             //runningGame.update(0);
-            //System.out.println("runn");
             //engine.update();
 
             if(serversocket.isNewClientAvaliable())
             {
-                if(serversocket.isNewClientAvaliable())
+                Serverclientsocket sock = serversocket.getNewClient();
+                if(runningGame!=null)
                 {
-                    Serverclientsocket sock = serversocket.getNewClient();
-                    if(runningGame!=null)
-                    {
-                        logger.info("Insert player to game");
-                        sock.sendPacket(new SimplePacket(SimplePacket.SimplePacketId.StartGame.getValue(), 0));
-                        listToAddInGame.push(new LobyClient(sock));
-                    }
-                    else
-                    {
-                        logger.info("insert player to lobby");
-                        if((InsertInLobby(sock))) {
-                            clientSockets.push(sock);
-                        }
+                    logger.info("Insert player to game");
+                    sock.sendPacket(new SimplePacket(SimplePacket.SimplePacketId.StartGame.getValue(), 0));
+                    listToAddInGame.push(new LobyClient(sock));
+                }
+                else
+                {
+                    logger.info("insert player to lobby");
+                    if((InsertInLobby(sock))) {
+                        clientSockets.push(sock);
                     }
                 }
             }

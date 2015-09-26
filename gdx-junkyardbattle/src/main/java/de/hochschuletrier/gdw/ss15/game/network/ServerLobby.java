@@ -27,13 +27,13 @@ public class ServerLobby
 
     String Mapname;
     private int MaximumPlayers = 8;
-    private float SecondsToStart = 60;
-    MyTimer timer = new MyTimer(true);
+    public float SecondsToStart = 60;
+    public float actualTime = 0;
 
     public LinkedList<LobyClient> connectedClients = new LinkedList<>();
 
 
-    public int mapId = -1;
+    public int mapId = 1;
 
 
     public ServerLobby()
@@ -51,7 +51,7 @@ public class ServerLobby
             for (Map.Entry<String, LoadedMaps> entry : Main.maps.entrySet()) {
                 entry.getValue().name.equals(s);
                 mId = entry.getValue().id;
-                MaximumPlayers = entry.getValue().playerPerTeam*2;
+                //MaximumPlayers = entry.getValue().playerPerTeam*2;
                 //System.out.println("Mapinfo: "+entry.getValue().id+", "+entry.getValue().file);
                 break;
             }
@@ -105,12 +105,12 @@ public class ServerLobby
             }
         }
 
-        timer.Update();
-        if(timer.get_CounterSeconds()>SecondsToStart)
+        actualTime+=deltatime;
+        if(actualTime>SecondsToStart)
         {
             if(connectedClients.size()==0)
             {
-                timer.StartCounterS(SecondsToStart);
+                actualTime=0;
                 SendPackettoAll(new SimplePacket(SimplePacket.SimplePacketId.TimeMenuePacket.getValue(),(long)SecondsToStart));
             }
             else
@@ -140,7 +140,7 @@ public class ServerLobby
             SendChangePlayerStatusToAll(client);
 
 
-            SimplePacket sPack = new SimplePacket(SimplePacket.SimplePacketId.TimeMenuePacket.getValue(),(long)(SecondsToStart-timer.get_CounterSeconds()));
+            SimplePacket sPack = new SimplePacket(SimplePacket.SimplePacketId.TimeMenuePacket.getValue(),(long)(SecondsToStart-actualTime));
             client.socket.sendPacket(sPack, true);
         }
     }

@@ -1,27 +1,59 @@
 package de.hochschuletrier.gdw.ss15.game;
 
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
 
 import de.hochschuletrier.gdw.commons.gdx.ashley.EntityFactory;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
+import de.hochschuletrier.gdw.commons.gdx.input.hotkey.Hotkey;
+import de.hochschuletrier.gdw.commons.gdx.input.hotkey.HotkeyModifier;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixComponentAwareContactListener;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixDebugRenderSystem;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.ss15.Main;
-import de.hochschuletrier.gdw.ss15.game.components.BulletComponent;
+import de.hochschuletrier.gdw.ss15.events.ComeToBaseEvent;
+import de.hochschuletrier.gdw.ss15.events.MiningEvent;
+import de.hochschuletrier.gdw.ss15.events.PickupEvent;
+import de.hochschuletrier.gdw.ss15.events.PlayerDiedEvent;
+import de.hochschuletrier.gdw.ss15.events.PlayerHurtEvent;
+import de.hochschuletrier.gdw.ss15.events.SatelliteColliding;
+import de.hochschuletrier.gdw.ss15.events.SoundEvent;
+import de.hochschuletrier.gdw.ss15.events.WeaponCharging;
+import de.hochschuletrier.gdw.ss15.events.WeaponUncharged;
+import de.hochschuletrier.gdw.ss15.events.network.Base.ConnectTryFinishEvent;
+import de.hochschuletrier.gdw.ss15.events.network.Base.DisconnectEvent;
+import de.hochschuletrier.gdw.ss15.events.network.Base.DoNotTouchPacketEvent;
 import de.hochschuletrier.gdw.ss15.events.network.client.NetworkReceivedNewPacketClientEvent;
+import de.hochschuletrier.gdw.ss15.events.network.client.SendPacketClientEvent;
+import de.hochschuletrier.gdw.ss15.events.network.server.DoNotTouchServerPacketEvent;
+import de.hochschuletrier.gdw.ss15.events.network.server.NetworkNewPlayerEvent;
+import de.hochschuletrier.gdw.ss15.events.network.server.NetworkReceivedNewPacketServerEvent;
+import de.hochschuletrier.gdw.ss15.events.network.server.SendPacketServerEvent;
+import de.hochschuletrier.gdw.ss15.events.rendering.ChangeAnimationEvent;
+import de.hochschuletrier.gdw.ss15.events.rendering.ChangeModeOnEffectEvent;
+import de.hochschuletrier.gdw.ss15.events.rendering.ChangePositionOnEffectEvent;
+import de.hochschuletrier.gdw.ss15.game.components.BulletComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PickableComponent;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.PickupListenerClient;
+import de.hochschuletrier.gdw.ss15.game.systems.CameraSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.DeathSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.HealthUpdateSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.RenderStateUpdateSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.SoundSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.WeaponSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.RealNetwork.NetworkClientSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.RealNetwork.TestListenerClient;
+import de.hochschuletrier.gdw.ss15.game.systems.hud.HudSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.input.InputSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.network.*;
-import de.hochschuletrier.gdw.ss15.game.systems.*;
+import de.hochschuletrier.gdw.ss15.game.systems.network.FireClientListener;
+import de.hochschuletrier.gdw.ss15.game.systems.network.HighscoreSyncListener;
+import de.hochschuletrier.gdw.ss15.game.systems.network.TestMovementSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.network.UpdatePhysixSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.renderers.ChangeAnimationStateSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.renderers.EffectAddSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.renderers.ParticleSpawnSystem;
@@ -29,12 +61,11 @@ import de.hochschuletrier.gdw.ss15.game.systems.renderers.RenderSystem;
 import de.hochschuletrier.gdw.ss15.game.utils.LoadedMaps;
 import de.hochschuletrier.gdw.ss15.game.utils.TimerSystem;
 
-import java.util.function.Consumer;
-
 public class Game extends InputAdapter {
 
     //private final CVarBool physixDebug = new CVarBool("physix_debug", true, 0, "Draw physix debug");
-    //private final Hotkey togglePhysixDebug = new Hotkey(() -> physixDebug.toggle(false), Input.Keys.F1, HotkeyModifier.CTRL);
+    private boolean debugDraw;
+    private final Hotkey togglePhysixDebug = new Hotkey(this::togglePhysixDebug, Input.Keys.F7, HotkeyModifier.CTRL);
 
     private final PooledEngine engine = new PooledEngine(
             GameConstants.ENTITY_POOL_INITIAL_SIZE, GameConstants.ENTITY_POOL_MAX_SIZE,
@@ -81,7 +112,7 @@ public class Game extends InputAdapter {
     public Game() {
         // If this is a build jar file, disable hotkeys
         if (!Main.IS_RELEASE) {
-            //togglePhysixDebug.register();
+            togglePhysixDebug.register();
         }
     }
 
@@ -91,13 +122,34 @@ public class Game extends InputAdapter {
     }
 
     public void dispose() {
-        //togglePhysixDebug.unregister();
-        ClearListener();
+        togglePhysixDebug.unregister();
+        clearAllListeners();
     }
 
-    public void ClearListener()
+    public void clearAllListeners()
     {
-        NetworkReceivedNewPacketClientEvent.clearListeners();
+    	
+    	//Networkpackage
+    	//Base
+    	///*Muss bleiben*/ConnectTryFinishEvent.unregisterAll();
+    	///*Muss bleiben*/DisconnectEvent.unregisterAll();
+        ///*Muss bleiben*/DoNotTouchPacketEvent.unregisterAll();
+        
+        //Client
+        /*Client only*/NetworkReceivedNewPacketClientEvent.unregisterAll();
+        /*Client only*/SendPacketClientEvent.unregisterAll();
+        
+        
+        //Rendering Package
+        /*Client only*/ChangeAnimationEvent.unregisterAll();
+        /*Client only*/ChangeModeOnEffectEvent.unregisterAll();
+        /*Client only*/ChangePositionOnEffectEvent.unregisterAll();
+        
+        //Rest
+        /*Client only*/SatelliteColliding.unregisterAll();
+        /*Client only*/SoundEvent.unregisterAll();
+        /*Client only*/WeaponCharging.unregisterAll();
+        /*Client only*/WeaponUncharged.unregisterAll();
     }
 
     public void init(AssetManagerX assetManager,int mapid) {
@@ -111,7 +163,10 @@ public class Game extends InputAdapter {
         mapLoader.run((String name, float x, float y) -> createEntity(name, x, y),
                 Main.maps.get("map"+mapid).file, physixSystem, entityFactory, assetManager );
 
+
         renderSystem.init(mapLoader.getTiledMap(), this);
+        debugDraw = false;
+        physixDebugRenderSystem.setProcessing(debugDraw);
     }
 
     private void addSystems() {
@@ -134,7 +189,7 @@ public class Game extends InputAdapter {
 
         // add to engine to get removed from listeners:
         engine.addSystem(fireClientListener);
-        engine.addSystem(highscoreSyncListener);
+        //engine.addSystem(highscoreSyncListener);
     }
 
     private void addContactListeners() {
@@ -197,5 +252,10 @@ public class Game extends InputAdapter {
 
     public InputProcessor getInputProcessor() {
         return this;
+    }
+    
+    private void togglePhysixDebug(){
+        debugDraw = !debugDraw;
+        physixDebugRenderSystem.setProcessing(debugDraw);
     }
 }

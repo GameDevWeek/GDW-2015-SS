@@ -118,7 +118,6 @@ public class GameplayState extends BaseGameState implements DisconnectEvent.List
 
     @Override
     public void onDisconnectPacket() {
-        System.out.println("jfsdkljfkldl  jetzt");
         Main.getInstance().changeState(new GameplayState(Main.getInstance().getAssetManager(), game), new SplitHorizontalTransition(500), null);
     }
 }

@@ -4,6 +4,9 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.signals.Listener;
 import com.badlogic.gdx.utils.SnapshotArray;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixContact;
+import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
+
+import java.awt.*;
 
 /**
  * Created by Ricardo on 25.09.2015.
@@ -21,7 +24,9 @@ public class ComeToBaseEvent {
     public static void emit(Entity player, Entity base) {
         Object[] items = listeners.begin();
         for (int i = 0, n = listeners.size; i < n; i++) {
-            ((Listener)items[i]).onComeToBase(player, base);
+            if (ComponentMappers.player.get(player).teamID == ComponentMappers.basePoint.get(base).teamID) {
+                ((Listener) items[i]).onComeToBase(player, base);
+            }
         }
         listeners.end();
     }

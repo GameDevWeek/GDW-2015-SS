@@ -36,7 +36,7 @@ public class MenuPageHostGame extends MenuPage implements ConnectTryFinishEvent.
 	private int buttonImageWidth=100;
 	private int buttonImageHeight=30;
 
-	int actualMap = 0;
+	int actualMap = 1;
 
 	
 	private final DecoImage imageMap = new DecoImage(assetManager.getTexture("map1"));
@@ -61,16 +61,16 @@ public class MenuPageHostGame extends MenuPage implements ConnectTryFinishEvent.
 		public void run() {
 			try {
 				String temp = textAreaPort.getText();
-				
+
 				int port = Integer.parseInt((temp.trim()));
-				
-				hostGame(port,1);
+
+				hostGame(port);
 				
 			} catch (Exception e) {
 				
 			}
-			
-			
+
+
 		}
 	};
 	ScrollPane scrollPaneMembers= new ScrollPane(null);
@@ -108,8 +108,6 @@ public class MenuPageHostGame extends MenuPage implements ConnectTryFinishEvent.
 	public MenuPageHostGame(Skin skin, MenuManager menuManager, String background) {
 		super(skin, background);
 
-		Dataholder.MapId = 0;
-
 		this.menuManager = menuManager;
 
 		textAreaPort.setWidth(235);
@@ -130,12 +128,17 @@ public class MenuPageHostGame extends MenuPage implements ConnectTryFinishEvent.
 		addUIActor(imageMap, 420, (int) (215 - imageMap.getHeight()), null);
 		addUIActor(labelIP, 783, (int) (120-labelIP.getHeight()), null);
 
+		Dataholder.MapId = actualMap;
+
+		ConnectTryFinishEvent.unregisterAll();
+		ConnectTryFinishEvent.unregisterAll();
+
 		ConnectTryFinishEvent.registerListener(this);
 		DoNotTouchPacketEvent.registerListener(this);
 	}
 
 	//TODO
-	protected void hostGame(int port, int map) {
+	protected void hostGame(int port) {
 
 		if(Main.getInstance().startServer(port))
 		{

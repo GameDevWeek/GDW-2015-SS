@@ -27,29 +27,14 @@ public class MiningSystem extends EntitySystem implements MiningEvent.Listener {
 
     @Override
     public void onMiningEvent(Entity playerEnt, Entity mineableEnt, float channelTime) {
-        //System.out.println("Start Shards Player: " + inventoryComp.get(playerEnt).getMetalShards());
-        //System.out.println("ChannelTime: " + channelTime);
-        //System.out.println("SatInv: " + inventoryComp.get(mineableEnt).getMetalShards());
-        //System.out.println("PlaInv: " + inventoryComp.get(playerEnt).getMetalShards());
         int minedMetalShards = (int)Math.ceil((GameConstants.MINING_PER_SECOND * channelTime));
 
-//        System.out.println("MinedMetalShards: " + minedMetalShards);
-//        System.out.println("PlayerShards1: " + inventoryComp.get(playerEnt).getMetalShards());
-//        System.out.println("SatelliteShards1: " + inventoryComp.get(mineableEnt).getMetalShards());
 
         transferMines(mineableEnt, playerEnt, minedMetalShards);
 
-//        System.out.println("PlayerShards2: " + inventoryComp.get(playerEnt).getMetalShards());
-//        System.out.println("SatelliteShards2: " + inventoryComp.get(mineableEnt).getMetalShards());
-//        System.out.println();
-       /* System.out.println("minedMetalShards: " + minedMetalShards);
         int actuallyMinedMetalShards = inventoryComp.get(mineableEnt).subMetalShards(minedMetalShards);
-        System.out.println("actuallyMinedMetalShards: " + actuallyMinedMetalShards);
         int collected = inventoryComp.get(playerEnt).addMetalShards(actuallyMinedMetalShards);
-        System.out.println("Sammeln " + collected);
 
-        System.out.println("Shards Player: " + inventoryComp.get(playerEnt).getMetalShards());
-        System.out.println("Shards Satellite: " + inventoryComp.get(mineableEnt).getMetalShards());*/
 
 
     }

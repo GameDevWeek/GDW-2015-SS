@@ -9,12 +9,14 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
+import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.ss15.events.SoundEvent;
 import de.hochschuletrier.gdw.ss15.events.network.client.SendPacketClientEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.Game;
 import de.hochschuletrier.gdw.ss15.game.components.*;
 import de.hochschuletrier.gdw.ss15.game.components.input.InputComponent;
+import de.hochschuletrier.gdw.ss15.game.components.light.NormalMapComponent;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.MovementPacket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.MyTimer;
 
@@ -59,14 +61,14 @@ public class TestMovementSystem extends IteratingSystem{
 	        float angle = mousepos2.angle();
 
             vectorToAdd.nor();
-
-            //System.out.println("Client vel: "+vectorToAdd);
 	        MovementPacket packet = new MovementPacket(vectorToAdd.x,vectorToAdd.y,angle);
-	        SendPacketClientEvent.emit(packet,true);
+	        SendPacketClientEvent.emit(packet, true);
+
+
             vectorToAdd.setZero();
        }
-        
-        
+
+
        // velVector.set(input.get(entity).horizontal, input.get(entity).vertical);
        // velVector.nor();
        // velVector.scl(deltaTime);
@@ -87,7 +89,10 @@ public class TestMovementSystem extends IteratingSystem{
             soundEmitter.get(entity).isPlaying = false;
         }
 
-
+        PhysixBodyComponent comp = ComponentMappers.physixBody.get(entity);
+        if(comp != null && comp.getLinearVelocity().len()<0.001)
+        {
+            comp.setLinearVelocity(new Vector2(vectorToAdd).scl(500));
+        }
     }
-
 }

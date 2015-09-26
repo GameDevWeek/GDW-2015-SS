@@ -20,12 +20,10 @@ public class TestListenerClient implements DoNotTouchPacketEvent.Listener
     public void onDoNotTouchPacket(Packet pack) {
         //System.out.print("Called");
 
-       // System.out.println("Client received: "+pack.getPacketId());
 
         //SimplePacket sPack = (SimplePacket) pack;
        // if(sPack.m_SimplePacketId == SimplePacket.SimplePacketId.MetalShardsUpdate.getValue())
         //{
-            //System.out.println("Metal chards Update: "+sPack.m_Moredata);
        // }
     }
 }

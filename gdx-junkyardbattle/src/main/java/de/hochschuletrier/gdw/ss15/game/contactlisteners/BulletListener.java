@@ -7,7 +7,6 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixContact;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixContactAdapter;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
-import de.hochschuletrier.gdw.ss15.events.CollisionEvent;
 import de.hochschuletrier.gdw.ss15.events.PlayerHurtEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.components.AboveAbyssComponent;
@@ -53,7 +52,6 @@ public class BulletListener extends PhysixContactAdapter{
         }
         else
         {
-//            CollisionEvent.emit(contact); // wofuer wird das genutzt?
             if(contact.getOtherFixture() != null){
                 if(contact.getOtherFixture().getBody().getFixtureList().get(0).getUserData() instanceof AboveAbyssComponent)
                   {
@@ -62,7 +60,6 @@ public class BulletListener extends PhysixContactAdapter{
                   }
                 else
                       engine.removeEntity(contact.getMyComponent().getEntity());
-                //System.out.println(contact.getOtherFixture().getBody().getFixtureList().get(0).getUserData());
                 
             }
             

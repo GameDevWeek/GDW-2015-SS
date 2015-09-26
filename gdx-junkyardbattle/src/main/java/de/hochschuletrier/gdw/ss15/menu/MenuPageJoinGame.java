@@ -65,6 +65,10 @@ public class MenuPageJoinGame extends MenuPage implements DoNotTouchPacketEvent.
 	public MenuPageJoinGame(Skin skin, MenuManager menuManager, String background, String name) {
 		super(skin, background);
 
+		ConnectTryFinishEvent.unregisterAll();
+		ConnectTryFinishEvent.unregisterAll();
+
+		DoNotTouchPacketEvent.registerListener(this);
 
 		labelTimer = new Label("60", skin);
 		labelTimer.setWidth(widthChange);
@@ -75,7 +79,7 @@ public class MenuPageJoinGame extends MenuPage implements DoNotTouchPacketEvent.
 		addUIActor(labelTimer, 492, (int) (155 - heightChange), null);
 		addCenteredImage(450, 85 - 30, 115, 30, change, () -> SendPacketClientEvent
 				.emit(new SimplePacket(SimplePacketId.ChangeTeamPacket.getValue(), 0), true));
-		addUIActor(labelMapName, 475, (int) (60-labelMapName.getHeight()), null);
+		addUIActor(labelMapName, 475, (int) (60 - labelMapName.getHeight()), null);
 		hgBlue1.setWidth(width);
 		hgBlue1.setHeight(height);
 		hgRed1.setWidth(width);
@@ -125,17 +129,14 @@ public class MenuPageJoinGame extends MenuPage implements DoNotTouchPacketEvent.
 	@Override
 	public void onDoNotTouchPacket(Packet pack) {
 		// TODO Auto-generated method stub
-		//System.out.println("test");
 		//System.out.print(pack.getPacketId());
 		if (pack.getPacketId() == PacketIds.Simple.getValue())
 		{// einafche
 																// nachricht
 
-			//System.out.println("received simpile packet");
 			SimplePacket sPack = (SimplePacket) pack;
 			if(sPack.m_SimplePacketId == SimplePacketId.TimeMenuePacket.getValue())
 			{//timer ist gespawned
-				//System.out.println("Received time: " + sPack.m_Moredata);
 				timetoStart=(int)sPack.m_Moredata;
 			}
 			/*if (sPack.m_SimplePacketId == SimplePacket.SimplePacketId.TimeToStartPacket.getValue()) {
@@ -149,8 +150,6 @@ public class MenuPageJoinGame extends MenuPage implements DoNotTouchPacketEvent.
 			int idPlayer = pPack.id;
 			String name = pPack.name;
 			boolean team = pPack.team; // false RED
-			//System.out.println("team:" + team);
-			//System.out.println("ID: " + idPlayer);
 			deletePlayer(idPlayer, team);
 			addPlayer(idPlayer, name, team);
 

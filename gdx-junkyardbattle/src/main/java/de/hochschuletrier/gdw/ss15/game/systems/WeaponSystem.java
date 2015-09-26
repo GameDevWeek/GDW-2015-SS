@@ -1,19 +1,13 @@
 package de.hochschuletrier.gdw.ss15.game.systems;
 
-import org.lwjgl.Sys;
-
-import ch.qos.logback.core.net.SyslogOutputStream;
-
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
-
 import de.hochschuletrier.gdw.ss15.events.WeaponCharging;
 import de.hochschuletrier.gdw.ss15.events.WeaponUncharged;
 import de.hochschuletrier.gdw.ss15.events.network.client.SendPacketClientEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.components.HealthComponent;
-import de.hochschuletrier.gdw.ss15.game.components.InventoryComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.components.WeaponComponent;
@@ -69,7 +63,6 @@ public class WeaponSystem extends IteratingSystem {
 
                 FirePacket fire = new FirePacket(wpc.fireChannelTime);
                 SendPacketClientEvent.emit(fire, true);
-//                System.out.println("emit fire package! " + wpc.fireChannelTime);
 
                 wpc.fireChannelTime = 0f;
                 attackCooldownTimer = 0.0f;
@@ -85,7 +78,6 @@ public class WeaponSystem extends IteratingSystem {
 //                WeaponUncharged.emit(); // fürs harvesten?
                 GatherPacket gather = new GatherPacket(wpc.harvestChannelTime);
                 SendPacketClientEvent.emit(gather, true);
-                System.out.println("gathered for " + wpc.harvestChannelTime + "m/n/whatevsec");
                 
                 wpc.harvestChannelTime = 0f;
             }
@@ -100,7 +92,6 @@ public class WeaponSystem extends IteratingSystem {
                 GatherPacket gather = new GatherPacket(wpc.harvestChannelTime);
                 SendPacketClientEvent.emit(gather, true);
             }
-            //System.out.println("gather: " + wpc.harvestChannelTime);
         }
         else
         { // right button is released

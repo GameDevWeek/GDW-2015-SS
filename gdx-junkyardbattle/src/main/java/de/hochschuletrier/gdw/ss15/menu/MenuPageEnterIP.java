@@ -97,7 +97,8 @@ public class MenuPageEnterIP extends MenuPage
 		addUIActor(textAreaIP, 385, (int) (142 - textAreaIP.getHeight()), null);
 		addUIActor(labelError, 786, (int) (101-labelError.getHeight()), null);
 
-		
+		ConnectTryFinishEvent.unregisterAll();
+		ConnectTryFinishEvent.unregisterAll();
 
 		ConnectTryFinishEvent.registerListener(this);
 		DoNotTouchPacketEvent.registerListener(this);
@@ -137,7 +138,6 @@ public class MenuPageEnterIP extends MenuPage
 		if (!status) {
 			labelError.setText("Verbindungsfehler");
 		}
-		System.out.println(status);
 	}
 
 }

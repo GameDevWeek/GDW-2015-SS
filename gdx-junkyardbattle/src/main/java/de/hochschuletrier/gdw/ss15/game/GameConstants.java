@@ -1,5 +1,7 @@
 package de.hochschuletrier.gdw.ss15.game;
 
+import de.hochschuletrier.gdw.ss15.game.rendering.ZoomingModes.modes;
+
 public class GameConstants {
 
     // Priorities for entity systems
@@ -28,7 +30,7 @@ public class GameConstants {
     
     // Light parameters
     public static final int LIGHT_RAYS = 360;
-    public static final float LIGHT_AMBIENT = 0.4f;
+    public static final float LIGHT_AMBIENT = 0.9f;
     public static final boolean LIGHT_BLUR = true;
     public static final int LIGHT_BLURNUM = 2;
     public static final boolean LIGHT_SHADOW = true;
@@ -47,7 +49,12 @@ public class GameConstants {
     public static final float DYING_TIMER = 2;
     public static final float MINING_PER_SECOND = 5;
     public static final float PLAYER_POINT_LIGHT_DISTANCE = 8.f;
+    public static final float PLAYER_POINT_LIGHT_DISTANCE_CHARGED = 4.f;
     public static final float PLAYER_POINT_LIGHT_ALPHA = 0.7f;
     public static final float RESPAWN_TIMER = 5;
     public static final float PROTECTION_DURATION = 4;
+    public static final int DEFAULT_LAYER = 2;
+    
+    // Camera constants
+    public static final modes ZOOM_MODE = modes.pow4;
 }

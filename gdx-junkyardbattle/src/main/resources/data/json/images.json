@@ -52,6 +52,11 @@
     "hudoverlay": "data/images/hudoverlay.png",
 	"back_button_over":"data/ui/menu/Assets/pfeil_hover.png",
 	"changeMap_button_left_over":"data/ui/menu/Assets/change_map_hover_l.png",
-	"changeMap_button_right_over":"data/ui/menu/Assets/change_map_hover_r.png"
+	"changeMap_button_right_over":"data/ui/menu/Assets/change_map_hover_r.png",
 
+    "hud_orange": "data/images/HUD_orange.png",
+    "hud_blue" : "data/images/HUD_blau.png",
+    "hud_punktestand" : "data/images/Punktestand.png",
+    "hud_uhr": "data/images/Uhr.png",
+    "hud_schrott" : "data/images/Schrott.png"
 }

@@ -266,7 +266,7 @@ public class Main extends StateBasedGame {
         cfg.width = WINDOW_WIDTH;
         cfg.height = WINDOW_HEIGHT;
         cfg.useGL30 = false;
-        cfg.vSyncEnabled = true;
+        cfg.vSyncEnabled = false;
         cfg.foregroundFPS = 60;
         cfg.backgroundFPS = 60;
 

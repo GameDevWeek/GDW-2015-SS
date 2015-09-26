@@ -70,7 +70,6 @@ public class MenuPageStart extends MenuPage /*implements ConnectTryFinishEvent.L
 		{
 			
 		}
-		System.out.println(status);
 	}
 	@Override
 	public void onDoNotTouchPacket(Packet pack) {
