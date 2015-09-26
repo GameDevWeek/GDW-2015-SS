@@ -40,15 +40,21 @@ public class HudSystem extends IteratingSystem {
     AssetManagerX assetManager;
     Texture crosshairTex;
     Texture hudoverlay;
+    Texture punktestand;
+    Texture uhr;
+    Texture schrott;
     BitmapFont font;
 
-    public static Entity localPlayer;
+    Entity localPlayer;
 
     public HudSystem(Camera camera) {
         this(Family.one((PlayerComponent.class), (SpawnSatelliteComponent.class)).get(), GameConstants.PRIORITY_HUD);
         this.camera = camera;
         this.crosshairTex = assetManager.getTexture("crosshair");
-        this.hudoverlay = assetManager.getTexture("hudoverlay");
+        this.hudoverlay = assetManager.getTexture("hud_blue");
+        this.punktestand = assetManager.getTexture("hud_punkstetand");
+        this.uhr = assetManager.getTexture("hud_uhr");
+        this.schrott = assetManager.getTexture("hud_schrott");
         font = assetManager.getFont("quartz_40");
     }
 
@@ -131,37 +137,36 @@ public class HudSystem extends IteratingSystem {
 
 
         float healthSizeFactor = (float) HudDebug.health / 100.0f;
-        float scaleXFactor = 392.0f / (float) hudoverlay.getWidth();
-        float relativeXPosLeft = 646.0f / hudoverlay.getWidth() * Gdx.graphics.getWidth();
-        float relativeYPosLeft = Gdx.graphics.getHeight() - 51.0f / hudoverlay.getHeight() * Gdx.graphics.getHeight();
-        float relativeXPosRight = 646.0f / hudoverlay.getWidth() * Gdx.graphics.getWidth();
-        float relativeYPosRight = Gdx.graphics.getHeight() - 51.0f / hudoverlay.getHeight() * Gdx.graphics.getHeight();
-        float barHeight = 28.0f / hudoverlay.getHeight() * Gdx.graphics.getHeight();
-        float barWidth = 392.0f / hudoverlay.getWidth() * Gdx.graphics.getWidth();
+        float relativeXPosLeft = 736.0f / hudoverlay.getWidth() * Gdx.graphics.getWidth();
+        float relativeYPosLeft = Gdx.graphics.getHeight() - 58.0f / hudoverlay.getHeight() * Gdx.graphics.getHeight();
+        float relativeXPosRight = 1023.0f / hudoverlay.getWidth() * Gdx.graphics.getWidth();
+        float relativeYPosRight = Gdx.graphics.getHeight() - 58.0f / hudoverlay.getHeight() * Gdx.graphics.getHeight();
+        float barHeight = 36.0f / hudoverlay.getHeight() * Gdx.graphics.getHeight();
+        float barWidth = 164.0f / hudoverlay.getWidth() * Gdx.graphics.getWidth();
 
         //linkeBox
-        DrawUtil.fillRect(relativeXPosLeft - (barWidth * (healthSizeFactor - 1)), relativeYPosLeft, barWidth * healthSizeFactor, barHeight, healthColor);
+        DrawUtil.fillRect(relativeXPosLeft - (barWidth * (healthSizeFactor -1)), relativeYPosLeft, barWidth * healthSizeFactor, barHeight, healthColor);
         //rechteBox
-        //DrawUtil.fillRect(relativeXPosRight, relativeYPosRight, barWidth * healthSizeFactor, barHeight, healthColor);
+        DrawUtil.fillRect(relativeXPosRight, relativeYPosRight, barWidth * healthSizeFactor, barHeight, healthColor);
 
         //font.draw(DrawUtil.batch, "health: " + health, 0, Gdx.graphics.getHeight() / 2);
-        //font.draw(DrawUtil.batch, "barWidth: " + barWidth , 0, Gdx.graphics.getHeight() / 2 + 200);
+        font.draw(DrawUtil.batch, "overlay: " + hudoverlay.getWidth() + ", " +  hudoverlay.getHeight(), 0, 0);
     }
 
-    private void schrottAnzeige() {
+    private void schrottAnzeige(){
         int schrottcount = localPlayer.getComponent(InventoryComponent.class).getMetalShards();
-        float relativeXPos = 646.0f / hudoverlay.getWidth() * Gdx.graphics.getWidth();
-        float relativeYPos = Gdx.graphics.getHeight() - 51.0f / hudoverlay.getHeight() * Gdx.graphics.getHeight();
+        DrawUtil.batch.draw(schrott, Gdx.graphics.getWidth()/2 - 450,Gdx.graphics.getHeight() + 3, schrott.getWidth() / 2, schrott.getHeight() / -2);
 
-        //font.draw(DrawUtil.batch, "" + schrottcount, 0, Gdx.graphics.getHeight() / 2);
+        font.draw(DrawUtil.batch, "" + schrottcount,Gdx.graphics.getWidth()/2 - 366, Gdx.graphics.getHeight()-45);
+
     }
 
     private void timer() {
-
+        DrawUtil.batch.draw(uhr, Gdx.graphics.getWidth()/2 + 250,Gdx.graphics.getHeight() + 3, uhr.getWidth() / 2, uhr.getHeight() / -2);
     }
 
     private void showHudOverlay() {
-        DrawUtil.batch.draw(hudoverlay, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), -Gdx.graphics.getWidth(), -Gdx.graphics.getHeight());
+        DrawUtil.batch.draw(hudoverlay, 0, Gdx.graphics.getHeight(), Gdx.graphics.getWidth(), -Gdx.graphics.getHeight());
     }
 
 }
