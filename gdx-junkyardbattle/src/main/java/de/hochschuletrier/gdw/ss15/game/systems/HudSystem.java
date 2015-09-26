@@ -1,4 +1,4 @@
-package de.hochschuletrier.gdw.ss15.game.systems;
+﻿package de.hochschuletrier.gdw.ss15.game.systems;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
@@ -66,12 +66,11 @@ public class HudSystem extends IteratingSystem {
         if (player.isLocalPlayer){
             if (localPlayer == null){
                 this.localPlayer = entity;
-            }
-            System.out.println("test");
             drawCrosshair(entity);
             lebensBalken();
             showHudOverlay();
             radar(entity);
+            }
         }
     }
 
