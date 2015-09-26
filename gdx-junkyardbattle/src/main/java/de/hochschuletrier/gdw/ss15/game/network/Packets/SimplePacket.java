@@ -24,7 +24,7 @@ public class SimplePacket extends Packet
         StopGame((short)42),
         TimeMenuePacket((short)55),
         MetalShardsUpdate((short)10),
-        BasePointsUpdate((short)20),
+        TeamPointsUpdate((short)20),
         MiningPacket((byte)21);
 
         private final short m_Value;

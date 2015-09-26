@@ -19,7 +19,6 @@ public class BasePointComponentFactory extends ComponentFactory<EntityFactoryPar
             SafeProperties properties, EntityFactoryParam param)
     {
         BasePointComponent component = engine.createComponent(BasePointComponent.class);
-        component.points = 0;
         entity.add(component);
 //        System.out.println("BULLET");
     }
