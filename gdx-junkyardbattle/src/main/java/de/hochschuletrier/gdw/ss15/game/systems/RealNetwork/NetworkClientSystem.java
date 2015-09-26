@@ -89,15 +89,14 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener,
             lastAddedEntityID = iPacket.entityID;
 
             boolean WasLowId = lastAddedEntityID<0;
-            Math.abs(lastAddedEntityID);
+            lastAddedEntityID = Math.abs(lastAddedEntityID);
 
             //System.out.println(iPacket.xPos + " "+ iPacket.yPos);
 
             Entity ent = game.createEntity(iPacket.name,iPacket.xPos,iPacket.yPos);
 
             if(WasLowId) {
-                System.out.println("Team flagged");
-                ComponentMappers.player.get(ent).teamID = 1;
+                ComponentMappers.player.get(ent).teamID = 0;
             }
 
             //if(iPacket.name.equals())
@@ -126,11 +125,11 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener,
                 Entity ent = hashMap.get(sPacket.m_Moredata);
                 if(ent!=null) {
                     //entety deleted
-                    NetworkReceivedNewPacketClientEvent.emit(pack,ent);
                     hashMap.remove(sPacket.m_Moredata);
                     game.getEngine().removeEntity(ent);
                 }
             }
+            NetworkReceivedNewPacketClientEvent.emit(pack,null);
         }
         else if(pack.getPacketId() == PacketIds.SpawnBullet.getValue()){
             SpawnBulletPacket packet = (SpawnBulletPacket) pack;

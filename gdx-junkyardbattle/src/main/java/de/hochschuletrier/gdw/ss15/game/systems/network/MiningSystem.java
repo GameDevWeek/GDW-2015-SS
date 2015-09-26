@@ -3,15 +3,20 @@ package de.hochschuletrier.gdw.ss15.game.systems.network;
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
+import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.systems.IteratingSystem;
+import com.badlogic.gdx.audio.Sound;
+import de.hochschuletrier.gdw.commons.gdx.audio.SoundEmitter;
 import de.hochschuletrier.gdw.ss15.events.MiningEvent;
+import de.hochschuletrier.gdw.ss15.events.SoundEvent;
 import de.hochschuletrier.gdw.ss15.events.network.server.SendPacketServerEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.GameConstants;
-import de.hochschuletrier.gdw.ss15.game.components.BasePointComponent;
-import de.hochschuletrier.gdw.ss15.game.components.InventoryComponent;
-import de.hochschuletrier.gdw.ss15.game.components.MineableComponent;
-import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
+import de.hochschuletrier.gdw.ss15.game.components.*;
+import de.hochschuletrier.gdw.ss15.game.components.input.InputComponent;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
+import de.hochschuletrier.gdw.ss15.game.systems.input.InputSystem;
+import jdk.internal.util.xml.impl.Input;
 
 /**
  * Created by Ricardo on 25.09.2015.
@@ -19,11 +24,15 @@ import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
 public class MiningSystem extends EntitySystem implements MiningEvent.Listener {
 
     ComponentMapper<InventoryComponent> inventoryComp = ComponentMappers.inventory;
+    ComponentMapper<InputComponent> inputComp = ComponentMappers.input;
+    ComponentMapper<SoundEmitterComponent> soundEmitterComp = ComponentMappers.soundEmitter;
 
     public MiningSystem()
     {
         MiningEvent.register(this);
     }
+
+
 
     @Override
     public void onMiningEvent(Entity playerEnt, Entity mineableEnt, float channelTime) {

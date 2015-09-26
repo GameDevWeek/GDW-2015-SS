@@ -1,16 +1,15 @@
 package de.hochschuletrier.gdw.ss15.game.systems;
 
+import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
+import de.hochschuletrier.gdw.ss15.events.SoundEvent;
 import de.hochschuletrier.gdw.ss15.events.WeaponCharging;
 import de.hochschuletrier.gdw.ss15.events.WeaponUncharged;
 import de.hochschuletrier.gdw.ss15.events.network.client.SendPacketClientEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
-import de.hochschuletrier.gdw.ss15.game.components.HealthComponent;
-import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
-import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
-import de.hochschuletrier.gdw.ss15.game.components.WeaponComponent;
+import de.hochschuletrier.gdw.ss15.game.components.*;
 import de.hochschuletrier.gdw.ss15.game.components.input.InputComponent;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.FirePacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.GatherPacket;
@@ -23,12 +22,18 @@ public class WeaponSystem extends IteratingSystem {
     
     MyTimer timer = new MyTimer(true);
     float attackCooldownTimer = 0;
+    Entity tractorSound = new Entity();
 
     public WeaponSystem() {
         super(Family.all(PlayerComponent.class,
-                         WeaponComponent.class,
-                         HealthComponent.class,
-                         InputComponent.class).get());
+                WeaponComponent.class,
+                HealthComponent.class,
+                InputComponent.class).get());
+        tractorSound.add(new SoundEmitterComponent());
+        ComponentMappers.soundEmitter.get(tractorSound).isPlaying = false;
+        //ComponentMappers.soundEmitter.get(tractorSound).emitter.
+        //System.out.println("TractorVol: " + ComponentMappers.soundEmitter.get(tractorSound).emitter.getGlobalVolume());
+        //ComponentMappers.soundEmitter.get(tractorSound).emitter.setGlobalVolume(100);
     }
 
     @Override
@@ -42,6 +47,8 @@ public class WeaponSystem extends IteratingSystem {
         WeaponComponent wpc = ComponentMappers.weapon.get(entity);
         PositionComponent psc = ComponentMappers.position.get(entity);
         InputComponent input = ComponentMappers.input.get(entity);
+        Entity weaponSound = new Entity();
+        weaponSound.add(new SoundEmitterComponent());
 
         
         if(attackCooldownTimer < wpc.fireCooldown){
@@ -59,6 +66,10 @@ public class WeaponSystem extends IteratingSystem {
             return; // left mouse > right mouse
         } else {
             if(wpc.fireChannelTime > 0) { // left button is released
+                if (ComponentMappers.soundEmitter.has(entity)) {
+                    //System.out.println("Shotgun");
+                    SoundEvent.emit("shotgun_shoot", weaponSound);
+                }
                 WeaponUncharged.emit();
 
                 FirePacket fire = new FirePacket(wpc.fireChannelTime);
@@ -92,10 +103,29 @@ public class WeaponSystem extends IteratingSystem {
                 GatherPacket gather = new GatherPacket(wpc.harvestChannelTime);
                 SendPacketClientEvent.emit(gather, true);
             }
+            //System.out.println("gather: " + wpc.harvestChannelTime);
+
+            //System.out.println("Gathersound");
+            //System.out.println("GatherBoolean: " + ComponentMappers.soundEmitter.get(tractorSound).isPlaying);
+            //SoundEvent.emit("magnet_beam1", tractorSound, true);
+
+            if(!ComponentMappers.soundEmitter.get(tractorSound).isPlaying)
+            {
+                //System.out.println("Gathersound is playing");
+                SoundEvent.emit("magnet_beam1", tractorSound, true);
+                ComponentMappers.soundEmitter.get(tractorSound).isPlaying = true;
+            }
+
         }
         else
         { // right button is released
             wpc.harvestChannelTime = 0f;
+            SoundEvent.stopSound(tractorSound);
+            if (ComponentMappers.soundEmitter.get(tractorSound).isPlaying) {
+                //System.out.println("Gathersound is stopping");
+                SoundEvent.stopSound(tractorSound);
+                ComponentMappers.soundEmitter.get(tractorSound).isPlaying = false;
+            }
         }
     }
 }

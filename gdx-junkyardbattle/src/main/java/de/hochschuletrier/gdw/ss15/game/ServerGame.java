@@ -145,9 +145,7 @@ public class ServerGame{
             return this.createEntity(name, x, y);
         }, "data/maps/"+mapname+".tmx", physixSystem, entityFactory, Main.getInstance().getAssetManager());
     */
-        //System.out.println(Main.maps.get("map" + mapid).file);
-
-        System.out.println("Geladene map id ist: "+mapid);
+        System.out.println("Load map with id: "+mapid);
 
         mapLoader.run(this::createEntity,  Main.maps.get("map"+mapid).file, physixSystem, entityFactory, Main.getInstance().getAssetManager());
 

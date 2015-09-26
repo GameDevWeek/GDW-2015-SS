@@ -43,7 +43,7 @@ public class GameConstants {
     public static float MUSIC_FADE_TIME = 2;
 
     // PlayerParameters
-    public static final int START_HEALTH = 30;
+    public static final int START_HEALTH = 100;
     public static final float START_X_POSITION = 0;
     public static final float START_Y_POSITION = 0;
     public static final float DYING_TIMER = 2;

@@ -48,6 +48,10 @@ public class BulletListener extends PhysixContactAdapter{
                     PlayerHurtEvent.emit(contact.getMyComponent().getEntity(), otherEntity);
 //                    engine.removeEntity(contact.getMyComponent().getEntity()); // uebernimmt GameLogik
                 }
+                if(ComponentMappers.abyss.has(otherEntity)){//Satellit und Autowracks
+                    engine.removeEntity(contact.getMyComponent().getEntity());
+                }
+                                
             }
         }
         else

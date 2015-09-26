@@ -39,7 +39,7 @@ public class ServerLobby
     public ServerLobby()
     {
         //WARNING!!!! hurts by reading XD
-        mapId = Dataholder.MapId;
+        mapId = Dataholder.MapId.get();
     }
 
     public boolean ChangeMap(String s)

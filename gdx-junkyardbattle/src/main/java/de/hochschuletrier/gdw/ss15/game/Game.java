@@ -97,7 +97,7 @@ public class Game extends InputAdapter {
 
     private final ParticleSpawnSystem particleSpawner = new ParticleSpawnSystem(this);
     private final DeathSystem deathSystem = new DeathSystem();
-    private final ChangeAnimationStateSystem changeAnimSystem = new ChangeAnimationStateSystem();
+    private ChangeAnimationStateSystem changeAnimSystem;
     
     private final TestListenerClient TestoutputSystem = new TestListenerClient();
     private final EffectAddSystem effectAddSystem = new EffectAddSystem(engine);
@@ -164,9 +164,12 @@ public class Game extends InputAdapter {
                 Main.maps.get("map"+mapid).file, physixSystem, entityFactory, assetManager );
 
 
+
         renderSystem.init(mapLoader.getTiledMap(), this);
         debugDraw = false;
         physixDebugRenderSystem.setProcessing(debugDraw);
+        
+        changeAnimSystem = new ChangeAnimationStateSystem(assetManager);
     }
 
     private void addSystems() {

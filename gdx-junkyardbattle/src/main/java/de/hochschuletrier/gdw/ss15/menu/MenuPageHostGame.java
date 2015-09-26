@@ -86,7 +86,7 @@ public class MenuPageHostGame extends MenuPage implements ConnectTryFinishEvent.
 
 			imageMap.setTexture(assetManager.getTexture("map" + actualMap));
 
-			Dataholder.MapId = actualMap;
+			Dataholder.MapId.set(actualMap);
 		}
 	};
 	private Runnable runnableChangeMapLeft= new Runnable() {
@@ -95,13 +95,13 @@ public class MenuPageHostGame extends MenuPage implements ConnectTryFinishEvent.
 		public void run() {
 
 			actualMap--;
-			if (actualMap <0 ) {
+			if (actualMap < 1 ) {
 				actualMap = Main.maps.size();
 			}
 
 			imageMap.setTexture(assetManager.getTexture("map" + actualMap));
 
-			Dataholder.MapId = actualMap;
+			Dataholder.MapId.set(actualMap);
 		}
 	};
 
@@ -128,7 +128,7 @@ public class MenuPageHostGame extends MenuPage implements ConnectTryFinishEvent.
 		addUIActor(imageMap, 420, (int) (215 - imageMap.getHeight()), null);
 		addUIActor(labelIP, 783, (int) (120-labelIP.getHeight()), null);
 
-		Dataholder.MapId = actualMap;
+		Dataholder.MapId.set(actualMap);
 
 		ConnectTryFinishEvent.unregisterAll();
 		ConnectTryFinishEvent.unregisterAll();

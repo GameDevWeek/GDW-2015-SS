@@ -39,5 +39,8 @@ public class AnimatorComponent extends Component implements Pool.Poolable
         animationStates.clear();
         animationState = AnimationState.IDLE;
         stateTime = 0;
+        positionOffsetX = positionOffsetY = 0.f;
+        scaleX = scaleY = 1.f;
+        initialRotation = 0.f;
     }
 }
