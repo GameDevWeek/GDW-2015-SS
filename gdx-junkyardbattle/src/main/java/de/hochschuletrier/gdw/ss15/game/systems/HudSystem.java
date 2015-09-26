@@ -89,7 +89,7 @@ public class HudSystem extends IteratingSystem {
         lineToPlayer.y = entity.getComponent(PositionComponent.class).y - localPlayer.getComponent(PositionComponent.class).y;
 
         lineToPlayer.scl(radarScale);
-        //DrawUtil.batch.draw("icon für spieler", radarMitte + vector);
+        //DrawUtil.batch.draw("icon f?r spieler", radarMitte + vector);
         DrawUtil.drawRect(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()/2,10,10);
         //Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()-Gdx.graphics.getHeight/4
     }
