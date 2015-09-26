@@ -50,17 +50,6 @@ public class BulletListener extends PhysixContactAdapter{
 //                    engine.removeEntity(contact.getMyComponent().getEntity()); // uebernimmt GameLogik
                 }
             }
-//            if(contact.getOtherFixture().getBody().getUserData() instanceof AboveAbyssComponent)
-//                System.out.println("ABYSS COLLISION");
-//            if(contact.getOtherFixture().getBody().getUserData() != null)
-//            {
-//                PhysixBodyComponent otherphysixBC = (PhysixBodyComponent)contact.getOtherFixture().getBody().getUserData();
-//                otherphysixBC.get
-//            }
-//            if(contact.getOtherFixture().getUserData() instanceof AboveAbyssComponent)
-//            {
-//                System.out.println("ABOVEABYSS");
-//            }
         }
         else
         {
@@ -71,11 +60,12 @@ public class BulletListener extends PhysixContactAdapter{
                     ComponentMappers.abyss.get(contact.getMyComponent().getEntity()).above = true;
                     contact.setEnabled(false);
                   }
+                else
+                      engine.removeEntity(contact.getMyComponent().getEntity());
                 //System.out.println(contact.getOtherFixture().getBody().getFixtureList().get(0).getUserData());
                 
             }
-            else
-                engine.removeEntity(contact.getMyComponent().getEntity());
+            
         }
     }
     

@@ -24,6 +24,8 @@ public class PhysixBodyComponentFactory extends ComponentFactory<EntityFactoryPa
     
     public static final short ABGRUND = 0x0001;
     public static final short BULLET = 0x0002;
+    public static final short LIGHT = 0x0004;
+    public static final short LIGHT_PASS_THROUGH = 0x0008;
 
     @Override
     public String getType() {

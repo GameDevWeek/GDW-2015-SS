@@ -1,45 +1,41 @@
-package de.hochschuletrier.gdw.ss15.game.systems.network;
+﻿package de.hochschuletrier.gdw.ss15.game.systems.network;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.ashley.systems.IteratingSystem;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.ashley.core.Engine;
 
-import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.events.SatelliteColliding;
 import de.hochschuletrier.gdw.ss15.events.SoundEvent;
-import de.hochschuletrier.gdw.ss15.events.network.client.SendPacketClientEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
-import de.hochschuletrier.gdw.ss15.game.Game;
-import de.hochschuletrier.gdw.ss15.game.MapSpecialEntities.CreatorInfo;
 import de.hochschuletrier.gdw.ss15.game.ServerGame;
-import de.hochschuletrier.gdw.ss15.game.components.DamageComponent;
 import de.hochschuletrier.gdw.ss15.game.components.InventoryComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.components.SpawnSatelliteComponent;
 import de.hochschuletrier.gdw.ss15.game.components.network.server.PositionSynchComponent;
-import de.hochschuletrier.gdw.ss15.game.components.texture.TextureComponent;
-import de.hochschuletrier.gdw.ss15.game.network.Packets.EntityUpdatePacket;
-import de.hochschuletrier.gdw.ss15.game.network.Packets.MovementPacket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.MyTimer;
-import de.hochschuletrier.gdw.ss15.game.MapSpecialEntities;
-import de.hochschuletrier.gdw.ss15.game.MapLoader;
 
-public class TestSatelliteSystem extends IteratingSystem {
+public class TestSatelliteSystem extends IteratingSystem
+{
+    
 	ServerGame serverGame;
 	MyTimer timer = new MyTimer(true);
-	float x;
-    float y;
+    
 	private ComponentMapper<InventoryComponent> inventory;
 	private ComponentMapper<PositionComponent> position;
 	private ComponentMapper<PositionSynchComponent> positionSynch;
 	private final PooledEngine engine;
-	boolean satellite = false;
-	public TestSatelliteSystem(ServerGame serverGame, PooledEngine engine) {
+	
+	boolean satellite = false;	   
+    float x;
+    float y;
+    
+    
+	public TestSatelliteSystem(ServerGame serverGame, PooledEngine engine)
+	{
 		super(Family.all(SpawnSatelliteComponent.class).get());
+		
 		this.engine = engine;
 		this.serverGame = serverGame;
 		inventory = ComponentMappers.inventory;
@@ -56,10 +52,11 @@ public class TestSatelliteSystem extends IteratingSystem {
 		timer.Update();
 		
 		
-		if(timer.get_CounterSeconds()>10 && satellite == false)
+		if(timer.get_CounterSeconds()>60 && satellite == false)
         {
+		    
 		    satellite = true;
-           Entity satelliteEvent = serverGame.createEntity("SatelliteSiteServer", x, y);
+		    Entity satelliteEvent = serverGame.createEntity("SatelliteSiteServer", x, y);
             SatelliteColliding.emit();
             SoundEvent.emit("sat_explode", satelliteEvent);
         }
@@ -81,18 +78,16 @@ public class TestSatelliteSystem extends IteratingSystem {
 
           x= posc.x;
           y = posc.y;
-
-		//System.out.println(x+" , "+y);
+          
         	
         	if(inventory.getMetalShards()<1)
         	{
+        	    
         		engine.removeEntity(entity);;
         		satellite = false;
-        		System.out.println("Ich bin hier");
+
         		timer.ResetTimer();
         		
         	}
- 
 	}
- 
 }
