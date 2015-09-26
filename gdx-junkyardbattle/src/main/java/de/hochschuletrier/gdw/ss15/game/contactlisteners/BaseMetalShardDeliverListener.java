@@ -5,17 +5,18 @@ import de.hochschuletrier.gdw.commons.gdx.physix.PhysixContactAdapter;
 import de.hochschuletrier.gdw.ss15.events.ComeToBaseEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 
-public class PlayerBaseListener extends PhysixContactAdapter {
-    
+public class BaseMetalShardDeliverListener extends PhysixContactAdapter {
+
     @Override
     public void beginContact(PhysixContact contact)
     {
         if(contact.getOtherComponent() != null)
         {
-            if (ComponentMappers.basePoint.has(contact.getOtherComponent().getEntity()))
+            if (ComponentMappers.player.has(contact.getOtherComponent().getEntity()))
             {
-                // "myEntity" - Player, "otherEntity" - Base
-                ComeToBaseEvent.emit(contact.getMyComponent().getEntity(), contact.getMyComponent().getEntity());
+                System.out.println("player hit base");
+                // "otherEntity" - Player, "myEntity" - Base
+                ComeToBaseEvent.emit(contact.getOtherComponent().getEntity(), contact.getMyComponent().getEntity());
             }
         }
     }
