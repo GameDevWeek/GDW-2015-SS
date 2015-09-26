@@ -155,7 +155,9 @@ public class FogRenderer extends SortedSubIteratingSystem.SubSystem implements E
 
     @Override
     public void entityAdded(Entity entity) {
-        player = entity;
+        if(entity.getComponent(PlayerComponent.class).isLocalPlayer){
+            player = entity;
+        }
     }
 
     @Override

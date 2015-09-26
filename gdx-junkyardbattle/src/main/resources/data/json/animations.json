@@ -1,5 +1,5 @@
-﻿{
-    "walking": {
+{
+	"walking": {
         "filename": "data/animations/walking.png",
         "frames" : 7,
         "frameDuration": [0.15, 0.15, 0.15, 0.15, 0.15, 0.15, 0.15],
