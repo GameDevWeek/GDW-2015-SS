@@ -60,7 +60,6 @@ public class BulletListener extends PhysixContactAdapter{
                   }
                 else
                       engine.removeEntity(contact.getMyComponent().getEntity());
-                //System.out.println(contact.getOtherFixture().getBody().getFixtureList().get(0).getUserData());
                 
             }
             
