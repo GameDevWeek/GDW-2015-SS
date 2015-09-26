@@ -16,7 +16,6 @@ public class ShootDownEvent {
         this.xPos = xPos;
         this.yPos = yPos;
         this.timeStamp = timeStamp;
-        //System.out.println("ShootDownEvent\nxPos: " + this.xPos + " yPos: " + this.yPos + " timeStamp: " + this.timeStamp);
     }
 
     public static interface Listener{

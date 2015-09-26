@@ -99,7 +99,15 @@ public class LineOfSightSystem extends EntitySystem {
             @Override
             public float reportRayFixture(Fixture fixture, Vector2 point,
                     Vector2 normal, float fraction) {
-                successful.set(fixture.getBody().equals(to));
+                if(fixture.getBody().getUserData() instanceof PhysixBodyComponent)
+                {
+                    PhysixBodyComponent physixBodyComponent = (PhysixBodyComponent)fixture.getBody().getUserData();
+                    successful.set(physixBodyComponent.getEntity().equals(to));
+                }
+                else
+                {
+                    successful.set(false);
+                }
                 return fraction;
             }
         };

@@ -13,6 +13,11 @@ public class DoNotTouchServerPacketEvent {
         void onDoNotTouchServerPacket(Packet pack);
     }
 
+    public static void clearListeners()
+    {
+        listeners.clear();
+    }
+
     private static final SnapshotArray<Listener> listeners = new SnapshotArray();
 
     public static void emit(Packet pack) {

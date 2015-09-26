@@ -20,6 +20,7 @@ import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.components.input.InputComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
+import de.hochschuletrier.gdw.ss15.game.hudDebugTemporary.HudDebug;
 import de.hochschuletrier.gdw.ss15.game.input.XBox360KeyMap;
 import de.hochschuletrier.gdw.ss15.game.systems.CameraSystem;
 
@@ -32,7 +33,7 @@ import de.hochschuletrier.gdw.ss15.game.systems.CameraSystem;
  */
 public class InputSystem extends IteratingSystem implements InputProcessor, ControllerListener {
 
-    Camera camera;
+    public Camera camera;
 
     private boolean isListener = false;
     private boolean controllerActive;
@@ -107,6 +108,12 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
                 break;
             case Input.Keys.ESCAPE:
                 escape = true;
+                break;
+            case Input.Keys.PLUS:
+                HudDebug.health += 5;
+                break;
+            case Input.Keys.MINUS:
+                HudDebug.health -= 5;
                 break;
         }
         //debug();
@@ -224,13 +231,11 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
     @Override
     public void connected(Controller controller) {
         //geht nicht
-        System.out.println("Controller connected");
     }
 
     @Override
     public void disconnected(Controller controller) {
         //geht auch nicht
-        System.out.println("Controller disconnected");
     }
 
     @Override
