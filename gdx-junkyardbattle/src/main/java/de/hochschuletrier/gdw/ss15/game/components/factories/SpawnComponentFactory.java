@@ -28,7 +28,6 @@ public class SpawnComponentFactory extends ComponentFactory<EntityFactoryParam> 
         
         spawnComponent.respawn = false;
         spawnComponent.spawnPoint = null;
-        
         spawnComponent.respawnTimer = GameConstants.RESPAWN_TIMER;
         
         entity.add(spawnComponent);

@@ -239,7 +239,7 @@
             },
             "Interpolate": {},
             "ParticleEffect": {
-                "effectname": "glow",
+                "effectname": "particleglow",
                 "offsetX": 0,
                 "offsetY": 0,
                 "initialRotation": -90

@@ -10,7 +10,10 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.ss15.events.network.server.NetworkNewPlayerEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
@@ -22,6 +25,7 @@ import de.hochschuletrier.gdw.ss15.game.components.HealthComponent.HealthState;
 import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.components.SpawnComponent;
+import de.hochschuletrier.gdw.ss15.game.components.effects.ParticleEffectComponent;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.EntityUpdatePacket;
 
 import java.util.ArrayList;
@@ -31,6 +35,18 @@ import java.util.ArrayList;
  * @author Julien Saevecke
  */
 public class SpawnSystem extends EntitySystem implements NetworkNewPlayerEvent.Listener, MapLoader.TileCreationListener{
+    
+    float[] orange = new float[]{
+        1,
+        0.498f,
+        0.153f
+    };
+            
+    float[] blue = new float[]{
+        0,
+        0,
+        1
+    };
     
     ImmutableArray<Entity> entities; 
     
@@ -71,6 +87,17 @@ public class SpawnSystem extends EntitySystem implements NetworkNewPlayerEvent.L
             spawnInfo.spawnPosition.x = info.asObject.getX();
             spawnInfo.spawnPosition.y = info.asObject.getY();
             
+            ParticleEffectComponent particleComponent = ComponentMappers.particleEffect.get(info.entity);
+            ParticleEffect spawnEffect = particleComponent.particleEffect;
+            Array<ParticleEmitter> emitters = spawnEffect.getEmitters();
+
+            for(ParticleEmitter emitter : emitters){
+                if(spawnInfo.teamID == 0)
+                    emitter.getTint().setColors(orange);
+                else
+                    emitter.getTint().setColors(blue);
+            }
+            
             SpawnSystem.spawnpoints.add(spawnInfo);
         }
     }
@@ -96,9 +123,9 @@ public class SpawnSystem extends EntitySystem implements NetworkNewPlayerEvent.L
                 spawnComponent.spawnPoint = info.spawnPosition;
                 spawnComponent.respawn = true;
                 spawnComponent.respawnTimer = -1;
+                
+                 return;
             }
-
-            return;
         }
         
         throw new RuntimeException("No spawnpoints available - too many players.");
