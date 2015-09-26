@@ -11149,8 +11149,8 @@
    </properties>
   </object>
   <object id="164" name="SatelliteSite" type="Satellite" x="7420" y="2298"/>
-  <object id="166" name="PointLight" x="1328" y="1712"/>
-  <object id="167" name="PointLight" x="5052" y="8252"/>
+  <object id="166" name="greenPointLight" x="1328" y="1712"/>
+  <object id="167" name="greenPointLight" x="5052" y="8252"/>
  </objectgroup>
  <layer name="Above" width="74" height="74">
   <data>
