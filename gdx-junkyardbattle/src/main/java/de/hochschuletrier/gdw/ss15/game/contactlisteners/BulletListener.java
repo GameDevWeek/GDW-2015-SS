@@ -57,18 +57,22 @@ public class BulletListener extends PhysixContactAdapter{
 //                PhysixBodyComponent otherphysixBC = (PhysixBodyComponent)contact.getOtherFixture().getBody().getUserData();
 //                otherphysixBC.get
 //            }
-            if(contact.getOtherFixture().getUserData() instanceof AboveAbyssComponent)
-            {
-                System.out.println("ABOVEABYSS");
-            }
+//            if(contact.getOtherFixture().getUserData() instanceof AboveAbyssComponent)
+//            {
+//                System.out.println("ABOVEABYSS");
+//            }
         }
         else
         {
 //            CollisionEvent.emit(contact); // wofuer wird das genutzt?
             if(contact.getOtherFixture() != null){
-                System.out.println(contact.getOtherFixture().getBody().getFixtureList().get(0).getUserData());
-                ComponentMappers.abyss.get(contact.getMyComponent().getEntity()).above = true;
-                contact.setEnabled(false);
+                if(contact.getOtherFixture().getBody().getFixtureList().get(0).getUserData() instanceof AboveAbyssComponent)
+                  {
+                    ComponentMappers.abyss.get(contact.getMyComponent().getEntity()).above = true;
+                    contact.setEnabled(false);
+                  }
+                //System.out.println(contact.getOtherFixture().getBody().getFixtureList().get(0).getUserData());
+                
             }
             else
                 engine.removeEntity(contact.getMyComponent().getEntity());
@@ -78,8 +82,11 @@ public class BulletListener extends PhysixContactAdapter{
     @Override
     public void endContact(PhysixContact contact) {
         if(contact.getOtherFixture() != null){
-            System.out.println(contact.getOtherFixture().getBody().getFixtureList().get(0).getUserData());
-            ComponentMappers.abyss.get(contact.getMyComponent().getEntity()).above = false;
+            if(contact.getOtherFixture().getBody().getFixtureList().get(0).getUserData() instanceof AboveAbyssComponent)
+              {
+                ComponentMappers.abyss.get(contact.getMyComponent().getEntity()).above = false;
+                contact.setEnabled(false);
+              }            
         }
     }
 

@@ -239,7 +239,8 @@
                 "damageToTile": false
             },
             "Bullet": {
-            }
+            },
+            "AboveAbyss":{}
         }
     },
     "projectileClient": {
