@@ -93,6 +93,9 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener,
 
             Entity ent = game.createEntity(iPacket.name,iPacket.xPos,iPacket.yPos);
 
+
+            //if(iPacket.name.equals())
+
             ComponentMappers.position.get(ent).rotation = iPacket.rotation;
             //TODO find for rotatoin
 
