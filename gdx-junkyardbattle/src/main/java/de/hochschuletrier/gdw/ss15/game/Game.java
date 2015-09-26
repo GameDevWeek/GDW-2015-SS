@@ -14,7 +14,6 @@ import de.hochschuletrier.gdw.commons.gdx.physix.PhysixComponentAwareContactList
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixDebugRenderSystem;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.ss15.Main;
-import de.hochschuletrier.gdw.ss15.events.CollisionEvent;
 import de.hochschuletrier.gdw.ss15.events.ComeToBaseEvent;
 import de.hochschuletrier.gdw.ss15.events.MiningEvent;
 import de.hochschuletrier.gdw.ss15.events.PickupEvent;
@@ -131,35 +130,25 @@ public class Game extends InputAdapter {
     	
     	//Networkpackage
     	//Base
-    	ConnectTryFinishEvent.unregisterAll();
-        DisconnectEvent.unregisterAll();
-        DoNotTouchPacketEvent.unregisterAll();
+    	///*Muss bleiben*/ConnectTryFinishEvent.unregisterAll();
+    	///*Muss bleiben*/DisconnectEvent.unregisterAll();
+        ///*Muss bleiben*/DoNotTouchPacketEvent.unregisterAll();
+        
         //Client
-        NetworkReceivedNewPacketClientEvent.unregisterAll();
-        SendPacketClientEvent.unregisterAll();
-        //Server
-        DoNotTouchServerPacketEvent.unregisterAll();
-        NetworkNewPlayerEvent.unregisterAll();
-        NetworkReceivedNewPacketServerEvent.unregisterAll();
-        SendPacketServerEvent.unregisterAll();
+        /*Client only*/NetworkReceivedNewPacketClientEvent.unregisterAll();
+        /*Client only*/SendPacketClientEvent.unregisterAll();
         
         
         //Rendering Package
-        ChangeAnimationEvent.unregisterAll();
-        ChangeModeOnEffectEvent.unregisterAll();
-        ChangePositionOnEffectEvent.unregisterAll();
+        /*Client only*/ChangeAnimationEvent.unregisterAll();
+        /*Client only*/ChangeModeOnEffectEvent.unregisterAll();
+        /*Client only*/ChangePositionOnEffectEvent.unregisterAll();
         
         //Rest
-        CollisionEvent.unregisterAll();
-        ComeToBaseEvent.unregisterAll();
-        MiningEvent.unregisterAll();
-        PickupEvent.unregisterAll();
-        PlayerDiedEvent.unregisterAll();
-        PlayerHurtEvent.unregisterAll();
-        SatelliteColliding.unregisterAll();
-        SoundEvent.unregisterAll();
-        WeaponCharging.unregisterAll();
-        WeaponUncharged.unregisterAll();
+        /*Client only*/SatelliteColliding.unregisterAll();
+        /*Client only*/SoundEvent.unregisterAll();
+        /*Client only*/WeaponCharging.unregisterAll();
+        /*Client only*/WeaponUncharged.unregisterAll();
     }
 
     public void init(AssetManagerX assetManager,int mapid) {
