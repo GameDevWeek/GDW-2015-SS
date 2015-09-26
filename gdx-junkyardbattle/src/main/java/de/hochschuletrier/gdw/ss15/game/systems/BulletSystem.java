@@ -28,7 +28,7 @@ public class BulletSystem extends IteratingSystem{
         PhysixBodyComponent physix = ComponentMappers.physixBody.get(entity);
         BulletComponent bullet = ComponentMappers.bullet.get(entity);
         //bullet.traveltime += deltaTime;
-        if(physix.getLinearVelocity().x <= 10f && physix.getLinearVelocity().y <= 10f)// > lifetime)
+        if(Math.abs(physix.getLinearVelocity().x) <= 10f && Math.abs(physix.getLinearVelocity().y) <= 10f)// > lifetime)
         {
             if(ComponentMappers.abyss.get(entity).above <= 0)
                 serverGame.createEntity("metalServer", physix.getPosition().x, physix.getPosition().y);

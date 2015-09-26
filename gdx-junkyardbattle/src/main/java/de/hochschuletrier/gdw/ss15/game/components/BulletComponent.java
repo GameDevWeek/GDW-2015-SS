@@ -12,7 +12,7 @@ public class BulletComponent extends Component implements Poolable
     public int playerID;
     public float rotation;
     public float playerrotation;
-    public Vector2 playerpos;
+    public final Vector2 playerpos = new Vector2();
     public int power;
 
     public float traveltime = 0f;
@@ -25,6 +25,6 @@ public class BulletComponent extends Component implements Poolable
         power = 0;
         playerrotation = 0;
         rotation = 0;
-        playerpos = Vector2.Zero;
+        playerpos.set(Vector2.Zero);
     }
 }
