@@ -517,7 +517,7 @@
                 "minMetalShards": 0,
                 "maxMetalShards": 70,
                 "secondsToRegenerate": 3,
-                "shardRegeneration": 5
+                "amountToRegenerate": 5
             },
             "Mineable": {},
             "AboveAbyss": {}
