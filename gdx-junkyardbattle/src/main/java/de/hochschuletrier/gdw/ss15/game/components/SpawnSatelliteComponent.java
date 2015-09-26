@@ -5,12 +5,13 @@ import com.badlogic.gdx.utils.Pool.Poolable;
 
 public class SpawnSatelliteComponent extends Component implements Poolable 
 {
+
         // Dies ist eine Spawnflagge.
 
         @Override
         public void reset() 
         {
-            
+
         }
 }
 
