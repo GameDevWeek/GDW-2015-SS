@@ -151,9 +151,10 @@ public class BoundedCamera extends SmoothCamera {
             resetZoom = true;
     }
     
-    
-    //used for zooming out while weapon charing
-    //value between 0..1
+    /**
+    * used for zooming out while weapon is charging
+    * @param zoomAmount has to be 0..1
+    */
     public void zoomOut(float zoomAmount)
     {
     	if(zoomAmount < deadZone)

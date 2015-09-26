@@ -101,7 +101,7 @@ public class CameraTest extends SandboxGame {
         entityFactory.init(engine, assetManager);
         mapLoader.listen(renderSystem.getTileMapCreator());
         mapLoader.run((String name, float x, float y) -> createEntity(name, x, y), 
-                "data/maps/prototype.tmx", physixSystem, entityFactory,assetManager);
+                "data/maps/prototypeV2.tmx", physixSystem, entityFactory,assetManager);
 
         map = mapLoader.getTiledMap();        
 
@@ -202,7 +202,7 @@ public class CameraTest extends SandboxGame {
             cameraSystem.getCamera().getOrthographicCamera().unproject(target);
             
             if(Gdx.input.isButtonPressed(Buttons.LEFT)){
-               // WeaponCharging.emit();
+               WeaponCharging.emit(1.f);
 
             } else if(!Gdx.input.isButtonPressed(Buttons.LEFT)){
                 WeaponUncharged.emit();
@@ -220,7 +220,6 @@ public class CameraTest extends SandboxGame {
     }
     
     public Entity createEntity(String name, float x, float y) {
-        //factoryParam.game = null;
         factoryParam.x = x;
         factoryParam.y = y;
         Entity entity = entityFactory.createEntity(name, factoryParam);

@@ -1,7 +1,5 @@
 package de.hochschuletrier.gdw.ss15.game.systems;
 
-import java.util.Random;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,7 +45,8 @@ public class CameraSystem extends EntitySystem
     // Camera shake intension and runtime
     private final float shakeTime = 1.7f, shakeIntension = 150.f;
     
-    //private final Logger logger = LoggerFactory.getLogger(getClass());
+    @SuppressWarnings("unused")
+    private final Logger logger = LoggerFactory.getLogger(getClass());
         
     public CameraSystem() {
         // Resizing Camera to match window dimensions
@@ -82,6 +81,10 @@ public class CameraSystem extends EntitySystem
     }
     
     // Fixes the viewport size
+    /**
+     * sets the viewport of the camera
+     * @param fixed sets viewport fix, even if resolution of the game is changed
+     */
     public void setViewport(boolean fixed){
         camera.setViewport(fixed);
     }
