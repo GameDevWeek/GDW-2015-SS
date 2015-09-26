@@ -1,4 +1,4 @@
-﻿{
+{
     "shoteffect": {
         "meta": {},
         "components": {
@@ -132,7 +132,7 @@
                 "fixedRotation": true,
                 "type": "dynamic"
             },
-            "Spawn":{},
+            "Spawn": {},
             "Client": {},
             "PositionSynch": {
                 "clientname": "clientPlayer",
@@ -140,7 +140,7 @@
             },
             "Interpolate": {},
             "Inventory": {
-            	"metalShards": 20,
+                "metalShards": 20,
                 "minMetalShards": 0,
                 "minMetalShardsForBase": 20,
                 "maxMetalShards": 700
@@ -239,9 +239,8 @@
                 "damageToPlayer": true,
                 "damageToTile": false
             },
-            "Bullet": {
-            },
-            "AboveAbyss":{}
+            "Bullet": {},
+            "AboveAbyss": {}
         }
     },
     "projectileClient": {
@@ -260,8 +259,7 @@
                 "sensor": false,
                 "category": "BULLET"
             },
-            "Bullet": {
-            },
+            "Bullet": {},
             "NetworkID": {},
             "ParticleEffect": {
                 "effectname": "particleglow",
@@ -343,8 +341,7 @@
             },
             "SoundEmitter": {},
             "Mineable": {},
-            "AboveAbyss":{
-            }
+            "AboveAbyss": {}
         }
     },
     "SatelliteClient": {
@@ -375,8 +372,7 @@
                 "sensor": false,
                 "type": "kinematic"
             },
-            "AboveAbyss":{
-            }
+            "AboveAbyss": {}
         }
     },
     "Spawn": {
@@ -525,13 +521,12 @@
                 "metalShards": 5,
                 "minMetalShards": 0,
                 "maxMetalShards": 5,
-                "secondsToRegeneration":1,
+                "secondsToRegeneration": 1,
                 "secondsToRegenerationMax": 3,
                 "shardRegeneration": 1
             },
-            "Mineable":{},
-            "AboveAbyss":{
-            }
+            "Mineable": {},
+            "AboveAbyss": {}
         }
     }
 }
