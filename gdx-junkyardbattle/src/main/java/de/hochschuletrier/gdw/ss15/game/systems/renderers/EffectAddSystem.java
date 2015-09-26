@@ -76,7 +76,7 @@ public class EffectAddSystem extends IteratingSystem implements EntityListener {
             posComp.x = entityPos.x;
             posComp.y = entityPos.y;
             ParticleEffectComponent effectComp = engine.createComponent(ParticleEffectComponent.class);
-            effectComp.particleEffect = new ParticleEffect(GameGlobals.assetManager.getParticleEffect("particle"));
+            effectComp.particleEffect = new ParticleEffect(GameGlobals.assetManager.getParticleEffect("traktorParticle"));
             effectComp.positionOffsetX = 70.f;
             effectComp.draw = false;
             for(ParticleEmitter e : effectComp.particleEffect.getEmitters())
