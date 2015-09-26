@@ -1,15 +1,9 @@
 package de.hochschuletrier.gdw.ss15.game;
 
-import box2dLight.RayHandler;
-
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.ContactImpulse;
-import com.badlogic.gdx.physics.box2d.ContactListener;
-import com.badlogic.gdx.physics.box2d.Manifold;
 
 import de.hochschuletrier.gdw.commons.gdx.ashley.EntityFactory;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
@@ -17,11 +11,12 @@ import de.hochschuletrier.gdw.commons.gdx.physix.PhysixComponentAwareContactList
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixDebugRenderSystem;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.ss15.Main;
+import de.hochschuletrier.gdw.ss15.events.network.client.NetworkReceivedNewPacketClientEvent;
 import de.hochschuletrier.gdw.ss15.game.components.PickableComponent;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
-import de.hochschuletrier.gdw.ss15.game.components.texture.TextureComponent;
-import de.hochschuletrier.gdw.ss15.game.contactlisteners.PickupListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.PickupListenerClient;
+import de.hochschuletrier.gdw.ss15.game.systems.RealNetwork.NetworkClientSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.RealNetwork.TestListenerClient;
 import de.hochschuletrier.gdw.ss15.game.systems.input.InputSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.*;
 import de.hochschuletrier.gdw.ss15.game.systems.*;
@@ -29,8 +24,6 @@ import de.hochschuletrier.gdw.ss15.game.systems.renderers.ChangeAnimationStateSy
 import de.hochschuletrier.gdw.ss15.game.systems.renderers.ParticleSpawnSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.renderers.RenderSystem;
 import de.hochschuletrier.gdw.ss15.game.utils.TimerSystem;
-
-import java.util.function.Consumer;
 
 public class Game extends InputAdapter {
 
@@ -85,6 +78,12 @@ public class Game extends InputAdapter {
 
     public void dispose() {
         //togglePhysixDebug.unregister();
+        ClearListener();
+    }
+
+    public void ClearListener()
+    {
+        NetworkReceivedNewPacketClientEvent.clearListeners();
     }
 
     public void init(AssetManagerX assetManager) {
@@ -95,7 +94,7 @@ public class Game extends InputAdapter {
         entityFactory.init(engine, assetManager);
         mapLoader.listen(renderSystem.getTileMapCreator());
         mapLoader.run((String name, float x, float y) -> createEntity(name, x, y),
-                "data/maps/3v3Alpha.tmx", physixSystem, entityFactory, assetManager );
+                "data/maps/3v3Alpha.tmx", physixSystem, entityFactory, assetManager);
     }
 
     private void addSystems() {
@@ -176,9 +175,4 @@ public class Game extends InputAdapter {
     public InputProcessor getInputProcessor() {
         return this;
     }
-
-    public InputSystem getInputSystem(){
-        return inputSystem;
-    }
-
 }

@@ -13,6 +13,11 @@ public class NetworkNewPlayerEvent{
 
     private static final SnapshotArray<Listener> listeners = new SnapshotArray();
 
+    public static void clearListeners()
+    {
+        listeners.clear();
+    }
+
     public static void emit(Entity ent) {
         Object[] items = listeners.begin();
         for (int i = 0, n = listeners.size; i < n; i++) {
@@ -20,6 +25,7 @@ public class NetworkNewPlayerEvent{
         }
         listeners.end();
     }
+
 
     public static void registerListener(Listener listener){
         listeners.add(listener);

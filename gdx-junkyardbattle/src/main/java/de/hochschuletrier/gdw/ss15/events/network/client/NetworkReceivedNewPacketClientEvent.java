@@ -18,6 +18,10 @@ public class NetworkReceivedNewPacketClientEvent {
 
         private static final HashMap<Short,SnapshotArray<Listener>> map = new HashMap<Short,SnapshotArray<Listener>>();
 
+        public static void clearListeners()
+        {
+            map.clear();
+        }
 
         public static void emit(Packet pack, Entity ent) {
             SnapshotArray<Listener> liste = map.get(pack.getPacketId());
