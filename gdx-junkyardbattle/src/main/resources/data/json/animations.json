@@ -58,9 +58,25 @@
     "traktor_strahl":{
      	"filename":"data/animations/traktor_beam.png",
         "frames" : 42,
-        "frameDuration": [0.5, 0.5],
+        "frameDuration": [0.1, 0.1],
         "playType" : "LOOP",
         "columns": 7,
         "rows" : 6
+        },
+    "charge_red":{
+     	"filename":"data/animations/charge_red.png",
+        "frames" : 21,
+        "frameDuration": [0.1, 0.1],
+        "playType" : "LOOP",
+        "columns": 7,
+        "rows" : 3
+        },
+    "charge_blue":{
+     	"filename":"data/animations/charge_blue.png",
+        "frames" : 21,
+        "frameDuration": [0.1, 0.1],
+        "playType" : "LOOP",
+        "columns": 7,
+        "rows" : 3
         }
 }
