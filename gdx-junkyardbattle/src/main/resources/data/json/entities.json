@@ -357,10 +357,11 @@
                 "height": 800,
                 "srcX": 0,
                 "srcY": 0,
-                "scaleX": 0.25,
-                "scaleY": 0.25,
+                "scaleX": 0.5,
+                "scaleY": 0.5,
                 "flipX": false,
                 "flipY": false,
+                "offsetY":-100,
                 "initialRotation": 180
             },
             "NetworkID": {},
