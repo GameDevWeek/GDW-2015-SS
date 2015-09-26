@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import de.hochschuletrier.gdw.ss15.events.PlayerHurtEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
+import de.hochschuletrier.gdw.ss15.game.Highscore;
 import de.hochschuletrier.gdw.ss15.game.components.DamageComponent;
 import de.hochschuletrier.gdw.ss15.game.components.HealthComponent;
 
@@ -24,6 +25,17 @@ public class PlayerHurtSystem extends EntitySystem implements PlayerHurtEvent.Li
     public void onPlayerHurt(Entity projectile, Entity hurtPlayer) {
         if (damageCom.get(projectile).damageToPlayer) {
             healthCom.get(hurtPlayer).health -= damageCom.get(projectile).damage;
+
+
+
+            if(healthCom.get(hurtPlayer).health < 0){
+                int killerID = ComponentMappers.bullet.get(projectile).playerID;
+                int dyingID = ComponentMappers.player.get(hurtPlayer).playerID;
+
+                Highscore.Get().setPlayerStat(killerID, "kills",
+                        Highscore.Get().getPlayerStat(killerID, "kills") + 1);
+            }
+
         }
     }
 }

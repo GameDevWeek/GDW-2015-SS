@@ -104,7 +104,11 @@ public class ServerGame{
 
         //ComponentMappers.client.get(ent).client = sock;
         ComponentMappers.player.get(ent).name = name;
+        ComponentMappers.player.get(ent).playerID = name.hashCode();
         ComponentMappers.player.get(ent).teamID = Tools.BoolToInt(team);
+
+        Highscore.Get().addPlayer(name.hashCode());
+        Highscore.Get().setPlayerStat(name.hashCode(), "team", ComponentMappers.player.get(ent).teamID);
 
         NetworkNewPlayerEvent.emit(ent);
     }
@@ -122,6 +126,16 @@ public class ServerGame{
         mapLoader.run((String name, float x, float y) -> {
             return this.createEntity(name, x, y);
         }, "data/maps/alpha_three_on_three.tmx", physixSystem, entityFactory, Main.getInstance().getAssetManager());
+
+
+        Highscore.reset();
+        Highscore.Get().addPlayerCategory("team");
+        Highscore.Get().addPlayerCategory("kills");
+        Highscore.Get().addPlayerCategory("deaths");
+        Highscore.Get().addPlayerCategory("shards");
+        Highscore.Get().addTeamCategory("points");
+        Highscore.Get().addTeam(0);
+        Highscore.Get().addTeam(1);
     }
 
     private void addSystems() {
