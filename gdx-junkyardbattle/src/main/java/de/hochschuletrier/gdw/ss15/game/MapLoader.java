@@ -108,7 +108,7 @@ public class MapLoader
             }
         }  catch (Exception ex) 
         {
-            throw new IllegalArgumentException( "Map konnte nicht geladen werden: " + filename);
+            throw new IllegalArgumentException( "Map konnte nicht geladen werden: " + filename,ex);
         }
         
         /// Objekte aus tiledMap laden und per Entitycreator im Game erstellen 
