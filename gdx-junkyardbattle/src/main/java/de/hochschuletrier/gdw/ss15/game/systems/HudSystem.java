@@ -111,11 +111,14 @@ public class HudSystem extends IteratingSystem {
 
 
         float healthSizeFactor = (float) HudDebug.health / 100.0f;
-        float scaleYFactor = 995.0f / 1920.0f;
+        float scaleXFactor = 391.0f / (float) hudoverlay.getWidth();
+        float relativeXPos = 646.0f / hudoverlay.getWidth() * Gdx.graphics.getWidth();
+        float relativeYPos = Gdx.graphics.getHeight() - 23 / hudoverlay.getHeight() * Gdx.graphics.getHeight();
 
-        DrawUtil.fillRect(Gdx.graphics.getWidth() / 2 - HudDebug.health * 2, Gdx.graphics.getHeight() - 40, healthSizeFactor * 995 * scaleYFactor, 75, healthColor);
+        DrawUtil.fillRect(relativeXPos, relativeYPos, healthSizeFactor * 995 * scaleXFactor, 75, healthColor);
 
-        font.draw(DrawUtil.batch, "healthSizeFactor: " + healthSizeFactor + " scaleYFactor: " + scaleYFactor + " width: " + Gdx.graphics.getWidth(), 0, Gdx.graphics.getHeight() / 2);
+        //font.draw(DrawUtil.batch, "healthSizeFactor: " + healthSizeFactor + " scaleYFactor: " + scaleXFactor + " width: " + Gdx.graphics.getWidth(), 0, Gdx.graphics.getHeight() / 2);
+        font.draw(DrawUtil.batch, "relativeYPos: " + relativeYPos , 0, Gdx.graphics.getHeight() / 2);
     }
 
     private void schrottAnzeige(){
