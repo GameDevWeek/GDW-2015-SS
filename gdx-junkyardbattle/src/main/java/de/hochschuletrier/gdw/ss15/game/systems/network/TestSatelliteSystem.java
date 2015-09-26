@@ -29,7 +29,7 @@ public class TestSatelliteSystem extends IteratingSystem
 	private ComponentMapper<PositionSynchComponent> positionSynch;
 	private final PooledEngine engine;
 	
-	boolean satellite = false;	   
+	public static boolean satellite = false;
     float x;
     float y;
     

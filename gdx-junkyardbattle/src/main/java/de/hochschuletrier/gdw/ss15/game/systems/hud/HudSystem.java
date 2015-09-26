@@ -17,10 +17,8 @@ import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
 import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.game.GameConstants;
-import de.hochschuletrier.gdw.ss15.game.components.HealthComponent;
-import de.hochschuletrier.gdw.ss15.game.components.InventoryComponent;
-import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
-import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
+import de.hochschuletrier.gdw.ss15.game.Highscore;
+import de.hochschuletrier.gdw.ss15.game.components.*;
 import de.hochschuletrier.gdw.ss15.game.components.input.InputComponent;
 import de.hochschuletrier.gdw.ss15.game.components.texture.TextureComponent;
 import de.hochschuletrier.gdw.ss15.game.hudDebugTemporary.HudDebug;
@@ -81,14 +79,9 @@ public class HudSystem extends IteratingSystem {
                 showHudOverlay();
                 schrottAnzeige();
                 timer();
+                punktestand();
                 radar(entity);
             }
-            drawCrosshair(entity);
-            lebensBalken();
-            showHudOverlay();
-            schrottAnzeige();
-            timer();
-            radar(entity);
         }
         if (entity.getComponent(SpawnSatelliteComponent.class) != null) {
             if (TestSatelliteSystem.satellite) {
@@ -171,9 +164,10 @@ public class HudSystem extends IteratingSystem {
     }
 
     private void punktestand() {
-        DrawUtil.batch.draw(punktestand, Gdx.graphics.getWidth()/2 - punktestand.getWidth()/6, punktestand.getHeight()/3, punktestand.getWidth() / 3, punktestand.getHeight() / -3);
-        font.draw(DrawUtil.batch, "12", Gdx.graphics.getWidth()/2 - 75, 15);
-        font.draw(DrawUtil.batch, "12", Gdx.graphics.getWidth()/2 + 25, 15);
+        DrawUtil.batch.draw(punktestand, Gdx.graphics.getWidth() / 2 - punktestand.getWidth() / 6, punktestand.getHeight() / 3, punktestand.getWidth() / 3, punktestand.getHeight() / -3);
+
+        font.draw(DrawUtil.batch, ""+Highscore.Get().getTeamStat(0,"points"), Gdx.graphics.getWidth()/2 - 75, 15);
+        font.draw(DrawUtil.batch, ""+Highscore.Get().getTeamStat(1,"points"), Gdx.graphics.getWidth()/2 + 25, 15);
     }
 
     private void showHudOverlay() {
