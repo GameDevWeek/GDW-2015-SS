@@ -21,6 +21,11 @@ public class AnimatorComponent extends Component implements Pool.Poolable
     public float stateTime = 0;
     public float initialRotation = 0;
     public boolean draw = true;
+    public float rotation = 0.f;
+    public float positionOffsetX = 0;
+    public float positionOffsetY = 0;
+    public float scaleX = 1.f;
+    public float scaleY = 1.f;
     
     public void changeAnimationState(AnimationState state)
     {
