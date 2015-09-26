@@ -37,6 +37,8 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener,
     private ImmutableArray<Entity> entities;
     private Family family;
 
+    private Entity TestBullet = null;
+
     private LinkedList<Packet> packetBuffer = new LinkedList<>();
 
     boolean fistUpdate = true;
@@ -92,6 +94,9 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener,
             //System.out.println(iPacket.xPos + " "+ iPacket.yPos);
 
             Entity ent = game.createEntity(iPacket.name,iPacket.xPos,iPacket.yPos);
+
+
+            //if(iPacket.name.equals())
 
             ComponentMappers.position.get(ent).rotation = iPacket.rotation;
             //TODO find for rotatoin
