@@ -493,6 +493,9 @@
                 "metalShards": 1,
                 "minMetalShards": 0,
                 "maxMetalShards": 1
+            },
+            "Death":{
+                "dyingDuration": 15
             }
         }
     },
