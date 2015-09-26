@@ -31,6 +31,7 @@ import de.hochschuletrier.gdw.ss15.game.systems.RealNetwork.NetworkServerSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.RealNetwork.PositionSynchSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.SyncHighscoreSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.*;
+import de.hochschuletrier.gdw.ss15.game.utils.LoadedMaps;
 import de.hochschuletrier.gdw.ss15.game.utils.TimerSystem;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serverclientsocket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.Tools;
@@ -118,15 +119,6 @@ public class ServerGame{
     public void init(int mapid) {
         // Main.getInstance().console.register(physixDebug);
 
-        String mapname = new String("");
-        if(mapid == 1)
-        {
-            mapname = "prototype_v2";
-        }
-        else
-        {
-            mapname = "alpha_three_on_three";
-        }
 
         addSystems();
         addContactListeners();
@@ -141,7 +133,9 @@ public class ServerGame{
             return this.createEntity(name, x, y);
         }, "data/maps/"+mapname+".tmx", physixSystem, entityFactory, Main.getInstance().getAssetManager());
     */
-        mapLoader.run(this::createEntity, "data/maps/royalrubble_v2.tmx", physixSystem, entityFactory, Main.getInstance().getAssetManager());
+        //System.out.println(Main.maps.get("map" + mapid).file);
+
+        mapLoader.run(this::createEntity, Main.maps.get("map"+mapid).file, physixSystem, entityFactory, Main.getInstance().getAssetManager());
 
 
         Highscore.reset();

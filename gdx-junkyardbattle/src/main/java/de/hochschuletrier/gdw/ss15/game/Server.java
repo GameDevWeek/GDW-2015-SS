@@ -47,7 +47,8 @@ public class Server implements Runnable
                 {
                     logger.error("Lobby nicht aktiv");
                 }
-                if(list.size()>2) {
+                //System.out.println("name: "+ list.get(2));
+                if(list.size()>=2) {
                     if (lobby.ChangeMap(list.get(2))) {
                         logger.info("Karte wurde geändert");
                     } else {

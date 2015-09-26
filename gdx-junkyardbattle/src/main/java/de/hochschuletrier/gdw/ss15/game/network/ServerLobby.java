@@ -1,10 +1,12 @@
 package de.hochschuletrier.gdw.ss15.game.network;
 
 import de.hochschuletrier.gdw.commons.devcon.ConsoleCmd;
+import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.events.network.client.SendPacketClientEvent;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.Menu.ChangeNamePacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.Menu.MenuePlayerChangedPacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
+import de.hochschuletrier.gdw.ss15.game.utils.LoadedMaps;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serverclientsocket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.MyTimer;
@@ -14,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by lukas on 24.09.15.
@@ -23,39 +26,49 @@ public class ServerLobby
 
     String Mapname;
     private int MaximumPlayers = 8;
-    private float SecondsToStart = 5;
+    private float SecondsToStart = 7;
     MyTimer timer = new MyTimer(true);
 
     public LinkedList<LobyClient> connectedClients = new LinkedList<>();
 
 
-    public int mapId = 1;
+    public int mapId = -1;
 
 
     public ServerLobby()
     {
+        //WARNING!!!! hurts by reading XD
+
+        mapId = Main.maps.get("map1").id;
 
     }
 
     public boolean ChangeMap(String s)
     {
-        if(s.isEmpty())
+
+        if(!s.isEmpty())
         {
-            if(s.equals("1"))
-            {
-                mapId = 1;
+            int mId = -1;
+            for (Map.Entry<String, LoadedMaps> entry : Main.maps.entrySet()) {
+                entry.getValue().name.equals(s);
+                mId = entry.getValue().id;
+                MaximumPlayers = entry.getValue().playerPerTeam*2;
+                //System.out.println("Mapinfo: "+entry.getValue().id+", "+entry.getValue().file);
+                break;
             }
-            else if(s.equals("2"))
-            {
-                mapId = 2;
-            }
-            else
+
+            if(mId==-1)
             {
                 return false;
             }
+            mapId = mId;
+            SimplePacket spack = new SimplePacket(SimplePacket.SimplePacketId.MenueMapChange.getValue(),mapId);
+            SendPackettoAll(spack);
         }
-        SimplePacket spack = new SimplePacket(SimplePacket.SimplePacketId.MenueMapChange.getValue(),mapId);
-        SendPackettoAll(spack);
+        else
+        {
+            return false;
+        }
         return true;
     }
 

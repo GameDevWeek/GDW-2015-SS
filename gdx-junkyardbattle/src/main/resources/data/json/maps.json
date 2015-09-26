@@ -1,9 +1,23 @@
 {
     "map1": {
         "id": 1,
-        "name": "Test123",
-		"playerPerTeam": 4,
-		"file":"data/maps/royalrubble_v2.tmx",
-		"thumbnail":"data/maps/thumbnails/royalrubbel.png"
+        "name": "RoyalRuble",
+        "playerPerTeam": 4,
+        "file":"data/maps/royalrubble_v2.tmx",
+        "thumbnail":"data/maps/thumbnails/royalrubbel.png"
+    },
+    "map2": {
+        "id": 2,
+        "name": "InYourFace",
+        "playerPerTeam": 8,
+        "file":"data/maps/in_your_face.tmx",
+        "thumbnail":"data/maps/thumbnails/royalrubbel.png"
+    },
+    "map3": {
+        "id": 3,
+        "name": "Prototype",
+        "playerPerTeam": 8,
+        "file":"data/maps/prototype_v2.tmx",
+        "thumbnail":"data/maps/thumbnails/prototypeV2.png"
     }
 }
