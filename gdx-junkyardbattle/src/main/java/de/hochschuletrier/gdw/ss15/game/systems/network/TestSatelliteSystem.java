@@ -7,7 +7,6 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.ashley.core.Engine;
-
 import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.events.SatelliteColliding;
 import de.hochschuletrier.gdw.ss15.events.SoundEvent;
@@ -37,7 +36,7 @@ public class TestSatelliteSystem extends IteratingSystem {
 	private ComponentMapper<PositionComponent> position;
 	private ComponentMapper<PositionSynchComponent> positionSynch;
 	private final PooledEngine engine;
-	boolean satellite = false;
+	public static boolean satellite = false;
 	public TestSatelliteSystem(ServerGame serverGame, PooledEngine engine) {
 		super(Family.all(SpawnSatelliteComponent.class).get());
 		this.engine = engine;
@@ -86,7 +85,7 @@ public class TestSatelliteSystem extends IteratingSystem {
         	
         	if(inventory.getMetalShards()<1)
         	{
-        		engine.removeEntity(entity);;
+        		engine.removeEntity(entity);
         		satellite = false;
         		System.out.println("Ich bin hier");
         		timer.ResetTimer();
@@ -94,5 +93,9 @@ public class TestSatelliteSystem extends IteratingSystem {
         	}
  
 	}
- 
+
+    public boolean getSatellite(){
+        return this.satellite;
+    }
+
 }
