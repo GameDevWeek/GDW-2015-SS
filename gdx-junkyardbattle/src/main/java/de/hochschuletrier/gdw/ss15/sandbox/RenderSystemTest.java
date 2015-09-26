@@ -144,7 +144,7 @@ public class RenderSystemTest extends SandboxGame {
         // Setup camera
         totalMapWidth = map.getWidth() * map.getTileWidth();
         totalMapHeight = map.getHeight() * map.getTileHeight();
-        cameraSystem.setCameraBounds(0, 0, totalMapWidth, totalMapHeight);
+        cameraSystem.setBounds(0, 0, totalMapWidth, totalMapHeight);
         Main.getInstance().addScreenListener(cameraSystem.getCamera());
     }
 

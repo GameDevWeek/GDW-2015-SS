@@ -5,18 +5,18 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
-import de.hochschuletrier.gdw.commons.gdx.ashley.EntityFactory;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixModifierComponent;
-import de.hochschuletrier.gdw.ss15.events.network.client.SendPacketClientEvent;
 import de.hochschuletrier.gdw.ss15.events.network.server.NetworkReceivedNewPacketServerEvent;
 import de.hochschuletrier.gdw.ss15.events.network.server.SendPacketServerEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.ServerGame;
 import de.hochschuletrier.gdw.ss15.game.components.BulletComponent;
 import de.hochschuletrier.gdw.ss15.game.components.InventoryComponent;
+import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.WeaponComponent;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
+import de.hochschuletrier.gdw.ss15.game.components.network.server.PositionSynchComponent;
 import de.hochschuletrier.gdw.ss15.game.network.PacketIds;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.FirePacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.SpawnBulletPacket;
@@ -60,11 +60,11 @@ public class FireServerListener extends EntitySystem implements NetworkReceivedN
             float scatter = WeaponComponent.maximumScattering * (1.05f-p);
             Vector2 dir = Vector2.Zero;
 //            System.out.printf("\n fireing: %.2f -> scattering: %.2f \n", packet.channeltime, scatter);
-            for (int i = 0; i < WeaponComponent.ShardsPerShot; ++i) {
-                if(invc.getMetalShards() <= 0){
-//                    System.out.println("not enough metal shards ("+invc.getMetalShards()+")");
-                    return;
-                }
+
+
+            int shootshards = Math.min(invc.getMetalShards(), WeaponComponent.ShardsPerShot);
+            invc.addMetalShards(-shootshards);
+            for (int i = 0; i < shootshards; ++i) {
 //                System.out.println("shard shot");
 
                 Vector2 playerLookDirection = new Vector2((float) Math.cos(phxc.getAngle()), (float) Math.sin(phxc.getAngle()));
@@ -77,7 +77,7 @@ public class FireServerListener extends EntitySystem implements NetworkReceivedN
                 Vector2 startPosition = playerLookDirection.add(phxc.getPosition()); // dir.setLength(projectPlayerDistance).add(phxc.getPosition());
 
 
-                invc.addMetalShards(-1);
+
 
                 //System.out.println(invc.getMetalShards());
 
@@ -85,13 +85,17 @@ public class FireServerListener extends EntitySystem implements NetworkReceivedN
 
                 float rotation = (float) (phxc.getAngle() + (Math.random() - 0.5f) * scatter);
                 createProjectile(projectile, rotation);
-                SpawnBulletPacket spawnBulletPacket = new SpawnBulletPacket();
-                spawnBulletPacket.position = new Vector2(startPosition.x, startPosition.y);
-                spawnBulletPacket.rotation = rotation;
-                spawnBulletPacket.playerPosition.set(phxc.getPosition());
-                spawnBulletPacket.playerRotation = phxc.getAngle() * MathUtils.radiansToDegrees;
-                
-                SendPacketServerEvent.emit(spawnBulletPacket, true);
+
+                BulletComponent bullet = projectile.getComponent(BulletComponent.class);
+                bullet.playerID = ent.getComponent(PlayerComponent.class).playerID;
+                bullet.rotation = rotation;
+                bullet.playerrotation = phxc.getAngle() * MathUtils.radiansToDegrees;
+                bullet.playerpos = phxc.getPosition();
+//
+//                SpawnBulletPacket spawnBulletPacket = new SpawnBulletPacket();
+////                spawnBulletPacket.position = new Vector2(startPosition.x, startPosition.y);
+//                spawnBulletPacket.bulletID = projectile.getComponent(PositionSynchComponent.class).networkID;
+//                SendPacketServerEvent.emit(spawnBulletPacket, true);
             }
             }catch (ClassCastException e){}
     }
@@ -103,12 +107,14 @@ public class FireServerListener extends EntitySystem implements NetworkReceivedN
 
         entity.getComponent(PhysixModifierComponent.class).runnables.add(() -> {
             PhysixBodyComponent physixBodyComponent = entity.getComponent(PhysixBodyComponent.class);
-            entity.getComponent(BulletComponent.class).startpos = new Vector2(physixBodyComponent.getPosition());
+            entity.getComponent(BulletComponent.class).playerpos = new Vector2(physixBodyComponent.getPosition());
 
             physixBodyComponent.setAngle(rotation);
             Vector2 v2 = new Vector2((float)Math.cos(physixBodyComponent.getAngle()), (float)Math.sin(physixBodyComponent.getAngle()));
             v2.nor().scl(power);
-            entity.getComponent(PhysixBodyComponent.class).applyImpulse(v2);
+            physixBodyComponent.applyImpulse(v2);
+//            physixBodyComponent.setLinearVelocity(v2.x, v2.y);
+
 //            physixBodyComponent.setLinearDamping(damping);
         });
     }

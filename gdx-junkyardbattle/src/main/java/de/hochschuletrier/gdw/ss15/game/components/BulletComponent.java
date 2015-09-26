@@ -10,7 +10,9 @@ import com.badlogic.gdx.utils.Pool.Poolable;
 public class BulletComponent extends Component implements Poolable
 {
     public int playerID;
-    public Vector2 startpos;
+    public float rotation;
+    public float playerrotation;
+    public Vector2 playerpos;
 
     @Override
     public void reset()

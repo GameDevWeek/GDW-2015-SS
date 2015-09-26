@@ -1,4 +1,4 @@
-package de.hochschuletrier.gdw.ss15.game.systems.network;
+﻿package de.hochschuletrier.gdw.ss15.game.systems.network;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
@@ -59,7 +59,6 @@ public class TestSatelliteSystem extends IteratingSystem
 		    Entity satelliteEvent = serverGame.createEntity("SatelliteSiteServer", x, y);
             SatelliteColliding.emit();
             SoundEvent.emit("sat_explode", satelliteEvent);
-            
         }
 		
 		
