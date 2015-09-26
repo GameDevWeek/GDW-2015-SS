@@ -228,38 +228,18 @@ public class ServerGame{
 
     public void clearAllListeners()
     {
-    	
     	//Networkpackage
     	//Base
-    	ConnectTryFinishEvent.unregisterAll();
-        DisconnectEvent.unregisterAll();
-        DoNotTouchPacketEvent.unregisterAll();
-        //Client
-        NetworkReceivedNewPacketClientEvent.unregisterAll();
-        SendPacketClientEvent.unregisterAll();
-        //Server
-        DoNotTouchServerPacketEvent.unregisterAll();
-        NetworkNewPlayerEvent.unregisterAll();
-        NetworkReceivedNewPacketServerEvent.unregisterAll();
-        SendPacketServerEvent.unregisterAll();
-        
-        
-        //Rendering Package
-        ChangeAnimationEvent.unregisterAll();
-        ChangeModeOnEffectEvent.unregisterAll();
-        ChangePositionOnEffectEvent.unregisterAll();
+    	///*Muss bleiben*/ConnectTryFinishEvent.unregisterAll();
+    	///*Muss bleiben*/DisconnectEvent.unregisterAll();
+        ///*Muss bleiben*/DoNotTouchPacketEvent.unregisterAll();
         
         //Rest
-        CollisionEvent.unregisterAll();
-        ComeToBaseEvent.unregisterAll();
-        MiningEvent.unregisterAll();
-        PickupEvent.unregisterAll();
-        PlayerDiedEvent.unregisterAll();
-        PlayerHurtEvent.unregisterAll();
-        SatelliteColliding.unregisterAll();
-        SoundEvent.unregisterAll();
-        WeaponCharging.unregisterAll();
-        WeaponUncharged.unregisterAll();
+        /*Server only*/ComeToBaseEvent.unregisterAll();
+        /*Server only*/MiningEvent.unregisterAll();
+        /*Server only*/PickupEvent.unregisterAll();
+        /*Server only*/PlayerDiedEvent.unregisterAll();
+        /*Server only*/PlayerHurtEvent.unregisterAll();
     }
 
 }
