@@ -1,11 +1,11 @@
-package de.hochschuletrier.gdw.ss15.game.systems.network;
+package de.hochschuletrier.gdw.ss15.game.systems.RealNetwork;
 
 import com.badlogic.ashley.core.*;
 import com.badlogic.ashley.utils.ImmutableArray;
 import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.events.network.Base.DoNotTouchPacketEvent;
-import de.hochschuletrier.gdw.ss15.events.network.NetworkPositionEvent;
 import de.hochschuletrier.gdw.ss15.events.network.client.NetworkReceivedNewPacketClientEvent;
+import de.hochschuletrier.gdw.ss15.events.network.client.SendPacketClientEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.Game;
 import de.hochschuletrier.gdw.ss15.game.components.network.client.NetworkIDComponent;
@@ -14,9 +14,9 @@ import de.hochschuletrier.gdw.ss15.game.network.PacketIds;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.EntityUpdatePacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.InitEntityPacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
+import de.hochschuletrier.gdw.ss15.game.network.Packets.SpawnBulletPacket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Clientsocket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
-import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.MyTimer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,6 +37,8 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener,
     private Family family;
 
     private LinkedList<Packet> packetBuffer = new LinkedList<>();
+
+    boolean fistUpdate = true;
 
     Game game = null;
     ClientConnection connection = Main.getInstance().getClientConnection();
@@ -61,6 +63,13 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener,
     @Override
     public void update(float deltaTime)
     {
+        if(fistUpdate)
+        {
+            fistUpdate=false;
+            SendPacketClientEvent.emit(new SimplePacket(SimplePacket.SimplePacketId.StartGame.getValue(),0),true);
+        }
+
+
         //TODO check all input components
 
         while(!packetBuffer.isEmpty()){
@@ -74,7 +83,7 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener,
         if(pack.getPacketId()== PacketIds.InitEntity.getValue())
         {
             InitEntityPacket iPacket = (InitEntityPacket) pack;
-            //logger.info("Spawned entitiy with name: "+iPacket.name);
+//            logger.info("Spawned entitiy with name: "+iPacket.name);
 
 
             lastAddedEntityID = iPacket.entityID;
@@ -115,6 +124,14 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener,
                     game.getEngine().removeEntity(ent);
                 }
             }
+        }
+        else if(pack.getPacketId() == PacketIds.SpawnBullet.getValue()){
+            SpawnBulletPacket packet = (SpawnBulletPacket) pack;
+            Entity e = hashMap.get(packet.bulletID);
+            if(e != null)
+                NetworkReceivedNewPacketClientEvent.emit(pack, e);
+//            else
+//                System.out.println("spawnbullet packet illegal entity, id:" + packet.bulletID);
         }
         else
         {

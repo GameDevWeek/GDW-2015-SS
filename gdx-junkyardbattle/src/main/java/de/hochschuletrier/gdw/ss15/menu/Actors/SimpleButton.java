@@ -24,7 +24,6 @@ public class SimpleButton extends Actor{
         if (ix > skin.getX() && ix < skin.getX() + skin.getWidth()) {
             if (iy > skin.getY() && iy < skin.getY() + skin.getHeight()) {
                 // the button was clicked, perform an action
-                System.out.println("Button clicked !");
             }
         }
     }
