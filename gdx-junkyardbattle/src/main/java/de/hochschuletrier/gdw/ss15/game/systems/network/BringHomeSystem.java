@@ -35,7 +35,7 @@ public class BringHomeSystem extends EntitySystem implements ComeToBaseEvent.Lis
         inventory.get(playerEntity).subMetalShards(basePointsToAdd);
         //System.out.println(basePoint.get(basePointEntity));
         int teamid = player.get(playerEntity).teamID;
-        Highscore.Get().setTeamStat(teamid, "points", Highscore.Get().getTeamStat(teamid, "points") + basePointsToAdd);
+        //Highscore.Get().setTeamStat(teamid, "points", Highscore.Get().getTeamStat(teamid, "points") + basePointsToAdd);
         //System.out.println("Team 0: " + Highscore.Get().getTeamStat(0, "points"));
         //System.out.println("Team 1: " + Highscore.Get().getTeamStat(1, "points"));
         //basePoint.get(basePointEntity).points += basePointsToAdd;

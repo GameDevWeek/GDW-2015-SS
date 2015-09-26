@@ -56,9 +56,6 @@ public class ServerGame{
     private final PositionSynchSystem syncPositionSystem = new PositionSynchSystem(this,GameConstants.PRIORITY_PHYSIX + 3);//todo magic numbers (boa ist das geil kann nicht mehr aufhoeren)
     private final LineOfSightSystem lineOfSightSystem = new LineOfSightSystem(physixSystem); // hier müssen noch Team-Listen übergeben werden
     private final TestSatelliteSystem testSatelliteSystem = new TestSatelliteSystem(this, engine);
-//    private final PlayerLifeSystem playerLifeSystem = new PlayerLifeSystem();
-                                                                                 // (+ LineOfSightSystem-Konstruktor anpassen!)
-    //private final BulletSystem bulletSystem = new BulletSystem();
     private final MetalShardSpawnSystem metalShardSpawnSystem = new MetalShardSpawnSystem(this);
     private final BulletSystem bulletSystem = new BulletSystem(engine, this);
     private final PickupSystem pickupSystem = new PickupSystem(engine);
@@ -69,10 +66,8 @@ public class ServerGame{
     private final EntityFactoryParam factoryParam = new EntityFactoryParam();
 
     private final TimerSystem timerSystem = new TimerSystem();
-    private final SyncHighscoreSystem syncHighscoreSystem = new SyncHighscoreSystem(timerSystem);
     private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json", ServerGame.class);
 
-    
     private final MapLoader mapLoader = new MapLoader(); /// @author tobidot
     private UpdatePhysixServer updatePhysixServer = new UpdatePhysixServer();
     private FireServerListener fireServerListener = new FireServerListener(this);
@@ -145,14 +140,14 @@ public class ServerGame{
         mapLoader.run(this::createEntity, "data/maps/royalrubble_v2.tmx", physixSystem, entityFactory, Main.getInstance().getAssetManager());
 
 
-        Highscore.reset();
-        Highscore.Get().addPlayerCategory("team");
-        Highscore.Get().addPlayerCategory("kills");
-        Highscore.Get().addPlayerCategory("deaths");
-        Highscore.Get().addPlayerCategory("shards");
-        Highscore.Get().addTeamCategory("points");
-        Highscore.Get().addTeam(0);
-        Highscore.Get().addTeam(1);
+//        Highscore.reset();
+//        Highscore.Get().addPlayerCategory("team");
+//        Highscore.Get().addPlayerCategory("kills");
+//        Highscore.Get().addPlayerCategory("deaths");
+//        Highscore.Get().addPlayerCategory("shards");
+//        Highscore.Get().addTeamCategory("points");
+//        Highscore.Get().addTeam(0);
+//        Highscore.Get().addTeam(1);
     }
 
     private void addSystems() {

@@ -156,7 +156,7 @@ public class Game extends InputAdapter {
 
         // add to engine to get removed from listeners:
         engine.addSystem(fireClientListener);
-        engine.addSystem(highscoreSyncListener);
+        //engine.addSystem(highscoreSyncListener);
     }
 
     private void addContactListeners() {
