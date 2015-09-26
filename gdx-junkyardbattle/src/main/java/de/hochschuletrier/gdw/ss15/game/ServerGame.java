@@ -12,10 +12,24 @@ import de.hochschuletrier.gdw.ss15.events.network.server.NetworkNewPlayerEvent;
 import de.hochschuletrier.gdw.ss15.events.network.server.NetworkReceivedNewPacketServerEvent;
 import de.hochschuletrier.gdw.ss15.game.components.*;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
-import de.hochschuletrier.gdw.ss15.game.contactlisteners.*;
-import de.hochschuletrier.gdw.ss15.game.systems.*;
+import de.hochschuletrier.gdw.ss15.game.contactlisteners.BaseMetalShardDeliverListener;
+import de.hochschuletrier.gdw.ss15.game.contactlisteners.BulletListener;
+import de.hochschuletrier.gdw.ss15.game.contactlisteners.ImpactSoundListener;
+import de.hochschuletrier.gdw.ss15.game.contactlisteners.MetalShardSpawnListener;
+import de.hochschuletrier.gdw.ss15.game.contactlisteners.PickupListener;
+import de.hochschuletrier.gdw.ss15.game.contactlisteners.TriggerListener;
+import de.hochschuletrier.gdw.ss15.game.systems.BulletSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.DeathSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.HealthSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.InventorySystem;
+import de.hochschuletrier.gdw.ss15.game.systems.MetalShardDropSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.LineOfSightSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.MetalShardSpawnSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.SpawnSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.RealNetwork.NetworkServerSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.RealNetwork.PositionSynchSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.SyncHighscoreSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.*;
 import de.hochschuletrier.gdw.ss15.game.utils.TimerSystem;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serverclientsocket;
@@ -143,6 +157,8 @@ public class ServerGame{
         engine.addSystem(updatePhysixServer);
         engine.addSystem(gatherServerListener);
         engine.addSystem(miningSystem);
+        
+        PlayerDiedEvent.register(spawnSystem);
     }
 
     private void addContactListeners() {
@@ -193,6 +209,7 @@ public class ServerGame{
         PickupEvent.unregisterAll();
         MiningEvent.unregisterAll();
         PlayerHurtEvent.unregisterAll();
+        PlayerDiedEvent.unregisterAll();
     }
 
 }

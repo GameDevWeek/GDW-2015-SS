@@ -38,14 +38,15 @@ public class DeathSystem extends EntitySystem{
 	public void update (float deltaTime) {
         for(Entity entity : entities)
         {
-            DeathComponent deathEntity = ComponentMappers.death.get(entity);
-            deathEntity.stateTime += deltaTime;
+            DeathComponent deathComponent = ComponentMappers.death.get(entity);
+            deathComponent.stateTime += deltaTime;
             
-            if(deathEntity.dyingDuration <= deathEntity.stateTime)
-            {
-                engine.removeEntity(entity);
+            if(deathComponent.dyingDuration <= deathComponent.stateTime)
+            {                
                 if(ComponentMappers.player.has(entity))
                     PlayerDiedEvent.emit(entity);
+                else
+                    engine.removeEntity(entity);
             }
         }
 	}

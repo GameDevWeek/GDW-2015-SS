@@ -185,6 +185,9 @@
             "Player": {
                 "isLocalPlayer": true
             },
+            "Health": {
+                "health": 30
+            },
             "Position": {},
             "PhysixBody": {
                 "shape": "circle",
@@ -213,7 +216,6 @@
                 "maxMetalShards": 700
             },
             "Weapon": {},
-            "Health": {},
             "SoundEmitter": {}
         }
     },
