@@ -257,10 +257,10 @@ public class MapSpecialEntities
             String teamStr = info.asObject.getProperty("Base", "A");
             switch(teamStr) {
             case "A":
-                baseComp.teamID = 1;
+                baseComp.teamID = 0;
                 break;
             case "B":
-                baseComp.teamID = 2;
+                baseComp.teamID = 1;
                 break;
             default:
                 assert(false);  
