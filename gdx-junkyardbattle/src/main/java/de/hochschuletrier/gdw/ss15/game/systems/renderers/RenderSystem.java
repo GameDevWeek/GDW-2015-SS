@@ -99,7 +99,7 @@ public class RenderSystem extends SortedSubIteratingSystem{
 	public void update (float deltaTime) {
         super.update(deltaTime);
         lightRenderer.render(camera);
-        //fogRenderer.render(deltaTime);
+        fogRenderer.render(deltaTime);
 	}
 }
 
