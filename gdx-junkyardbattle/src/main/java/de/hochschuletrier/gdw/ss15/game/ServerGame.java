@@ -15,12 +15,14 @@ import de.hochschuletrier.gdw.ss15.game.components.BulletComponent;
 import de.hochschuletrier.gdw.ss15.game.components.ImpactSoundComponent;
 import de.hochschuletrier.gdw.ss15.game.components.MetalShardSpawnComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PickableComponent;
+import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.TriggerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.BulletListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.ImpactSoundListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.MetalShardSpawnListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.PickupListener;
+import de.hochschuletrier.gdw.ss15.game.contactlisteners.PlayerBaseListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.TriggerListener;
 import de.hochschuletrier.gdw.ss15.game.systems.BulletSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.DeathSystem;
@@ -162,6 +164,7 @@ public class ServerGame{
         contactListener.addListener(PickableComponent.class, new PickupListener(engine));
         contactListener.addListener(MetalShardSpawnComponent.class, new MetalShardSpawnListener());
         contactListener.addListener(BulletComponent.class, new BulletListener(engine));
+        contactListener.addListener(PlayerComponent.class, new PlayerBaseListener());
     }
 
     private void setupPhysixWorld() {

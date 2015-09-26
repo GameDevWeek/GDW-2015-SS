@@ -10,6 +10,7 @@ import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.ss15.events.CollisionEvent;
 import de.hochschuletrier.gdw.ss15.events.PlayerHurtEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
+import de.hochschuletrier.gdw.ss15.game.components.AboveAbyssComponent;
 import de.hochschuletrier.gdw.ss15.game.components.BulletComponent;
 import de.hochschuletrier.gdw.ss15.game.components.InventoryComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
@@ -53,7 +54,29 @@ public class BulletListener extends PhysixContactAdapter{
         else
         {
 //            CollisionEvent.emit(contact); // wofuer wird das genutzt?
-            engine.removeEntity(contact.getMyComponent().getEntity());
+            if(contact.getOtherFixture() != null){
+                if(contact.getOtherFixture().getBody().getFixtureList().get(0).getUserData() instanceof AboveAbyssComponent)
+                  {
+                    ComponentMappers.abyss.get(contact.getMyComponent().getEntity()).above = true;
+                    contact.setEnabled(false);
+                  }
+                else
+                      engine.removeEntity(contact.getMyComponent().getEntity());
+                //System.out.println(contact.getOtherFixture().getBody().getFixtureList().get(0).getUserData());
+                
+            }
+            
+        }
+    }
+    
+    @Override
+    public void endContact(PhysixContact contact) {
+        if(contact.getOtherFixture() != null){
+            if(contact.getOtherFixture().getBody().getFixtureList().get(0).getUserData() instanceof AboveAbyssComponent)
+              {
+                ComponentMappers.abyss.get(contact.getMyComponent().getEntity()).above = false;
+                contact.setEnabled(false);
+              }            
         }
     }
 

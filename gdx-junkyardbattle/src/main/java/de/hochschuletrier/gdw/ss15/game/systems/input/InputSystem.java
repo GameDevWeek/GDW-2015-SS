@@ -1,5 +1,8 @@
 package de.hochschuletrier.gdw.ss15.game.systems.input;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
@@ -33,6 +36,8 @@ import de.hochschuletrier.gdw.ss15.game.systems.CameraSystem;
  */
 public class InputSystem extends IteratingSystem implements InputProcessor, ControllerListener {
 
+    private final Logger logger = LoggerFactory.getLogger(getClass());
+    
     public Camera camera;
 
     private boolean isListener = false;
@@ -353,7 +358,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
                 vertical = 0.0f;
                 horizontal = 0.0f;
         }
-        System.out.println("pocCode: " + povCode + "\npovDirection: " + value);
+        logger.debug("pocCode: " + povCode + "\npovDirection: " + value);
         debug();
         */
         return false;

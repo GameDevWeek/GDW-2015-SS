@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.ComponentMapper;
 
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixModifierComponent;
+import de.hochschuletrier.gdw.ss15.game.components.AboveAbyssComponent;
 import de.hochschuletrier.gdw.ss15.game.components.BasePointComponent;
 import de.hochschuletrier.gdw.ss15.game.components.BulletComponent;
 import de.hochschuletrier.gdw.ss15.game.components.DamageComponent;
@@ -76,4 +77,5 @@ public class ComponentMappers {
     public static final ComponentMapper<BasePointComponent> basePoint = ComponentMapper.getFor(BasePointComponent.class);
     public static final ComponentMapper<SpawnComponent> spawn = ComponentMapper.getFor(SpawnComponent.class);
     public static final ComponentMapper<AttachedParticleEntityComponent> particleEntity = ComponentMapper.getFor(AttachedParticleEntityComponent.class);
+    public static final ComponentMapper<AboveAbyssComponent> abyss = ComponentMapper.getFor(AboveAbyssComponent.class);
 }

@@ -24,6 +24,7 @@ import de.hochschuletrier.gdw.commons.tiled.TiledMap;
 import de.hochschuletrier.gdw.commons.tiled.tmx.TmxImage;
 import de.hochschuletrier.gdw.commons.tiled.utils.RectangleGenerator;
 import de.hochschuletrier.gdw.commons.utils.Rectangle;
+import de.hochschuletrier.gdw.ss15.game.components.AboveAbyssComponent;
 import de.hochschuletrier.gdw.ss15.game.components.factories.PhysixBodyComponentFactory;
 
 /**
@@ -108,7 +109,7 @@ public class MapLoader
             }
         }  catch (Exception ex) 
         {
-            throw new IllegalArgumentException( "Map konnte nicht geladen werden: " + filename);
+            throw new IllegalArgumentException( "Map konnte nicht geladen werden: " + filename,ex);
         }
         
         /// Objekte aus tiledMap laden und per Entitycreator im Game erstellen 
@@ -131,8 +132,15 @@ public class MapLoader
         // noch spezialisieren auf Flags ( block pathing, block sight, block shooting  )
         PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody, pSystem).position(x, y).fixedRotation(false);
         Body body = pSystem.getWorld().createBody(bodyDef);
-        if(!blockShoot)
-            body.createFixture(new PhysixFixtureDef(pSystem).density(1).friction(0.5f).category(PhysixBodyComponentFactory.ABGRUND).mask((short) ~PhysixBodyComponentFactory.BULLET).shapeBox(width, height));
+        if(!blockShoot){
+            //body.createFixture(new PhysixFixtureDef(pSystem).density(1).friction(0.5f).category(PhysixBodyComponentFactory.ABGRUND).mask((short) ~PhysixBodyComponentFactory.BULLET).shapeBox(width, height));
+            body.createFixture(new PhysixFixtureDef(pSystem).density(1).friction(0.5f).shapeBox(width, height));
+            for (int i = 0; i < body.getFixtureList().size; i++) {
+                body.getFixtureList().get(i).setUserData(new AboveAbyssComponent());
+            }
+            
+            //System.out.println(body.getClass());
+        }
         else
             body.createFixture(new PhysixFixtureDef(pSystem).density(1).friction(0.5f).shapeBox(width, height));
     }
