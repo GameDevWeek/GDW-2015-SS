@@ -19,6 +19,7 @@ public class InventoryComponent extends Component implements Pool.Poolable {
 
     private int metalShards = 0;
     public int minMetalShards = 0;
+    public int minMetalShardsForBase = 0;
     public int maxMetalShards = 100;
 	public float secondsToRegeneration = 0.0f;
     public float secondsToRegenerationMax = 0.0f;
@@ -38,6 +39,7 @@ public class InventoryComponent extends Component implements Pool.Poolable {
             metalShards = shards;
             SimplePacket packet = new SimplePacket(SimplePacket.SimplePacketId.MetalShardsUpdate.getValue(), metalShards);
             SendPacketServerEvent.emit(packet, true);
+            //System.out.println("Shards: " + shards);
             return true;
         }
         return false;
@@ -60,11 +62,15 @@ public class InventoryComponent extends Component implements Pool.Poolable {
             {
                 metalShards = 0;
             }
+            //System.out.println("Shards: " + shards);
             return metalShards - oldValueShards;
 
         };
+        //System.out.println("Shards: " + shards);
         return shards;
     }
+
+
 
     public int subMetalShards(int shards)
     {

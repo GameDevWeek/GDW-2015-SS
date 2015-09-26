@@ -1,4 +1,4 @@
-﻿package de.hochschuletrier.gdw.ss15.sandbox.camera;
+package de.hochschuletrier.gdw.ss15.sandbox.camera;
 
 import java.util.HashMap;
 
@@ -101,7 +101,11 @@ public class CameraTest extends SandboxGame {
         entityFactory.init(engine, assetManager);
         mapLoader.listen(renderSystem.getTileMapCreator());
         mapLoader.run((String name, float x, float y) -> createEntity(name, x, y), 
+<<<<<<< HEAD
                 "data/maps/prototypeV2.tmx", physixSystem, entityFactory,assetManager);
+=======
+                "data/maps/prototype_v2.tmx", physixSystem, entityFactory,assetManager);
+>>>>>>> develop
 
         map = mapLoader.getTiledMap();        
 
