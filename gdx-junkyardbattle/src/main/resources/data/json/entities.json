@@ -513,11 +513,10 @@
                 "flipY": false
             },
             "Inventory": {
-                "metalShards": 5,
+                "metalShards": 70,
                 "minMetalShards": 0,
                 "maxMetalShards": 70,
-                "secondsToRegeneration": 1,
-                "secondsToRegenerationMax": 1,
+                "secondsToRegenerate": 3,
                 "shardRegeneration": 5
             },
             "Mineable": {},
