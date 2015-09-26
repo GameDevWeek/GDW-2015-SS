@@ -29,6 +29,7 @@ import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.WeaponSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.RealNetwork.NetworkClientSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.RealNetwork.TestListenerClient;
+import de.hochschuletrier.gdw.ss15.game.systems.hud.HudSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.input.InputSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.FireClientListener;
 import de.hochschuletrier.gdw.ss15.game.systems.network.HighscoreSyncListener;
