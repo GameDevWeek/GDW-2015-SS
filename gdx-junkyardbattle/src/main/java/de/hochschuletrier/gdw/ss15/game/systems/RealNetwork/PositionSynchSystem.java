@@ -17,6 +17,7 @@ import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.SpawnBulletPacket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serverclientsocket;
 
+import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -128,6 +129,7 @@ public class PositionSynchSystem extends EntitySystem implements EntityListener 
                     //System.out.println("Send other player to client");
                     initPacket.name = sendComp.clientName;
                 }
+                FlagPacketIfPlayer(initPacket,entity);
                 //System.out.println();
                 client.sendPacketSave(initPacket,true);
             }
@@ -143,13 +145,16 @@ public class PositionSynchSystem extends EntitySystem implements EntityListener 
 
         PhysixBodyComponent phcomp = ComponentMappers.physixBody.get(entity);
 
-        //System.out.println(comp.x+" "+comp.y);
-       //InitEntityPacket packet = new InitEntityPacket(ComponentMappers.positionSynch.get(entity).networkID,
-       //         ComponentMappers.positionSynch.get(entity).clientName, comp.x, comp.y, comp.rotation,0,0);
-        //System.out.println(phcomp.getX() +" Postion server "+ phcomp.getY());
-        InitEntityPacket packet = new InitEntityPacket(ComponentMappers.positionSynch.get(entity).networkID,
-                ComponentMappers.positionSynch.get(entity).clientName, phcomp.getX(), phcomp.getY(), comp.rotation,phcomp.getLinearVelocity().x,phcomp.getLinearVelocity().y);
+        PositionSynchComponent synComp = ComponentMappers.positionSynch.get(entity);
+
+        //send Init packet to all Players
+        InitEntityPacket packet;
+        packet = new InitEntityPacket(synComp.networkID, synComp.clientName, phcomp.getX(), phcomp.getY(), comp.rotation, phcomp.getLinearVelocity().x, phcomp.getLinearVelocity().y);
+
+        FlagPacketIfPlayer(packet,entity);//very ugly but fast fix hope no one ever finds it
+
         SendPacketServerEvent.emit(packet, true, exept);
+
         if(ComponentMappers.bullet.has(entity)){
             PositionSynchComponent sendComp = ComponentMappers.positionSynch.get(entity);
             BulletComponent bullet = ComponentMappers.bullet.get(entity);
@@ -162,6 +167,14 @@ public class PositionSynchSystem extends EntitySystem implements EntityListener 
             spawnBulletPacket.playerPosition = bullet.playerpos;
             SendPacketServerEvent.emit(spawnBulletPacket, true);
 
+        }
+    }
+
+    public void FlagPacketIfPlayer(InitEntityPacket pack,Entity ent)
+    {
+        if(ComponentMappers.positionSynch.get(ent).clientName.equals("player") && ComponentMappers.player.get(ent).teamID==1)
+        {
+            pack.entityID*=-1;
         }
     }
 

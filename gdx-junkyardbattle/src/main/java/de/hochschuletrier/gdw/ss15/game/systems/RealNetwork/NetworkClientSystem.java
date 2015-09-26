@@ -18,6 +18,7 @@ import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.SpawnBulletPacket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Clientsocket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
+import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.Tools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -86,13 +87,19 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener,
             InitEntityPacket iPacket = (InitEntityPacket) pack;
 //            logger.info("Spawned entitiy with name: "+iPacket.name);
 
-
             lastAddedEntityID = iPacket.entityID;
+
+            boolean WasLowId = lastAddedEntityID<0;
+            Math.abs(lastAddedEntityID);
 
             //System.out.println(iPacket.xPos + " "+ iPacket.yPos);
 
             Entity ent = game.createEntity(iPacket.name,iPacket.xPos,iPacket.yPos);
 
+            if(lastAddedEntityID<0) {
+                System.out.println("Team flagged");
+                ComponentMappers.player.get(ent).teamID = 1;
+            }
 
             //if(iPacket.name.equals())
 
