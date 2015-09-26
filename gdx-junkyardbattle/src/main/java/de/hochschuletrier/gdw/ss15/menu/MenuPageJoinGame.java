@@ -65,7 +65,6 @@ public class MenuPageJoinGame extends MenuPage implements DoNotTouchPacketEvent.
 	public MenuPageJoinGame(Skin skin, MenuManager menuManager, String background, String name) {
 		super(skin, background);
 
-		DoNotTouchPacketEvent.registerListener(this);
 
 		labelTimer = new Label("60", skin);
 		labelTimer.setWidth(widthChange);

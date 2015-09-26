@@ -18,30 +18,37 @@ import de.hochschuletrier.gdw.commons.gdx.menu.MenuManager;
 import de.hochschuletrier.gdw.commons.gdx.menu.widgets.DecoImage;
 import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
 import de.hochschuletrier.gdw.ss15.Main;
+import de.hochschuletrier.gdw.ss15.events.network.Base.ConnectTryFinishEvent;
+import de.hochschuletrier.gdw.ss15.events.network.Base.DoNotTouchPacketEvent;
+import de.hochschuletrier.gdw.ss15.game.components.network.server.ClientComponent;
+import de.hochschuletrier.gdw.ss15.game.network.PacketIds;
+import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
+import de.hochschuletrier.gdw.ss15.game.utils.Dataholder;
+import de.hochschuletrier.gdw.ss15.game.utils.LoadedMaps;
 import de.hochschuletrier.gdw.ss15.menu.Actors.Bar;
+import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
 
-public class MenuPageHostGame extends MenuPage{
+public class MenuPageHostGame extends MenuPage implements ConnectTryFinishEvent.Listener, DoNotTouchPacketEvent.Listener {
 	ArrayList<Texture> imageArray= new ArrayList<>();
 	int indexImageArray=0;
 	
 	
 	private int buttonImageWidth=100;
 	private int buttonImageHeight=30;
+
+	int actualMap = 0;
+
 	
-	Texture textureMap1=assetManager.getTexture("map1");
-	Texture textureMap2=assetManager.getTexture("map2");
-	Texture textureMap3=assetManager.getTexture("map3");
-	Texture textureMap4=assetManager.getTexture("map4");
-	
-	private final DecoImage imageMap = new DecoImage(textureMap1);
+	private final DecoImage imageMap = new DecoImage(assetManager.getTexture("map1"));
 	private final DecoImage imageHost = new DecoImage(assetManager.getTexture("host_button"));
 
 	private final DecoImage imageChangeMapRight = new DecoImage(assetManager.getTexture("changeMap_button_right"));
 	private final DecoImage imageChangeMapLeft = new DecoImage(assetManager.getTexture("changeMap_button_left"));
+
+	MenuManager menuManager;
 	
-	
-	Label labelIP = new Label("IP: ", skin);
-	TextArea textAreaPort= new TextArea("", skin);
+	Label labelIP = new Label("", skin);
+	TextArea textAreaPort= new TextArea("12345", skin);
 	
 	TextButton textButtonHostGame = new TextButton("Server hosten", skin);
 	
@@ -57,7 +64,7 @@ public class MenuPageHostGame extends MenuPage{
 				
 				int port = Integer.parseInt((temp.trim()));
 				
-				hostGame(port,indexImageArray);
+				hostGame(port,1);
 				
 			} catch (Exception e) {
 				
@@ -71,41 +78,42 @@ public class MenuPageHostGame extends MenuPage{
 		
 		@Override
 		public void run() {
-			System.out.println("right"+ indexImageArray);
-			
-			if(indexImageArray<imageArray.size()-1)
-			{
-			indexImageArray++;
-			imageMap.setTexture(imageArray.get(indexImageArray));
+
+			actualMap++;
+			if (actualMap > Main.getInstance().maps.size()) {
+				actualMap = 1;
 			}
-			
+
+			imageMap.setTexture(assetManager.getTexture("map" + actualMap));
+
+			Dataholder.MapId = actualMap;
 		}
 	};
 	private Runnable runnableChangeMapLeft= new Runnable() {
-		
+
 		@Override
 		public void run() {
-			System.out.println("left" + indexImageArray);
-			
-			if(indexImageArray>0)
-			{
-			indexImageArray--;
-			imageMap.setTexture(imageArray.get(indexImageArray));
+
+			actualMap--;
+			if (actualMap <0 ) {
+				actualMap = Main.maps.size();
 			}
-			
+
+			imageMap.setTexture(assetManager.getTexture("map" + actualMap));
+
+			Dataholder.MapId = actualMap;
 		}
 	};
 
 	public MenuPageHostGame(Skin skin, MenuManager menuManager, String background) {
 		super(skin, background);
+
+		Dataholder.MapId = 0;
+
+		this.menuManager = menuManager;
+
 		textAreaPort.setWidth(235);
-		
-		imageArray.add(textureMap1);
-		imageArray.add(textureMap2);
-		imageArray.add(textureMap3);
-		imageArray.add(textureMap4);
-		
-		
+
 		imageHost.setWidth(135);
 		imageHost.setHeight(20);
 		
@@ -115,26 +123,69 @@ public class MenuPageHostGame extends MenuPage{
 		imageChangeMapRight.setHeight(30);
 		imageMap.setWidth(150);
 		imageMap.setHeight(145);
-		addCenteredImage(633, 141,(int) imageChangeMapRight.getWidth(),(int) imageChangeMapRight.getHeight(), imageChangeMapRight, runnableChangeMapRight);
-		addCenteredImage(331, 141,(int) imageChangeMapLeft.getWidth(),(int) imageChangeMapLeft.getHeight(), imageChangeMapLeft, runnableChangeMapLeft);
+		addCenteredImage(633, 141, (int) imageChangeMapRight.getWidth(), (int) imageChangeMapRight.getHeight(), imageChangeMapRight, runnableChangeMapRight);
+		addCenteredImage(331, 141, (int) imageChangeMapLeft.getWidth(), (int) imageChangeMapLeft.getHeight(), imageChangeMapLeft, runnableChangeMapLeft);
 		addCenteredImage(420, 365, buttonImageWidth, buttonImageHeight, imageHost, runnableHost);
-		addUIActor(textAreaPort,  390, (int) (290-textAreaPort.getHeight()), null);
-		addUIActor(imageMap, 420, (int) (215-imageMap.getHeight()), null);
+		addUIActor(textAreaPort, 390, (int) (290 - textAreaPort.getHeight()), null);
+		addUIActor(imageMap, 420, (int) (215 - imageMap.getHeight()), null);
 		addUIActor(labelIP, 783, (int) (120-labelIP.getHeight()), null);
-		
 
-		
-		
+		ConnectTryFinishEvent.registerListener(this);
+		DoNotTouchPacketEvent.registerListener(this);
 	}
 
 	//TODO
 	protected void hostGame(int port, int map) {
-	
-		Main.getInstance().startServer();
-		
 
-		
+		if(Main.getInstance().startServer(port))
+		{
+			if(!Main.getInstance().getClientConnection().connect("localhost",port))
+			{
+				Main.getInstance().stopServer();
+				labelIP.setText("Fehler");
+			}
+		}
+		else
+		{
+			labelIP.setText("Fehler");
+		}
 	}
 
+	@Override
+	public void onDoNotTouchPacket(Packet pack) {
+		// TODO Auto-generated method stub
+		if (pack.getPacketId() == PacketIds.Simple.getValue()) {
+			SimplePacket sPack = (SimplePacket) pack;
+			if (sPack.m_SimplePacketId == SimplePacket.SimplePacketId.ConnectInitPacket.getValue()) {
+				if (sPack.m_Moredata == 1) {
+					// MenuPage page= new MenuPageJoinGame(skin, menuManager,
+					// "join_bg");
+					MenuPage page = new MenuPageJoinGame(skin, menuManager, "join_bg", "Host");
+					menuManager.addLayer(page);
+					menuManager.pushPage(page);
+				}
+				else if(sPack.m_Moredata == -1)
+				{
+					labelIP.setText("Fehler");
+				}
+				else if(sPack.m_Moredata == -2)
+				{
+					labelIP.setText("Fehler");
+				}
+				else
+				{
+					labelIP.setText("Fehler");
+				}
+			}
+		}
+	}
+
+	@Override
+	public void onConnectFinishPacket(boolean status) {
+		if (!status) {
+			labelIP.setText("Verbindungsfehler");
+			Main.getInstance().stopServer();
+		}
+	}
 	
 }

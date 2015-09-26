@@ -70,7 +70,7 @@ import java.util.List;
 public class Main extends StateBasedGame {
 
     //-----------------------------------------server on off-------------------
-    private static final boolean m_StartServerByGameStart = true;
+    private static final boolean m_StartServerByGameStart = false;
     //-------------------------------------------------------------------------
 
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
@@ -186,7 +186,7 @@ public class Main extends StateBasedGame {
         LoadMaps();
 
         if(m_StartServerByGameStart) {
-            server = new Server();
+            server = new Server(12345);
             server.start();
             logger.info("Server wurde gestartet");
         }
@@ -304,11 +304,15 @@ public class Main extends StateBasedGame {
 
             String info = list.get(1);
             if(info.equals("start")) {
-                startServer();
+                if (list.size() >= 3) {
+                    startServer(Integer.parseInt(list.get(2)));
+                } else {
+                    startServer(12345);
+                }
             }
             else if(info.equals("stop"))
             {
-                stopGame();
+                stopServer();
             }
             else
             {
@@ -337,10 +341,10 @@ public class Main extends StateBasedGame {
 
 
 
-    public void startServer()
+    public boolean startServer(int port)
     {
         if(server == null){
-            server = new Server();
+            server = new Server(port);
             if(server.start())
             {
                 logger.info("Server gestartet");
@@ -348,14 +352,16 @@ public class Main extends StateBasedGame {
             else
             {
                 logger.error("Server konnte nicht gestartet werden");
+                return false;
             }
         }
         else {
             logger.error("Server läuft bereits");
         }
+        return true;
     }
 
-    public void stopGame()
+    public void stopServer()
     {
        if(server==null)
         {

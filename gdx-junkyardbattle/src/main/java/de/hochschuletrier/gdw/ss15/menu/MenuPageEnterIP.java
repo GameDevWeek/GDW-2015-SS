@@ -41,6 +41,7 @@ public class MenuPageEnterIP extends MenuPage
 	TextArea textAreaName = new TextArea("Noob", skin);
 	TextArea textAreaIP = new TextArea("localhost", skin);
 
+
 	Label labelError= new Label("", skin);
 	private int width = 235, height = 45;
 
@@ -95,6 +96,7 @@ public class MenuPageEnterIP extends MenuPage
 		addUIActor(textAreaPort, 385, (int) (221 - textAreaPort.getHeight()), null);
 		addUIActor(textAreaIP, 385, (int) (142 - textAreaIP.getHeight()), null);
 		addUIActor(labelError, 786, (int) (101-labelError.getHeight()), null);
+		
 
 		ConnectTryFinishEvent.registerListener(this);
 		DoNotTouchPacketEvent.registerListener(this);

@@ -135,7 +135,11 @@ public class ServerGame{
     */
         //System.out.println(Main.maps.get("map" + mapid).file);
 
-        mapLoader.run(this::createEntity, Main.maps.get("map"+mapid).file, physixSystem, entityFactory, Main.getInstance().getAssetManager());
+        System.out.println("Geladene map id ist: "+mapid);
+
+        mapLoader.run((String name, float x, float y) -> createEntity(name, x, y),
+                Main.maps.get("map"+mapid).file, physixSystem, entityFactory, Main.getInstance().getAssetManager() );
+
 
 
         Highscore.reset();
@@ -172,7 +176,7 @@ public class ServerGame{
         engine.addSystem(updatePhysixServer);
         engine.addSystem(gatherServerListener);
         engine.addSystem(miningSystem);
-        
+
         PlayerDiedEvent.register(spawnSystem);
     }
 

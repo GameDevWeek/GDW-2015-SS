@@ -69,7 +69,7 @@ public class Server implements Runnable
     private AtomicBoolean isRunning = new AtomicBoolean(false);
     Thread runThread;
 
-    Serversocket serversocket = new Serversocket(12345,true);
+    Serversocket serversocket;
 
     private static final Logger logger = LoggerFactory.getLogger(Server.class);
 
@@ -87,8 +87,9 @@ public class Server implements Runnable
 
     LinkedList<LobyClient> listToAddInGame = null;
 
-    public Server()
+    public Server(int port)
     {
+        serversocket = new Serversocket(12345,true);
         timer.Update();
     }
 

@@ -6,6 +6,7 @@ import de.hochschuletrier.gdw.ss15.events.network.client.SendPacketClientEvent;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.Menu.ChangeNamePacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.Menu.MenuePlayerChangedPacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
+import de.hochschuletrier.gdw.ss15.game.utils.Dataholder;
 import de.hochschuletrier.gdw.ss15.game.utils.LoadedMaps;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serverclientsocket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
@@ -26,7 +27,7 @@ public class ServerLobby
 
     String Mapname;
     private int MaximumPlayers = 8;
-    private float SecondsToStart = 120;
+    private float SecondsToStart = 60;
     MyTimer timer = new MyTimer(true);
 
     public LinkedList<LobyClient> connectedClients = new LinkedList<>();
@@ -38,9 +39,7 @@ public class ServerLobby
     public ServerLobby()
     {
         //WARNING!!!! hurts by reading XD
-
-        mapId = Main.maps.get("map1").id;
-
+        mapId = Dataholder.MapId;
     }
 
     public boolean ChangeMap(String s)

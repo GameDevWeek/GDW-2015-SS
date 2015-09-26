@@ -58,6 +58,8 @@ public class TestMovementSystem extends IteratingSystem{
 	        mousepos2.sub(new Vector2(posc.x,posc.y));
 	        float angle = mousepos2.angle();
 
+            vectorToAdd.nor();
+
             //System.out.println("Client vel: "+vectorToAdd);
 	        MovementPacket packet = new MovementPacket(vectorToAdd.x,vectorToAdd.y,angle);
 	        SendPacketClientEvent.emit(packet,true);
