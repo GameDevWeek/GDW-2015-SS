@@ -456,9 +456,9 @@
             },
             "Pickable": {},
             "Inventory": {
-                "metalShards": 1,
+                "metalShards": 2,
                 "minMetalShards": 0,
-                "maxMetalShards": 1
+                "maxMetalShards": 2
             }
         }
     }
