@@ -14,7 +14,7 @@ import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 
 public class BulletSystem extends IteratingSystem{
 
-    public static final float maxrange = 500;
+    public static final float lifetime = 0.3f; // seconds
 
     private final PooledEngine engine;
     private final ServerGame serverGame;
@@ -28,11 +28,9 @@ public class BulletSystem extends IteratingSystem{
     @Override
     public void processEntity(Entity entity, float deltaTime) {
         PhysixBodyComponent physix = ComponentMappers.physixBody.get(entity);
-        PositionComponent position = ComponentMappers.position.get(entity);
         BulletComponent bullet = ComponentMappers.bullet.get(entity);
-        Vector2 dst = new Vector2(physix.getPosition().x, physix.getPosition().y);
-        dst.sub(bullet.playerpos);
-        if(dst.len2() > maxrange*maxrange)//Bullet quasi stehengeblieben
+        bullet.traveltime += deltaTime;
+        if(bullet.traveltime > lifetime)//Bullet quasi stehengeblieben
         {
 //            System.out.println("bullet got to slow");
             if(ComponentMappers.abyss.get(entity).above == false)

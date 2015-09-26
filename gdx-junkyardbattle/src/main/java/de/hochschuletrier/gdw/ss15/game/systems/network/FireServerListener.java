@@ -84,11 +84,13 @@ public class FireServerListener extends EntitySystem implements NetworkReceivedN
                 Entity projectile = game.createEntity("projectile", startPosition.x, startPosition.y);
 
                 float rotation = (float) (phxc.getAngle() + (Math.random() - 0.5f) * scatter);
-                createProjectile(projectile, rotation);
+                int chargepower = (int) (power * (1 + 0.8*p));
+                createProjectile(projectile, rotation, chargepower);
 
                 BulletComponent bullet = projectile.getComponent(BulletComponent.class);
                 bullet.playerID = ent.getComponent(PlayerComponent.class).playerID;
                 bullet.rotation = rotation;
+                bullet.power = chargepower;
                 bullet.playerrotation = phxc.getAngle() * MathUtils.radiansToDegrees;
                 bullet.playerpos = phxc.getPosition();
 //
@@ -100,7 +102,7 @@ public class FireServerListener extends EntitySystem implements NetworkReceivedN
             }catch (ClassCastException e){}
     }
 
-    public static void createProjectile(Entity entity, float rotation){
+    public static void createProjectile(Entity entity, float rotation, int chargepower){
         if(entity.getComponent(PhysixModifierComponent.class) == null){
             entity.add(new PhysixModifierComponent());
         }
@@ -111,7 +113,7 @@ public class FireServerListener extends EntitySystem implements NetworkReceivedN
 
             physixBodyComponent.setAngle(rotation);
             Vector2 v2 = new Vector2((float)Math.cos(physixBodyComponent.getAngle()), (float)Math.sin(physixBodyComponent.getAngle()));
-            v2.nor().scl(power);
+            v2.nor().scl(chargepower);
             physixBodyComponent.applyImpulse(v2);
 //            physixBodyComponent.setLinearVelocity(v2.x, v2.y);
 
