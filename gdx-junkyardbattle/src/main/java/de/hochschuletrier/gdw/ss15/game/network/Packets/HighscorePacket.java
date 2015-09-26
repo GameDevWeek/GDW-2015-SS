@@ -27,32 +27,32 @@ public class HighscorePacket extends Packet {
     protected void pack(DataOutputStream dataOutput) throws IOException {
         dataOutput.writeInt(this.getSize()); // send package size
         dataOutput.writeByte(teamstats); // send package size
-//
-//
-//        for (Pair<String, Integer> pair : highscorediff) {
-//            dataOutput.writeShort(pair.getKey().length());
-//            dataOutput.writeChars(pair.getKey());
-//            dataOutput.writeInt(pair.getValue());
-//        }
+
+        for (int i = 0; i < id.size(); i++) {
+            dataOutput.writeInt(id.get(i));
+            dataOutput.writeShort(category.get(i).length());
+            dataOutput.writeChars(category.get(i));
+            dataOutput.writeInt(value.get(i));
+        }
     }
 
     @Override
     protected void unpack(DataInputStream input) throws IOException {
-        int size = input.readInt();
-        int r = Integer.SIZE / 8;
-
+        int size = input.readInt(); // maximum bytes
         teamstats = input.readByte();
-        r += Byte.SIZE / 8;
 
+        int r = Integer.SIZE / 8 + Byte.SIZE / 8; // read bytes
         while (r < size){
-            short l = input.readShort();
-            r += Short.SIZE / 8;
+            id.add(input.readInt());
+
+            short l = input.readShort();    r += Short.SIZE / 8;
             StringBuilder builder = new StringBuilder(l);
             for(int i = 0; i < l; ++i){
-                builder.append(input.readChar());
-                r += Character.SIZE / 8;
+                builder.append(input.readChar());   r += Character.SIZE / 8;
             }
-            Pair<String, Integer> p = new Pair<>(builder.toString(), input.readInt());
+            category.add(builder.toString());
+
+            value.add(input.readInt());
             r += Integer.SIZE / 8;
         }
 
@@ -61,11 +61,13 @@ public class HighscorePacket extends Packet {
     @Override
     public int getSize() {
         int size = Integer.SIZE;
-        size += Byte.SIZE;
-//        for (Pair<String, Integer> pair : highscorediff) {
-//            size += Character.SIZE * pair.getKey().length();
-//            size += Integer.SIZE;
-//        }
+            size += Byte.SIZE;
+        for (int i = 0; i < id.size(); i++) {
+            size += Integer.SIZE;
+            size += Short.SIZE;
+            size += Character.SIZE * category.get(i).length();
+            size += Integer.SIZE;
+        }
         return size / 8;
     }
 }

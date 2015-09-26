@@ -104,7 +104,7 @@ public class ServerGame{
         ComponentMappers.player.get(ent).playerID = name.hashCode();
         ComponentMappers.player.get(ent).teamID = Tools.BoolToInt(team);
 
-        Highscore.Get().addPlayer(name.hashCode());
+        //Highscore.Get().addPlayer(name.hashCode());
         //Highscore.Get().setPlayerStat(name.hashCode(), "team", ComponentMappers.player.get(ent).teamID);
 
         NetworkNewPlayerEvent.emit(ent);
