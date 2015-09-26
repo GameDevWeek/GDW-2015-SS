@@ -81,9 +81,8 @@ public class TestSatelliteSystem extends IteratingSystem {
 
           x= posc.x;
           y = posc.y;
-          
-          
-          //System.out.println(x+" , "+y);
+
+		//System.out.println(x+" , "+y);
         	
         	if(inventory.getMetalShards()<1)
         	{

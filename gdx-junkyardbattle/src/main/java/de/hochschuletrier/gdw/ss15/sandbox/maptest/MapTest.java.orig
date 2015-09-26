@@ -114,7 +114,11 @@ public class MapTest extends SandboxGame {
 
     @Override
     public void init(AssetManagerX assetManager) {
+<<<<<<< HEAD
         map = loadMap("data/maps/prototypeV2.tmx");
+=======
+        map = loadMap("data/maps/prototype_v2.tmx");
+>>>>>>> develop
         for (TileSet tileset : map.getTileSets()) {
             TmxImage img = tileset.getImage();
             String filename = CurrentResourceLocator.combinePaths(tileset.getFilename(), img.getSource());
