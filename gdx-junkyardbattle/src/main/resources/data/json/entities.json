@@ -141,6 +141,7 @@
             "Inventory": {
                 "metalShards": 20,
                 "minMetalShards": 0,
+                "minMetalShardsForBase": 20,
                 "maxMetalShards": 700
             },
             "Move": {
@@ -208,6 +209,7 @@
             "Inventory": {
                 "metalShards": 20,
                 "minMetalShards": 0,
+                "minMetalShardsForBase": 20,
                 "maxMetalShards": 700
             },
             "Weapon": {},
@@ -302,7 +304,7 @@
             "Inventory": {
                 "metalShards": 650,
                 "minMetalShards": 0,
-                "maxMetalShards": 700
+                "maxMetalShards": 650
             }
         }
     },
