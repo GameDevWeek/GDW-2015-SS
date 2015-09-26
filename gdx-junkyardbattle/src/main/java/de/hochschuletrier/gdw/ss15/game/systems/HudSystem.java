@@ -109,18 +109,17 @@ public class HudSystem extends IteratingSystem {
 
 
         float healthSizeFactor = (float) HudDebug.health / 100.0f;
-        float scaleXFactor = 392.0f / (float) hudoverlay.getWidth();
-        float relativeXPosLeft = 646.0f / hudoverlay.getWidth() * Gdx.graphics.getWidth();
-        float relativeYPosLeft = Gdx.graphics.getHeight() - 51.0f / hudoverlay.getHeight() * Gdx.graphics.getHeight();
-        float relativeXPosRight = 646.0f / hudoverlay.getWidth() * Gdx.graphics.getWidth();
-        float relativeYPosRight = Gdx.graphics.getHeight() - 51.0f / hudoverlay.getHeight() * Gdx.graphics.getHeight();
-        float barHeight = 28.0f / hudoverlay.getHeight() * Gdx.graphics.getHeight();
-        float barWidth = 392.0f / hudoverlay.getWidth() * Gdx.graphics.getWidth();
+        float relativeXPosLeft = 736.0f / hudoverlay.getWidth() * Gdx.graphics.getWidth();
+        float relativeYPosLeft = Gdx.graphics.getHeight() - 58.0f / hudoverlay.getHeight() * Gdx.graphics.getHeight();
+        float relativeXPosRight = 1023.0f / hudoverlay.getWidth() * Gdx.graphics.getWidth();
+        float relativeYPosRight = Gdx.graphics.getHeight() - 58.0f / hudoverlay.getHeight() * Gdx.graphics.getHeight();
+        float barHeight = 36.0f / hudoverlay.getHeight() * Gdx.graphics.getHeight();
+        float barWidth = 164.0f / hudoverlay.getWidth() * Gdx.graphics.getWidth();
 
         //linkeBox
         DrawUtil.fillRect(relativeXPosLeft - (barWidth * (healthSizeFactor -1)), relativeYPosLeft, barWidth * healthSizeFactor, barHeight, healthColor);
         //rechteBox
-        //DrawUtil.fillRect(relativeXPosRight, relativeYPosRight, barWidth * healthSizeFactor, barHeight, healthColor);
+        DrawUtil.fillRect(relativeXPosRight, relativeYPosRight, barWidth * healthSizeFactor, barHeight, healthColor);
 
         //font.draw(DrawUtil.batch, "health: " + health, 0, Gdx.graphics.getHeight() / 2);
         //font.draw(DrawUtil.batch, "barWidth: " + barWidth , 0, Gdx.graphics.getHeight() / 2 + 200);
@@ -128,10 +127,11 @@ public class HudSystem extends IteratingSystem {
 
     private void schrottAnzeige(){
         int schrottcount = localPlayer.getComponent(InventoryComponent.class).getMetalShards();
-        float relativeXPos = 646.0f / hudoverlay.getWidth() * Gdx.graphics.getWidth();
-        float relativeYPos = Gdx.graphics.getHeight() - 51.0f / hudoverlay.getHeight() * Gdx.graphics.getHeight();
+        float relativeXPos = 1096.0f / hudoverlay.getWidth() * Gdx.graphics.getWidth();
+        float relativeYPos = 948.0f / hudoverlay.getHeight() * Gdx.graphics.getHeight();
 
-        //font.draw(DrawUtil.batch, "" + schrottcount, 0, Gdx.graphics.getHeight() / 2);
+        //font.draw(DrawUtil.batch, "100/100" + 100, 100, relativeYPos);
+
     }
 
     private void timer() {
@@ -139,7 +139,7 @@ public class HudSystem extends IteratingSystem {
     }
 
     private void showHudOverlay() {
-        DrawUtil.batch.draw(hudoverlay, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), - Gdx.graphics.getWidth(), - Gdx.graphics.getHeight());
+        DrawUtil.batch.draw(hudoverlay, 0, Gdx.graphics.getHeight(), Gdx.graphics.getWidth(), -Gdx.graphics.getHeight());
     }
 
 }
