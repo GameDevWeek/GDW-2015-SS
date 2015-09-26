@@ -7397,8 +7397,8 @@
    </properties>
   </object>
   <object id="164" name="SatelliteSite" type="Satellite" x="6524" y="1402"/>
-  <object id="166" name="PointLight" x="432" y="816"/>
-  <object id="167" name="PointLight" x="4156" y="7356"/>
+  <object id="166" name="greenPointLight" x="432" y="816"/>
+  <object id="167" name="greenPointLight" x="4156" y="7356"/>
  </objectgroup>
  <layer name="Above" width="60" height="60">
   <data>

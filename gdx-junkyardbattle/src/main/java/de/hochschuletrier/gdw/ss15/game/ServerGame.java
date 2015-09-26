@@ -1,5 +1,7 @@
 package de.hochschuletrier.gdw.ss15.game;
 
+import box2dLight.RayHandler;
+
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 
@@ -7,26 +9,45 @@ import de.hochschuletrier.gdw.commons.gdx.ashley.EntityFactory;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixComponentAwareContactListener;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.ss15.Main;
-import de.hochschuletrier.gdw.ss15.events.*;
-import de.hochschuletrier.gdw.ss15.events.network.Base.ConnectTryFinishEvent;
-import de.hochschuletrier.gdw.ss15.events.network.Base.DisconnectEvent;
-import de.hochschuletrier.gdw.ss15.events.network.Base.DoNotTouchPacketEvent;
-import de.hochschuletrier.gdw.ss15.events.network.client.NetworkReceivedNewPacketClientEvent;
-import de.hochschuletrier.gdw.ss15.events.network.client.SendPacketClientEvent;
-import de.hochschuletrier.gdw.ss15.events.network.server.DoNotTouchServerPacketEvent;
+import de.hochschuletrier.gdw.ss15.events.ComeToBaseEvent;
+import de.hochschuletrier.gdw.ss15.events.MiningEvent;
+import de.hochschuletrier.gdw.ss15.events.PickupEvent;
+import de.hochschuletrier.gdw.ss15.events.PlayerDiedEvent;
+import de.hochschuletrier.gdw.ss15.events.PlayerHurtEvent;
 import de.hochschuletrier.gdw.ss15.events.network.server.NetworkNewPlayerEvent;
-import de.hochschuletrier.gdw.ss15.events.network.server.NetworkReceivedNewPacketServerEvent;
-import de.hochschuletrier.gdw.ss15.events.network.server.SendPacketServerEvent;
-import de.hochschuletrier.gdw.ss15.events.rendering.ChangeAnimationEvent;
-import de.hochschuletrier.gdw.ss15.events.rendering.ChangeModeOnEffectEvent;
-import de.hochschuletrier.gdw.ss15.events.rendering.ChangePositionOnEffectEvent;
-import de.hochschuletrier.gdw.ss15.game.components.*;
+import de.hochschuletrier.gdw.ss15.game.components.BasePointComponent;
+import de.hochschuletrier.gdw.ss15.game.components.BulletComponent;
+import de.hochschuletrier.gdw.ss15.game.components.ImpactSoundComponent;
+import de.hochschuletrier.gdw.ss15.game.components.MetalShardSpawnComponent;
+import de.hochschuletrier.gdw.ss15.game.components.PickableComponent;
+import de.hochschuletrier.gdw.ss15.game.components.TriggerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
-import de.hochschuletrier.gdw.ss15.game.contactlisteners.*;
-import de.hochschuletrier.gdw.ss15.game.systems.*;
+import de.hochschuletrier.gdw.ss15.game.contactlisteners.BaseMetalShardDeliverListener;
+import de.hochschuletrier.gdw.ss15.game.contactlisteners.BulletListener;
+import de.hochschuletrier.gdw.ss15.game.contactlisteners.ImpactSoundListener;
+import de.hochschuletrier.gdw.ss15.game.contactlisteners.MetalShardSpawnListener;
+import de.hochschuletrier.gdw.ss15.game.contactlisteners.PickupListener;
+import de.hochschuletrier.gdw.ss15.game.contactlisteners.TriggerListener;
+import de.hochschuletrier.gdw.ss15.game.systems.BulletSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.DeathSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.HealthSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.InventorySystem;
+import de.hochschuletrier.gdw.ss15.game.systems.LineOfSightSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.MetalShardDropSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.MetalShardSpawnSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.SpawnSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.RealNetwork.NetworkServerSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.RealNetwork.PositionSynchSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.network.*;
+import de.hochschuletrier.gdw.ss15.game.systems.network.BringHomeSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.network.FireServerListener;
+import de.hochschuletrier.gdw.ss15.game.systems.network.GatherServerListener;
+import de.hochschuletrier.gdw.ss15.game.systems.network.MiningSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.network.PickupSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.network.PlayerHurtSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.network.TestSatelliteSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.network.UpdatePhysixServer;
+import de.hochschuletrier.gdw.ss15.game.systems.renderers.LightRenderer;
 import de.hochschuletrier.gdw.ss15.game.utils.TimerSystem;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serverclientsocket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.Tools;
@@ -125,15 +146,15 @@ public class ServerGame{
         setupPhysixWorld();
         networkSystem.init();
         entityFactory.init(engine, Main.getInstance().getAssetManager());
-
+        
         mapLoader.listen(spawnSystem);
-
+        LightRenderer.rayHandler = new RayHandler(physixSystem.getWorld());
         /*
         mapLoader.run((String name, float x, float y) -> {
             return this.createEntity(name, x, y);
         }, "data/maps/"+mapname+".tmx", physixSystem, entityFactory, Main.getInstance().getAssetManager());
     */
-        mapLoader.run(this::createEntity, "data/maps/royalrubble_v2.tmx", physixSystem, entityFactory, Main.getInstance().getAssetManager());
+        mapLoader.run(this::createEntity, "data/maps/royalrubbel.tmx", physixSystem, entityFactory, Main.getInstance().getAssetManager());
 
 
 //        Highscore.reset();
