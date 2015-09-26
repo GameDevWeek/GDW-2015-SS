@@ -29,6 +29,9 @@ public class Highscore {
     }
 
     ///
+    public HashSet<String> dirtyTeamStats = new HashSet<>();
+    public HashSet<String> dirtyPlayerStats = new HashSet<>();
+
     private HashMap<Integer, HashMap<String, Integer>> teamstats = new HashMap<>();
     private HashMap<Integer, HashMap<String, Integer>> playerstats = new HashMap<>();
 
@@ -66,6 +69,8 @@ public class Highscore {
         if(! teamcategories.contains(category))
             throw new IllegalArgumentException("Highscore does not contain category: " + category);
 
+        teamcategories.add(category);
+
         teamstats.get(team).put(category, value);
     }
 
@@ -85,6 +90,8 @@ public class Highscore {
             throw new IllegalArgumentException("Player " + player + " could not be found");
         if(! playercategories.contains(category))
             throw new IllegalArgumentException("Highscore does not contain category: " + category);
+
+        playercategories.add(category);
 
         playerstats.get(player).put(category, value);    }
 
