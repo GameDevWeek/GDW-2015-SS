@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 
+import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended;
 import de.hochschuletrier.gdw.ss15.events.WeaponCharging;
 import de.hochschuletrier.gdw.ss15.events.WeaponUncharged;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
@@ -17,11 +18,14 @@ import de.hochschuletrier.gdw.ss15.game.GameConstants;
 import de.hochschuletrier.gdw.ss15.game.GameGlobals;
 import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
+import de.hochschuletrier.gdw.ss15.game.components.animation.AnimationState;
+import de.hochschuletrier.gdw.ss15.game.components.animation.AnimatorComponent;
 import de.hochschuletrier.gdw.ss15.game.components.effects.AttachedParticleEntityComponent;
 import de.hochschuletrier.gdw.ss15.game.components.effects.ParticleEffectComponent;
 import de.hochschuletrier.gdw.ss15.game.components.input.InputComponent;
 import de.hochschuletrier.gdw.ss15.game.components.light.ConeLightComponent;
 import de.hochschuletrier.gdw.ss15.game.components.light.PointLightComponent;
+import de.hochschuletrier.gdw.ss15.game.rendering.ZoomingModes;
 
 public class EffectAddSystem extends IteratingSystem implements EntityListener, WeaponCharging.Listener, WeaponUncharged.Listener {
     private final PooledEngine engine;
@@ -59,9 +63,14 @@ public class EffectAddSystem extends IteratingSystem implements EntityListener, 
             coneLightComp.coneLight.setDirection(posComp.rotation);
         }
         
+//        if(particleEntityComp != null && particleEntityComp.entity != null) {
+//            ParticleEffectComponent particleComp = ComponentMappers.particleEffect.get(particleEntityComp.entity);
+//            particleComp.draw = inputComp.gather;
+//        }
+        
         if(particleEntityComp != null && particleEntityComp.entity != null) {
-            ParticleEffectComponent particleComp = ComponentMappers.particleEffect.get(particleEntityComp.entity);
-            particleComp.draw = inputComp.gather;
+            AnimatorComponent animatorComp = ComponentMappers.animator.get(particleEntityComp.entity);
+            animatorComp.draw = inputComp.gather;
         }
     }
 
@@ -89,19 +98,33 @@ public class EffectAddSystem extends IteratingSystem implements EntityListener, 
             PositionComponent posComp = engine.createComponent(PositionComponent.class);
             posComp.x = entityPos.x;
             posComp.y = entityPos.y;
-            ParticleEffectComponent effectComp = engine.createComponent(ParticleEffectComponent.class);
-            effectComp.particleEffect = new ParticleEffect(GameGlobals.assetManager.getParticleEffect("traktorParticle"));
-            effectComp.positionOffsetX = 70.f;
-            effectComp.draw = false;
-            for(ParticleEmitter e : effectComp.particleEffect.getEmitters())
-                e.setAttached(true);
+//            ParticleEffectComponent effectComp = engine.createComponent(ParticleEffectComponent.class);
+//            effectComp.particleEffect = new ParticleEffect(GameGlobals.assetManager.getParticleEffect("traktorParticle"));
+//            effectComp.positionOffsetX = 70.f;
+//            effectComp.draw = false;
+//            for(ParticleEmitter e : effectComp.particleEffect.getEmitters())
+//                e.setAttached(true);
+//            
+//            particleEntity.add(effectComp);
+//            particleEntity.add(entityPos);
+//            engine.addEntity(particleEntity);
             
-            particleEntity.add(effectComp);
-            particleEntity.add(entityPos);
-            engine.addEntity(particleEntity);
+            AnimatorComponent animatorComp = engine.createComponent(AnimatorComponent.class);
+            AnimationExtended anim = GameGlobals.assetManager.getAnimation("traktor_strahl");
+            animatorComp.animationStates.put(AnimationState.IDLE, anim);
+            animatorComp.positionOffsetX = 0.f;
+            animatorComp.positionOffsetY = -170.f;
+            animatorComp.initialRotation = 90.f;
+            animatorComp.scaleX = 0.5f;
+            animatorComp.scaleY = 0.5f;
+            animatorComp.draw = false;
+            
             
             AttachedParticleEntityComponent particleEntityComp = engine.createComponent(AttachedParticleEntityComponent.class);
             particleEntityComp.entity = particleEntity;
+            particleEntity.add(animatorComp);
+            particleEntity.add(entityPos);
+            engine.addEntity(particleEntity);
             entity.add(particleEntityComp);
         }
     }
@@ -123,7 +146,9 @@ public class EffectAddSystem extends IteratingSystem implements EntityListener, 
         if(player != null) {
             PointLightComponent pointLightComp = ComponentMappers.pointLight.get(player);
             if(pointLightComp != null) {
-                pointLightComp.pointLight.setDistance(GameConstants.PLAYER_POINT_LIGHT_DISTANCE * (1.f - fireChannelAmount * 0.5f));
+                float distance = ZoomingModes.interpolate(GameConstants.ZOOM_MODE, GameConstants.PLAYER_POINT_LIGHT_DISTANCE, 
+                        GameConstants.PLAYER_POINT_LIGHT_DISTANCE_CHARGED, fireChannelAmount);
+                pointLightComp.pointLight.setDistance(distance);
                 pointLightComp.pointLight.getColor().a = GameConstants.PLAYER_POINT_LIGHT_ALPHA 
                         + fireChannelAmount;
             } 

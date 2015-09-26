@@ -1,8 +1,10 @@
 package de.hochschuletrier.gdw.ss15.game.components.factories;
 
 import com.badlogic.ashley.core.Entity;
+
 import de.hochschuletrier.gdw.commons.gdx.ashley.ComponentFactory;
 import de.hochschuletrier.gdw.commons.utils.SafeProperties;
+import de.hochschuletrier.gdw.ss15.game.GameConstants;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 
 public class PositionComponentFactory extends ComponentFactory<EntityFactoryParam> {
@@ -17,7 +19,7 @@ public class PositionComponentFactory extends ComponentFactory<EntityFactoryPara
         PositionComponent component = engine.createComponent(PositionComponent.class);
         component.x = param.x;
         component.y = param.y;
-        component.layer = properties.getInt("layer", 2);
+        component.layer = properties.getInt("layer", GameConstants.DEFAULT_LAYER);
         entity.add(component);
     }
 }
