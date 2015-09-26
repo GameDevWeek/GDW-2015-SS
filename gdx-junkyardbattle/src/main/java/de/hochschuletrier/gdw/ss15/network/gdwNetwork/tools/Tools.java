@@ -28,10 +28,17 @@ public class Tools
 			PrintException(ex);
 		}
 	}
-	
+
 	public static boolean IntToBool(int i)
 	{
 		return i==1;
 	}
-	
+
+	public static int BoolToInt(boolean i)
+	{
+		if(i)
+			return 1;
+		return 0;
+	}
+
 }

@@ -87,6 +87,10 @@ public class GameplayState extends BaseGameState implements DisconnectEvent.List
             DrawUtil.fillRect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), OVERLAY_COLOR);
             menuManager.render();
         }
+        if(Main.getInstance().getServer()!=null)
+        {
+            Main.getInstance().getServer().RunFromMain();
+        }
     }
 
     @Override

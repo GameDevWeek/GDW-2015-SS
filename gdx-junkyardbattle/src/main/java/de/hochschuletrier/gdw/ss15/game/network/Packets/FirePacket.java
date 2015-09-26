@@ -35,6 +35,6 @@ public class FirePacket extends Packet {
 
     @Override
     public int getSize() {
-        return Float.SIZE / 8;
+        return (Float.SIZE) / 8;
     }
 }

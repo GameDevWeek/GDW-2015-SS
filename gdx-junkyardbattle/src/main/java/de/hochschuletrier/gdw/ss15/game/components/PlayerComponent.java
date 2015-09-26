@@ -14,7 +14,6 @@ public class PlayerComponent extends Component implements Poolable
     public static int playerIDCounter = 0;
     public static int teamIDCounter = 0;
     public          int     playerID, teamID; //Wie soll Id im Netzwerk übergeben werden int oder String?
-    public final    Vector2 spawningPosition = new Vector2();
     public          Entity  killer; //name of Enemy
     public          String  name; // name of player
     public          long    lastSequenceId; //network?
@@ -28,7 +27,6 @@ public class PlayerComponent extends Component implements Poolable
         isLocalPlayer = false;
         lastSequenceId = 0;
         name = "";
-        spawningPosition.setZero();
         killer = null;
     }
 

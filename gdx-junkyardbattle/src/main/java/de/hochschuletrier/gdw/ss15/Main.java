@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+
 import de.hochschuletrier.gdw.commons.devcon.ConsoleCmd;
 import de.hochschuletrier.gdw.commons.devcon.DevConsole;
 import de.hochschuletrier.gdw.commons.devcon.cvar.CVar;
@@ -33,6 +34,7 @@ import de.hochschuletrier.gdw.commons.gdx.utils.GdxResourceLocator;
 import de.hochschuletrier.gdw.commons.gdx.utils.KeyUtil;
 import de.hochschuletrier.gdw.commons.resourcelocator.CurrentResourceLocator;
 import de.hochschuletrier.gdw.commons.utils.ClassUtils;
+import de.hochschuletrier.gdw.ss15.game.GameGlobals;
 import de.hochschuletrier.gdw.ss15.game.Server;
 import de.hochschuletrier.gdw.ss15.game.network.ClientConnection;
 import de.hochschuletrier.gdw.ss15.game.network.PacketIds;
@@ -41,6 +43,7 @@ import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.PacketFactory;
 import de.hochschuletrier.gdw.ss15.sandbox.SandboxCommand;
 import de.hochschuletrier.gdw.ss15.states.LoadGameState;
 import de.hochschuletrier.gdw.ss15.states.MainMenuState;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.OptionBuilder;
@@ -87,6 +90,7 @@ public class Main extends StateBasedGame {
 
     public Main() {
         super(new BaseGameState());
+        GameGlobals.assetManager = assetManager;
     }
 
     public static Main getInstance() {
@@ -241,7 +245,7 @@ public class Main extends StateBasedGame {
 
     public static void main(String[] args) {
         LwjglApplicationConfiguration cfg = new LwjglApplicationConfiguration();
-        cfg.title = "LibGDX Test";
+        cfg.title = "Battle For Metal";
         cfg.width = WINDOW_WIDTH;
         cfg.height = WINDOW_HEIGHT;
         cfg.useGL30 = false;

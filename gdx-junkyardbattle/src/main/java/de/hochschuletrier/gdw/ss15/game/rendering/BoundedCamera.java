@@ -34,7 +34,7 @@ public class BoundedCamera extends SmoothCamera {
     int viewportX = 1920, viewportY = 1080;
 
     // Camera zoom settings
-    private float srcZoom = 1.f, dstZoom = 2.f, curZoom = 1.f, zoomSpeed = 0.75f, zoomProgress = 0.f;
+    private float srcZoom = 1.f, dstZoom = 1.3f, curZoom = 1.f, zoomSpeed = 0.75f, zoomProgress = 0.f, deadZone = .15f;
     private boolean resetZoom = true;
     
     // < 1 slow follow || > 1 fast follow
@@ -113,16 +113,19 @@ public class BoundedCamera extends SmoothCamera {
             position.add(moveDir);
             setCameraPosition(position);
         }
-        
         if(resetZoom)
+        {
             zoomProgress -= zoomSpeed * delta;
-        else
-            zoomProgress += zoomSpeed * delta;
-        checkProgressBounds();
+            checkProgressBounds();
+            curZoom = Interpolation.pow4.apply(srcZoom, dstZoom, zoomProgress);
+            setZoom(curZoom);
+        }
+//        else
+//            zoomProgress += zoomSpeed * delta;
+        
         
         // change interpolation type for camera
-        curZoom = Interpolation.pow4.apply(srcZoom, dstZoom, zoomProgress);
-        setZoom(curZoom);        
+                
         
         camera.update(true);
     }
@@ -137,6 +140,25 @@ public class BoundedCamera extends SmoothCamera {
         else
             resetZoom = true;
     }
+    
+    
+    //used for zooming out while weapon charing
+    //value between 0..1
+    public void zoomOut(float zoomAmount)
+    {
+    	if(zoomAmount < deadZone)
+    		resetZoom = true;
+    	else
+    	{
+    		resetZoom = false;
+    		float converted = 0.0f;
+    		if(deadZone < 1.0f)
+    			converted = (zoomAmount - deadZone) / (1.0f-deadZone);
+    		zoomProgress = converted;
+    		setZoom(srcZoom + converted*(dstZoom-srcZoom));
+    	}
+    }
+    
     
     // Check if zoomProgress variable is out of bounds
     private void checkProgressBounds(){

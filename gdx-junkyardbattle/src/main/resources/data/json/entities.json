@@ -1,22 +1,39 @@
 {
-	"footstepeffect":{
+    "shoteffect": {
         "meta": {},
-        "components":{
-            "Position":{
+        "components": {
+            "Position": {
                 "layer": 1
             },
-            "ParticleEffect":{
-                "effectname": "footsteps",
+            "ParticleEffect": {
+                "effectname": "shoot",
                 "offsetX": 0,
                 "offsetY": 0,
                 "initialRotation": 0
             },
-            "Death":{
-                 "dyingDuration": 0.3       
+            "Death": {
+                "dyingDuration": 0.3
             }
         }
     },
-   "smokescreen": {
+    "footstepeffect": {
+        "meta": {},
+        "components": {
+            "Position": {
+                "layer": 1
+            },
+            "ParticleEffect": {
+                "effectname": "thruster",
+                "offsetX": 0,
+                "offsetY": 0,
+                "initialRotation": 0
+            },
+            "Death": {
+                "dyingDuration": 0.3
+            }
+        }
+    },
+    "smokescreen": {
         "meta": {},
         "components": {
             "Position": {},
@@ -115,19 +132,24 @@
                 "fixedRotation": true,
                 "type": "dynamic"
             },
+            "Spawn":{},
             "Client": {},
             "PositionSynch": {
                 "clientname": "clientPlayer"
             },
             "Interpolate": {},
             "Inventory": {
-                "metalShards":100
+                "metalShards": 100,
+                "minMetalShards": 0,
+                "maxMetalShards": 300
             },
             "Move": {
                 "speed": 300,
                 "metalShards": 0
             },
-            "Health": {}
+            "Health": {
+                "health": 30
+            }
         }
     },
     "clientPlayer": {
@@ -135,7 +157,9 @@
         "components": {
             "Position": {},
             "Player": {},
-            "Health": {},
+            "Health": {
+                "health": 30
+            },
             "PhysixBody": {
                 "shape": "circle",
                 "size": 40,
@@ -150,12 +174,6 @@
                 "animation_IDLE": "character_blue_idle",
                 "animation_WALK": "character_blue_walk",
                 "initialRotation": 90
-            },
-            "ParticleEffect":{
-                "effectname" : "thruster",
-                "offsetX": 64,
-                "offsetY": 0,
-                "initialRotation": 180
             },
             "Interpolate": {},
             "SoundEmitter": {}
@@ -183,19 +201,15 @@
                 "animation_WALK": "character_orange_walk",
                 "initialRotation": 90
             },
-            "ParticleEffect":{
-                "effectname" : "thruster",
-                "offsetX": 64,
-                "offsetY": 0,
-                "initialRotation": 180
-            },
             "Move": {
                 "speed": 10
             },
             "Input": {},
             "Interpolate": {},
             "Inventory": {
-                "metalShards": 0
+                "metalShards": 0,
+                "minMetalShards": 20,
+                "maxMetalShards": 180
             },
             "Weapon": {},
             "Health": {},
@@ -212,7 +226,8 @@
                 "density": 10,
                 "friction": 0.5,
                 "restitution": 0.1,
-                "type": "dynamic"
+                "type": "dynamic",
+                "category": "BULLET"
             },
             "Damage": {
                 "damageValue": 10,
@@ -223,49 +238,12 @@
                 "playerID": -1
             },
             "Interpolate": {},
-            "PositionSynch": {
-                "clientname": "clientProjectile",
-                "updateDuration": 42,
-                "sendSave": true
-            }
-        }
-    },
-    "clientProjectile": {
-        "meta": {},
-        "components": {
-            "Position": {},
-            "PhysixBody": {
-                "shape": "circle",
-                "size": 5,
-                "density": 10,
-                "friction": 0.5,
-                "restitution": 0.1,
-                "type": "dynamic"
-            },
-            "Texture": {
-                "texture": "junk0",
-                "width": 120,
-                "height": 120,
-                "srcX": 0,
-                "srcY": 0,
-                "scaleX": 0.5,
-                "scaleY": 0.5,
-                "flipX": false,
-                "flipY": false
-            },
-            "NetworkID": {},
-            "ParticleEffect":{
-                "effectname": "shoot",
+            "ParticleEffect": {
+                "effectname": "glow",
                 "offsetX": 0,
                 "offsetY": 0,
-                "initialRotation": 0
-            },
-            "Damage": {
-                "damageValue": 10,
-                "damageToPlayer": true,
-                "damageToTile": false
-            },
-            "Bullet": {}
+                "initialRotation": -90
+            }
         }
     },
     "Base": {
@@ -289,7 +267,9 @@
             "Position": {},
             "SpawnSatellite": {},
             "Inventory": {
-                 "metalShards": 100
+                "metalShards": 10,
+                "minMetalShards": 0,
+                "maxMetalShards": 700
             }
         }
     },
@@ -302,14 +282,13 @@
                 "updateDuration": 10000000,
                 "sendSave": true
             },
-
             "PhysixBody": {
                 "shape": "circle",
-                "size": 5,
+                "size": 10,
                 "density": 10,
                 "friction": 0.5,
                 "restitution": 0.1,
-                "sensor": true,
+                "sensor": false,
                 "type": "kinematic"
             },
             "Damage": {
@@ -317,17 +296,20 @@
                 "damageToPlayer": true,
                 "damageToTile": true
             },
-            "SpawnSatellite":{},
+            "SpawnSatellite": {},
             "Inventory": {
-            "metalShards": 100
-            }
-
+                "metalShards": 10,
+                "minMetalShards": 0,
+                "maxMetalShards": 700
+            },
+            "SoundEmitter": {},
+            "Mineable": {}
         }
     },
     "SatelliteClient": {
         "meta": {},
         "components": {
-        	"Position":{},
+            "Position": {},
             "Texture": {
                 "texture": "satellite",
                 "width": 1600,
@@ -343,11 +325,11 @@
             "NetworkID": {},
             "PhysixBody": {
                 "shape": "circle",
-                "size": 90,
+                "size": 10,
                 "density": 10,
                 "friction": 0.5,
                 "restitution": 0.1,
-                "sensor": true,
+                "sensor": false,
                 "type": "kinematic"
             }
         }
@@ -355,7 +337,13 @@
     "Spawn": {
         "meta": {},
         "components": {
-            "Position": {}
+            "Position": {},
+            "ParticleEffect": {
+                "effectname": "spawn",
+                "offsetX": 0,
+                "offsetY": 0,
+                "initialRotation": -90
+            }
         }
     },
     "JunkSpawn": {
@@ -369,9 +357,9 @@
                 "friction": 0.5,
                 "restitution": 0.1,
                 "type": "static",
-                "sensor":  true
+                "sensor": true
             },
-            "Texture":{
+            "Texture": {
                 "texture": "junk_spawn",
                 "width": 120,
                 "height": 120,
@@ -382,21 +370,25 @@
                 "flipX": false,
                 "flipY": false
             },
-            "MetalShardSpawn":{
-            	"spawnTime": 5.0
+            "MetalShardSpawn": {
+                "spawnTime": 5
             }
         }
     },
     "JunkPile": {
         "meta": {},
         "components": {
-            "Position": {}
+            "Position": {
+                "layer": 1
+            }
         }
     },
     "Junk": {
         "meta": {},
         "components": {
-            "Position": {},
+            "Position": {
+                "layer": 1
+            },
             "Texture": {
                 "texture": "junk0",
                 "width": 120,
@@ -410,22 +402,29 @@
             }
         }
     },
-
     "metalClient": {
         "meta": {},
         "components": {
-            "Position": {},
+            "Position": {
+                "layer": 1
+            },
+            "ParticleEffect": {
+                "effectname": "glow",
+                "offsetX": 0,
+                "offsetY": 0,
+                "initialRotation": -90
+            },
             "Texture": {
                 "texture": "junk0",
                 "width": 120,
                 "height": 120,
                 "srcX": 0,
                 "srcY": 0,
-                "scaleX": 0.2,
-                "scaleY": 0.2,
+                "scaleX": 0.3,
+                "scaleY": 0.3,
                 "flipX": false,
                 "flipY": false
-            }, 
+            },
             "PhysixBody": {
                 "shape": "circle",
                 "size": 5,
@@ -434,33 +433,32 @@
                 "restitution": 0.2,
                 "type": "dynamic"
             },
-            "Pickable":{},
+            "Pickable": {},
             "NetworkID": {}
-       }
+        }
     },
-
-
     "metalServer": {
         "meta": {},
         "components": {
             "Position": {},
             "PhysixBody": {
                 "shape": "circle",
-                "size": 5,
+                "size": 15,
                 "density": 2,
                 "friction": 0.3,
                 "restitution": 0.2,
                 "type": "dynamic"
             },
-            "PositionSynch":{
+            "PositionSynch": {
                 "clientname": "metalClient",
-                "updateDuration": 40,
+                "updateDuration": 1000,
                 "sendSave": true
-
             },
-            "Pickable":{},
-            "Inventory":{
-                "metalShards":115
+            "Pickable": {},
+            "Inventory": {
+                "metalShards": 1,
+                "minMetalShards": 0,
+                "maxMetalShards": 1
             }
         }
     }

@@ -5,7 +5,7 @@ package de.hochschuletrier.gdw.ss15.game.network;
  */
 
 import de.hochschuletrier.gdw.ss15.game.network.Packets.*;
-import de.hochschuletrier.gdw.ss15.game.network.Packets.Menu.MenuInfoPacket;
+import de.hochschuletrier.gdw.ss15.game.network.Packets.Menu.*;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.PacketFactory;
 
 public enum PacketIds
@@ -13,15 +13,15 @@ public enum PacketIds
     Movement((short)0),
     Simple((short)1),
     InitEntity((short)2),
-    Input((short)3),
-    InputEvent((short)4),
+    Health((short)3),
     EntityUpdate((short)5),
     Fire((short)6),
     MenuInfo((short)7),
     Gather((short)8),
-    Health((short)9),
+    ChangeName((short)9),
     Damage((short)10),
     SpawnBullet((short)11);
+
 
 
     private final short m_Value;
@@ -40,12 +40,13 @@ public enum PacketIds
         PacketFactory.registerPacket(Movement.getValue(), MovementPacket.class);
         PacketFactory.registerPacket(Simple.getValue(), SimplePacket.class);
         PacketFactory.registerPacket(InitEntity.getValue(), InitEntityPacket.class);
-        PacketFactory.registerPacket(Input.getValue(), Inputpacket.class);
-        PacketFactory.registerPacket(InputEvent.getValue(), InputEventPacket.class);
         PacketFactory.registerPacket(EntityUpdate.getValue(), EntityUpdatePacket.class);
+        PacketFactory.registerPacket(MenuInfo.getValue(), MenuePlayerChangedPacket.class);
+        PacketFactory.registerPacket(ChangeName.getValue(), ChangeNamePacket.class);
         PacketFactory.registerPacket(Health.getValue(), HealthPacket.class); 
         PacketFactory.registerPacket(Fire.getValue(), FirePacket.class);
-        PacketFactory.registerPacket(MenuInfo.getValue(), MenuInfoPacket.class);
         PacketFactory.registerPacket(Gather.getValue(), GatherPacket.class);
+        PacketFactory.registerPacket(Damage.getValue(), GatherPacket.class);
+        PacketFactory.registerPacket(SpawnBullet.getValue(), SpawnBulletPacket.class);
     }
 }

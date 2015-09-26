@@ -10,6 +10,8 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
+
+import de.hochschuletrier.gdw.ss15.events.PlayerDiedEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.components.DeathComponent;
 
@@ -42,6 +44,8 @@ public class DeathSystem extends EntitySystem{
             if(deathEntity.dyingDuration <= deathEntity.stateTime)
             {
                 engine.removeEntity(entity);
+                if(ComponentMappers.player.has(entity))
+                    PlayerDiedEvent.emit(entity);
             }
         }
 	}

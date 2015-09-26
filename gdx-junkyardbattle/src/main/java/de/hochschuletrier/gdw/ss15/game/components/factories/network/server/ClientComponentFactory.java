@@ -26,7 +26,7 @@ public class ClientComponentFactory extends ComponentFactory<EntityFactoryParam>
          * fits, don't try anything stupid
          * like i did, when i wrote this methods!
          */
-        component.client = Main.getInstance().getServer().getServersocket().getNewClient();
+        component.client = Main.getInstance().getServer().LastConnectedClient;
         entity.add(component);
     }
 }

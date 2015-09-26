@@ -24,6 +24,7 @@ import de.hochschuletrier.gdw.commons.tiled.TiledMap;
 import de.hochschuletrier.gdw.commons.tiled.tmx.TmxImage;
 import de.hochschuletrier.gdw.commons.tiled.utils.RectangleGenerator;
 import de.hochschuletrier.gdw.commons.utils.Rectangle;
+import de.hochschuletrier.gdw.ss15.game.components.factories.PhysixBodyComponentFactory;
 
 /**
  * 
@@ -47,7 +48,6 @@ import de.hochschuletrier.gdw.commons.utils.Rectangle;
 public class MapLoader
 {    
     private static ArrayList<TileCreationListener> tileListeners = new ArrayList<TileCreationListener>();
-    private TileInfo ginfo = null; /// used for RectangleGeneraotr
     
     
     private TiledMap tiledMap;
@@ -121,7 +121,7 @@ public class MapLoader
      * @param tileWidth breite eines tile
      * @param tileHeight hoehe eines tile
      */
-    private void addShape(TileInfo info, PhysixSystem pSystem,Rectangle rect, int tileWidth, int tileHeight) {
+    private void addShape(PhysixSystem pSystem,Rectangle rect, int tileWidth, int tileHeight, boolean blockShoot) {
         float width = rect.width * tileWidth;
         float height = rect.height * tileHeight;
         float x = rect.x * tileWidth + width / 2;
@@ -129,10 +129,12 @@ public class MapLoader
 
         // TODO
         // noch spezialisieren auf Flags ( block pathing, block sight, block shooting  )
-        
         PhysixBodyDef bodyDef = new PhysixBodyDef(BodyDef.BodyType.StaticBody, pSystem).position(x, y).fixedRotation(false);
         Body body = pSystem.getWorld().createBody(bodyDef);
-        body.createFixture(new PhysixFixtureDef(pSystem).density(1).friction(0.5f).shapeBox(width, height));
+        if(!blockShoot)
+            body.createFixture(new PhysixFixtureDef(pSystem).density(1).friction(0.5f).category(PhysixBodyComponentFactory.ABGRUND).mask((short) ~PhysixBodyComponentFactory.BULLET).shapeBox(width, height));
+        else
+            body.createFixture(new PhysixFixtureDef(pSystem).density(1).friction(0.5f).shapeBox(width, height));
     }
     
     /** 
@@ -155,8 +157,14 @@ public class MapLoader
             // hier wegen Pathing und visual absprechen @render @physix @asset
             RectangleGenerator generator = new RectangleGenerator();
             generator.generate( tiledMap,
-                    (Layer layer, TileInfo info) -> { ginfo = info;return info.getBooleanProperty("BlockPath", false); },
-                    (Rectangle rect) -> addShape(ginfo,pSystem,rect, tileWidth, tileHeight) );
+                    (Layer layer, TileInfo info) -> {return info.getBooleanProperty("BlockPath", false) && info.getBooleanProperty("BlockShoot", false); },
+                    (Rectangle rect) -> addShape(pSystem,rect, tileWidth, tileHeight, true) );
+            
+
+            // hier wegen Pathing und visual absprechen @render @physix @asset
+            generator.generate( tiledMap,
+                    (Layer layer, TileInfo info) -> {return info.getBooleanProperty("BlockPath", false) && !info.getBooleanProperty("BlockShoot", false); },
+                    (Rectangle rect) -> addShape(pSystem,rect, tileWidth, tileHeight, false) );
         }
         
         /// fuer alles Layers 

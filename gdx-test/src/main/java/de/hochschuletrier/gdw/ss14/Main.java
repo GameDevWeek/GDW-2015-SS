@@ -71,6 +71,7 @@ public class Main extends StateBasedGame {
         if (instance == null) {
             instance = new Main();
         }
+        
         return instance;
     }
 

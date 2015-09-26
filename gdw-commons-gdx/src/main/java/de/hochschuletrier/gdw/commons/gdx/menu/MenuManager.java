@@ -70,7 +70,9 @@ public class MenuManager implements ScreenListener, Disposable {
 
     public void addLayer(Actor actor) {
         actor.setBounds(0, 0, width, height);
-        stack.addActor(actor);
+        if(!stack.getChildren().contains(actor, false))
+        { stack.addActor(actor);}
+        
     }
 
     public void update(float delta) {

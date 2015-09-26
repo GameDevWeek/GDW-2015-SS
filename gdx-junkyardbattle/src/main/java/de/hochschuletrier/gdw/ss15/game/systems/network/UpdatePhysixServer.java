@@ -45,7 +45,7 @@ public class UpdatePhysixServer extends EntitySystem implements NetworkReceivedN
         	
             MovementPacket p = (MovementPacket)pack;
         	//System.out.println("Received rotation"+ p.rotation);
-            InventoryComponent inventory = new InventoryComponent();
+            InventoryComponent inventory = new InventoryComponent(); // what the fuck?
             //InventoryComponent inventory = ComponentMappers.inventory.get(ent);
             MoveComponent move = ComponentMappers.move.get(ent);
             
@@ -67,6 +67,7 @@ public class UpdatePhysixServer extends EntitySystem implements NetworkReceivedN
             
             phxc.setLinearVelocity(vel);
             //phxc.setAngle(p.rotation);
+            //System.out.println("fdsjklsdjfsdkl"+p.rotation);
             phxc.setAngle(p.rotation * MathUtils.degreesToRadians);
             }catch (ClassCastException e){}
     }
