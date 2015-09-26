@@ -28,6 +28,8 @@ import de.hochschuletrier.gdw.ss15.game.components.HealthComponent.HealthState;
 import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.components.SpawnComponent;
+import de.hochschuletrier.gdw.ss15.game.components.animation.AnimationState;
+import de.hochschuletrier.gdw.ss15.game.components.animation.AnimatorComponent;
 import de.hochschuletrier.gdw.ss15.game.components.effects.ParticleEffectComponent;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.EntityUpdatePacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.HealthPacket;

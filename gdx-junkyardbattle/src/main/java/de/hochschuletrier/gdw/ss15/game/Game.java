@@ -1,39 +1,50 @@
 package de.hochschuletrier.gdw.ss15.game;
 
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
 
 import de.hochschuletrier.gdw.commons.gdx.ashley.EntityFactory;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
+import de.hochschuletrier.gdw.commons.gdx.input.hotkey.Hotkey;
+import de.hochschuletrier.gdw.commons.gdx.input.hotkey.HotkeyModifier;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixComponentAwareContactListener;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixDebugRenderSystem;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.ss15.Main;
-import de.hochschuletrier.gdw.ss15.game.components.BulletComponent;
 import de.hochschuletrier.gdw.ss15.events.network.client.NetworkReceivedNewPacketClientEvent;
+import de.hochschuletrier.gdw.ss15.game.components.BulletComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PickableComponent;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.PickupListenerClient;
+import de.hochschuletrier.gdw.ss15.game.systems.CameraSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.DeathSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.HealthUpdateSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.HudSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.RenderStateUpdateSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.SoundSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.WeaponSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.RealNetwork.NetworkClientSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.RealNetwork.TestListenerClient;
 import de.hochschuletrier.gdw.ss15.game.systems.input.InputSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.network.*;
-import de.hochschuletrier.gdw.ss15.game.systems.*;
+import de.hochschuletrier.gdw.ss15.game.systems.network.FireClientListener;
+import de.hochschuletrier.gdw.ss15.game.systems.network.HighscoreSyncListener;
+import de.hochschuletrier.gdw.ss15.game.systems.network.TestMovementSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.network.UpdatePhysixSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.renderers.ChangeAnimationStateSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.renderers.EffectAddSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.renderers.ParticleSpawnSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.renderers.RenderSystem;
 import de.hochschuletrier.gdw.ss15.game.utils.TimerSystem;
 
-import java.util.function.Consumer;
-
 public class Game extends InputAdapter {
 
     //private final CVarBool physixDebug = new CVarBool("physix_debug", true, 0, "Draw physix debug");
-    //private final Hotkey togglePhysixDebug = new Hotkey(() -> physixDebug.toggle(false), Input.Keys.F1, HotkeyModifier.CTRL);
+    private boolean debugDraw;
+    private final Hotkey togglePhysixDebug = new Hotkey(this::togglePhysixDebug, Input.Keys.F7, HotkeyModifier.CTRL);
 
     private final PooledEngine engine = new PooledEngine(
             GameConstants.ENTITY_POOL_INITIAL_SIZE, GameConstants.ENTITY_POOL_MAX_SIZE,
@@ -80,7 +91,7 @@ public class Game extends InputAdapter {
     public Game() {
         // If this is a build jar file, disable hotkeys
         if (!Main.IS_RELEASE) {
-            //togglePhysixDebug.register();
+            togglePhysixDebug.register();
         }
     }
 
@@ -90,7 +101,7 @@ public class Game extends InputAdapter {
     }
 
     public void dispose() {
-        //togglePhysixDebug.unregister();
+        togglePhysixDebug.unregister();
         ClearListener();
     }
 
@@ -121,11 +132,12 @@ public class Game extends InputAdapter {
 
 
         renderSystem.init(mapLoader.getTiledMap(), this);
+        debugDraw = false;
     }
 
     private void addSystems() {
         engine.addSystem(physixSystem);
-        engine.addSystem(physixDebugRenderSystem);
+        //engine.addSystem(physixDebugRenderSystem);
         engine.addSystem(updatePositionSystem);
         engine.addSystem(networksystem);
         engine.addSystem(inputSystem);
@@ -206,5 +218,10 @@ public class Game extends InputAdapter {
 
     public InputProcessor getInputProcessor() {
         return this;
+    }
+    
+    private void togglePhysixDebug(){
+        debugDraw = !debugDraw;
+        physixDebugRenderSystem.setProcessing(debugDraw);
     }
 }
