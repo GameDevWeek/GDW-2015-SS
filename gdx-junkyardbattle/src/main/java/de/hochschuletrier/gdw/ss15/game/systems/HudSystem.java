@@ -52,7 +52,7 @@ public class HudSystem extends IteratingSystem {
         this.camera = camera;
         this.crosshairTex = assetManager.getTexture("crosshair");
         this.hudoverlay = assetManager.getTexture("hud_blue");
-        this.punktestand = assetManager.getTexture("hud_punkstetand");
+        this.punktestand = assetManager.getTexture("hud_punktestand");
         this.uhr = assetManager.getTexture("hud_uhr");
         this.schrott = assetManager.getTexture("hud_schrott");
         font = assetManager.getFont("quartz_40");
@@ -78,6 +78,7 @@ public class HudSystem extends IteratingSystem {
             showHudOverlay();
             schrottAnzeige();
             timer();
+            punktestand();
             radar(entity);
         }
     }
@@ -123,12 +124,9 @@ public class HudSystem extends IteratingSystem {
         float barWidth = 164.0f / hudoverlay.getWidth() * Gdx.graphics.getWidth();
 
         //linkeBox
-        DrawUtil.fillRect(relativeXPosLeft - (barWidth * (healthSizeFactor -1)), relativeYPosLeft, barWidth * healthSizeFactor, barHeight, healthColor);
+        DrawUtil.fillRect(relativeXPosLeft - (barWidth * (healthSizeFactor - 1)), relativeYPosLeft, barWidth * healthSizeFactor, barHeight, healthColor);
         //rechteBox
         DrawUtil.fillRect(relativeXPosRight, relativeYPosRight, barWidth * healthSizeFactor, barHeight, healthColor);
-
-        //font.draw(DrawUtil.batch, "health: " + health, 0, Gdx.graphics.getHeight() / 2);
-        font.draw(DrawUtil.batch, "overlay: " + hudoverlay.getWidth() + ", " +  hudoverlay.getHeight(), 0, 0);
     }
 
     private void schrottAnzeige(){
@@ -141,6 +139,12 @@ public class HudSystem extends IteratingSystem {
 
     private void timer() {
         DrawUtil.batch.draw(uhr, Gdx.graphics.getWidth()/2 + 250,Gdx.graphics.getHeight() + 3, uhr.getWidth() / 2, uhr.getHeight() / -2);
+    }
+
+    private void punktestand() {
+        DrawUtil.batch.draw(punktestand, Gdx.graphics.getWidth()/2 - punktestand.getWidth()/6, punktestand.getHeight()/3, punktestand.getWidth() / 3, punktestand.getHeight() / -3);
+        font.draw(DrawUtil.batch, "12", Gdx.graphics.getWidth()/2 - 75, 15);
+        font.draw(DrawUtil.batch, "12", Gdx.graphics.getWidth()/2 + 25, 15);
     }
 
     private void showHudOverlay() {
