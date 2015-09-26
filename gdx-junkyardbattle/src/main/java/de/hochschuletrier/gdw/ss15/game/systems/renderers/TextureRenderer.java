@@ -35,8 +35,8 @@ public class TextureRenderer extends SortedSubIteratingSystem.SubSystem {
         
         DrawUtil.batch.draw(
                 texture.texture, 
-                position.x - (float)texture.width * 0.5f, 
-                position.y - (float)texture.height * 0.5f, 
+                position.x + texture.offsetX - (float)texture.width * 0.5f, 
+                position.y + texture.offsetY - (float)texture.height * 0.5f, 
                 (float)texture.width * 0.5f,
                 (float)texture.height * 0.5f,
                 texture.width, 

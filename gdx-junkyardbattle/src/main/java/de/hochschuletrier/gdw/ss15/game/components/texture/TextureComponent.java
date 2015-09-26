@@ -26,6 +26,7 @@ public class TextureComponent extends Component implements Pool.Poolable{
     public boolean flipY = false;
     public float initialRotation = 0;
     public boolean draw = true;
+    public float offsetX, offsetY;
     
     @Override
     public void reset() {
@@ -37,5 +38,6 @@ public class TextureComponent extends Component implements Pool.Poolable{
         scaleY = 1;
         flipX = false;
         flipY = true;
+        offsetX = offsetY = 0.f;
     }
 }
