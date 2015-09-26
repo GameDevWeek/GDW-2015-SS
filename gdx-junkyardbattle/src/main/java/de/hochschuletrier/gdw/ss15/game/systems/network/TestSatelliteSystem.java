@@ -58,13 +58,10 @@ public class TestSatelliteSystem extends IteratingSystem {
 		
 		if(timer.get_CounterSeconds()>10 && satellite == false)
         {
-		    System.out.println("Satellite spawned");
 		    satellite = true;
            Entity satelliteEvent = serverGame.createEntity("SatelliteSiteServer", x, y);
             SatelliteColliding.emit();
             SoundEvent.emit("sat_explode", satelliteEvent);
-            System.out.println(x+" , "+ y);
-            
         }
 		
 		

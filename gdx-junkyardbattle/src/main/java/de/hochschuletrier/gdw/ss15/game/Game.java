@@ -11,6 +11,7 @@ import de.hochschuletrier.gdw.commons.gdx.physix.PhysixComponentAwareContactList
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixDebugRenderSystem;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.ss15.Main;
+import de.hochschuletrier.gdw.ss15.game.components.BulletComponent;
 import de.hochschuletrier.gdw.ss15.events.network.client.NetworkReceivedNewPacketClientEvent;
 import de.hochschuletrier.gdw.ss15.game.components.PickableComponent;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
@@ -25,6 +26,8 @@ import de.hochschuletrier.gdw.ss15.game.systems.renderers.EffectAddSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.renderers.ParticleSpawnSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.renderers.RenderSystem;
 import de.hochschuletrier.gdw.ss15.game.utils.TimerSystem;
+
+import java.util.function.Consumer;
 
 public class Game extends InputAdapter {
 
@@ -57,7 +60,7 @@ public class Game extends InputAdapter {
     private final MapLoader mapLoader = new MapLoader();
     
     private final FireClientListener fireClientListener = new FireClientListener(this);
-    private final BulletClientSystem bulletClientSystem = new BulletClientSystem(engine);
+//    private final BulletClientSystem bulletClientSystem = new BulletClientSystem(engine);
 
     private final ParticleSpawnSystem particleSpawner = new ParticleSpawnSystem(this);
     private final DeathSystem deathSystem = new DeathSystem();
@@ -66,6 +69,9 @@ public class Game extends InputAdapter {
     private final TestListenerClient TestoutputSystem = new TestListenerClient();
     private final EffectAddSystem effectAddSystem = new EffectAddSystem(engine);
     
+
+    private final HudSystem hudSystem = new HudSystem(cameraSystem.getCamera().getOrthographicCamera());
+
     public Game() {
         // If this is a build jar file, disable hotkeys
         if (!Main.IS_RELEASE) {
@@ -96,7 +102,7 @@ public class Game extends InputAdapter {
         entityFactory.init(engine, assetManager);
         mapLoader.listen(renderSystem.getTileMapCreator());
         mapLoader.run((String name, float x, float y) -> createEntity(name, x, y),
-                "data/maps/3v3Alpha.tmx", physixSystem, entityFactory, assetManager);
+                "data/maps/alpha_three_on_three.tmx", physixSystem, entityFactory, assetManager );
 
         renderSystem.init(mapLoader.getTiledMap(), this);
     }
@@ -114,7 +120,8 @@ public class Game extends InputAdapter {
         engine.addSystem(testMovementSystem);
         engine.addSystem(updatePhysixSystem);
         engine.addSystem(soundSystem);
-        engine.addSystem(bulletClientSystem);
+        engine.addSystem(hudSystem);
+//        engine.addSystem(bulletClientSystem);
         engine.addSystem(effectAddSystem);
 
         // add to engine to get removed from listeners:
@@ -127,6 +134,7 @@ public class Game extends InputAdapter {
         //contactListener.addListener(ImpactSoundComponent.class, new ImpactSoundListener());
        // contactListener.addListener(TriggerComponent.class, new TriggerListener());
     	contactListener.addListener(PickableComponent.class, new PickupListenerClient());
+    	contactListener.addListener(BulletComponent.class, new PickupListenerClient());
     	/*ContactListener cl = new ContactListener() {
 			
 			@Override
