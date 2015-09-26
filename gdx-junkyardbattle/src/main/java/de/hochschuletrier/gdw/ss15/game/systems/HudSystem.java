@@ -71,7 +71,6 @@ public class HudSystem extends IteratingSystem {
             lebensBalken();
             showHudOverlay();
             radar(entity);
-
         }
     }
 
