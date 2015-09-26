@@ -83,7 +83,7 @@ public class CameraSystem extends EntitySystem
     
     // Fixes the viewport size
     public void setViewport(boolean fixed){
-        camera.setFixedViewport(fixed);
+        camera.setViewport(fixed);
     }
     
     @Override

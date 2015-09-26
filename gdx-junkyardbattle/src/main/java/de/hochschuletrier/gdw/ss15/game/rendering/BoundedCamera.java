@@ -8,10 +8,12 @@ import com.badlogic.gdx.math.Interpolation;
 
 import de.hochschuletrier.gdw.commons.devcon.cvar.CVar;
 import de.hochschuletrier.gdw.commons.devcon.cvar.CVarBool;
+import de.hochschuletrier.gdw.commons.devcon.cvar.CVarEnum;
 import de.hochschuletrier.gdw.commons.devcon.cvar.CVarFloat;
 import de.hochschuletrier.gdw.commons.devcon.cvar.CVarInt;
 import de.hochschuletrier.gdw.commons.gdx.cameras.orthogonal.SmoothCamera;
 import de.hochschuletrier.gdw.ss15.Main;
+import de.hochschuletrier.gdw.ss15.game.rendering.ZoomingModes.modes;
 
 /**
  * <p>
@@ -25,17 +27,25 @@ import de.hochschuletrier.gdw.ss15.Main;
 
 public class BoundedCamera extends SmoothCamera {
     
+    @SuppressWarnings("unused")
+    private final Logger logger = LoggerFactory.getLogger(getClass());
+    
     // use setBounds to use bounding
-    boolean useBounds = false;
     float xMin, yMin, xMax, yMax;
+    
+    // use setBounds to use bounding
+    private boolean useBounds = false;
     
     // Viewport settings
     boolean fixedViewport = true;
     int viewportX = 1920, viewportY = 1080;
 
     // Camera zoom settings
-    private float srcZoom = 1.f, dstZoom = 1.3f, curZoom = 1.f, zoomSpeed = 0.75f, zoomProgress = 0.f, deadZone = .15f;
+    protected float srcZoom = 1.f, dstZoom = 1.4f;
+    protected float zoomSpeed = 0.75f, zoomProgress = 0.f;
+    protected float curZoom = srcZoom, deadZone = .15f;
     private boolean resetZoom = true;
+    protected modes mode = modes.pow5;
     
     // < 1 slow follow || > 1 fast follow
     protected float followFactor = 1.f;
@@ -46,9 +56,7 @@ public class BoundedCamera extends SmoothCamera {
     private CVarInt camViewpXCVar = new CVarInt("cam_ViewportX", viewportX, 640, 1920, 0, "set camera viewport x-value");
     private CVarInt camViewpYCVar = new CVarInt("cam_ViewportY", viewportY, 360, 1080, 0, "set camera viewport y-value");
     private CVarBool fixViewportCVAR = new CVarBool("cam_FixedVP", fixedViewport, 0, "toggle fixed viewport for camera");
-    
-    @SuppressWarnings("unused")
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+    private CVarEnum<modes> zoomMode = new CVarEnum<modes>("cam_zoomMode", modes.pow5, modes.class, 0, "sets the zooming interpolation mode");
     
     public BoundedCamera() {
         
@@ -59,6 +67,7 @@ public class BoundedCamera extends SmoothCamera {
         Main.getInstance().console.register(fixViewportCVAR);
         Main.getInstance().console.register(camViewpXCVar);
         Main.getInstance().console.register(camViewpYCVar);
+        Main.getInstance().console.register(zoomMode);
         
         // attach listeners
         followFactCVAR.addListener((CVar cvar) -> {
@@ -85,7 +94,12 @@ public class BoundedCamera extends SmoothCamera {
         camViewpYCVar.addListener((CVar cvar) -> {
             viewportY = camViewpYCVar.get();
             resize(viewportX, viewportY);
-         });
+        });
+        
+        zoomMode.addListener((CVar cvar) -> {
+            mode = zoomMode.get();
+            System.out.println("mode nr.: " + mode);
+        });
         
     }
     
@@ -98,6 +112,7 @@ public class BoundedCamera extends SmoothCamera {
         Main.getInstance().console.unregister(fixViewportCVAR);
         Main.getInstance().console.unregister(camViewpXCVar);
         Main.getInstance().console.unregister(camViewpYCVar);
+        Main.getInstance().console.unregister(zoomMode);
     }
     
     @Override
@@ -171,10 +186,11 @@ public class BoundedCamera extends SmoothCamera {
     
     @Override
     public void setDestination(float x, float y) {
-
         if (useBounds) {
-            destination.x = clamp(x, xMin, xMax, camera.viewportWidth);
-            destination.y = clamp(y, yMin, yMax, camera.viewportHeight);
+            //xMin = viewportX / 2 / (camera.zoom) * (camera.zoom - 1) + (camera.zoom - 1) * width / 6;
+            //yMin = viewportY / 2 / (camera.zoom) * (camera.zoom - 1) + (camera.zoom - 1) * height / 10.5f;
+            destination.x = clamp(x, xMin, xMax, camera.viewportWidth / curZoom);
+            destination.y = clamp(y, yMin, yMax, camera.viewportHeight / curZoom);
         } else {
             destination.x = x;
             destination.y = y;
@@ -205,8 +221,12 @@ public class BoundedCamera extends SmoothCamera {
         useBounds = true;
     }
 
-    public void setFixedViewport(boolean fixed){
+    public void setViewport(boolean fixed){
         fixedViewport = fixed;
+    }
+    
+    public void setFollowFactor(float fac){
+        followFactor = fac;
     }
     
     @Override
@@ -217,17 +237,11 @@ public class BoundedCamera extends SmoothCamera {
             camera.setToOrtho(true, viewportX, viewportY);
         }
     }
-    
-    public void resetBounds() {
-        useBounds = false;
-    }
 
     public OrthographicCamera getOrthographicCamera() {
         return camera;
     }
     
-    public void setSpringFollowFactor(float fac){
-        followFactor = fac;
-    }
+    
      
 }
