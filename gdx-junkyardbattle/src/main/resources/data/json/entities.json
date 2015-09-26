@@ -491,5 +491,17 @@
                 "maxMetalShards": 1
             }
         }
+    },
+    "SpawnCar": {
+        "meta": {},
+        "components": {
+            "Position": {},
+            "SpawnSatellite": {},
+            "Inventory": {
+                "metalShards": 650,
+                "minMetalShards": 0,
+                "maxMetalShards": 650
+            }
+        }
     }
 }

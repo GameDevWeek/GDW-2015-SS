@@ -257,7 +257,7 @@ public abstract class BaseClient implements Closeable
 			
 			Packet pack = PacketFactory.createPacket(packetid);
 			if(pack != null && (pack.getSize()==-1 || pack.getSize() == input.available()))
-			{
+			{
 				pack.setTimestamp(timestamp);
 				pack.buildPacketOnData(datainput);
 				synchronized (m_ReceivedPacketsSave)
