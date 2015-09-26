@@ -1,3 +1,4 @@
 {
-    "menu": "data/music/menu.ogg"
+    "menu": "data/music/menu.ogg",
+    "klavier": "data/music/klavier.ogg"
 }
