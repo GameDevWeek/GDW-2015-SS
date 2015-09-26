@@ -136,7 +136,7 @@
             "Client": {},
             "PositionSynch": {
                 "clientname": "clientPlayer",
-                "updateDuration": 25
+                "updateDuration": 40
             },
             "Interpolate": {},
             "Inventory": {

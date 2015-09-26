@@ -1,6 +1,8 @@
 package de.hochschuletrier.gdw.ss15.game.systems.hud;
 
 import java.nio.channels.NetworkChannel;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import de.hochschuletrier.gdw.ss15.events.network.client.NetworkReceivedNewPacketClientEvent;
 
@@ -54,8 +56,11 @@ public class HudSystem extends IteratingSystem implements NetworkReceivedNewPack
     Texture uhr;
     Texture schrott;
     BitmapFont font;
+
+    Timer timer = new Timer();
     
     int schrottcount;
+    int timcounter = 0;
 
     Entity localPlayer;
     SpriteBatch batch = new SpriteBatch();
@@ -181,6 +186,8 @@ public class HudSystem extends IteratingSystem implements NetworkReceivedNewPack
 
     private void timer() {
         DrawUtil.batch.draw(uhr, Gdx.graphics.getWidth()/2 + 250,Gdx.graphics.getHeight() + 3, uhr.getWidth() / 2, uhr.getHeight() / -2);
+        font.draw(DrawUtil.batch, "" + timcounter,Gdx.graphics.getWidth()/2 + 326, Gdx.graphics.getHeight()-45);
+
     }
 
     private void punktestand() {
@@ -203,8 +210,22 @@ public class HudSystem extends IteratingSystem implements NetworkReceivedNewPack
 			{
 				schrottcount = (int) sPack.m_Moredata;
 			}
+            else if(sPack.m_SimplePacketId == SimplePacket.SimplePacketId.GameCounter.getValue())
+            {
+                timcounter = (int) sPack.m_Moredata;
+
+                timer.schedule(new TimerTask()
+                {
+                    @Override
+                    public void run ()
+                    {
+                        timcounter--;
+                    }
+                },1000,1000);
+            }
 		}
-		
 	}
+
+
 
 }
