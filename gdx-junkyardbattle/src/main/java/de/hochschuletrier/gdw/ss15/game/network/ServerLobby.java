@@ -26,7 +26,7 @@ public class ServerLobby
 
     String Mapname;
     private int MaximumPlayers = 8;
-    private float SecondsToStart = 7;
+    private float SecondsToStart = 120;
     MyTimer timer = new MyTimer(true);
 
     public LinkedList<LobyClient> connectedClients = new LinkedList<>();

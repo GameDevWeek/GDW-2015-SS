@@ -24,13 +24,14 @@ import de.hochschuletrier.gdw.commons.gdx.menu.MenuManager;
 import de.hochschuletrier.gdw.commons.gdx.menu.widgets.DecoImage;
 import de.hochschuletrier.gdw.ss15.menu.Actors.Bar;
 import de.hochschuletrier.gdw.ss15.menu.Actors.TextureActor;
+import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.events.SoundEvent;
 import de.hochschuletrier.gdw.ss15.menu.MenuPageRoot.Type;
 
 
 public class MenuPageOptions extends MenuPage {
 	
-	private final Music music=assetManager.getMusic("menu");
+	//private final Music music=assetManager.getMusic("menu");
 	private final DecoImage imageMinusMusic = new DecoImage(assetManager.getTexture("minus_ui"));
 	private final DecoImage imagePlusMusic = new DecoImage(assetManager.getTexture("plus_ui"));
 	private final DecoImage imageMinusSound = new DecoImage(assetManager.getTexture("minus_ui"));
@@ -49,22 +50,36 @@ public class MenuPageOptions extends MenuPage {
 
 		@Override
 		public void run() {
-			if(barMusic.increaseMaxValue(5)){
-				MusicManager.setGlobalVolume((float) (MusicManager.getGlobalVolume() - 0.05));
+			MusicManager.setMuted(false);
+			float newValue= (float) (MusicManager.getGlobalVolume()+0.05);
+			if(newValue<=1);
+			{
+				MusicManager.setGlobalVolume(newValue);
+				barMusic.setCurrentValue(MusicManager.getGlobalVolume());
 				imagePlusMusic.rotateBy(-5);
 			}
-			
-			
 		}
 	};
 	Runnable actionMinusMusic = new Runnable() {
 
 		@Override
 		public void run() {
-			if (barMusic.decreaseMaxValue(5)) {
-				MusicManager.setGlobalVolume((float) (MusicManager.getGlobalVolume() - 0.05));
+			
+			float newValue= (float) (MusicManager.getGlobalVolume()-0.05);
+			if(newValue>0);
+			{
+				MusicManager.setGlobalVolume(newValue);
+				barMusic.setCurrentValue(MusicManager.getGlobalVolume());
 				imageMinusMusic.rotateBy(5);
 			}
+			if(newValue==0)
+			{
+				MusicManager.setGlobalVolume(newValue);
+				barMusic.setCurrentValue(MusicManager.getGlobalVolume());
+				MusicManager.setMuted(true);
+				
+			}
+			
 
 		}
 	};
@@ -72,15 +87,13 @@ public class MenuPageOptions extends MenuPage {
 
 		@Override
 		public void run() {
-			if (barSound.increaseMaxValue(5)) {
-				SoundEmitter.setGlobalVolume((float) (SoundEmitter.getGlobalVolume() + 0.05));
+			float newValue= (float) (SoundEmitter.getGlobalVolume()+0.05);
+			if(newValue<=1);
+			{
+				SoundEmitter.setGlobalVolume(newValue);
+				barSound.setCurrentValue(SoundEmitter.getGlobalVolume());
 				imagePlusSound.rotateBy(-5);
 			}
-			/*
-			 * MusicManager.setGlobalVolume(globalVolume);
-			 * SoundEmitter.setGlobalVolume(globalVolume);
-			 */
-			// SOund Plus
 
 		}
 	};
@@ -88,9 +101,19 @@ public class MenuPageOptions extends MenuPage {
 
 		@Override
 		public void run() {
-			if (barSound.decreaseMaxValue(5)) {
-				SoundEmitter.setGlobalVolume((float) (SoundEmitter.getGlobalVolume() - 0.05));
+			float newValue= (float) (SoundEmitter.getGlobalVolume()-0.05);
+			if(newValue>0);
+			{
+				SoundEmitter.setGlobalVolume(newValue);
+				barSound.setCurrentValue(SoundEmitter.getGlobalVolume());
+				//SoundEmitter.play(Main.getInstance().getAssetManager().getSound("click"), true);
 				imageMinusSound.rotateBy(5);
+			}
+			if(newValue==0)
+			{
+				SoundEmitter.setGlobalVolume(newValue);
+				barSound.setCurrentValue(SoundEmitter.getGlobalVolume());
+				SoundEmitter.setMuted(true);
 			}
 
 		}
@@ -100,10 +123,8 @@ public class MenuPageOptions extends MenuPage {
 		// Skin für die Optionsseite wird übergeben
 		super(skin, background);
 		
-		MusicManager.play(music, 0);
-		MusicManager.setGlobalVolume((float) 0.5);
-		MusicManager.setMuted(false);
-		
+		barSound.setCurrentValue((SoundEmitter.getGlobalVolume()));
+		barMusic.setCurrentValue((MusicManager.getGlobalVolume()));
 		imageMinusMusic.setWidth(iconWidth);
 		imageMinusMusic.setHeight(iconHeight);
 		// imageMinus.addListener(plusClicked);
@@ -123,6 +144,7 @@ public class MenuPageOptions extends MenuPage {
 		addCenteredImage(620, 250/*-iconHeight*/, iconWidth, iconHeight, imagePlusMusic, actionPlusMusic);
 		addCenteredImage(350, 120/*-iconHeight*/, iconWidth, iconHeight, imageMinusSound, actionMinusSound);
 		addCenteredImage(620, 120/*-iconHeight*/, iconWidth, iconHeight, imagePlusSound, actionPlusSound);
+		
 		addCenteredImage(355, 40, 60, 30, imageBack, () -> menuManager.popPage());
 		// ImageButton imgb= new ImageButton(new );
 
