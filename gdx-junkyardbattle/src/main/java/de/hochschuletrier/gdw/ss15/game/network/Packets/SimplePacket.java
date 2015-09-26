@@ -25,7 +25,7 @@ public class SimplePacket extends Packet
         MenueMapChange((short)66),
         TimeMenuePacket((short)55),
         MetalShardsUpdate((short)10),
-        BasePointsUpdate((short)20),
+        TeamPointsUpdate((short)20),
         MiningPacket((byte)21);
 
         private final short m_Value;
