@@ -11,7 +11,7 @@ import java.io.IOException;
 
 public class PositionSynchComponent extends Component implements Pool.Poolable {
 
-    public static long currentID = 0;
+    public static long currentID = 1;
     public long networkID = currentID++;
     public String clientName;
     public float lastX;

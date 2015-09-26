@@ -163,7 +163,7 @@ public class PositionSynchSystem extends EntitySystem implements EntityListener 
 
     public void FlagPacketIfPlayer(InitEntityPacket pack,Entity ent)
     {
-        if(ComponentMappers.positionSynch.get(ent).clientName.equals("player") && ComponentMappers.player.get(ent).teamID==1)
+        if(ComponentMappers.player.has(ent) && ComponentMappers.player.get(ent).teamID==0)
         {
             pack.entityID*=-1;
         }
