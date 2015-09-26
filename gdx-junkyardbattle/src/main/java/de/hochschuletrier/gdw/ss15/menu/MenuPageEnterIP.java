@@ -96,6 +96,7 @@ public class MenuPageEnterIP extends MenuPage
 		addUIActor(textAreaPort, 385, (int) (221 - textAreaPort.getHeight()), null);
 		addUIActor(textAreaIP, 385, (int) (142 - textAreaIP.getHeight()), null);
 		addUIActor(labelError, 786, (int) (101-labelError.getHeight()), null);
+
 		
 
 		ConnectTryFinishEvent.registerListener(this);
