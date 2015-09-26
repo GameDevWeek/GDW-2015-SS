@@ -91,17 +91,15 @@ public class ClockSyncHandler
 				long latenz = (actualtimestamp-mytimestamp);
 				long calculatedservertime = servertimestamp - latenz/2;// %2 because time to send and back
 				long timedistanz = calculatedservertime - MyTimer.get_TimestampNanoseconds();
-				
 				
-				
-				
+
 				m_CalculatedDifference = (m_CalculatedDifference * m_ActualClockSyncNumber +timedistanz) / (m_ActualClockSyncNumber+1);
 				
 				m_ActualClockSyncNumber++;
 				if(m_ActualClockSyncNumber == m_ClockSyncNumber)
 				{
 					m_ToSyncTimer.StartCounterandUpdate(MyTimer.get_TimestampNanoseconds()+m_CalculatedDifference);
-					
+					
 					return 1;
 				}
 			}

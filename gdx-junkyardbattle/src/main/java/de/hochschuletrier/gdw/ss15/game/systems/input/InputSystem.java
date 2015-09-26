@@ -395,6 +395,14 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
 
     }
 
-    private void debug() {
+    private void debug() {
+
+
+
+
+
+
+
+
     }
 }

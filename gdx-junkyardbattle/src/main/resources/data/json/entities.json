@@ -493,5 +493,41 @@
                 "maxMetalShards": 1
             }
         }
+    },
+    "SpawnCar": {
+        "meta": {},
+        "components": {
+            "Position": {},
+            "PhysixBody": {
+                "shape": "box",
+                "size": 40,
+                "density": 2,
+                "friction": 0.3,
+                "restitution": 0.2,
+                "type": "kinematic"
+            },
+            "Texture": {
+                "texture": "car",
+                "width": 384,
+                "height": 256,
+                "srcX": 0,
+                "srcY": 0,
+                "scaleX": 1,
+                "scaleY": 1,
+                "flipX": false,
+                "flipY": false
+            },
+            "Inventory": {
+                "metalShards": 5,
+                "minMetalShards": 0,
+                "maxMetalShards": 5,
+                "secondsToRegeneration":1,
+                "secondsToRegenerationMax": 3,
+                "shardRegeneration": 1
+            },
+            "Mineable":{
+                }
+            }
+        }
     }
 }

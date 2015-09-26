@@ -74,18 +74,23 @@ public class TestMovementSystem extends IteratingSystem{
        // vectorToAdd.add(velVector);
 
         vectorToAdd.set(input.get(entity).horizontal, input.get(entity).vertical);
+        //System.out.println("StreetStepVolume: " + ComponentMappers.soundEmitter.get(entity).emitter.getGlobalVolume());
         if (!vectorToAdd.isZero())
         {
             if (ComponentMappers.soundEmitter.has(entity) && !soundEmitter.get(entity).isPlaying) {
 
                 SoundEvent.emit("streetSteps", entity, true);
+
+                //SoundEvent.emit("shotgun_shoot", entity, false);
                 soundEmitter.get(entity).isPlaying = true;
             }
         }
         else
         {
-            SoundEvent.stopSound(entity);
-            soundEmitter.get(entity).isPlaying = false;
+            if (soundEmitter.get(entity).isPlaying) {
+                SoundEvent.stopSound(entity);
+                soundEmitter.get(entity).isPlaying = false;
+            }
         }
 
         PhysixBodyComponent comp = ComponentMappers.physixBody.get(entity);

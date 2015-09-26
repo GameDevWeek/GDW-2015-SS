@@ -5,6 +5,6 @@
     "sat_explode": "data/sounds/Satexplosion.wav",
     "shotgun_shoot": "data/sounds/SHOTGUN_MODE_SHOT.wav",
     "sniper_zoom:": "data/sounds/GUN_LOADING_FOR_SNIPER_MODE.wav",
-    "magnet_beam1:": "data/sounds/TRAKTORSTRAHL_LOOPABLE_1.ogg",
-    "magnet_beam2:": "data/sounds/TRAKTORSTRAHL_LOOPABLE_2.ogg"
+    "magnet_beam1": "data/sounds/TRAKTORSTRAHL_LOOPABLE_1.wav",
+    "magnet_beam2": "data/sounds/TRAKTORSTRAHL_LOOPABLE_2.wav"
 }
