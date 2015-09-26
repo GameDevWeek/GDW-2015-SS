@@ -31,17 +31,15 @@ public class TestMovementSystem extends IteratingSystem{
     private Vector2 vectorToAdd = new Vector2(0,0);
     private ComponentMapper<InputComponent> input;
     private ComponentMapper<SoundEmitterComponent> soundEmitter;
-    private ComponentMapper<InventoryComponent> inventory;
     private ComponentMapper<MoveComponent> move;
     public static boolean interpolate = true;
     public TestMovementSystem(Game game, Camera cam)
     {
-        super(Family.all(MoveComponent.class, PlayerComponent.class).get());
+        super(Family.all(MoveComponent.class).get());
         this.game = game;
         this.camera = cam;
         input = ComponentMappers.input;
         soundEmitter = ComponentMappers.soundEmitter;
-        inventory = ComponentMappers.inventory;
         move = ComponentMappers.move;
 
         
@@ -64,10 +62,6 @@ public class TestMovementSystem extends IteratingSystem{
 	        
 	        mousepos2.sub(new Vector2(posc.x,posc.y));
 	        float angle = mousepos2.angle();
-	        float invtemp = (float)inventory.getMetalShards()/(float)inventory.maxMetalShards;
-	        float movetemp = move.speed-move.speed*(invtemp*0.75f);
-            vectorToAdd.scl(movetemp);
-            System.out.println(inventory.getMetalShards());
 
 	        MovementPacket packet = new MovementPacket(vectorToAdd.x,vectorToAdd.y,angle);
 	        SendPacketClientEvent.emit(packet, true);

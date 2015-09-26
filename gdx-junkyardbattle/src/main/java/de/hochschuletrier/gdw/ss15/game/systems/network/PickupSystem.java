@@ -38,8 +38,6 @@ public class PickupSystem extends IntervalIteratingSystem implements PickupEvent
             Entity player = physixContact.getOtherComponent().getEntity();
             InventoryComponent invPickup = inventoryComp.get(pickup);
             InventoryComponent invPlayer = inventoryComp.get(player);
-             System.out.println(invPlayer.getMetalShards());
-            System.out.println(invPlayer.getMetalShards());
              if (invPlayer.addMetalShards(invPickup.getMetalShards()) > 0)
              {
                  this.engine.removeEntity(pickup);

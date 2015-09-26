@@ -146,10 +146,10 @@
                 "maxMetalShards": 700
             },
             "Move": {
-                "speed": 30
+                "speed": 300
             },
             "Health": {
-                "health": 30
+                "health": 100
             }
         }
     },
@@ -159,7 +159,7 @@
             "Position": {},
             "Player": {},
             "Health": {
-                "health": 30
+                "health": 100
             },
             "PhysixBody": {
                 "shape": "circle",
@@ -188,7 +188,7 @@
                 "isLocalPlayer": true
             },
             "Health": {
-                "health": 30
+                "health": 100
             },
             "Position": {},
             "PhysixBody": {
@@ -208,7 +208,7 @@
                 "draw": false
             },
             "Move": {
-                "speed": 30
+                "speed": 300
             },
             "Input": {},
             "Interpolate": {},
@@ -401,15 +401,7 @@
                 "sensor": true
             },
             "MetalShardSpawn": {
-                "spawnTime": 5
-            }
-        }
-    },
-    "JunkPile": {
-        "meta": {},
-        "components": {
-            "Position": {
-                "layer": 1
+                "spawnTime": 15
             }
         }
     },
@@ -486,9 +478,9 @@
             },
             "Pickable": {},
             "Inventory": {
-                "metalShards": 1,
+                "metalShards": 2,
                 "minMetalShards": 0,
-                "maxMetalShards": 1
+                "maxMetalShards": 2
             }
         }
     },
@@ -520,10 +512,10 @@
             "Inventory": {
                 "metalShards": 5,
                 "minMetalShards": 0,
-                "maxMetalShards": 5,
+                "maxMetalShards": 70,
                 "secondsToRegeneration": 1,
-                "secondsToRegenerationMax": 3,
-                "shardRegeneration": 1
+                "secondsToRegenerationMax": 1,
+                "shardRegeneration": 5
             },
             "Mineable": {},
             "AboveAbyss": {}
