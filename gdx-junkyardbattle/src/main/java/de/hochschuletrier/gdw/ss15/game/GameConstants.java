@@ -48,4 +48,6 @@ public class GameConstants {
     public static final float MINING_PER_SECOND = 5;
     public static final float RESPAWN_TIMER = 30000;
     public static final float PROTECTION_DURATION = 4000;
+    public static final float PLAYER_POINT_LIGHT_DISTANCE = 8.f;
+    public static final float PLAYER_POINT_LIGHT_ALPHA = 0.7f;
 }
