@@ -40,7 +40,7 @@ public class MenuPage extends Group {
 		super();
 		this.skin = skin;
 
-		//Gdx.input.setCursorImage(new Pixmap(Gdx.files.internal("data/ui/menu/Assets/maus.png")), 0, 0);
+		 Gdx.input.setCursorImage(new Pixmap (Gdx.files.internal("data/ui/menu/Assets/mouse_ready.png")), 0, 0);
 
 		addActor(new DecoImage(assetManager.getTexture(background)));
 
@@ -107,91 +107,137 @@ public class MenuPage extends Group {
 		return actor;
 	}
 
+	protected final void addCenteredImage(int x, int y, int width, int height, DecoImage image, Runnable runnable) {
+		image.setPosition(x, y);
+		image.setTouchable(Touchable.enabled);
+
+		image.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float width, float height) {
+				System.out.println("Clicked");
+				if (runnable != null)
+					runnable.run();
+
+			}
+			
+			
+
+		});
+
+		image.addListener(new InputListener() {
+
+			@Override
+			public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
+				System.out.println("Mouse Over");
+
+				/*
+				 * if(abspielen==true){ SoundEmitter.updateGlobal();
+				 * SoundEmitter.playGlobal(assetManager.getSound("pmHover"),
+				 * false);}
+				 * 
+				 */
+				changeTextureActive(image);
+			}
+
+		});
+		image.addListener(new InputListener() {
+
+			@Override
+			public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
+				/*
+				 * abspielen=true;
+				 */
+				changeTextureNotActive(image);
+			}
+
+		});
+
+		addActor(image);
+	}
+
+	protected final TextButton addButton(int x, int y, int width, int height, String text, Runnable runnable,
+			String style) {
+		TextButton button = new TextButton(text, skin, style);
+		button.setBounds(x, y, width, height);
+		button.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				runnable.run();
+
+			}
+		});
+		addActor(button);
+		return button;
+	}
+
+	protected final Label addLabel(String text) {
+		Label label = new Label(text, skin, "highscore");
+		return label;
+	}
+
+	protected final ImageButton addImageButton(int x, int y, int width, int height, Runnable runnable) {
+		ImageButton button = new ImageButton(skin);
+
+		button.setBounds(x, y, width, height);
+		button.addListener(new ClickListener() {
+			@Override
+			public void clicked(InputEvent event, float x, float y) {
+				runnable.run();
+			}
+		});
+		addActor(button);
+		return button;
+	}
+
+	protected final void changeTextureActive(DecoImage image) {
+		
+		
+		if (image.getRegion().getTexture() == assetManager.getTexture("start_button")) {
+			image.setTexture(assetManager.getTexture("start_button_over"));
+			return;
+		}
+		if (image.getRegion().getTexture() == assetManager.getTexture("join_button")) {
+			image.setTexture(assetManager.getTexture("join_button_over"));
+			return;
+		}
+		if (image.getRegion().getTexture() == assetManager.getTexture("host_button")) {
+			image.setTexture(assetManager.getTexture("host_button_over"));
+			return;
+		}
+		if (image.getRegion().getTexture() == assetManager.getTexture("option_button")) {
+			image.setTexture(assetManager.getTexture("option_button_over"));
+			return;
+		}
+		
+		if (image.getRegion().getTexture() == assetManager.getTexture("quit_button")) {
+			image.setTexture(assetManager.getTexture("quit_button_over"));
+			return;
+		}
+		
+		
+	}
+
+	protected final void changeTextureNotActive(DecoImage image) {
+
 	
-	
-	protected final void addCenteredImage(int x, int y, int width, int height, DecoImage image, Runnable runnable)
-    {
-        image.setPosition(x,y);
-        image.setTouchable(Touchable.enabled);
+		if (image.getRegion().getTexture() == assetManager.getTexture("start_button_over")) {
+			image.setTexture(assetManager.getTexture("start_button"));return;
+		}
+		if (image.getRegion().getTexture() == assetManager.getTexture("join_button_over")) {
+			image.setTexture(assetManager.getTexture("join_button"));return;
+		}
+		if (image.getRegion().getTexture() == assetManager.getTexture("host_button_over")) {
+			image.setTexture(assetManager.getTexture("host_button"));return;
+		}
+		if (image.getRegion().getTexture() == assetManager.getTexture("option_button_over")) {
+			image.setTexture(assetManager.getTexture("option_button"));return;
+		}
+		
+		if (image.getRegion().getTexture() == assetManager.getTexture("quit_button_over")) {
+			image.setTexture(assetManager.getTexture("quit_button"));return;
+		}
+		
+		
+	}
 
-        image.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float width, float height) {
-               System.out.println("Clicked");
-               if (runnable != null)
-               runnable.run();
-
-                
-            }
-            
-        });
-        
-        image.addListener(new InputListener(){
-
-            @Override
-            public void enter(InputEvent event, float x, float y, int pointer,
-                    Actor fromActor) {
-            	System.out.println("Mouse Over");
-            	/*
-                    if(abspielen==true){
-                        SoundEmitter.updateGlobal();
-                    SoundEmitter.playGlobal(assetManager.getSound("pmHover"),false);}
-                    changeTextureActive(image);
-                    */
-            }
-            
-        });
-         image.addListener(new InputListener(){
-
-            @Override
-            public void exit(InputEvent event, float x, float y, int pointer,
-                    Actor toActor) {
-            	/*
-                abspielen=true;
-
-                changeTextureNotActive( image);*/
-            }
-             
-         });
-
-        addActor(image);
-    }
-    protected final TextButton addButton(int x, int y, int width, int height, String text, Runnable runnable, String style) {
-        TextButton button = new TextButton(text, skin, style);
-        button.setBounds(x, y, width, height);
-        button.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                runnable.run();
-                
-            }
-        });
-        addActor(button);
-        return button;
-    }
-    
-    protected final Label addLabel(String text)
-    {
-    	Label label = new Label(text, skin, "highscore");
-    	return label;
-    }
-    
-    protected final ImageButton addImageButton(int x, int y, int width, int height, Runnable runnable)
-    {
-    	ImageButton button = new ImageButton(skin);
-    	
-    	button.setBounds(x, y, width, height);
-    	button.addListener(new ClickListener()
-    	{
-    		@Override
-            public void clicked(InputEvent event, float x, float y) {
-                runnable.run();
-            }
-        });
-        addActor(button);
-        return button;
-    }
-
-	
-	
 }
