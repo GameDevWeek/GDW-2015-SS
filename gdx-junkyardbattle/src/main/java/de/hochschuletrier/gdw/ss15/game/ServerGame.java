@@ -64,6 +64,7 @@ public class ServerGame{
     private final PickupSystem pickupSystem = new PickupSystem(engine);
     private final MiningSystem miningSystem = new MiningSystem();
     private final InventorySystem inventorySystem = new InventorySystem();
+    private final BringHomeSystem bringHomeSystem = new BringHomeSystem();
     
     private final EntityFactoryParam factoryParam = new EntityFactoryParam();
 
@@ -180,6 +181,7 @@ public class ServerGame{
         engine.addSystem(miningSystem);
         
         PlayerDiedEvent.register(spawnSystem);
+        engine.addSystem(bringHomeSystem);
     }
 
     private void addContactListeners() {

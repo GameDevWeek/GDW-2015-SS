@@ -11,7 +11,7 @@ public class WeaponComponent extends Component implements Pool.Poolable {
     public static final float  maximumFireTime = 1.5f;
     public static final float  maximumScattering = (float)Math.PI * 0.7f;
     public static final int    ShardsPerShot = 5;
-    public static final float fireCooldown = 1.0f;
+    public static final float fireCooldown = 0.5f;
     
     public boolean fireCooldownReady = false;
     public float fireChannelTime = 0.0f;
