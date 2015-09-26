@@ -157,11 +157,11 @@ public class PositionSynchSystem extends EntitySystem implements EntityListener 
             SpawnBulletPacket spawnBulletPacket = new SpawnBulletPacket();
             spawnBulletPacket.bulletID = sendComp.networkID;
             spawnBulletPacket.rotation = bullet.rotation;
+            spawnBulletPacket.power = bullet.power;
             spawnBulletPacket.playerRotation = bullet.playerrotation;
             spawnBulletPacket.playerPosition = bullet.playerpos;
             SendPacketServerEvent.emit(spawnBulletPacket, true);
 
-            System.out.println("send package with id: " + sendComp.networkID);
         }
     }
 

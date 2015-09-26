@@ -13,10 +13,18 @@ public class BulletComponent extends Component implements Poolable
     public float rotation;
     public float playerrotation;
     public Vector2 playerpos;
+    public int power;
+
+    public float traveltime = 0f;
 
     @Override
     public void reset()
     {
         playerID = -1;
+        traveltime = 0f;
+        power = 0;
+        playerrotation = 0;
+        rotation = 0;
+        playerpos = Vector2.Zero;
     }
 }
