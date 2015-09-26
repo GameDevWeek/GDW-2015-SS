@@ -42,8 +42,8 @@ timelineCount: 1
 timeline0: 0.0
 - Y Offset - 
 active: true
-lowMin: -200.0
-lowMax: -200.0
+lowMin: 0.0
+lowMax: 0.0
 highMin: 0.0
 highMax: 0.0
 relative: false
@@ -215,8 +215,8 @@ timelineCount: 1
 timeline0: 0.0
 - Y Offset - 
 active: true
-lowMin: -200.0
-lowMax: -200.0
+lowMin: 0.0
+lowMax: 0.0
 highMin: 0.0
 highMax: 0.0
 relative: false
