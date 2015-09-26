@@ -55,13 +55,13 @@ public class MenuPageJoinGame extends MenuPage implements DoNotTouchPacketEvent.
 	public MenuPageJoinGame(Skin skin, MenuManager menuManager, String background, String name) {
 		super(skin, background);
 
-		labelTimer = new Label("Ti:me", skin);
+		labelTimer = new Label("60", skin);
 		labelTimer.setWidth(widthChange);
 		labelTimer.setHeight(heightChange);
 		labelMapName=new Label("4 x 4", skin);
 		labelMapName.setWidth(115);
 		labelMapName.setHeight(30);
-		addUIActor(labelTimer, 485, (int) (155 - heightChange), null);
+		addUIActor(labelTimer, 492, (int) (155 - heightChange), null);
 		addCenteredImage(450, 85 - 30, 115, 30, change, () -> SendPacketClientEvent
 				.emit(new SimplePacket(SimplePacketId.ChangeTeamPacket.getValue(), 0), true));
 		addUIActor(labelMapName, 475, (int) (60-labelMapName.getHeight()), null);

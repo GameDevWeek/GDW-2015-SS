@@ -55,6 +55,7 @@ public class MenuPageEnterIP extends MenuPage
 		@Override
 		public void run() {
 			try {
+				
 				String temp = textAreaPort.getText();
 				String ip = "localhost";
 				int port = Integer.parseInt((temp.trim()));
@@ -65,10 +66,14 @@ public class MenuPageEnterIP extends MenuPage
 
 				if (Main.getInstance().getClientConnection().connect(ip, port) == false) {
 					System.out.println("Could not Connect to Server");
+					labelError.setText("Error");
+				}
+				else{
+					labelError.setText("Connecting");
 				}
 			} catch (Exception e) {
 				System.out.println(e);
-				labelError.setText(e.toString());
+				labelError.setText("Wrong Port");
 			}
 
 			// TODO Auto-generated method stub
