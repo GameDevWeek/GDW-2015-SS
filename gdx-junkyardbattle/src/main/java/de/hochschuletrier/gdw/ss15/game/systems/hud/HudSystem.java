@@ -120,7 +120,6 @@ public class HudSystem extends IteratingSystem {
 
         lineToSatellite.nor();
         lineToSatellite.scl(100.0f);
-        System.out.println("test");
         DrawUtil.drawRect(Gdx.graphics.getWidth() / 2 + lineToSatellite.x,
                 Gdx.graphics.getHeight() - Gdx.graphics.getHeight()/2 + lineToSatellite.y, 10, 10);
 

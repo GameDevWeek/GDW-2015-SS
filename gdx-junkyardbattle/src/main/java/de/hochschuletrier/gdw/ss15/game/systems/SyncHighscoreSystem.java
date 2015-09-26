@@ -5,7 +5,6 @@ import de.hochschuletrier.gdw.ss15.game.Highscore;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.HighscorePacket;
 import de.hochschuletrier.gdw.ss15.game.utils.Timer;
 import de.hochschuletrier.gdw.ss15.game.utils.TimerSystem;
-import javafx.util.Pair;
 
 import java.util.HashMap;
 
