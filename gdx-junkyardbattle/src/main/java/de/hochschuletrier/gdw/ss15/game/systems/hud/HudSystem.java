@@ -1,5 +1,9 @@
 package de.hochschuletrier.gdw.ss15.game.systems.hud;
 
+import java.nio.channels.NetworkChannel;
+
+import de.hochschuletrier.gdw.ss15.events.network.client.NetworkReceivedNewPacketClientEvent;
+
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
@@ -24,7 +28,11 @@ import de.hochschuletrier.gdw.ss15.game.components.*;
 import de.hochschuletrier.gdw.ss15.game.components.input.InputComponent;
 import de.hochschuletrier.gdw.ss15.game.components.texture.TextureComponent;
 import de.hochschuletrier.gdw.ss15.game.hudDebugTemporary.HudDebug;
+import de.hochschuletrier.gdw.ss15.game.network.PacketIds;
+import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
+import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket.SimplePacketId;
 import de.hochschuletrier.gdw.ss15.game.systems.network.TestSatelliteSystem;
+import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
 import jdk.internal.dynalink.linker.GuardingDynamicLinker;
 
 import javax.swing.text.Position;
@@ -32,7 +40,7 @@ import javax.swing.text.Position;
 /**
  * Created by David on 25.09.2015.
  */
-public class HudSystem extends IteratingSystem {
+public class HudSystem extends IteratingSystem implements NetworkReceivedNewPacketClientEvent.Listener {
 
     public static float radarScale = 0.1337f;
     Vector3 lineToSatellite = new Vector3(0, 0, 0);
@@ -46,6 +54,8 @@ public class HudSystem extends IteratingSystem {
     Texture uhr;
     Texture schrott;
     BitmapFont font;
+    
+    int schrottcount;
 
     Entity localPlayer;
     SpriteBatch batch = new SpriteBatch();
@@ -65,6 +75,7 @@ public class HudSystem extends IteratingSystem {
         super(family);
         this.priority = priority;
         this.assetManager = Main.getInstance().getAssetManager();
+        NetworkReceivedNewPacketClientEvent.registerListener(PacketIds.Simple,this);
     }
 
     @Override
@@ -161,9 +172,7 @@ public class HudSystem extends IteratingSystem {
     }
 
     private void schrottAnzeige(){
-        int schrottcount = localPlayer.getComponent(InventoryComponent.class).getMetalShards();
         DrawUtil.batch.draw(schrott, Gdx.graphics.getWidth()/2 - 450,Gdx.graphics.getHeight() + 3, schrott.getWidth() / 2, schrott.getHeight() / -2);
-
         font.draw(DrawUtil.batch, "" + schrottcount,Gdx.graphics.getWidth()/2 - 366, Gdx.graphics.getHeight()-45);
 
     }
@@ -182,5 +191,18 @@ public class HudSystem extends IteratingSystem {
     private void showHudOverlay() {
         DrawUtil.batch.draw(hudoverlay, 0, Gdx.graphics.getHeight(), Gdx.graphics.getWidth(), -Gdx.graphics.getHeight());
     }
+
+	@Override
+	public void onReceivedNewPacket(Packet pack, Entity ent) {
+		if(pack.getPacketId() == PacketIds.Simple.getValue())
+		{
+			SimplePacket sPack = (SimplePacket) pack;
+			if(SimplePacket.SimplePacketId.MetalShardsUpdate.getValue() == sPack.m_SimplePacketId)
+			{
+				schrottcount = (int) sPack.m_Moredata;
+			}
+		}
+		
+	}
 
 }
