@@ -21,6 +21,7 @@ public class DrawUtil {
     private static final Color currentColor = Color.WHITE.cpy();
     private static Mode currentMode = Mode.NORMAL;
     public static SpriteBatch batch;
+    public static SpriteBatch savedBatch;
     private static Texture white;
     private static final LinkedList<Matrix4> matrixStack = new LinkedList();
 
@@ -83,6 +84,15 @@ public class DrawUtil {
     public static void safeBegin() {
         if(!batch.isDrawing())
             batch.begin();
+    }
+    
+    public static void setCustomBatch(SpriteBatch cBatch) {
+        if(cBatch == null) {
+            batch = savedBatch;
+        } else {
+            savedBatch = batch;
+            batch = cBatch;
+        }  
     }
 
     public static void setDrawMode(Mode mode) {

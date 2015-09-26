@@ -1,5 +1,7 @@
 package de.hochschuletrier.gdw.ss15.game.components.factories;
 
+import java.awt.SecondaryLoop;
+
 import com.badlogic.ashley.core.Entity;
 
 import de.hochschuletrier.gdw.commons.gdx.ashley.ComponentFactory;
@@ -21,6 +23,9 @@ public class InventoryComponentFactory extends ComponentFactory<EntityFactoryPar
 		component.setMetalShards(properties.getInt("metalShards"));
 		component.minMetalShards = properties.getInt("minMetalShards");
 		component.maxMetalShards = properties.getInt("maxMetalShards");
+		component.secondsToRegenerationMax = component.secondsToRegeneration = properties.getFloat("secondsToRegenerate",0.0f);
+		if(component.secondsToRegenerationMax > 0.0f)
+			component.shardRegeneration = properties.getInt("amountToRegenerate",0);
 		entity.add(component);
 	}
 

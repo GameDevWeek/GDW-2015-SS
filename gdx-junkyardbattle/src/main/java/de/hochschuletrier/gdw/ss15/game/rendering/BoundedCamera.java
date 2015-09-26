@@ -34,7 +34,7 @@ public class BoundedCamera extends SmoothCamera {
     int viewportX = 1920, viewportY = 1080;
 
     // Camera zoom settings
-    private float srcZoom = 1.f, dstZoom = 2.f, curZoom = 1.f, zoomSpeed = 0.75f, zoomProgress = 0.f, deadZone = 0.15f;
+    private float srcZoom = 1.f, dstZoom = 1.3f, curZoom = 1.f, zoomSpeed = 0.75f, zoomProgress = 0.f, deadZone = .15f;
     private boolean resetZoom = true;
     
     // < 1 slow follow || > 1 fast follow
@@ -151,7 +151,9 @@ public class BoundedCamera extends SmoothCamera {
     	else
     	{
     		resetZoom = false;
-    		float converted = (zoomAmount - deadZone) / (1.0f-deadZone);
+    		float converted = 0.0f;
+    		if(deadZone < 1.0f)
+    			converted = (zoomAmount - deadZone) / (1.0f-deadZone);
     		zoomProgress = converted;
     		setZoom(srcZoom + converted*(dstZoom-srcZoom));
     	}

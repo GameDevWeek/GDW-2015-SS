@@ -23,6 +23,9 @@ import de.hochschuletrier.gdw.ss15.game.contactlisteners.MetalShardSpawnListener
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.PickupListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.TriggerListener;
 import de.hochschuletrier.gdw.ss15.game.systems.BulletSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.DeathSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.HealthSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.MetalShardDropSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.LineOfSightSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.MetalShardSpawnSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.PlayerLifeSystem;
@@ -32,6 +35,8 @@ import de.hochschuletrier.gdw.ss15.game.systems.RealNetwork.NetworkServerSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.RealNetwork.PositionSynchSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.TestSatelliteSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.UpdatePhysixServer;
+import de.hochschuletrier.gdw.ss15.game.systems.network.UpdatePhysixSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.InventorySystem;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serverclientsocket;
 import de.hochschuletrier.gdw.ss15.game.systems.network.*;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.Tools;
@@ -49,18 +54,20 @@ public class ServerGame{
     private final PhysixSystem physixSystem = new PhysixSystem(GameConstants.BOX2D_SCALE,
             GameConstants.VELOCITY_ITERATIONS, GameConstants.POSITION_ITERATIONS, GameConstants.PRIORITY_PHYSIX
     );
+    
     private final UpdatePositionSystem updatePositionSystem = new UpdatePositionSystem();//todo magic numbers (von santo)
     private final NetworkServerSystem networkSystem = new NetworkServerSystem(this,GameConstants.PRIORITY_PHYSIX + 2);//todo magic numbers (santo hats vorgemacht)
     private final PositionSynchSystem syncPositionSystem = new PositionSynchSystem(this,GameConstants.PRIORITY_PHYSIX + 3);//todo magic numbers (boa ist das geil kann nicht mehr aufhoeren)
     private final LineOfSightSystem lineOfSightSystem = new LineOfSightSystem(physixSystem); // hier müssen noch Team-Listen übergeben werden
     private final TestSatelliteSystem testSatelliteSystem = new TestSatelliteSystem(this, engine);
-    private final PlayerLifeSystem playerLifeSystem = new PlayerLifeSystem();
+//    private final PlayerLifeSystem playerLifeSystem = new PlayerLifeSystem();
                                                                                  // (+ LineOfSightSystem-Konstruktor anpassen!)
     //private final BulletSystem bulletSystem = new BulletSystem();
     private final MetalShardSpawnSystem metalShardSpawnSystem = new MetalShardSpawnSystem(this);
     private final BulletSystem bulletSystem = new BulletSystem(engine, this);
     private final PickupSystem pickupSystem = new PickupSystem(engine);
     private final MiningSystem miningSystem = new MiningSystem();
+    private final InventorySystem inventorySystem = new InventorySystem();
     
     private final EntityFactoryParam factoryParam = new EntityFactoryParam();
     private final EntityFactory<EntityFactoryParam> entityFactory = new EntityFactory("data/json/entities.json", ServerGame.class);
@@ -72,7 +79,12 @@ public class ServerGame{
     private GatherServerListener gatherServerListener;
     
     private final SpawnSystem spawnSystem = new SpawnSystem();
-
+    private final MetalShardDropSystem metalShardDropSystem = new MetalShardDropSystem(this);
+    
+    private final PlayerHurtSystem playerHurtSystem = new PlayerHurtSystem();
+    private final HealthSystem healthSystem = new HealthSystem(engine);
+    private final DeathSystem deathSystem = new DeathSystem();
+    
     public ServerGame()
     {
 
@@ -127,8 +139,13 @@ public class ServerGame{
         engine.addSystem(bulletSystem);
         engine.addSystem(metalShardSpawnSystem);
         engine.addSystem(pickupSystem);
-        engine.addSystem(playerLifeSystem);
+//        engine.addSystem(playerLifeSystem);
         engine.addSystem(spawnSystem);
+        engine.addSystem(metalShardDropSystem);
+        engine.addSystem(playerHurtSystem);
+        engine.addSystem(inventorySystem);
+        engine.addSystem(healthSystem);
+        engine.addSystem(deathSystem);
 
         //// ---- add listener to engine, to get an autoremove
         engine.addSystem(fireServerListener);

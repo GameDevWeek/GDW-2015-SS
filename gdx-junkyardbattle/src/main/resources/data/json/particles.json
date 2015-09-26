@@ -1,7 +1,8 @@
 {
     "particle": "data/particles/particle.p",
     "smoke": "data/particles/smoke.p",
-    "footsteps": "data/particles/footsteps.p",
     "shoot": "data/particles/shoot.p",
-    "thruster": "data/particles/thruster.p"
+    "thruster": "data/particles/thruster.p",
+    "glow": "data/particles/glow.p",
+    "spawn": "data/particles/spawn.p"
 }

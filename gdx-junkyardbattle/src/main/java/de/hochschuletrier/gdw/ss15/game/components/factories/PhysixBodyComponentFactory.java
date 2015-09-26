@@ -113,7 +113,7 @@ public class PhysixBodyComponentFactory extends ComponentFactory<EntityFactoryPa
         .restitution(properties.getFloat("restitution", 0));
     	switch(properties.getString("category", "")){
         case "BULLET":
-        	PhysixFixDef.category(BULLET).mask((short) ~ABGRUND);
+        	PhysixFixDef.category(BULLET);
         	break;
     	}
         return PhysixFixDef;

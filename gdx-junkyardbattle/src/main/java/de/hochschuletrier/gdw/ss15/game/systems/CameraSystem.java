@@ -17,6 +17,7 @@ import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.rendering.BoundedCamera;
+import de.hochschuletrier.gdw.ss15.game.rendering.MainCamera;
 import de.hochschuletrier.gdw.ss15.events.WeaponCharging;
 import de.hochschuletrier.gdw.ss15.events.WeaponUncharged;
 import de.hochschuletrier.gdw.ss15.events.SatelliteColliding;
@@ -38,7 +39,7 @@ import de.hochschuletrier.gdw.ss15.events.SatelliteColliding;
 public class CameraSystem extends EntitySystem 
              implements EntityListener, WeaponCharging.Listener, WeaponUncharged.Listener, SatelliteColliding.Listener {
 
-    private BoundedCamera camera = new BoundedCamera();    
+    private BoundedCamera camera = MainCamera.get();    
     private CameraRumble rumble = new CameraRumble();
     private Entity player;
     

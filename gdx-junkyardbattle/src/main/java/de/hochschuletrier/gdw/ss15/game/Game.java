@@ -21,6 +21,7 @@ import de.hochschuletrier.gdw.ss15.game.systems.input.InputSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.*;
 import de.hochschuletrier.gdw.ss15.game.systems.*;
 import de.hochschuletrier.gdw.ss15.game.systems.renderers.ChangeAnimationStateSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.renderers.EffectAddSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.renderers.ParticleSpawnSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.renderers.RenderSystem;
 import de.hochschuletrier.gdw.ss15.game.utils.TimerSystem;
@@ -61,9 +62,10 @@ public class Game extends InputAdapter {
     private final ParticleSpawnSystem particleSpawner = new ParticleSpawnSystem(this);
     private final DeathSystem deathSystem = new DeathSystem();
     private final ChangeAnimationStateSystem changeAnimSystem = new ChangeAnimationStateSystem();
-
+    
     private final TestListenerClient TestoutputSystem = new TestListenerClient();
-
+    private final EffectAddSystem effectAddSystem = new EffectAddSystem(engine);
+    
     public Game() {
         // If this is a build jar file, disable hotkeys
         if (!Main.IS_RELEASE) {
@@ -95,11 +97,13 @@ public class Game extends InputAdapter {
         mapLoader.listen(renderSystem.getTileMapCreator());
         mapLoader.run((String name, float x, float y) -> createEntity(name, x, y),
                 "data/maps/3v3Alpha.tmx", physixSystem, entityFactory, assetManager);
+
+        renderSystem.init(mapLoader.getTiledMap(), this);
     }
 
     private void addSystems() {
         engine.addSystem(physixSystem);
-        engine.addSystem(physixDebugRenderSystem);
+        //engine.addSystem(physixDebugRenderSystem);
         engine.addSystem(updatePositionSystem);
         engine.addSystem(networksystem);
         engine.addSystem(inputSystem);
@@ -111,6 +115,7 @@ public class Game extends InputAdapter {
         engine.addSystem(updatePhysixSystem);
         engine.addSystem(soundSystem);
         engine.addSystem(bulletClientSystem);
+        engine.addSystem(effectAddSystem);
 
         // add to engine to get removed from listeners:
         engine.addSystem(fireClientListener);
@@ -159,6 +164,7 @@ public class Game extends InputAdapter {
         Main.getInstance().screenCamera.bind();
         timerSystem.update(delta);
         engine.update(delta);
+        particleSpawner.update(delta);
     }
 
     public Entity createEntity(String name, float x, float y) {

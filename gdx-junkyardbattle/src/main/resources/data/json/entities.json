@@ -1,4 +1,21 @@
 {
+    "shoteffect": {
+        "meta": {},
+        "components": {
+            "Position": {
+                "layer": 1
+            },
+            "ParticleEffect": {
+                "effectname": "shoot",
+                "offsetX": 0,
+                "offsetY": 0,
+                "initialRotation": 0
+            },
+            "Death": {
+                "dyingDuration": 0.3
+            }
+        }
+    },
     "footstepeffect": {
         "meta": {},
         "components": {
@@ -6,7 +23,7 @@
                 "layer": 1
             },
             "ParticleEffect": {
-                "effectname": "footsteps",
+                "effectname": "thruster",
                 "offsetX": 0,
                 "offsetY": 0,
                 "initialRotation": 0
@@ -130,7 +147,9 @@
                 "speed": 300,
                 "metalShards": 0
             },
-            "Health": {}
+            "Health": {
+                "health": 30
+            }
         }
     },
     "clientPlayer": {
@@ -138,7 +157,9 @@
         "components": {
             "Position": {},
             "Player": {},
-            "Health": {},
+            "Health": {
+                "health": 30
+            },
             "PhysixBody": {
                 "shape": "circle",
                 "size": 40,
@@ -153,12 +174,6 @@
                 "animation_IDLE": "character_blue_idle",
                 "animation_WALK": "character_blue_walk",
                 "initialRotation": 90
-            },
-            "ParticleEffect": {
-                "effectname": "thruster",
-                "offsetX": 64,
-                "offsetY": 0,
-                "initialRotation": 180
             },
             "Interpolate": {},
             "SoundEmitter": {}
@@ -186,12 +201,6 @@
                 "animation_WALK": "character_orange_walk",
                 "initialRotation": 90
             },
-            "ParticleEffect": {
-                "effectname": "thruster",
-                "offsetX": 64,
-                "offsetY": 0,
-                "initialRotation": 180
-            },
             "Move": {
                 "speed": 10
             },
@@ -217,7 +226,8 @@
                 "density": 10,
                 "friction": 0.5,
                 "restitution": 0.1,
-                "type": "dynamic"
+                "type": "dynamic",
+                "category": "BULLET"
             },
             "Damage": {
                 "damageValue": 10,
@@ -227,7 +237,13 @@
             "Bullet": {
                 "playerID": -1
             },
-            "Interpolate": {}
+            "Interpolate": {},
+            "ParticleEffect": {
+                "effectname": "glow",
+                "offsetX": 0,
+                "offsetY": 0,
+                "initialRotation": -90
+            }
         }
     },
     "Base": {
@@ -322,16 +338,11 @@
         "meta": {},
         "components": {
             "Position": {},
-            "Texture":{
-                "texture": "junk_spawn",
-                "width": 120,
-                "height": 120,
-                "srcX": 0,
-                "srcY": 0,
-                "scaleX": 0.3,
-                "scaleY": 0.3,
-                "flipX": false,
-                "flipY": false
+            "ParticleEffect": {
+                "effectname": "spawn",
+                "offsetX": 0,
+                "offsetY": 0,
+                "initialRotation": -90
             }
         }
     },
@@ -367,13 +378,17 @@
     "JunkPile": {
         "meta": {},
         "components": {
-            "Position": {}
+            "Position": {
+                "layer": 1
+            }
         }
     },
     "Junk": {
         "meta": {},
         "components": {
-            "Position": {},
+            "Position": {
+                "layer": 1
+            },
             "Texture": {
                 "texture": "junk0",
                 "width": 120,
@@ -390,7 +405,15 @@
     "metalClient": {
         "meta": {},
         "components": {
-            "Position": {},
+            "Position": {
+                "layer": 1
+            },
+            "ParticleEffect": {
+                "effectname": "glow",
+                "offsetX": 0,
+                "offsetY": 0,
+                "initialRotation": -90
+            },
             "Texture": {
                 "texture": "junk0",
                 "width": 120,
