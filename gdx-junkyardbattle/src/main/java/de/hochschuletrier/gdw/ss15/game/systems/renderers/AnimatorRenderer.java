@@ -8,6 +8,7 @@ package de.hochschuletrier.gdw.ss15.game.systems.renderers;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 
 import de.hochschuletrier.gdw.commons.gdx.ashley.SortedSubIteratingSystem;
 import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended;
@@ -23,6 +24,9 @@ import de.hochschuletrier.gdw.ss15.game.components.animation.AnimatorComponent;
  * @author Julien Saevecke
  */
 public class AnimatorRenderer extends SortedSubIteratingSystem.SubSystem implements ChangeAnimationEvent.Listener{
+    private final Vector2 rotateVector = new Vector2();
+    private final Vector2 posVector = new Vector2();
+    
     @SuppressWarnings("unchecked")
     public AnimatorRenderer() {
         super(Family.all(AnimatorComponent.class).get());
@@ -54,8 +58,16 @@ public class AnimatorRenderer extends SortedSubIteratingSystem.SubSystem impleme
         int w = keyFrame.getRegionWidth();
         int h = keyFrame.getRegionHeight();
         
-        DrawUtil.batch.draw(keyFrame, position.x - w * 0.5f, position.y - h * 0.5f, 
-                w * 0.5f, h * 0.5f, w, h, 1, 1, animator.initialRotation + position.rotation);
+        rotateVector.set(animator.positionOffsetX, animator.positionOffsetY);
+        rotateVector.rotate(animator.initialRotation + position.rotation);
+        
+        posVector.set(
+            position.x + rotateVector.x, 
+            position.y + rotateVector.y
+        );
+        
+        DrawUtil.batch.draw(keyFrame, posVector.x - w * 0.5f, posVector.y - h * 0.5f, 
+                w * 0.5f, h * 0.5f, w, h, animator.scaleX, animator.scaleY, animator.initialRotation + position.rotation);
     }
 
     @Override

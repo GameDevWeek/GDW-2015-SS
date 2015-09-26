@@ -15,7 +15,7 @@ public class InventoryComponent extends Component implements Pool.Poolable {
     private int metalShards = 0;
     public int minMetalShards = 0;
     public int minMetalShardsForBase = 0;
-    public int maxMetalShards = 100;
+    public int maxMetalShards = 0;
 	public float secondsToRegeneration = 0.0f;
     public float secondsToRegenerationMax = 0.0f;
     public int shardRegeneration = 0;

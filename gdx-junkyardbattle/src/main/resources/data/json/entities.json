@@ -398,17 +398,6 @@
                 "type": "static",
                 "sensor": true
             },
-            "Texture": {
-                "texture": "junk_spawn",
-                "width": 120,
-                "height": 120,
-                "srcX": 0,
-                "srcY": 0,
-                "scaleX": 0.3,
-                "scaleY": 0.3,
-                "flipX": false,
-                "flipY": false
-            },
             "MetalShardSpawn": {
                 "spawnTime": 5
             }
@@ -495,9 +484,9 @@
             },
             "Pickable": {},
             "Inventory": {
-                "metalShards": 2,
+                "metalShards": 1,
                 "minMetalShards": 0,
-                "maxMetalShards": 2
+                "maxMetalShards": 1
             }
         }
     }
