@@ -42,6 +42,9 @@ public class AnimatorRenderer extends SortedSubIteratingSystem.SubSystem impleme
         AnimatorComponent animator = ComponentMappers.animator.get(entity);
         PositionComponent position = ComponentMappers.position.get(entity);
         
+        if(!animator.draw)
+            return;
+        
         AnimationExtended currentAnimation = animator.animationStates.get(animator.animationState);
         
         animator.stateTime += deltaTime;

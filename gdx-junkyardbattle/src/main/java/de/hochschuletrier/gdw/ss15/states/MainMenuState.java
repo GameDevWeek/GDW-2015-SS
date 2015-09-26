@@ -65,6 +65,10 @@ public class MainMenuState extends BaseGameState {
     public void update(float delta) {
         menuManager.update(delta);
         Main.getInstance().getClientConnection().update();
+        if(Main.getInstance().getServer()!=null)
+        {
+            Main.getInstance().getServer().RunFromMain();
+        }
         render();
     }
 

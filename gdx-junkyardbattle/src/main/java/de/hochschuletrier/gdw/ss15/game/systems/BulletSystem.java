@@ -22,7 +22,7 @@ public class BulletSystem extends IteratingSystem{
     private final ServerGame serverGame;
 
     public BulletSystem(PooledEngine engine, ServerGame serverGame) {
-        super(Family.all(PositionComponent.class, PhysixBodyComponent.class, BulletComponent.class).get());
+        super(Family.all(BulletComponent.class).get());
         this.engine = engine;
         this.serverGame = serverGame;
     }

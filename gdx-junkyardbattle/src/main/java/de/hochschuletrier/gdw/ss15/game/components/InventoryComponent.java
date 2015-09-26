@@ -1,5 +1,7 @@
 package de.hochschuletrier.gdw.ss15.game.components;
 
+import java.awt.SecondaryLoop;
+
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.utils.Pool;
 
@@ -16,6 +18,11 @@ import sun.java2d.pipe.SpanShapeRenderer;
 public class InventoryComponent extends Component implements Pool.Poolable {
 
     private int metalShards = 0;
+    public int minMetalShards = 0;
+    public int maxMetalShards = 100;
+	public float secondsToRegeneration = 0.0f;
+    public float secondsToRegenerationMax = 0.0f;
+    public int shardRegeneration = 0;
 
 
     @Override
@@ -26,7 +33,7 @@ public class InventoryComponent extends Component implements Pool.Poolable {
     public boolean setMetalShards(int shards)
     {
 
-        if(shards <= GameConstants.MAX_METALSHARDS && shards >= GameConstants.MIN_METALSHARDS)
+        if(shards <= maxMetalShards && shards >= minMetalShards)
         {
             metalShards = shards;
             SimplePacket packet = new SimplePacket(SimplePacket.SimplePacketId.MetalShardsUpdate.getValue(), metalShards);
@@ -45,10 +52,25 @@ public class InventoryComponent extends Component implements Pool.Poolable {
         int oldValueShards = metalShards;
         if (!setMetalShards(metalShards + shards))
         {
-            metalShards = GameConstants.MAX_METALSHARDS;
+            if (metalShards + shards > maxMetalShards)
+            {
+                metalShards = maxMetalShards;
+            }
+            else if (metalShards + shards < 0)
+            {
+                metalShards = 0;
+            }
+            return metalShards - oldValueShards;
+
         };
-        return metalShards - oldValueShards;
+        return shards;
     }
+
+    public int subMetalShards(int shards)
+    {
+        return - addMetalShards(-shards);
+    }
+
 
     public int getMetalShards()
     {

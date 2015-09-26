@@ -11,7 +11,7 @@ public class ComeToBaseEvent {
 
     private static final SnapshotArray<Listener> listeners = new SnapshotArray<>();
 
-    public static interface listener
+    public static interface Listener
     {
         void onComeToBase(PhysixContact physixContact);
     }
@@ -19,7 +19,7 @@ public class ComeToBaseEvent {
     public static void emit(PhysixContact physixContact) {
         Object[] items = listeners.begin();
         for (int i = 0, n = listeners.size; i < n; i++) {
-            ((listener)items[i]).onComeToBase(physixContact);
+            ((Listener)items[i]).onComeToBase(physixContact);
         }
         listeners.end();
     }

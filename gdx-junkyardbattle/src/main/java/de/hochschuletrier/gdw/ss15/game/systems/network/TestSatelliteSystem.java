@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.ashley.core.Engine;
 
 import de.hochschuletrier.gdw.ss15.Main;
+import de.hochschuletrier.gdw.ss15.events.SatelliteColliding;
+import de.hochschuletrier.gdw.ss15.events.SoundEvent;
 import de.hochschuletrier.gdw.ss15.events.network.client.SendPacketClientEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.Game;
@@ -58,7 +60,9 @@ public class TestSatelliteSystem extends IteratingSystem {
         {
 		    System.out.println("Satellite spawned");
 		    satellite = true;
-            serverGame.createEntity("SatelliteSiteServer", x, y);
+           Entity satelliteEvent = serverGame.createEntity("SatelliteSiteServer", x, y);
+            SatelliteColliding.emit();
+            SoundEvent.emit("sat_explode", satelliteEvent);
             System.out.println(x+" , "+ y);
             
         }
@@ -86,9 +90,10 @@ public class TestSatelliteSystem extends IteratingSystem {
         	
         	if(inventory.getMetalShards()<1)
         	{
-        		engine.removeAllEntities();
+        		engine.removeEntity(entity);;
         		satellite = false;
         		System.out.println("Ich bin hier");
+        		timer.ResetTimer();
         		
         	}
  

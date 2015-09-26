@@ -47,8 +47,7 @@ public class NetworkServerSystem extends EntitySystem implements SendPacketServe
     /**
      * Init funktion
      */
-    public void init(Serversocket ssocket) {
-        serverSocket = ssocket;
+    public void init() {
     }
 
     /**
@@ -60,10 +59,6 @@ public class NetworkServerSystem extends EntitySystem implements SendPacketServe
 
     @Override
     public void update(float deltaTime) {
-        while (serverSocket.isNewClientAvaliable()) {
-            Entity e = game.createEntity("player", 600, 600);
-            NetworkNewPlayerEvent.emit(e);
-        }
 
         LinkedList<Entity> toDelete = new LinkedList<>();
         for(int i=0; i < clients.size(); ++i)
@@ -134,7 +129,9 @@ public class NetworkServerSystem extends EntitySystem implements SendPacketServe
     {
 
         int i = 0;
-        for(Entity entity : clients){
+        for(int j=0;j<clients.size();j++)
+        {
+            Entity entity = clients.get(j);
             if(entity != exept){
                 if(save) {
                     ComponentMappers.client.get(entity).client.sendPacketSave(pack, (i++ < 1));

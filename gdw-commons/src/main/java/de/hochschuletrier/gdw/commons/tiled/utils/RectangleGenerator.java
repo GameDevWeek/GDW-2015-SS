@@ -36,7 +36,7 @@ public class RectangleGenerator {
                     for (int y = 0; y < height; y++) {
                         TileInfo info = tiles[x][y];
                         if (info != null && !test[x][y] && rectTest.test(layer, info)) {
-                            test[x][y] = true;
+                        		test[x][y] = true;
                         }
                     }
                 }

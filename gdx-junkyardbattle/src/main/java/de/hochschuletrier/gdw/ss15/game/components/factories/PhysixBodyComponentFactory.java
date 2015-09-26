@@ -21,6 +21,9 @@ public class PhysixBodyComponentFactory extends ComponentFactory<EntityFactoryPa
 
     private static final Logger logger = LoggerFactory.getLogger(PhysixBodyComponentFactory.class); 
     private PhysixSystem physixSystem;
+    
+    public static final short ABGRUND = 0x0001;
+    public static final short BULLET = 0x0002;
 
     @Override
     public String getType() {
@@ -84,6 +87,9 @@ public class PhysixBodyComponentFactory extends ComponentFactory<EntityFactoryPa
 	        	break;
 	        }
         }
+        
+        
+
         entity.add(bodyComponent);
     }
 
@@ -100,10 +106,16 @@ public class PhysixBodyComponentFactory extends ComponentFactory<EntityFactoryPa
     }
 
     private PhysixFixtureDef getFixtureDef(SafeProperties properties) {
-        return new PhysixFixtureDef(physixSystem)
-                .density(properties.getFloat("density", 5))
-                .friction(properties.getFloat("friction", 5))
-                .sensor(properties.getBoolean("sensor", false) )
-                .restitution(properties.getFloat("restitution", 0));
+    	PhysixFixtureDef PhysixFixDef = new PhysixFixtureDef(physixSystem)
+        .density(properties.getFloat("density", 5))
+        .friction(properties.getFloat("friction", 5))
+        .sensor(properties.getBoolean("sensor", false) )
+        .restitution(properties.getFloat("restitution", 0));
+    	switch(properties.getString("category", "")){
+        case "BULLET":
+        	PhysixFixDef.category(BULLET);
+        	break;
+    	}
+        return PhysixFixDef;
     }
 }
