@@ -7,9 +7,6 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
-
 import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended;
 import de.hochschuletrier.gdw.ss15.events.WeaponCharging;
 import de.hochschuletrier.gdw.ss15.events.WeaponUncharged;
@@ -20,8 +17,9 @@ import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.components.animation.AnimationState;
 import de.hochschuletrier.gdw.ss15.game.components.animation.AnimatorComponent;
-import de.hochschuletrier.gdw.ss15.game.components.effects.AttachedParticleEntityComponent;
-import de.hochschuletrier.gdw.ss15.game.components.effects.ParticleEffectComponent;
+import de.hochschuletrier.gdw.ss15.game.components.effects.AttachedEntityComponent;
+import de.hochschuletrier.gdw.ss15.game.components.effects.ChargeEffectComponent;
+import de.hochschuletrier.gdw.ss15.game.components.effects.MagneticBeamEffectComponent;
 import de.hochschuletrier.gdw.ss15.game.components.input.InputComponent;
 import de.hochschuletrier.gdw.ss15.game.components.light.ConeLightComponent;
 import de.hochschuletrier.gdw.ss15.game.components.light.PointLightComponent;
@@ -30,6 +28,7 @@ import de.hochschuletrier.gdw.ss15.game.rendering.ZoomingModes;
 public class EffectAddSystem extends IteratingSystem implements EntityListener, WeaponCharging.Listener, WeaponUncharged.Listener {
     private final PooledEngine engine;
     private Entity player;
+    private final float CHARGE_EFFECT_START = 0.1f;
     
     @SuppressWarnings("unchecked")
     public EffectAddSystem(PooledEngine engine) {
@@ -56,28 +55,42 @@ public class EffectAddSystem extends IteratingSystem implements EntityListener, 
     protected void processEntity(Entity entity, float deltaTime) {
         PositionComponent posComp = ComponentMappers.position.get(entity);
         ConeLightComponent coneLightComp = ComponentMappers.coneLight.get(entity);
-        AttachedParticleEntityComponent particleEntityComp = ComponentMappers.particleEntity.get(entity);
+        AttachedEntityComponent particleEntityComp = ComponentMappers.attachedEntity.get(entity);
         InputComponent inputComp = ComponentMappers.input.get(entity);
         
         if(coneLightComp != null) {
             coneLightComp.coneLight.setDirection(posComp.rotation);
         }
         
-//        if(particleEntityComp != null && particleEntityComp.entity != null) {
-//            ParticleEffectComponent particleComp = ComponentMappers.particleEffect.get(particleEntityComp.entity);
-//            particleComp.draw = inputComp.gather;
-//        }
-        
-        if(particleEntityComp != null && particleEntityComp.entity != null) {
-            AnimatorComponent animatorComp = ComponentMappers.animator.get(particleEntityComp.entity);
-            animatorComp.draw = inputComp.gather;
+        if(particleEntityComp != null) {
+            for(Entity attachedEntity : particleEntityComp.entities) {
+                AnimatorComponent animatorComp = ComponentMappers.animator.get(attachedEntity);
+                if(ComponentMappers.magneticBeamEffect.has(attachedEntity) && animatorComp != null)
+                    animatorComp.draw = inputComp.gather;
+                
+                if(ComponentMappers.chargeEffect.has(attachedEntity) && animatorComp != null) {
+                    ChargeEffectComponent chargeEffectComp = ComponentMappers.chargeEffect.get(attachedEntity);
+                    PositionComponent attachedEntityPosComp = ComponentMappers.position.get(attachedEntity);
+                    if(inputComp.shoot) {
+                        chargeEffectComp.stateTime += deltaTime;
+                        if(chargeEffectComp.stateTime >= CHARGE_EFFECT_START) {
+                            animatorComp.draw = true;
+                            attachedEntityPosComp.x = posComp.x;
+                            attachedEntityPosComp.y = posComp.y;
+                        }
+                    } else {
+                        animatorComp.draw = false;
+                        chargeEffectComp.stateTime = 0.f;
+                    } 
+                }
+            }
         }
     }
 
     @Override
     public void entityAdded(Entity entity) {
-        PositionComponent entityPos = ComponentMappers.position.get(entity);
-        player = entity;
+        if(ComponentMappers.player.get(entity).isLocalPlayer)
+            player = entity;
         
         if(!ComponentMappers.coneLight.has(entity)) {
             ConeLightComponent coneLightComp = engine.createComponent(ConeLightComponent.class);
@@ -93,44 +106,75 @@ public class EffectAddSystem extends IteratingSystem implements EntityListener, 
             entity.add(pointLightComponent);
         }
         
-        if(!ComponentMappers.particleEntity.has(entity)) {
-            Entity particleEntity = engine.createEntity();
-            PositionComponent posComp = engine.createComponent(PositionComponent.class);
-            posComp.x = entityPos.x;
-            posComp.y = entityPos.y;
-//            ParticleEffectComponent effectComp = engine.createComponent(ParticleEffectComponent.class);
-//            effectComp.particleEffect = new ParticleEffect(GameGlobals.assetManager.getParticleEffect("traktorParticle"));
-//            effectComp.positionOffsetX = 70.f;
-//            effectComp.draw = false;
-//            for(ParticleEmitter e : effectComp.particleEffect.getEmitters())
-//                e.setAttached(true);
-//            
-//            particleEntity.add(effectComp);
-//            particleEntity.add(entityPos);
-//            engine.addEntity(particleEntity);
-            
-            AnimatorComponent animatorComp = engine.createComponent(AnimatorComponent.class);
-            AnimationExtended anim = GameGlobals.assetManager.getAnimation("traktor_strahl");
-            animatorComp.animationStates.put(AnimationState.IDLE, anim);
-            animatorComp.positionOffsetX = 0.f;
-            animatorComp.positionOffsetY = -170.f;
-            animatorComp.initialRotation = 90.f;
-            animatorComp.scaleX = 0.5f;
-            animatorComp.scaleY = 0.5f;
-            animatorComp.draw = false;
-            
-            
-            AttachedParticleEntityComponent particleEntityComp = engine.createComponent(AttachedParticleEntityComponent.class);
-            particleEntityComp.entity = particleEntity;
-            particleEntity.add(animatorComp);
-            particleEntity.add(entityPos);
-            engine.addEntity(particleEntity);
-            entity.add(particleEntityComp);
+        addChargeEffect(entity);
+        addMagneticBeamEffect(entity);
+    }
+    
+    private void addMagneticBeamEffect(Entity entity) {
+        PositionComponent entityPos = ComponentMappers.position.get(entity);
+        if(!ComponentMappers.attachedEntity.has(entity)) 
+            entity.add(engine.createComponent(AttachedEntityComponent.class));
+        
+        Entity attachedMagneticBeamEntity = engine.createEntity();
+        
+        AnimatorComponent animatorComp = engine.createComponent(AnimatorComponent.class);
+        AnimationExtended anim = GameGlobals.assetManager.getAnimation("traktor_strahl");
+        animatorComp.animationStates.put(AnimationState.IDLE, anim);
+        animatorComp.positionOffsetX = 0.f;
+        animatorComp.positionOffsetY = -170.f;
+        animatorComp.initialRotation = 90.f;
+        animatorComp.scaleX = 0.5f;
+        animatorComp.scaleY = 0.5f;
+        animatorComp.draw = false;
+        
+        AttachedEntityComponent attachedEntityComp = ComponentMappers.attachedEntity.get(entity);
+        attachedEntityComp.entities.add(attachedMagneticBeamEntity);
+        attachedMagneticBeamEntity.add(animatorComp);
+        attachedMagneticBeamEntity.add(entityPos);
+        attachedMagneticBeamEntity.add(engine.createComponent(MagneticBeamEffectComponent.class));
+        engine.addEntity(attachedMagneticBeamEntity);
+        entity.add(attachedEntityComp);
+    }
+    
+    public void addChargeEffect(Entity entity) {
+        PositionComponent entityPos = ComponentMappers.position.get(entity);
+        PlayerComponent playerComp = ComponentMappers.player.get(entity);
+        if(!ComponentMappers.attachedEntity.has(entity)) 
+            entity.add(engine.createComponent(AttachedEntityComponent.class));
+        
+        Entity chargeEffectEntity = engine.createEntity();
+        PositionComponent posComp = engine.createComponent(PositionComponent.class);
+        posComp.x = entityPos.x;
+        posComp.y = entityPos.y;
+        posComp.layer = entityPos.layer - 1;
+        
+        AnimatorComponent animatorComp = engine.createComponent(AnimatorComponent.class);
+        AnimationExtended animExtended = null; 
+        switch(playerComp.teamID) {
+        case 0:
+            animExtended = GameGlobals.assetManager.getAnimation("charge_red");
+            break;
+        case 1:
+            animExtended = GameGlobals.assetManager.getAnimation("charge_blue");
+            break;
         }
+
+        animatorComp.animationStates.put(AnimationState.IDLE, animExtended);
+        animatorComp.draw = false;
+        
+        AttachedEntityComponent attachedEntityComp = ComponentMappers.attachedEntity.get(entity);
+        attachedEntityComp.entities.add(chargeEffectEntity);
+        chargeEffectEntity.add(animatorComp);
+        chargeEffectEntity.add(posComp);
+        chargeEffectEntity.add(engine.createComponent(ChargeEffectComponent.class));
+        engine.addEntity(chargeEffectEntity);
+        entity.add(attachedEntityComp);
     }
 
     @Override
     public void entityRemoved(Entity entity) {
+        if(player == entity)
+            player = null;
     }
 
     @Override
@@ -145,13 +189,24 @@ public class EffectAddSystem extends IteratingSystem implements EntityListener, 
     public void onWeaponCharging(float fireChannelAmount) {
         if(player != null) {
             PointLightComponent pointLightComp = ComponentMappers.pointLight.get(player);
+            AttachedEntityComponent attachedEntityComp = ComponentMappers.attachedEntity.get(player);
             if(pointLightComp != null) {
                 float distance = ZoomingModes.interpolate(GameConstants.ZOOM_MODE, GameConstants.PLAYER_POINT_LIGHT_DISTANCE, 
                         GameConstants.PLAYER_POINT_LIGHT_DISTANCE_CHARGED, fireChannelAmount);
                 pointLightComp.pointLight.setDistance(distance);
                 pointLightComp.pointLight.getColor().a = GameConstants.PLAYER_POINT_LIGHT_ALPHA 
                         + fireChannelAmount;
-            } 
+            }
+            
+            if(attachedEntityComp != null) {
+                for(Entity attachedEntity : attachedEntityComp.entities) {
+                    AnimatorComponent animComp = ComponentMappers.animator.get(attachedEntity);
+                    if(animComp != null && ComponentMappers.chargeEffect.has(attachedEntity)) {
+                        animComp.scaleX = animComp.scaleY = ZoomingModes.interpolate(GameConstants.ZOOM_MODE, 0.1f, 
+                                0.5f, fireChannelAmount);
+                    }
+                }
+            }
         }
     }
 
