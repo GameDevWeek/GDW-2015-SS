@@ -1,4 +1,4 @@
-package de.hochschuletrier.gdw.ss15.game.systems.network;
+﻿package de.hochschuletrier.gdw.ss15.game.systems.network;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
@@ -24,15 +24,16 @@ import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.MyTimer;
  */
 public class TestMovementSystem extends IteratingSystem{
 
-    Game game;
-    Camera camera;
-    MyTimer timer = new MyTimer(true);
-    Vector2 velVector = new Vector2();
-    Vector2 vectorToAdd = new Vector2(0,0);
+    private Game game;
+    private Camera camera;
+    private MyTimer timer = new MyTimer(true);
+    private Vector2 velVector = new Vector2();
+    private Vector2 vectorToAdd = new Vector2(0,0);
     private ComponentMapper<InputComponent> input;
     private ComponentMapper<SoundEmitterComponent> soundEmitter;
     private ComponentMapper<InventoryComponent> inventory;
     private ComponentMapper<MoveComponent> move;
+    public static boolean interpolate = true;
     public TestMovementSystem(Game game, Camera cam)
     {
         super(Family.all(MoveComponent.class, PlayerComponent.class).get());
@@ -102,7 +103,7 @@ public class TestMovementSystem extends IteratingSystem{
         }
 
         PhysixBodyComponent comp = ComponentMappers.physixBody.get(entity);
-        if(comp != null && comp.getLinearVelocity().len()<0.001)
+        if(comp != null && comp.getLinearVelocity().len()<0.001 && interpolate)
         {
             comp.setLinearVelocity(new Vector2(vectorToAdd).scl(500));
         }
