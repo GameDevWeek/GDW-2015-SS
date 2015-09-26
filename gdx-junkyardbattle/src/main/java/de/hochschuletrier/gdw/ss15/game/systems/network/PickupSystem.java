@@ -1,4 +1,4 @@
-package de.hochschuletrier.gdw.ss15.game.systems.network;
+﻿package de.hochschuletrier.gdw.ss15.game.systems.network;
 
 import com.badlogic.ashley.core.*;
 import com.badlogic.ashley.systems.IntervalIteratingSystem;
@@ -16,14 +16,14 @@ import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
  */
 public class PickupSystem extends IntervalIteratingSystem implements PickupEvent.Listener {
 
-    ComponentMapper<InventoryComponent> inventory;
-    ComponentMapper<PlayerComponent> player;
+    ComponentMapper<InventoryComponent> inventoryComp;
+    ComponentMapper<PlayerComponent> playerComp;
     Engine engine;
     public PickupSystem(Engine engine)
     {
         super(Family.all(PlayerComponent.class).get(), 10);
-        inventory = ComponentMappers.inventory;
-        player = ComponentMappers.player;
+        inventoryComp = ComponentMappers.inventory;
+        playerComp = ComponentMappers.player;
         PickupEvent.register(this);
         this.engine = engine;
     }
@@ -32,13 +32,13 @@ public class PickupSystem extends IntervalIteratingSystem implements PickupEvent
 
     @Override
     public void onPickupEvent(PhysixContact physixContact) {
-         if (player.has(physixContact.getOtherComponent().getEntity()))
-         {
+         if (playerComp.has(physixContact.getOtherComponent().getEntity())) {
 
             Entity pickup = physixContact.getMyComponent().getEntity();
             Entity player = physixContact.getOtherComponent().getEntity();
-            InventoryComponent invPickup = inventory.get(pickup);
-            InventoryComponent invPlayer = inventory.get(player);
+            InventoryComponent invPickup = inventoryComp.get(pickup);
+            InventoryComponent invPlayer = inventoryComp.get(player);
+             System.out.println(invPlayer.getMetalShards());
             System.out.println(invPlayer.getMetalShards());
              if (invPlayer.addMetalShards(invPickup.getMetalShards()) > 0)
              {

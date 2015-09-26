@@ -24,6 +24,7 @@ public class InventoryComponentFactory extends ComponentFactory<EntityFactoryPar
         component.maxMetalShards = properties.getInt("maxMetalShards");
         component.minMetalShardsForBase = properties.getInt("minMetalShardsForBase");
         component.setMetalShards(properties.getInt("metalShards"));
+        component.oldMetalShards = component.getMetalShards();
 
         component.secondsToRegenerationMax = component.secondsToRegeneration = properties.getFloat("secondsToRegenerate",0.0f);
         if(component.secondsToRegenerationMax > 0.0f)

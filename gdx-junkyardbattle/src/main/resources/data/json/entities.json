@@ -1,4 +1,4 @@
-{
+﻿{
     "shoteffect": {
         "meta": {},
         "components": {
@@ -212,12 +212,6 @@
             },
             "Input": {},
             "Interpolate": {},
-            "Inventory": {
-            	"metalShards": 20,
-                "minMetalShards": 0,
-                "minMetalShardsForBase": 20,
-                "maxMetalShards": 700
-            },
             "Weapon": {},
             "SoundEmitter": {}
         }
@@ -348,7 +342,9 @@
                 "maxMetalShards": 650
             },
             "SoundEmitter": {},
-            "Mineable": {}
+            "Mineable": {},
+            "AboveAbyss":{
+            }
         }
     },
     "SatelliteClient": {
@@ -378,6 +374,8 @@
                 "restitution": 0.1,
                 "sensor": false,
                 "type": "kinematic"
+            },
+            "AboveAbyss":{
             }
         }
     },
@@ -531,9 +529,9 @@
                 "secondsToRegenerationMax": 3,
                 "shardRegeneration": 1
             },
-            "Mineable":{
-                }
+            "Mineable":{},
+            "AboveAbyss":{
             }
         }
     }
-
+}
