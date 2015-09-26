@@ -25,6 +25,7 @@ public class ParticleEffectComponent extends Component implements Pool.Poolable{
     public boolean start = true;
     public boolean isPlaying = false;
     public boolean loop = true;
+    public boolean draw = true;
 
     public void stop()
     {

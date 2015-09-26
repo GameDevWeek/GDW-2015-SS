@@ -4,5 +4,7 @@
     "shoot": "data/particles/shoot.p",
     "thruster": "data/particles/thruster.p",
     "glow": "data/particles/glow.p",
-    "spawn": "data/particles/spawn.p"
+    "spawn": "data/particles/spawn.p",
+    "particleglow": "data/particles/particleglow.p",
+    "traktorParticle": "data/particles/traktor_particle.p"
 }

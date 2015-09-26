@@ -8,7 +8,6 @@ import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixModifierComponent;
 import de.hochschuletrier.gdw.ss15.events.network.client.NetworkReceivedNewPacketClientEvent;
 import de.hochschuletrier.gdw.ss15.events.network.server.NetworkReceivedNewPacketServerEvent;
-import de.hochschuletrier.gdw.ss15.events.network.server.SendPacketServerEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.Game;
 import de.hochschuletrier.gdw.ss15.game.ServerGame;
@@ -34,7 +33,7 @@ public class FireClientListener extends EntitySystem implements NetworkReceivedN
         super();
         this.game = game;
         NetworkReceivedNewPacketClientEvent.registerListener(PacketIds.SpawnBullet, this);
-        System.out.println("registered spawnbullet listener");
+        //System.out.println("registered spawnbullet listener");
     }
 
     @Override
@@ -45,11 +44,11 @@ public class FireClientListener extends EntitySystem implements NetworkReceivedN
 
     @Override
     public void onReceivedNewPacket(Packet pack, Entity ent) {
-        System.out.println("received packet");
+//        System.out.println("received packet");
         try {
             SpawnBulletPacket packet = (SpawnBulletPacket) pack;
 
-            FireServerListener.createProjectile(ent, packet.rotation);
+            FireServerListener.createProjectile(ent, packet.rotation, packet.power);
             //Entity et = game.createEntity("projectile", packet.position.x, packet.position.y);
             //FireServerListener.createProjectile(et, packet.rotation);
 
