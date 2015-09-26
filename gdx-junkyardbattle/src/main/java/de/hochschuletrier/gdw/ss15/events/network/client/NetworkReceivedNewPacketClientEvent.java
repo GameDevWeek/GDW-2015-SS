@@ -18,7 +18,7 @@ public class NetworkReceivedNewPacketClientEvent {
 
         private static final HashMap<Short,SnapshotArray<Listener>> map = new HashMap<Short,SnapshotArray<Listener>>();
 
-        public static void clearListeners()
+        public static void unregisterAll()
         {
             map.clear();
         }

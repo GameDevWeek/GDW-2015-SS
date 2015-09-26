@@ -15,8 +15,7 @@ public class SpawnSatelliteComponentFactory extends ComponentFactory<EntityFacto
     }
 
     @Override
-    public void run(Entity entity, SafeProperties meta,
-            SafeProperties properties, EntityFactoryParam param) {
+    public void run(Entity entity, SafeProperties meta,SafeProperties properties, EntityFactoryParam param) {
         SpawnSatelliteComponent component = engine.createComponent(SpawnSatelliteComponent.class);
         entity.add(component);
     }

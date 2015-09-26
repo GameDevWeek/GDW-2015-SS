@@ -12,48 +12,43 @@ import java.util.HashMap;
  */
 
 public class NetworkReceivedNewPacketServerEvent {
-        public static interface Listener {
-            void onReceivedNewPacket(Packet pack,Entity ent);
-        }
+	public static interface Listener {
+		void onReceivedNewPacket(Packet pack, Entity ent);
+	}
 
-        private static final HashMap<Short,SnapshotArray<Listener>> map = new HashMap<>();
+	private static final HashMap<Short, SnapshotArray<Listener>> map = new HashMap<>();
 
-        public static void clearListeners()
-        {
-            map.clear();
-        }
+	public static void unregisterAll() {
+		map.clear();
+	}
 
-        public static void emit(Packet pack,Entity ent) {
-            SnapshotArray<Listener> liste = map.get(pack.getPacketId());
-            if(liste != null) {
-                Object[] items = liste.begin();
-                for (int i = 0, n = liste.size; i < n; i++) {
-                    ((Listener) items[i]).onReceivedNewPacket(pack,ent);
-                }
-                liste.end();
-            }
-        }
+	public static void emit(Packet pack, Entity ent) {
+		SnapshotArray<Listener> liste = map.get(pack.getPacketId());
+		if (liste != null) {
+			Object[] items = liste.begin();
+			for (int i = 0, n = liste.size; i < n; i++) {
+				((Listener) items[i]).onReceivedNewPacket(pack, ent);
+			}
+			liste.end();
+		}
+	}
 
-        public static void registerListener(PacketIds id, Listener listener){
-            SnapshotArray<Listener> liste = map.get(id.getValue());
-            if(liste == null)
-            {
-                liste = new SnapshotArray<Listener>();
-                map.put(id.getValue(),liste);
-            }
-            liste.add(listener);
-        }
+	public static void registerListener(PacketIds id, Listener listener) {
+		SnapshotArray<Listener> liste = map.get(id.getValue());
+		if (liste == null) {
+			liste = new SnapshotArray<Listener>();
+			map.put(id.getValue(), liste);
+		}
+		liste.add(listener);
+	}
 
-        public static void unregisterListener(PacketIds id,Listener listener) {
-            SnapshotArray<Listener> liste = map.get(id.getValue());
-            if (liste != null) {
-                liste.removeValue(listener, true);
-                if (liste.size == 0) {
-                    map.remove(id.getValue());
-                }
-            }
-        }
-
-
-
-    }
+	public static void unregisterListener(PacketIds id, Listener listener) {
+		SnapshotArray<Listener> liste = map.get(id.getValue());
+		if (liste != null) {
+			liste.removeValue(listener, true);
+			if (liste.size == 0) {
+				map.remove(id.getValue());
+			}
+		}
+	}
+}
