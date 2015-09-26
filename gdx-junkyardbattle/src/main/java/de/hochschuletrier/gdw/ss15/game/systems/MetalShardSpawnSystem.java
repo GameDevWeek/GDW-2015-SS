@@ -12,6 +12,7 @@ import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.MyTimer;
 
 public class MetalShardSpawnSystem extends IteratingSystem{
+    
 
 	private ServerGame game;
 	
@@ -23,7 +24,7 @@ public class MetalShardSpawnSystem extends IteratingSystem{
 	@Override
 	protected void processEntity(Entity entity, float deltaTime) {
 	    //min. Zeit zwischen Shard Spawns
-		float minTimeBetweenSpawns = 5.f;
+		float minTimeBetweenSpawns = 15.f;
 		MyTimer timer = ComponentMappers.metalShardSpawn.get(entity).timer;
 		timer.Update();
 		
@@ -34,7 +35,7 @@ public class MetalShardSpawnSystem extends IteratingSystem{
 			if(ComponentMappers.metalShardSpawn.get(entity).collidingObjects <= 0)
 			{
 			    //timer resetten
-	            timer.StartCounter();
+	            timer.ResetTimer();
 			    game.createEntity("metalServer", ComponentMappers.position.get(entity).x, ComponentMappers.position.get(entity).y); 
 			}
 		}
