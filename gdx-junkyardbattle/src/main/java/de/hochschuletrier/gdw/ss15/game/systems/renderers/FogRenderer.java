@@ -36,7 +36,7 @@ import de.hochschuletrier.gdw.ss15.game.rendering.FrustumUtil;
  * @author compie
  *
  */
-public class FogRenderer extends SortedSubIteratingSystem.SubSystem implements EntityListener {
+public class FogRenderer extends SortedSubIteratingSystem.SubSystem implements EntityListener{
     private SpriteBatch batch = new SpriteBatch();
     private OrthographicCamera cam = new OrthographicCamera();
 

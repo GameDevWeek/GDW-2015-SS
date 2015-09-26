@@ -1,6 +1,7 @@
 package de.hochschuletrier.gdw.ss15.game;
 
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
@@ -68,9 +69,13 @@ public class Game extends InputAdapter {
     
     private final TestListenerClient TestoutputSystem = new TestListenerClient();
     private final EffectAddSystem effectAddSystem = new EffectAddSystem(engine);
+    private final RenderStateUpdateSystem renderStateUpdateSystem = new RenderStateUpdateSystem(engine);
+    
+    private final HealthUpdateSystem healthUpdateSystem = new HealthUpdateSystem();
     
 
     private final HudSystem hudSystem = new HudSystem(cameraSystem.getCamera().getOrthographicCamera());
+    private HighscoreSyncListener highscoreSyncListener = new HighscoreSyncListener();
 
     public Game() {
         // If this is a build jar file, disable hotkeys
@@ -102,7 +107,7 @@ public class Game extends InputAdapter {
         entityFactory.init(engine, assetManager);
         mapLoader.listen(renderSystem.getTileMapCreator());
         mapLoader.run((String name, float x, float y) -> createEntity(name, x, y),
-                "data/maps/alpha_three_on_three.tmx", physixSystem, entityFactory, assetManager );
+        		"data/maps/royalrubble_v2.tmx", physixSystem, entityFactory, assetManager );
 
         renderSystem.init(mapLoader.getTiledMap(), this);
     }
@@ -123,9 +128,11 @@ public class Game extends InputAdapter {
         engine.addSystem(hudSystem);
 //        engine.addSystem(bulletClientSystem);
         engine.addSystem(effectAddSystem);
+        engine.addSystem(renderStateUpdateSystem);
 
         // add to engine to get removed from listeners:
         engine.addSystem(fireClientListener);
+        engine.addSystem(highscoreSyncListener);
     }
 
     private void addContactListeners() {

@@ -14,11 +14,13 @@ import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
+import de.hochschuletrier.gdw.commons.gdx.state.ScreenListener;
 import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
+import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 
-public class FogMaskEffect {
+public class FogMaskEffect implements ScreenListener {
     private Vector3 target = new Vector3();
     private Vector3 pos = new Vector3();
     private ParticleEffect effect;
@@ -34,9 +36,12 @@ public class FogMaskEffect {
     private Vector2 acceleration = new Vector2(0.f, 0.f);
     private Vector2 velocity = new Vector2(0.f, 0.f);
     
+    private Entity entityToFollow;
+    
     public FogMaskEffect(ParticleEffect effect) {
         this.effect = effect;
         initEffect();
+        Main.getInstance().addScreenListener(this);
     }
     
     public void setScale(float scale) {
@@ -65,7 +70,8 @@ public class FogMaskEffect {
     }
     
     public void apply(Entity entityToFollow, OrthographicCamera gameCamera, float deltaTime) {
-        follow(entityToFollow, gameCamera, deltaTime);
+        this.entityToFollow = entityToFollow;
+        follow(entityToFollow, gameCamera, deltaTime);    
         
         // Drawing in custom frame buffer and using custom batch
         DrawUtil.safeEnd();
@@ -117,5 +123,21 @@ public class FogMaskEffect {
         velocity.add(acceleration.scl(deltaTime));
         pos.x += velocity.x * deltaTime;
         pos.y += velocity.y * deltaTime;
+    }
+
+    @Override
+    public void resize(int width, int height) {
+        if(entityToFollow != null && !entityToFollow.isScheduledForRemoval()) {
+            PositionComponent entityPos = ComponentMappers.position.get(entityToFollow);
+            target.x = entityPos.x;
+            target.y = entityPos.y;
+            MainCamera.getOrthographicCamera().project(target);
+            effect.setPosition(target.x, target.y);
+        }
+    }
+    
+    @Override
+    public void finalize() {
+        Main.getInstance().removeScreenListener(this);
     }
 }
