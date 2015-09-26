@@ -243,7 +243,8 @@
                 "offsetX": 0,
                 "offsetY": 0,
                 "initialRotation": -90
-            }
+            },
+            "AboveAbyss": {}
         }
     },
     "Base": {
