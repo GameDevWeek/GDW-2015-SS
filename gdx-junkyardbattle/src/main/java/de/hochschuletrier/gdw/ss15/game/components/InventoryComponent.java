@@ -2,6 +2,7 @@ package de.hochschuletrier.gdw.ss15.game.components;
 
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.utils.Pool;
+
 import de.hochschuletrier.gdw.ss15.events.network.server.SendPacketServerEvent;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
 
@@ -12,7 +13,8 @@ import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
  */
 public class InventoryComponent extends Component implements Pool.Poolable {
 
-    private int metalShards = 0;
+    public int metalShards = 0;
+    public int oldMetalShards = 0;
     public int minMetalShards = 0;
     public int minMetalShardsForBase = 0;
     public int maxMetalShards = 0;
@@ -32,8 +34,6 @@ public class InventoryComponent extends Component implements Pool.Poolable {
         if(shards <= maxMetalShards && shards >= minMetalShards)
         {
             metalShards = shards;
-            send();
-
             return true;
         }
         return false;
@@ -60,7 +60,6 @@ public class InventoryComponent extends Component implements Pool.Poolable {
             {
                 metalShards = 0;
             }
-            send();
             return metalShards - oldValueShards;
 
         };
@@ -80,11 +79,4 @@ public class InventoryComponent extends Component implements Pool.Poolable {
     {
         return metalShards;
     }
-
-    private void send()
-    {
-        SimplePacket packet = new SimplePacket(SimplePacket.SimplePacketId.MetalShardsUpdate.getValue(), metalShards);
-        SendPacketServerEvent.emit(packet, true);
-    }
-
 }

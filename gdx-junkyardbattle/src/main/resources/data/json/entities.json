@@ -210,12 +210,6 @@
             },
             "Input": {},
             "Interpolate": {},
-            "Inventory": {
-                "metalShards": 20,
-                "minMetalShards": 0,
-                "minMetalShardsForBase": 20,
-                "maxMetalShards": 700
-            },
             "Weapon": {},
             "SoundEmitter": {}
         }

@@ -126,11 +126,11 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener,
                 Entity ent = hashMap.get(sPacket.m_Moredata);
                 if(ent!=null) {
                     //entety deleted
-                    NetworkReceivedNewPacketClientEvent.emit(pack,ent);
                     hashMap.remove(sPacket.m_Moredata);
                     game.getEngine().removeEntity(ent);
                 }
             }
+            NetworkReceivedNewPacketClientEvent.emit(pack,null);
         }
         else if(pack.getPacketId() == PacketIds.SpawnBullet.getValue()){
             SpawnBulletPacket packet = (SpawnBulletPacket) pack;
