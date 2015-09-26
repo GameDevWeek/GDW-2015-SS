@@ -54,5 +54,13 @@
         "playType" : "LOOP",
         "columns": 2,
         "rows" : 1
-    }
+    },
+    "traktor_strahl":{
+     	"filename":"data/animations/traktor_beam.png",
+        "frames" : 42,
+        "frameDuration": [0.5, 0.5],
+        "playType" : "LOOP",
+        "columns": 7,
+        "rows" : 6
+        }
 }
