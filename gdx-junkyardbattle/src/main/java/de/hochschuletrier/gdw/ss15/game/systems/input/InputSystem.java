@@ -224,13 +224,11 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
     @Override
     public void connected(Controller controller) {
         //geht nicht
-        System.out.println("Controller connected");
     }
 
     @Override
     public void disconnected(Controller controller) {
         //geht auch nicht
-        System.out.println("Controller disconnected");
     }
 
     @Override
