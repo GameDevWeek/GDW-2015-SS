@@ -40,7 +40,7 @@ public class MenuPage extends Group {
 		super();
 		this.skin = skin;
 
-		 Gdx.input.setCursorImage(new Pixmap (Gdx.files.internal("data/ui/menu/Assets/mouse_ready.png")), 0, 0);
+		Gdx.input.setCursorImage(new Pixmap(Gdx.files.internal("data/ui/menu/Assets/mouse_ready.png")), 0, 0);
 
 		addActor(new DecoImage(assetManager.getTexture(background)));
 
@@ -119,8 +119,6 @@ public class MenuPage extends Group {
 					runnable.run();
 
 			}
-			
-			
 
 		});
 
@@ -187,11 +185,12 @@ public class MenuPage extends Group {
 		});
 		addActor(button);
 		return button;
-	}
 
+	}
+	
+	
 	protected final void changeTextureActive(DecoImage image) {
-		
-		
+
 		if (image.getRegion().getTexture() == assetManager.getTexture("start_button")) {
 			image.setTexture(assetManager.getTexture("start_button_over"));
 			return;
@@ -208,36 +207,63 @@ public class MenuPage extends Group {
 			image.setTexture(assetManager.getTexture("option_button_over"));
 			return;
 		}
-		
+
 		if (image.getRegion().getTexture() == assetManager.getTexture("quit_button")) {
 			image.setTexture(assetManager.getTexture("quit_button_over"));
 			return;
 		}
-		
-		
+		if (image.getRegion().getTexture() == assetManager.getTexture("changeMap_button_left")) {
+			image.setTexture(assetManager.getTexture("changeMap_button_left_over"));
+			return;
+		}
+		if (image.getRegion().getTexture() == assetManager.getTexture("changeMap_button_right")) {
+			image.setTexture(assetManager.getTexture("changeMap_button_right_over"));
+			return;
+		}
+		if (image.getRegion().getTexture() == assetManager.getTexture("back_button")) {
+			image.setTexture(assetManager.getTexture("back_button_over"));
+			return;
+		}
+
+
 	}
 
 	protected final void changeTextureNotActive(DecoImage image) {
 
-	
 		if (image.getRegion().getTexture() == assetManager.getTexture("start_button_over")) {
-			image.setTexture(assetManager.getTexture("start_button"));return;
+			image.setTexture(assetManager.getTexture("start_button"));
+			return;
 		}
 		if (image.getRegion().getTexture() == assetManager.getTexture("join_button_over")) {
-			image.setTexture(assetManager.getTexture("join_button"));return;
+			image.setTexture(assetManager.getTexture("join_button"));
+			return;
 		}
 		if (image.getRegion().getTexture() == assetManager.getTexture("host_button_over")) {
-			image.setTexture(assetManager.getTexture("host_button"));return;
+			image.setTexture(assetManager.getTexture("host_button"));
+			return;
 		}
 		if (image.getRegion().getTexture() == assetManager.getTexture("option_button_over")) {
-			image.setTexture(assetManager.getTexture("option_button"));return;
+			image.setTexture(assetManager.getTexture("option_button"));
+			return;
 		}
-		
+
 		if (image.getRegion().getTexture() == assetManager.getTexture("quit_button_over")) {
-			image.setTexture(assetManager.getTexture("quit_button"));return;
+			image.setTexture(assetManager.getTexture("quit_button"));
+			return;
 		}
-		
-		
+		if (image.getRegion().getTexture() == assetManager.getTexture("changeMap_button_left_over")) {
+			image.setTexture(assetManager.getTexture("changeMap_button_left"));
+			return;
+		}
+		if (image.getRegion().getTexture() == assetManager.getTexture("changeMap_button_right_over")) {
+			image.setTexture(assetManager.getTexture("changeMap_button_right"));
+			return;
+		}
+		if (image.getRegion().getTexture() == assetManager.getTexture("back_button_over")) {
+			image.setTexture(assetManager.getTexture("back_button"));
+			return;
+		}
+
 	}
 
 }

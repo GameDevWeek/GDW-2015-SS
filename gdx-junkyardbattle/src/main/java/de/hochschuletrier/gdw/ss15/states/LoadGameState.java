@@ -2,6 +2,7 @@ package de.hochschuletrier.gdw.ss15.states;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.state.BaseGameState;
@@ -13,7 +14,8 @@ public class LoadGameState extends BaseGameState {
     private boolean isDone;
     private final AssetManagerX assetManager;
     private final Runnable completeFunc;
-
+	private Texture texture= new Texture(Gdx.files.internal("data/ui/menu/Assets/Ladescreen_zusammengefuegt.png"));
+	private Color colorBg= new Color(255f/255f, 181f/255f, 76f/255f, 1);
     public LoadGameState(AssetManagerX assetManager, Runnable completeFunc) {
         this.assetManager = assetManager;
         this.completeFunc = completeFunc;
@@ -23,9 +25,11 @@ public class LoadGameState extends BaseGameState {
         Main.getInstance().screenCamera.bind();
         DrawUtil.fillRect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), Color.BLACK);
 
-        float drawWidth = Gdx.graphics.getWidth() - 100.0f;
-        DrawUtil.fillRect(50, Gdx.graphics.getHeight() / 2 - 25, (int) (drawWidth * assetManager.getProgress()), 50, Color.GREEN);
-        DrawUtil.drawRect(50, Gdx.graphics.getHeight() / 2 - 25, drawWidth, 50, Color.GREEN);
+        float drawWidth = Gdx.graphics.getWidth() - 454.0f;
+       
+        DrawUtil.fillRect(195,150, (int) (drawWidth * assetManager.getProgress()), 400, colorBg);
+        DrawUtil.drawRect(50, Gdx.graphics.getHeight() / 2 - 25, drawWidth, 50, colorBg);
+        DrawUtil.draw(texture);
     }
 
     @Override

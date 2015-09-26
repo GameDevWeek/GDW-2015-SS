@@ -1,3 +1,4 @@
 {
-    "menu": "data/music/menu.ogg"
+    "menu": "data/music/MENU_SCREEN.ogg",
+    "game": "data/music/GAMEPLAY_LOOPABLE.ogg"
 }

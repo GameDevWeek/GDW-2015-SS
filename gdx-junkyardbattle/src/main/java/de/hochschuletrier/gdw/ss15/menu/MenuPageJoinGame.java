@@ -36,6 +36,7 @@ public class MenuPageJoinGame extends MenuPage implements DoNotTouchPacketEvent.
 	private final DecoImage change = new DecoImage(assetManager.getTexture("change_button"));
 
 	private Label labelTimer;
+	private Label labelMapName;
 	private HorizontalGroupID hgBlue1 = createHGroup(1, -1, "");
 
 	private HorizontalGroupID hgBlue2 = createHGroup(2, -1, "");
@@ -57,9 +58,13 @@ public class MenuPageJoinGame extends MenuPage implements DoNotTouchPacketEvent.
 		labelTimer = new Label("Ti:me", skin);
 		labelTimer.setWidth(widthChange);
 		labelTimer.setHeight(heightChange);
+		labelMapName=new Label("4 x 4", skin);
+		labelMapName.setWidth(115);
+		labelMapName.setHeight(30);
 		addUIActor(labelTimer, 485, (int) (155 - heightChange), null);
 		addCenteredImage(450, 85 - 30, 115, 30, change, () -> SendPacketClientEvent
 				.emit(new SimplePacket(SimplePacketId.ChangeTeamPacket.getValue(), 0), true));
+		addUIActor(labelMapName, 475, (int) (60-labelMapName.getHeight()), null);
 		hgBlue1.setWidth(width);
 		hgBlue1.setHeight(height);
 		hgRed1.setWidth(width);   
@@ -223,7 +228,7 @@ public class MenuPageJoinGame extends MenuPage implements DoNotTouchPacketEvent.
 	private HorizontalGroupID createHGroup(int id, int idPlayer, String name) {
 		HorizontalGroupID hg = new HorizontalGroupID(id, idPlayer);
 		hg.idPlayer = idPlayer;
-		hg.addActor(new Label("Name: " + name, skin));
+		hg.addActor(new Label(name, skin));
 		return hg;
 	}
 

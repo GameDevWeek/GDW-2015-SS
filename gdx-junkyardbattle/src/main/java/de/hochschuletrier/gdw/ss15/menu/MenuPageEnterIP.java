@@ -33,13 +33,14 @@ import de.hochschuletrier.gdw.ss15.states.GameplayState;
 public class MenuPageEnterIP extends MenuPage
 		implements ConnectTryFinishEvent.Listener, DoNotTouchPacketEvent.Listener {
 
-	ArrayList<Actor> horizontalGroupeContent = new ArrayList<>();
+	//ArrayList<Actor> horizontalGroupeContent = new ArrayList<>();
 
 	MenuManager menuManager;
 
-	TextArea textAreaPort = new TextArea("port", skin);
-	TextArea textAreaName = new TextArea("name", skin);
-	TextArea textAreaIP = new TextArea("ip", skin);
+	TextArea textAreaPort = new TextArea("", skin);
+	TextArea textAreaName = new TextArea("", skin);
+	TextArea textAreaIP = new TextArea("", skin);
+	Label labelError= new Label("", skin);
 	private int width = 235, height = 45;
 
 	private final DecoImage imageStart = new DecoImage(assetManager.getTexture("start_button"));
@@ -67,7 +68,7 @@ public class MenuPageEnterIP extends MenuPage
 				}
 			} catch (Exception e) {
 				System.out.println(e);
-				System.out.println("port Wrong");
+				labelError.setText(e.toString());
 			}
 
 			// TODO Auto-generated method stub
@@ -82,10 +83,12 @@ public class MenuPageEnterIP extends MenuPage
 		imageStart.setHeight(height);
 		textAreaName.setWidth(234);
 		textAreaPort.setWidth(234);
-		addCenteredImage(390, 350 - height, width, height, imageStart, runnableStart);
-		addUIActor(textAreaName, 390, (int) (250 - textAreaName.getHeight()), null);
-		addUIActor(textAreaPort, 390, (int) (150 - textAreaPort.getHeight()), null);
-		addUIActor(textAreaIP, 390, (int) (100 - textAreaIP.getHeight()), null);
+		textAreaIP.setWidth(234);
+		addCenteredImage(390, 375 - height, width, height, imageStart, runnableStart);
+		addUIActor(textAreaName, 390, (int) (297 - textAreaName.getHeight()), null);
+		addUIActor(textAreaPort, 390, (int) (221 - textAreaPort.getHeight()), null);
+		addUIActor(textAreaIP, 390, (int) (142 - textAreaIP.getHeight()), null);
+		addUIActor(labelError, 776, (int) (121-labelError.getHeight()), null);
 
 		ConnectTryFinishEvent.registerListener(this);
 		DoNotTouchPacketEvent.registerListener(this);
