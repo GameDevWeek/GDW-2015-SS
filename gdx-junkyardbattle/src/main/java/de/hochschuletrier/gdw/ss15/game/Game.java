@@ -133,11 +133,12 @@ public class Game extends InputAdapter {
 
         renderSystem.init(mapLoader.getTiledMap(), this);
         debugDraw = false;
+        physixDebugRenderSystem.setProcessing(debugDraw);
     }
 
     private void addSystems() {
         engine.addSystem(physixSystem);
-        //engine.addSystem(physixDebugRenderSystem);
+        engine.addSystem(physixDebugRenderSystem);
         engine.addSystem(updatePositionSystem);
         engine.addSystem(networksystem);
         engine.addSystem(inputSystem);
