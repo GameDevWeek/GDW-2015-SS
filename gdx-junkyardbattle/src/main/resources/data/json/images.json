@@ -45,5 +45,7 @@
     "hud_blue" : "data/images/HUD_blau.png",
     "hud_punktestand" : "data/images/Punktestand.png",
     "hud_uhr": "data/images/Uhr.png",
-    "hud_schrott" : "data/images/Schrott.png"
+    "hud_schrott" : "data/images/Schrott.png",
+    
+    "car" : "data/images/Auto.png"
 }
