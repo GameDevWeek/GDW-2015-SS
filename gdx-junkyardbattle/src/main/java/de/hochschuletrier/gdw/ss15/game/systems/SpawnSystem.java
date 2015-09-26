@@ -17,10 +17,12 @@ import com.badlogic.gdx.utils.Array;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.ss15.events.PlayerDiedEvent;
 import de.hochschuletrier.gdw.ss15.events.network.server.NetworkNewPlayerEvent;
+import de.hochschuletrier.gdw.ss15.events.network.server.SendPacketServerEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.GameConstants;
 import de.hochschuletrier.gdw.ss15.game.MapLoader;
 import de.hochschuletrier.gdw.ss15.game.MapSpecialEntities;
+import de.hochschuletrier.gdw.ss15.game.components.DeathComponent;
 import de.hochschuletrier.gdw.ss15.game.components.HealthComponent;
 import de.hochschuletrier.gdw.ss15.game.components.HealthComponent.HealthState;
 import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
@@ -28,6 +30,7 @@ import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.components.SpawnComponent;
 import de.hochschuletrier.gdw.ss15.game.components.effects.ParticleEffectComponent;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.EntityUpdatePacket;
+import de.hochschuletrier.gdw.ss15.game.network.Packets.HealthPacket;
 
 import java.util.ArrayList;
 
@@ -56,6 +59,11 @@ public class SpawnSystem extends EntitySystem implements PlayerDiedEvent.Listene
         SpawnComponent spawnComponent = ComponentMappers.spawn.get(player);
         spawnComponent.respawn = true;
         spawnComponent.respawnTimer = GameConstants.RESPAWN_TIMER;
+        
+        HealthComponent healthComponent = ComponentMappers.health.get(player);
+        healthComponent.health = GameConstants.START_HEALTH;
+        
+        player.remove(DeathComponent.class);
         
         PhysixBodyComponent body = ComponentMappers.physixBody.get(player);
         body.setActive(false);
@@ -158,23 +166,17 @@ public class SpawnSystem extends EntitySystem implements PlayerDiedEvent.Listene
             if(spawnComponent.respawn){
                 spawnComponent.respawnTimer -= deltaTime;
                 
-                if(ComponentMappers.animator.has(entity))
-                    ComponentMappers.animator.get(entity).draw = false;
-                    
-                if(ComponentMappers.texture.has(entity))
-                    ComponentMappers.texture.get(entity).draw = false;
-                
                 if(spawnComponent.respawnTimer <= 0.f){
                     PhysixBodyComponent body = ComponentMappers.physixBody.get(entity);
+                    
                     body.setActive(true);
-                    
-                    if(ComponentMappers.animator.has(entity))
-                        ComponentMappers.animator.get(entity).draw = true;
-                    
-                    if(ComponentMappers.texture.has(entity))
-                        ComponentMappers.texture.get(entity).draw = true;
-
                     body.setPosition(spawnComponent.spawnPoint.x, spawnComponent.spawnPoint.y);
+                    
+                    HealthPacket healthPacket = new HealthPacket();
+                    healthPacket.health = ComponentMappers.health.get(entity).health;
+                    healthPacket.id = ComponentMappers.positionSynch.get(entity).networkID;
+                    
+                    SendPacketServerEvent.emit(healthPacket, true);
 
                     spawnComponent.respawnTimer = GameConstants.RESPAWN_TIMER;
                     spawnComponent.respawn = false;

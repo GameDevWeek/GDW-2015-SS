@@ -148,7 +148,7 @@
                 "metalShards": 0
             },
             "Health": {
-                "health": 30
+                "health": 0
             }
         }
     },
@@ -158,7 +158,7 @@
             "Position": {},
             "Player": {},
             "Health": {
-                "health": 30
+                "health": 0
             },
             "PhysixBody": {
                 "shape": "circle",
@@ -184,6 +184,9 @@
         "components": {
             "Player": {
                 "isLocalPlayer": true
+            },
+            "Health": {
+                "health": 0
             },
             "Position": {},
             "PhysixBody": {
@@ -212,7 +215,6 @@
                 "maxMetalShards": 180
             },
             "Weapon": {},
-            "Health": {},
             "SoundEmitter": {}
         }
     },

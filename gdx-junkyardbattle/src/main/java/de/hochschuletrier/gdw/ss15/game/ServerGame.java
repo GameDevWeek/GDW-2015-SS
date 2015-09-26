@@ -28,14 +28,12 @@ import de.hochschuletrier.gdw.ss15.game.systems.HealthSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.MetalShardDropSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.LineOfSightSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.MetalShardSpawnSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.PlayerLifeSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.SpawnSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.RealNetwork.NetworkServerSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.RealNetwork.PositionSynchSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.TestSatelliteSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.UpdatePhysixServer;
-import de.hochschuletrier.gdw.ss15.game.systems.network.UpdatePhysixSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.InventorySystem;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serverclientsocket;
 import de.hochschuletrier.gdw.ss15.game.systems.network.*;
@@ -152,6 +150,8 @@ public class ServerGame{
         engine.addSystem(updatePhysixServer);
         engine.addSystem(gatherServerListener);
         engine.addSystem(miningSystem);
+        
+        PlayerDiedEvent.register(spawnSystem);
     }
 
     private void addContactListeners() {
@@ -200,6 +200,7 @@ public class ServerGame{
         PickupEvent.unregisterAll();
         MiningEvent.unregisterAll();
         PlayerHurtEvent.unregisterAll();
+        PlayerDiedEvent.unregisterAll();
     }
 
 }

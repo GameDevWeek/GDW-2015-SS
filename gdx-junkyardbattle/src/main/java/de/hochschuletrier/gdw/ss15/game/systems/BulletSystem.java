@@ -36,7 +36,7 @@ public class BulletSystem extends IteratingSystem{
         dst.sub(bullet.startpos);
         if(dst.len2() > maxrange*maxrange)//Bullet quasi stehengeblieben
         {
-            System.out.println("bullet got to slow");
+//            System.out.println("bullet got to slow");
             serverGame.createEntity("metalServer", physix.getPosition().x, physix.getPosition().y);
             engine.removeEntity(entity);
         }

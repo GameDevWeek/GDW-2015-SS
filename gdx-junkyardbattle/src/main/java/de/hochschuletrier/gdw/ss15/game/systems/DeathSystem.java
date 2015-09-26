@@ -42,7 +42,7 @@ public class DeathSystem extends EntitySystem{
             deathComponent.stateTime += deltaTime;
             
             if(deathComponent.dyingDuration <= deathComponent.stateTime)
-            {
+            {                
                 if(ComponentMappers.player.has(entity))
                     PlayerDiedEvent.emit(entity);
                 else

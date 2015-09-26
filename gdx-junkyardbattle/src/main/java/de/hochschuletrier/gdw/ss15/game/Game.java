@@ -65,6 +65,9 @@ public class Game extends InputAdapter {
     
     private final TestListenerClient TestoutputSystem = new TestListenerClient();
     private final EffectAddSystem effectAddSystem = new EffectAddSystem(engine);
+    private final RenderStateUpdateSystem renderStateUpdateSystem = new RenderStateUpdateSystem(engine);
+    
+    private final HealthUpdateSystem healthUpdateSystem = new HealthUpdateSystem();
     
     public Game() {
         // If this is a build jar file, disable hotkeys
@@ -103,7 +106,7 @@ public class Game extends InputAdapter {
 
     private void addSystems() {
         engine.addSystem(physixSystem);
-        //engine.addSystem(physixDebugRenderSystem);
+        engine.addSystem(physixDebugRenderSystem);
         engine.addSystem(updatePositionSystem);
         engine.addSystem(networksystem);
         engine.addSystem(inputSystem);
@@ -116,6 +119,7 @@ public class Game extends InputAdapter {
         engine.addSystem(soundSystem);
         engine.addSystem(bulletClientSystem);
         engine.addSystem(effectAddSystem);
+        engine.addSystem(renderStateUpdateSystem);
 
         // add to engine to get removed from listeners:
         engine.addSystem(fireClientListener);
