@@ -4,16 +4,17 @@ import com.badlogic.ashley.core.*;
 import com.badlogic.ashley.utils.ImmutableArray;
 
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
-import de.hochschuletrier.gdw.commons.utils.Base64;
 import de.hochschuletrier.gdw.ss15.events.network.server.SendPacketServerEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.ServerGame;
+import de.hochschuletrier.gdw.ss15.game.components.BulletComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.components.network.server.PositionSynchComponent;
 import de.hochschuletrier.gdw.ss15.game.network.ClientConnection;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.EntityUpdatePacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.InitEntityPacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
+import de.hochschuletrier.gdw.ss15.game.network.Packets.SpawnBulletPacket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serverclientsocket;
 
 import org.slf4j.Logger;
@@ -59,7 +60,7 @@ public class PositionSynchSystem extends EntitySystem implements EntityListener 
             if(ComponentMappers.position.has(ent))
             {
                 PositionComponent pos = ComponentMappers.position.get(ent);
-//                System.out.println("New movment gecoginced: x"+pos.x+ " y"+pos.y);
+//                System.out.println("New movment recognised: x"+pos.x+ " y"+pos.y);
                // System.out.println("New rotation: "+pos.rotation);
                 comp.lastSendTimer.Update();
                 if(comp.lastSendTimer.get_CounterMilliseconds()>comp.updateDuration)
@@ -149,6 +150,19 @@ public class PositionSynchSystem extends EntitySystem implements EntityListener 
         InitEntityPacket packet = new InitEntityPacket(ComponentMappers.positionSynch.get(entity).networkID,
                 ComponentMappers.positionSynch.get(entity).clientName, phcomp.getX(), phcomp.getY(), comp.rotation,phcomp.getLinearVelocity().x,phcomp.getLinearVelocity().y);
         SendPacketServerEvent.emit(packet, true, exept);
+        if(ComponentMappers.bullet.has(entity)){
+            PositionSynchComponent sendComp = ComponentMappers.positionSynch.get(entity);
+            BulletComponent bullet = ComponentMappers.bullet.get(entity);
+
+            SpawnBulletPacket spawnBulletPacket = new SpawnBulletPacket();
+            spawnBulletPacket.bulletID = sendComp.networkID;
+            spawnBulletPacket.rotation = bullet.rotation;
+            spawnBulletPacket.power = bullet.power;
+            spawnBulletPacket.playerRotation = bullet.playerrotation;
+            spawnBulletPacket.playerPosition = bullet.playerpos;
+            SendPacketServerEvent.emit(spawnBulletPacket, true);
+
+        }
     }
 
     @Override

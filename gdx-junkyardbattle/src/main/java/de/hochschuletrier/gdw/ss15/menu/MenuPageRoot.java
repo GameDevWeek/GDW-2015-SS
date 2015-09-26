@@ -68,7 +68,6 @@ public class MenuPageRoot extends MenuPage {
 		
 		@Override
 		public void run() {
-			System.out.println("check");
 			MenuPage page= new MenuPageCredits(skin, menuManager);
 			menuManager.addLayer(page);
 			menuManager.pushPage(page);

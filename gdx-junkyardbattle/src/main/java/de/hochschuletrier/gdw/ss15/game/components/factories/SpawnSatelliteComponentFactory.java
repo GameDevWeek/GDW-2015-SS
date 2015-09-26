@@ -18,7 +18,6 @@ public class SpawnSatelliteComponentFactory extends ComponentFactory<EntityFacto
     public void run(Entity entity, SafeProperties meta,
             SafeProperties properties, EntityFactoryParam param) {
         SpawnSatelliteComponent component = engine.createComponent(SpawnSatelliteComponent.class);
-        System.out.println("Satellit wurde erstellt");
         entity.add(component);
     }
 

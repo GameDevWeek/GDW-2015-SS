@@ -1,6 +1,7 @@
 package de.hochschuletrier.gdw.ss15.game;
 
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
@@ -11,6 +12,7 @@ import de.hochschuletrier.gdw.commons.gdx.physix.PhysixComponentAwareContactList
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixDebugRenderSystem;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.ss15.Main;
+import de.hochschuletrier.gdw.ss15.game.components.BulletComponent;
 import de.hochschuletrier.gdw.ss15.events.network.client.NetworkReceivedNewPacketClientEvent;
 import de.hochschuletrier.gdw.ss15.game.components.PickableComponent;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
@@ -25,6 +27,8 @@ import de.hochschuletrier.gdw.ss15.game.systems.renderers.EffectAddSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.renderers.ParticleSpawnSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.renderers.RenderSystem;
 import de.hochschuletrier.gdw.ss15.game.utils.TimerSystem;
+
+import java.util.function.Consumer;
 
 public class Game extends InputAdapter {
 
@@ -57,7 +61,7 @@ public class Game extends InputAdapter {
     private final MapLoader mapLoader = new MapLoader();
     
     private final FireClientListener fireClientListener = new FireClientListener(this);
-    private final BulletClientSystem bulletClientSystem = new BulletClientSystem(engine);
+//    private final BulletClientSystem bulletClientSystem = new BulletClientSystem(engine);
 
     private final ParticleSpawnSystem particleSpawner = new ParticleSpawnSystem(this);
     private final DeathSystem deathSystem = new DeathSystem();
@@ -65,7 +69,14 @@ public class Game extends InputAdapter {
     
     private final TestListenerClient TestoutputSystem = new TestListenerClient();
     private final EffectAddSystem effectAddSystem = new EffectAddSystem(engine);
+    private final RenderStateUpdateSystem renderStateUpdateSystem = new RenderStateUpdateSystem(engine);
     
+    private final HealthUpdateSystem healthUpdateSystem = new HealthUpdateSystem();
+    
+
+    private final HudSystem hudSystem = new HudSystem(cameraSystem.getCamera().getOrthographicCamera());
+    private HighscoreSyncListener highscoreSyncListener = new HighscoreSyncListener();
+
     public Game() {
         // If this is a build jar file, disable hotkeys
         if (!Main.IS_RELEASE) {
@@ -106,14 +117,15 @@ public class Game extends InputAdapter {
         entityFactory.init(engine, assetManager);
         mapLoader.listen(renderSystem.getTileMapCreator());
         mapLoader.run((String name, float x, float y) -> createEntity(name, x, y),
-                "data/maps/"+mapname+".tmx", physixSystem, entityFactory, assetManager );
+                "data/maps/royalrubble_v2.tmx", physixSystem, entityFactory, assetManager );
+
 
         renderSystem.init(mapLoader.getTiledMap(), this);
     }
 
     private void addSystems() {
         engine.addSystem(physixSystem);
-        //engine.addSystem(physixDebugRenderSystem);
+        engine.addSystem(physixDebugRenderSystem);
         engine.addSystem(updatePositionSystem);
         engine.addSystem(networksystem);
         engine.addSystem(inputSystem);
@@ -124,11 +136,14 @@ public class Game extends InputAdapter {
         engine.addSystem(testMovementSystem);
         engine.addSystem(updatePhysixSystem);
         engine.addSystem(soundSystem);
-        engine.addSystem(bulletClientSystem);
+        engine.addSystem(hudSystem);
+//        engine.addSystem(bulletClientSystem);
         engine.addSystem(effectAddSystem);
+        engine.addSystem(renderStateUpdateSystem);
 
         // add to engine to get removed from listeners:
         engine.addSystem(fireClientListener);
+        engine.addSystem(highscoreSyncListener);
     }
 
     private void addContactListeners() {
@@ -137,6 +152,7 @@ public class Game extends InputAdapter {
         //contactListener.addListener(ImpactSoundComponent.class, new ImpactSoundListener());
        // contactListener.addListener(TriggerComponent.class, new TriggerListener());
     	contactListener.addListener(PickableComponent.class, new PickupListenerClient());
+    	contactListener.addListener(BulletComponent.class, new PickupListenerClient());
     	/*ContactListener cl = new ContactListener() {
 			
 			@Override

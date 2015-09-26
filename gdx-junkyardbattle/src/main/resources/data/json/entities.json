@@ -139,13 +139,13 @@
             },
             "Interpolate": {},
             "Inventory": {
-                "metalShards": 100,
+                "metalShards": 20,
                 "minMetalShards": 0,
-                "maxMetalShards": 300
+                "minMetalShardsForBase": 20,
+                "maxMetalShards": 700
             },
             "Move": {
-                "speed": 300,
-                "metalShards": 0
+                "speed": 500
             },
             "Health": {
                 "health": 30
@@ -185,6 +185,9 @@
             "Player": {
                 "isLocalPlayer": true
             },
+            "Health": {
+                "health": 30
+            },
             "Position": {},
             "PhysixBody": {
                 "shape": "circle",
@@ -202,17 +205,17 @@
                 "initialRotation": 90
             },
             "Move": {
-                "speed": 10
+                "speed": 500
             },
             "Input": {},
             "Interpolate": {},
             "Inventory": {
-                "metalShards": 0,
-                "minMetalShards": 20,
-                "maxMetalShards": 180
+                "metalShards": 20,
+                "minMetalShards": 0,
+                "minMetalShardsForBase": 20,
+                "maxMetalShards": 700
             },
             "Weapon": {},
-            "Health": {},
             "SoundEmitter": {}
         }
     },
@@ -229,20 +232,55 @@
                 "type": "dynamic",
                 "category": "BULLET"
             },
+            "PositionSynch": {
+                "clientname": "projectileClient",
+                "updateDuration": 10000000,
+                "sendSave": true
+            },
             "Damage": {
                 "damageValue": 10,
                 "damageToPlayer": true,
                 "damageToTile": false
             },
             "Bullet": {
-                "playerID": -1
             },
-            "Interpolate": {},
+            "AboveAbyss":{}
+        }
+    },
+    "projectileClient": {
+        "meta": {},
+        "components": {
+            "Position": {
+                "layer": 1
+            },
+            "PhysixBody": {
+                "shape": "circle",
+                "size": 5,
+                "density": 10,
+                "friction": 0.5,
+                "restitution": 0.1,
+                "type": "dynamic",
+                "category": "BULLET"
+            },
+            "Bullet": {
+            },
+            "NetworkID": {},
             "ParticleEffect": {
-                "effectname": "glow",
+                "effectname": "particleglow",
                 "offsetX": 0,
                 "offsetY": 0,
                 "initialRotation": -90
+            },
+            "Texture": {
+                "texture": "junk0",
+                "width": 120,
+                "height": 120,
+                "srcX": 0,
+                "srcY": 0,
+                "scaleX": 0.3,
+                "scaleY": 0.3,
+                "flipX": false,
+                "flipY": false
             }
         }
     },
@@ -258,7 +296,8 @@
                 "restitution": 0,
                 "sensor": true,
                 "type": "static"
-            }
+            },
+            "BasePoint": {}
         }
     },
     "SatelliteSite": {
@@ -267,9 +306,9 @@
             "Position": {},
             "SpawnSatellite": {},
             "Inventory": {
-                "metalShards": 10,
+                "metalShards": 650,
                 "minMetalShards": 0,
-                "maxMetalShards": 700
+                "maxMetalShards": 650
             }
         }
     },
@@ -284,7 +323,7 @@
             },
             "PhysixBody": {
                 "shape": "circle",
-                "size": 50,
+                "size": 75,
                 "density": 10,
                 "friction": 0.5,
                 "restitution": 0.1,
@@ -298,9 +337,9 @@
             },
             "SpawnSatellite": {},
             "Inventory": {
-                "metalShards": 10,
+                "metalShards": 650,
                 "minMetalShards": 0,
-                "maxMetalShards": 700
+                "maxMetalShards": 650
             },
             "SoundEmitter": {},
             "Mineable": {}
@@ -325,7 +364,7 @@
             "NetworkID": {},
             "PhysixBody": {
                 "shape": "circle",
-                "size": 50,
+                "size": 75,
                 "density": 10,
                 "friction": 0.5,
                 "restitution": 0.1,
@@ -456,9 +495,9 @@
             },
             "Pickable": {},
             "Inventory": {
-                "metalShards": 1,
+                "metalShards": 2,
                 "minMetalShards": 0,
-                "maxMetalShards": 1
+                "maxMetalShards": 2
             }
         }
     }

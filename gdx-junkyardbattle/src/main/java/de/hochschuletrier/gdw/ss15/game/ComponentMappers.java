@@ -4,8 +4,30 @@ import com.badlogic.ashley.core.ComponentMapper;
 
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixModifierComponent;
-import de.hochschuletrier.gdw.ss15.game.components.*;
+import de.hochschuletrier.gdw.ss15.game.components.AboveAbyssComponent;
+import de.hochschuletrier.gdw.ss15.game.components.BasePointComponent;
+import de.hochschuletrier.gdw.ss15.game.components.BulletComponent;
+import de.hochschuletrier.gdw.ss15.game.components.DamageComponent;
+import de.hochschuletrier.gdw.ss15.game.components.DeathComponent;
+import de.hochschuletrier.gdw.ss15.game.components.HealthComponent;
+import de.hochschuletrier.gdw.ss15.game.components.ImpactSoundComponent;
+import de.hochschuletrier.gdw.ss15.game.components.InterpolatePositionComponent;
+import de.hochschuletrier.gdw.ss15.game.components.InventoryComponent;
+import de.hochschuletrier.gdw.ss15.game.components.LineOfSightComponent;
+import de.hochschuletrier.gdw.ss15.game.components.MetalShardSpawnComponent;
+import de.hochschuletrier.gdw.ss15.game.components.MineableComponent;
+import de.hochschuletrier.gdw.ss15.game.components.MoveComponent;
+import de.hochschuletrier.gdw.ss15.game.components.PickableComponent;
+import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
+import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
+import de.hochschuletrier.gdw.ss15.game.components.SoundEmitterComponent;
+import de.hochschuletrier.gdw.ss15.game.components.SpawnComponent;
+import de.hochschuletrier.gdw.ss15.game.components.SpawnSatelliteComponent;
+import de.hochschuletrier.gdw.ss15.game.components.TimerComponent;
+import de.hochschuletrier.gdw.ss15.game.components.TriggerComponent;
+import de.hochschuletrier.gdw.ss15.game.components.WeaponComponent;
 import de.hochschuletrier.gdw.ss15.game.components.animation.AnimatorComponent;
+import de.hochschuletrier.gdw.ss15.game.components.effects.AttachedParticleEntityComponent;
 import de.hochschuletrier.gdw.ss15.game.components.effects.ParticleEffectComponent;
 import de.hochschuletrier.gdw.ss15.game.components.input.InputComponent;
 import de.hochschuletrier.gdw.ss15.game.components.light.ChainLightComponent;
@@ -54,4 +76,6 @@ public class ComponentMappers {
     public static final ComponentMapper<MetalShardSpawnComponent> metalShardSpawn = ComponentMapper.getFor(MetalShardSpawnComponent.class);
     public static final ComponentMapper<BasePointComponent> basePoint = ComponentMapper.getFor(BasePointComponent.class);
     public static final ComponentMapper<SpawnComponent> spawn = ComponentMapper.getFor(SpawnComponent.class);
+    public static final ComponentMapper<AttachedParticleEntityComponent> particleEntity = ComponentMapper.getFor(AttachedParticleEntityComponent.class);
+    public static final ComponentMapper<AboveAbyssComponent> abyss = ComponentMapper.getFor(AboveAbyssComponent.class);
 }

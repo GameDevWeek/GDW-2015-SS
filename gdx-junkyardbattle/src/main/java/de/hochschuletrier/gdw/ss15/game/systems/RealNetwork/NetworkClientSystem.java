@@ -12,8 +12,11 @@ import de.hochschuletrier.gdw.ss15.game.components.network.client.NetworkIDCompo
 import de.hochschuletrier.gdw.ss15.game.network.ClientConnection;
 import de.hochschuletrier.gdw.ss15.game.network.PacketIds;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.EntityUpdatePacket;
+import de.hochschuletrier.gdw.ss15.game.network.Packets.HealthPacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.InitEntityPacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
+import de.hochschuletrier.gdw.ss15.game.network.Packets.SpawnBulletPacket;
+import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Clientsocket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,7 +84,7 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener,
         if(pack.getPacketId()== PacketIds.InitEntity.getValue())
         {
             InitEntityPacket iPacket = (InitEntityPacket) pack;
-            //logger.info("Spawned entitiy with name: "+iPacket.name);
+//            logger.info("Spawned entitiy with name: "+iPacket.name);
 
 
             lastAddedEntityID = iPacket.entityID;
@@ -123,7 +126,24 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener,
                 }
             }
         }
-        else
+        else if(pack.getPacketId() == PacketIds.SpawnBullet.getValue()){
+            SpawnBulletPacket packet = (SpawnBulletPacket) pack;
+            Entity e = hashMap.get(packet.bulletID);
+            if(e != null)
+                NetworkReceivedNewPacketClientEvent.emit(pack, e);
+//            else
+//                System.out.println("spawnbullet packet illegal entity, id:" + packet.bulletID);
+        }
+        else if(pack.getPacketId() == PacketIds.Health.getValue())
+        {
+            HealthPacket packet = (HealthPacket)pack;
+            
+            Entity ent = hashMap.get(packet.id);
+            if(ent!=null) {
+                NetworkReceivedNewPacketClientEvent.emit(pack,ent);
+            }
+        }
+        else 
         {
             NetworkReceivedNewPacketClientEvent.emit(pack,null);
         }
