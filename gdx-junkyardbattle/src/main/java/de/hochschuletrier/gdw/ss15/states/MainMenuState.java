@@ -14,6 +14,7 @@ import de.hochschuletrier.gdw.commons.gdx.menu.widgets.DecoImage;
 import de.hochschuletrier.gdw.commons.gdx.audio.MusicManager;
 import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.game.GameConstants;
+import de.hochschuletrier.gdw.ss15.menu.MenuPageEnterIP;
 import de.hochschuletrier.gdw.ss15.menu.MenuPageRoot;
 
 /**
@@ -29,15 +30,23 @@ public class MainMenuState extends BaseGameState {
     private final MenuManager menuManager = new MenuManager(Main.WINDOW_WIDTH, Main.WINDOW_HEIGHT, null);
     private final InputForwarder inputForwarder;
 
-    public MainMenuState(AssetManagerX assetManager) {
+    public MainMenuState(AssetManagerX assetManager,int state) {
         music = assetManager.getMusic("menu");
 
         final MenuPageRoot menuPageRoot = new MenuPageRoot(skin, menuManager, MenuPageRoot.Type.MAINMENU);
         menuManager.addLayer(menuPageRoot);
 
-        menuManager.addLayer(new DecoImage(assetManager.getTexture("menu_fg")));
-        menuManager.pushPage(menuPageRoot);
-//        menuManager.getStage().setDebugAll(true);
+        if(state == 0) {
+            menuManager.addLayer(new DecoImage(assetManager.getTexture("menu_fg")));
+            menuManager.pushPage(menuPageRoot);
+            //        menuManager.getStage().setDebugAll(true);
+        }
+        else if(state == 1)
+        {
+            MenuPageEnterIP page= new MenuPageEnterIP(skin, menuManager, "menu_bg");
+            menuManager.addLayer(page);
+            menuManager.pushPage(page);
+        }
 
         Main.getInstance().addScreenListener(menuManager);
 

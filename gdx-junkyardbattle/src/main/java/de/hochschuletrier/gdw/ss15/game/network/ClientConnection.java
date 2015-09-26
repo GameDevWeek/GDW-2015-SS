@@ -121,7 +121,12 @@ public class ClientConnection implements SendPacketClientEvent.Listener,
             clientSocket.close();
             clientSocket=null;
             logger.info("Connection beendet");
-            Main.getInstance().changeState(new MainMenuState(Main.getInstance().getAssetManager()), new SplitHorizontalTransition(500), null);
+
+            //final MainMenuState mainMenuState = new MainMenuState(Main.getInstance().getAssetManager(),1);
+            //Main.getInstance().addPersistentState(mainMenuState);
+            //Main.getInstance().changeState(Main.getInstance().get, null, null);
+
+           // Main.getInstance().changeState(new MainMenuState(Main.getInstance().getAssetManager(),1), new SplitHorizontalTransition(500), null);
         }
     }
 
