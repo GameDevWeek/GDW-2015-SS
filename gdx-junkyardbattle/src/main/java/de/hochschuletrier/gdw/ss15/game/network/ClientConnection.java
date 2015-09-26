@@ -1,11 +1,14 @@
 package de.hochschuletrier.gdw.ss15.game.network;
 
 import de.hochschuletrier.gdw.commons.devcon.ConsoleCmd;
+import de.hochschuletrier.gdw.commons.gdx.state.transition.SplitHorizontalTransition;
 import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.events.network.Base.ConnectTryFinishEvent;
 import de.hochschuletrier.gdw.ss15.events.network.Base.DisconnectEvent;
 import de.hochschuletrier.gdw.ss15.events.network.Base.DoNotTouchPacketEvent;
 import de.hochschuletrier.gdw.ss15.events.network.client.SendPacketClientEvent;
+import de.hochschuletrier.gdw.ss15.game.Game;
+import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Clientsocket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.basic.SocketConnectListener;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.basic.SocketDisconnectListener;
@@ -118,6 +121,7 @@ public class ClientConnection implements SendPacketClientEvent.Listener,
             clientSocket.close();
             clientSocket=null;
             logger.info("Connection beendet");
+            Main.getInstance().changeState(new MainMenuState(Main.getInstance().getAssetManager()), new SplitHorizontalTransition(500), null);
         }
     }
 
@@ -158,12 +162,29 @@ public class ClientConnection implements SendPacketClientEvent.Listener,
 
     @Override
     public void socketDisconnected() {
-        System.out.print("called from socket");
+        //System.out.print("called from socket");
         DisconnectEvent.emit();
+        disconnect();
     }
 
     @Override
     public void receivedPacket(Packet packet, boolean receivedSave) {
+
+        if(packet.getPacketId() == PacketIds.Simple.getValue())
+        {
+            SimplePacket pack = (SimplePacket)packet;
+            if(pack.m_SimplePacketId == SimplePacket.SimplePacketId.StartGame.getValue())
+            {
+                if (!Main.getInstance().isTransitioning()) {
+                    Game game = new Game();
+                    game.init(Main.getInstance().getAssetManager());
+                    Main.getInstance().changeState(new GameplayState(Main.getInstance().getAssetManager(), game), new SplitHorizontalTransition(500), null);
+                }
+            }
+            else if(pack.m_SimplePacketId == SimplePacket.SimplePacketId.StartGame.getValue()) {
+                //stop game
+            }
+        }
 
         DoNotTouchPacketEvent.emit(packet);
     }

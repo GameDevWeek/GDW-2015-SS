@@ -4,11 +4,13 @@ import de.hochschuletrier.gdw.commons.devcon.ConsoleCmd;
 import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.game.network.ClientConnection;
 import de.hochschuletrier.gdw.ss15.game.network.LobyClient;
+import de.hochschuletrier.gdw.ss15.game.network.PacketIds;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
 import de.hochschuletrier.gdw.ss15.game.network.ServerLobby;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Clientsocket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serverclientsocket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serversocket;
+import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.MyTimer;
 
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.Tools;
@@ -20,6 +22,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.LongBinaryOperator;
 
 
 /**
@@ -81,6 +84,8 @@ public class Server implements Runnable
 
     LinkedList<Serverclientsocket> clientSockets = new LinkedList<>();
 
+    LinkedList<LobyClient> listToAddInGame = null;
+
     public Server()
     {
         timer.Update();
@@ -137,10 +142,6 @@ public class Server implements Runnable
     {
         if(ToStartServer.get())
         {
-            lobby.SendStartGame();
-
-
-            Tools.Sleep(100);//all player initializie game mot verg good XD
 
             //Main.getInstance().getCurrentState().
 
@@ -148,10 +149,9 @@ public class Server implements Runnable
             runningGame.init();
             runningGame.update(0);
 
-            for(LobyClient client : lobby.connectedClients)
-            {
-                runningGame.InsertPlayerInGame(client.socket,client.name,client.Team1);
-            }
+            listToAddInGame = lobby.connectedClients;
+            lobby.SendStartGame();
+
             lobby.remove();
             lobby = null;
 
@@ -175,6 +175,24 @@ public class Server implements Runnable
             }
             else
             {
+                Iterator<LobyClient> it = listToAddInGame.iterator();
+                while(it.hasNext())
+                {
+                    LobyClient client = it.next();
+                    while(client.socket.isPacketAvaliable())
+                    {
+                        Packet pack = client.socket.getReceivedPacket();
+                        if(pack.getPacketId() == PacketIds.Simple.getValue())
+                        {
+                            SimplePacket spacket = (SimplePacket) pack;
+                            if(spacket.m_SimplePacketId == SimplePacket.SimplePacketId.StartGame.getValue())
+                            {//client is ready to join game
+                                it.remove();
+                                runningGame.InsertPlayerInGame(client.socket,client.name,client.Team1);
+                            }
+                        }
+                    }
+                }
                runningGame.update((float) timer.get_FrameSeconds());
             }
 
@@ -192,7 +210,7 @@ public class Server implements Runnable
                     {
                         logger.info("Insert player to game");
                         sock.sendPacket(new SimplePacket(SimplePacket.SimplePacketId.StartGame.getValue(), 0));
-                        runningGame.InsertPlayerInGame(sock,"test",true);
+                        listToAddInGame.push(new LobyClient(sock));
                     }
                     else
                     {
@@ -240,21 +258,13 @@ public class Server implements Runnable
             return;
         }
 
-        lobby.SendStartGame();
-
-
-        Tools.Sleep(100);//all player initializie game mot verg good XD
-
-        //Main.getInstance().getCurrentState().
-
         runningGame = new ServerGame();
         runningGame.init();
         runningGame.update(0);
 
-        for(LobyClient client : lobby.connectedClients)
-        {
-            runningGame.InsertPlayerInGame(client.socket,client.name,client.Team1);
-        }
+        listToAddInGame = lobby.connectedClients;
+        lobby.SendStartGame();
+
         lobby.remove();
         lobby = null;
     }
