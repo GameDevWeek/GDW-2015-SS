@@ -129,6 +129,7 @@ public class HudSystem extends IteratingSystem {
     private void lebensBalken() {
         Color healthColor;
         int health = localPlayer.getComponent(HealthComponent.class).health;
+        System.out.println(health);
         if (HudDebug.health >= 50 && HudDebug.health <= 100)
             healthColor = Color.GREEN;
         else if (HudDebug.health <= 50 && HudDebug.health >= 25)
