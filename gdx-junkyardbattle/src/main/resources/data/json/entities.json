@@ -241,7 +241,8 @@
                 "damageToTile": false
             },
             "Bullet": {
-            }
+            },
+            "AboveAbyss":{}
         }
     },
     "projectileClient": {
@@ -320,7 +321,7 @@
             },
             "PhysixBody": {
                 "shape": "circle",
-                "size": 50,
+                "size": 75,
                 "density": 10,
                 "friction": 0.5,
                 "restitution": 0.1,
@@ -361,7 +362,7 @@
             "NetworkID": {},
             "PhysixBody": {
                 "shape": "circle",
-                "size": 50,
+                "size": 75,
                 "density": 10,
                 "friction": 0.5,
                 "restitution": 0.1,
@@ -492,9 +493,9 @@
             },
             "Pickable": {},
             "Inventory": {
-                "metalShards": 1,
+                "metalShards": 2,
                 "minMetalShards": 0,
-                "maxMetalShards": 1
+                "maxMetalShards": 2
             }
         }
     }

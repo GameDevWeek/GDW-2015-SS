@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="54" height="54" tilewidth="128" tileheight="128" nextobjectid="184">
- <tileset firstgid="1" source="tilesets/Tank_Body.tsx"/>
- <tileset firstgid="13" source="tilesets/Terrain.tsx"/>
- <tileset firstgid="52" source="tilesets/Tank_Rohr_Up.tsx"/>
- <tileset firstgid="64" source="tilesets/Tank_Rohr_Down.tsx"/>
+ <tileset firstgid="1" source="tilesets/tank_body.tsx"/>
+ <tileset firstgid="13" source="tilesets/terrain.tsx"/>
+ <tileset firstgid="52" source="tilesets/tank_rohr_up.tsx"/>
+ <tileset firstgid="64" source="tilesets/tank_rohr_down.tsx"/>
  <layer name="Floor" width="54" height="54">
   <data>
    <tile gid="33"/>

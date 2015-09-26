@@ -51,6 +51,9 @@ public class ParticleEffectRenderer extends SortedSubIteratingSystem.SubSystem i
         PositionComponent position = ComponentMappers.position.get(entity);
         ParticleEffectComponent particleEffectComponent = ComponentMappers.particleEffect.get(entity);
         
+        if(!particleEffectComponent.draw)
+            return;
+        
         if(particleEffectComponent.loop){
            for(ParticleEmitter particleEmitter: particleEffectComponent.particleEffect.getEmitters()){
                particleEmitter.durationTimer=0;
