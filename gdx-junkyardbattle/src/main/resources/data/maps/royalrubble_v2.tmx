@@ -7345,54 +7345,54 @@
   <object id="131" name="JunkSpawn" type="Schrott" x="1332" y="420"/>
   <object id="132" name="JunkSpawn" type="Schrott" x="7120" y="6848"/>
   <object id="134" name="JunkSpawn" type="Schrott" x="608" y="1952"/>
-  <object id="144" name="JunkPile" type="Schrotthauffen" x="4632.79" y="323.481" rotation="90.2638">
+  <object id="144" name="SpawnCar" type="Schrotthauffen" x="4632.79" y="323.481" rotation="90.2638">
    <properties>
-    <property name="JunkPile" value="8"/>
+    <property name="SpawnCar" value="8"/>
    </properties>
   </object>
-  <object id="154" name="JunkPile" type="Schrotthauffen" x="6341.88" y="362.875" rotation="90.2638">
+  <object id="154" name="SpawnCar" type="Schrotthauffen" x="6341.88" y="362.875" rotation="90.2638">
    <properties>
-    <property name="JunkPile" value="8"/>
+    <property name="SpawnCar" value="8"/>
    </properties>
   </object>
-  <object id="155" name="JunkPile" type="Schrotthauffen" x="7454" y="4417.42" rotation="90.2638">
+  <object id="155" name="SpawnCar" type="Schrotthauffen" x="7454" y="4417.42" rotation="90.2638">
    <properties>
-    <property name="JunkPile" value="8"/>
+    <property name="SpawnCar" value="8"/>
    </properties>
   </object>
-  <object id="156" name="JunkPile" type="Schrotthauffen" x="7447.94" y="7078.03" rotation="90.2638">
+  <object id="156" name="SpawnCar" type="Schrotthauffen" x="7447.94" y="7078.03" rotation="90.2638">
    <properties>
-    <property name="JunkPile" value="8"/>
+    <property name="SpawnCar" value="8"/>
    </properties>
   </object>
-  <object id="157" name="JunkPile" type="Schrotthauffen" x="4411.57" y="3299.24" rotation="90.2638">
+  <object id="157" name="SpawnCar" type="Schrotthauffen" x="4411.57" y="3299.24" rotation="90.2638">
    <properties>
-    <property name="JunkPile" value="8"/>
+    <property name="SpawnCar" value="8"/>
    </properties>
   </object>
-  <object id="158" name="JunkPile" type="Schrotthauffen" x="3478.24" y="4420.45" rotation="90.2638">
+  <object id="158" name="SpawnCar" type="Schrotthauffen" x="3478.24" y="4420.45" rotation="90.2638">
    <properties>
-    <property name="JunkPile" value="8"/>
+    <property name="SpawnCar" value="8"/>
    </properties>
   </object>
-  <object id="159" name="JunkPile" type="Schrotthauffen" x="2360.06" y="7393.18" rotation="90.2638">
+  <object id="159" name="SpawnCar" type="Schrotthauffen" x="2360.06" y="7393.18" rotation="90.2638">
    <properties>
-    <property name="JunkPile" value="8"/>
+    <property name="SpawnCar" value="8"/>
    </properties>
   </object>
-  <object id="160" name="JunkPile" type="Schrotthauffen" x="720.666" y="3050.75" rotation="90.2638">
+  <object id="160" name="SpawnCar" type="Schrotthauffen" x="720.666" y="3050.75" rotation="90.2638">
    <properties>
-    <property name="JunkPile" value="8"/>
+    <property name="SpawnCar" value="8"/>
    </properties>
   </object>
-  <object id="162" name="JunkPile" type="Schrotthauffen" x="278.242" y="3387.12" rotation="90.2638">
+  <object id="162" name="SpawnCar" type="Schrotthauffen" x="278.242" y="3387.12" rotation="90.2638">
    <properties>
-    <property name="JunkPile" value="8"/>
+    <property name="SpawnCar" value="8"/>
    </properties>
   </object>
-  <object id="163" name="JunkPile" type="Schrotthauffen" x="457.029" y="2268.94" rotation="90.2638">
+  <object id="163" name="SpawnCar" type="Schrotthauffen" x="457.029" y="2268.94" rotation="90.2638">
    <properties>
-    <property name="JunkPile" value="8"/>
+    <property name="SpawnCar" value="8"/>
    </properties>
   </object>
   <object id="164" name="SatelliteSite" type="Satellite" x="6524" y="1402"/>
