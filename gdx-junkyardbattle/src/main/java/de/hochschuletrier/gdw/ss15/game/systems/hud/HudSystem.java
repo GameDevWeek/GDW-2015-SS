@@ -175,8 +175,8 @@ public class HudSystem extends IteratingSystem {
     private void punktestand() {
         DrawUtil.batch.draw(punktestand, Gdx.graphics.getWidth() / 2 - punktestand.getWidth() / 6, punktestand.getHeight() / 3, punktestand.getWidth() / 3, punktestand.getHeight() / -3);
 
-        font.draw(DrawUtil.batch, ""+Highscore.Get().getTeamStat(0,"points"), Gdx.graphics.getWidth()/2 - 75, 15);
-        font.draw(DrawUtil.batch, ""+Highscore.Get().getTeamStat(1,"points"), Gdx.graphics.getWidth()/2 + 25, 15);
+//        font.draw(DrawUtil.batch, ""+Highscore.Get().getTeamStat(0,"points"), Gdx.graphics.getWidth()/2 - 75, 15);
+//        font.draw(DrawUtil.batch, ""+Highscore.Get().getTeamStat(1,"points"), Gdx.graphics.getWidth()/2 + 25, 15);
     }
 
     private void showHudOverlay() {
