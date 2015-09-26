@@ -128,16 +128,16 @@ public class HudSystem extends IteratingSystem {
     private void lebensBalken() {
         Color healthColor;
         int health = localPlayer.getComponent(HealthComponent.class).health;
-        System.out.println(health);
-        if (HudDebug.health >= 50 && HudDebug.health <= 100)
+
+        if (health >= 50 && health <= 100)
             healthColor = Color.GREEN;
-        else if (HudDebug.health <= 50 && HudDebug.health >= 25)
+        else if (health < 50 && health >= 25)
             healthColor = Color.YELLOW;
         else
             healthColor = Color.RED;
 
 
-        float healthSizeFactor = (float) HudDebug.health / 100.0f;
+        float healthSizeFactor = (float) health / 100.0f;
         float relativeXPosLeft = 736.0f / hudoverlay.getWidth() * Gdx.graphics.getWidth();
         float relativeYPosLeft = Gdx.graphics.getHeight() - 58.0f / hudoverlay.getHeight() * Gdx.graphics.getHeight();
         float relativeXPosRight = 1023.0f / hudoverlay.getWidth() * Gdx.graphics.getWidth();
