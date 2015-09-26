@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.math.Interpolation;
 
 import de.hochschuletrier.gdw.commons.devcon.cvar.CVar;
 import de.hochschuletrier.gdw.commons.devcon.cvar.CVarBool;
@@ -22,7 +21,7 @@ import de.hochschuletrier.gdw.ss15.game.rendering.ZoomingModes.modes;
  * </p>
  *
  * @author Sebastian Schalow
- * @version 0.2
+ * @version 0.3
  */
 
 public class BoundedCamera extends SmoothCamera {
@@ -128,19 +127,15 @@ public class BoundedCamera extends SmoothCamera {
             position.add(moveDir);
             setCameraPosition(position);
         }
+        
         if(resetZoom)
         {
+            // change interpolation type for camera
             zoomProgress -= zoomSpeed * delta;
-            checkProgressBounds();
-            curZoom = Interpolation.pow4.apply(srcZoom, dstZoom, zoomProgress);
-            setZoom(curZoom);
-        }
-//        else
-//            zoomProgress += zoomSpeed * delta;
+            curZoom = ZoomingModes.interpolate(mode, srcZoom, dstZoom, zoomProgress);
+        } 
         
-        
-        // change interpolation type for camera
-                
+        setZoom(curZoom);        
         
         camera.update(true);
     }
@@ -170,18 +165,8 @@ public class BoundedCamera extends SmoothCamera {
     		if(deadZone < 1.0f)
     			converted = (zoomAmount - deadZone) / (1.0f-deadZone);
     		zoomProgress = converted;
-    		setZoom(srcZoom + converted*(dstZoom-srcZoom));
+    		curZoom = ZoomingModes.interpolate(mode, srcZoom, dstZoom, converted);
     	}
-    }
-    
-    
-    // Check if zoomProgress variable is out of bounds
-    private void checkProgressBounds(){
-        if(zoomProgress > 1.f){
-            zoomProgress = 1.f;
-        } else if (zoomProgress < 0.f){
-            zoomProgress = 0.f;
-        }
     }
     
     @Override
@@ -241,7 +226,5 @@ public class BoundedCamera extends SmoothCamera {
     public OrthographicCamera getOrthographicCamera() {
         return camera;
     }
-    
-    
      
 }
