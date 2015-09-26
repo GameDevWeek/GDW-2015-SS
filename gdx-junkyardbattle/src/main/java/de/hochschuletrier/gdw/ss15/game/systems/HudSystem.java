@@ -29,8 +29,7 @@ import jdk.internal.dynalink.linker.GuardingDynamicLinker;
 import javax.swing.text.Position;
 
 /**
- * Created by glumbatsch on 25.09.2015.
- * KameHameHAH!
+ * Created by David on 25.09.2015.
  */
 public class HudSystem extends IteratingSystem {
 
@@ -63,10 +62,12 @@ public class HudSystem extends IteratingSystem {
     protected void processEntity(Entity entity, float deltaTime) {
         PlayerComponent player = entity.getComponent(PlayerComponent.class);
         Main.getInstance().screenCamera.bind();
+        DrawUtil.resetColor();
         if (player.isLocalPlayer){
             if (localPlayer == null){
                 this.localPlayer = entity;
             }
+            System.out.println("test");
             drawCrosshair(entity);
             lebensBalken();
             showHudOverlay();
@@ -82,6 +83,7 @@ public class HudSystem extends IteratingSystem {
         DrawUtil.batch.draw(crosshairTex, mouseScreenPos.x - crosshairTex.getWidth() / 4,
                 mouseScreenPos.y - crosshairTex.getHeight() / 4, crosshairTex.getWidth() / 2, crosshairTex.getHeight() / 2);
     }
+
     private void radar(Entity entity) {
 
         lineToPlayer.x = entity.getComponent(PositionComponent.class).x - localPlayer.getComponent(PositionComponent.class).x;
