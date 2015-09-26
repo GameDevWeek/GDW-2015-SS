@@ -30,23 +30,21 @@ public class MainMenuState extends BaseGameState {
     private final MenuManager menuManager = new MenuManager(Main.WINDOW_WIDTH, Main.WINDOW_HEIGHT, null);
     private final InputForwarder inputForwarder;
 
-    public MainMenuState(AssetManagerX assetManager,int state) {
+    public MenuManager getMenumanager()
+    {
+        return menuManager;
+    }
+
+    public MainMenuState(AssetManagerX assetManager) {
         music = assetManager.getMusic("menu");
 
         final MenuPageRoot menuPageRoot = new MenuPageRoot(skin, menuManager, MenuPageRoot.Type.MAINMENU);
         menuManager.addLayer(menuPageRoot);
 
-        if(state == 0) {
-            menuManager.addLayer(new DecoImage(assetManager.getTexture("menu_fg")));
-            menuManager.pushPage(menuPageRoot);
-            //        menuManager.getStage().setDebugAll(true);
-        }
-        else if(state == 1)
-        {
-            MenuPageEnterIP page= new MenuPageEnterIP(skin, menuManager, "menu_bg");
-            menuManager.addLayer(page);
-            menuManager.pushPage(page);
-        }
+        menuManager.addLayer(new DecoImage(assetManager.getTexture("menu_fg")));
+        menuManager.pushPage(menuPageRoot);
+        //        menuManager.getStage().setDebugAll(true);
+
 
         Main.getInstance().addScreenListener(menuManager);
 

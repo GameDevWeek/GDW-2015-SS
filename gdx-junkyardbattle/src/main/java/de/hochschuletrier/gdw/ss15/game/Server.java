@@ -42,18 +42,18 @@ public class Server implements Runnable
             }
             else if(info.equals("stopGame")){
                 stopGame();
-            }else if(info.equals("lobby")){
-                String info2 = list.get(2);
-                if(info2.equals("kickPlayer")){
-                    logger.info("Spieler "+list.get(3)+" wird gekickt >:)");
-                    kickPlayer(list.get(3));
-                }else if(info2.equals("changeMap")){
-                    logger.info("Map wird geaendert zu "+list.get(3));
-                    changeMap(list.get(3));
-                }else{
-                    logger.error(info2+" falscher Parameter fuer command serverCommmand lobby");
+            }else if(info.equals("changeMap")){
+                if(lobby == null)
+                {
+                    logger.error("Lobby nicht aktiv");
                 }
-                //lobby kickplayer changemap
+                if(list.size()>2) {
+                    if (lobby.ChangeMap(list.get(2))) {
+                        logger.info("Karte wurde geändert");
+                    } else {
+                        logger.error("karte wurde nicht gefunden");
+                    }
+                }
             }
             else
             {
@@ -146,7 +146,7 @@ public class Server implements Runnable
             //Main.getInstance().getCurrentState().
 
             runningGame = new ServerGame();
-            runningGame.init();
+            runningGame.init(lobby.mapId);
             runningGame.update(0);
 
             listToAddInGame = lobby.connectedClients;
@@ -189,11 +189,16 @@ public class Server implements Runnable
                             {//client is ready to join game
                                 it.remove();
                                 runningGame.InsertPlayerInGame(client.socket,client.name,client.Team1);
+                                break;
                             }
                         }
                     }
                 }
-               runningGame.update((float) timer.get_FrameSeconds());
+                if(!runningGame.update((float) timer.get_FrameSeconds()))
+                {
+                    logger.info("Game stoped timeout");
+                    stopGame();
+                }
             }
 
 
@@ -259,7 +264,7 @@ public class Server implements Runnable
         }
 
         runningGame = new ServerGame();
-        runningGame.init();
+        runningGame.init(lobby.mapId);
         runningGame.update(0);
 
         listToAddInGame = lobby.connectedClients;
@@ -285,7 +290,6 @@ public class Server implements Runnable
             SimplePacket pack = new SimplePacket(SimplePacket.SimplePacketId.StopGame.getValue(),0);
             for(Serverclientsocket sock : clientSockets)
             {
-
                 sock.sendPacketSave(pack);
             }
 

@@ -1,7 +1,8 @@
 {
     "map1": {
+        "id": 1,
         "name": "Test123",
-		"playerPerTeam":4,
+		"playerPerTeam": 4,
 		"file":"data/maps/royalrubble_v2.tmx",
 		"thumbnail":"data/maps/thumbnails/royalrubbel.png"
     }
