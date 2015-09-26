@@ -122,26 +122,14 @@ public class ClientConnection implements SendPacketClientEvent.Listener,
             clientSocket=null;
             logger.info("Connection beendet");
 
-            //final MainMenuState mainMenuState = new MainMenuState(Main.getInstance().getAssetManager(),1);
+            final MainMenuState mainMenuState = new MainMenuState(Main.getInstance().getAssetManager(),1);
             //Main.getInstance().addPersistentState(mainMenuState);
             //Main.getInstance().changeState(Main.getInstance().get, null, null);
 
-           // Main.getInstance().changeState(new MainMenuState(Main.getInstance().getAssetManager(),1), new SplitHorizontalTransition(500), null);
+            Main.getInstance().changeState(new MainMenuState(Main.getInstance().getAssetManager(),1), new SplitHorizontalTransition(500), null);
         }
     }
 
-    /*
-    public void loginFinished(ConnectStatus status)
-    {
-        if(status == ConnectStatus.Succes)
-        {
-            logger.info("Login am server erfollgreich");
-        }
-        else
-        {
-            logger.error("Login gescheitert wegen: "+status);
-        }
-    }*/
 
     public void onSendSClientPacket(Packet pack,boolean save)
     {

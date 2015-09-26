@@ -128,7 +128,7 @@ public class MenuPage extends Group {
 
 			@Override
 			public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-				System.out.println("Mouse Over");
+				//System.out.println("Mouse Over");
 
 				/*
 				 * if(abspielen==true){ SoundEmitter.updateGlobal();
