@@ -12,6 +12,7 @@ import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
 public class SpawnBulletPacket extends Packet{
 
     public long bulletID;
+    public int power;
 //    public Vector2 position = new Vector2(0, 0);;
     public float rotation;
     public Vector2 playerPosition = new Vector2(0, 0);
@@ -30,6 +31,7 @@ public class SpawnBulletPacket extends Packet{
         dataOutput.writeFloat(playerPosition.y);
         dataOutput.writeFloat(playerRotation);
         dataOutput.writeLong(bulletID);
+        dataOutput.writeInt(power);
     }
 
     @Override
@@ -41,11 +43,12 @@ public class SpawnBulletPacket extends Packet{
         playerPosition.y = input.readFloat();
         playerRotation = input.readFloat();
         bulletID = input.readLong();
+        power = input.readInt();
     }
 
     @Override
     public int getSize() {
-        return (4 * Float.SIZE + Long.SIZE) / 8;
+        return (4 * Float.SIZE + Integer.SIZE + Long.SIZE) / 8;
     }
 
 }

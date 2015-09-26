@@ -10,6 +10,7 @@ import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.ss15.events.CollisionEvent;
 import de.hochschuletrier.gdw.ss15.events.PlayerHurtEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
+import de.hochschuletrier.gdw.ss15.game.components.AboveAbyssComponent;
 import de.hochschuletrier.gdw.ss15.game.components.BulletComponent;
 import de.hochschuletrier.gdw.ss15.game.components.InventoryComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
@@ -49,11 +50,43 @@ public class BulletListener extends PhysixContactAdapter{
 //                    engine.removeEntity(contact.getMyComponent().getEntity()); // uebernimmt GameLogik
                 }
             }
+//            if(contact.getOtherFixture().getBody().getUserData() instanceof AboveAbyssComponent)
+//                System.out.println("ABYSS COLLISION");
+//            if(contact.getOtherFixture().getBody().getUserData() != null)
+//            {
+//                PhysixBodyComponent otherphysixBC = (PhysixBodyComponent)contact.getOtherFixture().getBody().getUserData();
+//                otherphysixBC.get
+//            }
+//            if(contact.getOtherFixture().getUserData() instanceof AboveAbyssComponent)
+//            {
+//                System.out.println("ABOVEABYSS");
+//            }
         }
         else
         {
 //            CollisionEvent.emit(contact); // wofuer wird das genutzt?
-            engine.removeEntity(contact.getMyComponent().getEntity());
+            if(contact.getOtherFixture() != null){
+                if(contact.getOtherFixture().getBody().getFixtureList().get(0).getUserData() instanceof AboveAbyssComponent)
+                  {
+                    ComponentMappers.abyss.get(contact.getMyComponent().getEntity()).above = true;
+                    contact.setEnabled(false);
+                  }
+                //System.out.println(contact.getOtherFixture().getBody().getFixtureList().get(0).getUserData());
+                
+            }
+            else
+                engine.removeEntity(contact.getMyComponent().getEntity());
+        }
+    }
+    
+    @Override
+    public void endContact(PhysixContact contact) {
+        if(contact.getOtherFixture() != null){
+            if(contact.getOtherFixture().getBody().getFixtureList().get(0).getUserData() instanceof AboveAbyssComponent)
+              {
+                ComponentMappers.abyss.get(contact.getMyComponent().getEntity()).above = false;
+                contact.setEnabled(false);
+              }            
         }
     }
 
