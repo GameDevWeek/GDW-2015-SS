@@ -36,7 +36,7 @@
 	"join_button_over": "data/ui/menu/Assets/join_hover.png",
 	"host_button_over": "data/ui/menu/Assets/host_hover.png",
 	"option_button_over":"data/ui/menu/Assets/Options_hover.png",
-	"quit_button_over":"data/ui/menu/Assets/Quit_hover.png"
+	"quit_button_over":"data/ui/menu/Assets/Quit_hover.png",
 
     "crosshair": "data/images/crosshair.png",
     "hudoverlay": "data/images/hudoverlay.png",
