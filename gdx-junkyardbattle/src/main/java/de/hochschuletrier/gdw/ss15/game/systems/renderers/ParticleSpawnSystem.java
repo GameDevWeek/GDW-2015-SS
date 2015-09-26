@@ -31,7 +31,7 @@ public class ParticleSpawnSystem implements NetworkReceivedNewPacketClientEvent.
         this.game = game;
         
         NetworkReceivedNewPacketClientEvent.registerListener(PacketIds.EntityUpdate, this);
-        NetworkReceivedNewPacketClientEvent.registerListener(PacketIds.SpawnBullet, this);
+        //NetworkReceivedNewPacketClientEvent.registerListener(PacketIds.SpawnBullet, this);
     }
     
     public void update(float deltaTime)
@@ -55,7 +55,7 @@ public class ParticleSpawnSystem implements NetworkReceivedNewPacketClientEvent.
             } 
             return ;
         }
-        
+        /*
         if(pack.getPacketId() == PacketIds.SpawnBullet.getValue())
         {
             SpawnBulletPacket bulletPacker = (SpawnBulletPacket)pack;
@@ -64,7 +64,7 @@ public class ParticleSpawnSystem implements NetworkReceivedNewPacketClientEvent.
             Entity particleEffect = game.createEntity("shoteffect", bulletPacker.playerPosition.x + distance.x, bulletPacker.playerPosition.y + distance.y);
             ComponentMappers.position.get(particleEffect).rotation = bulletPacker.playerRotation;
             distance.set(64.f, 0);
-        }
+        }*/
     }
     
 }
