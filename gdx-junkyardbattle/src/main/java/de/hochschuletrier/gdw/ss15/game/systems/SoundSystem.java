@@ -67,7 +67,7 @@ public class SoundSystem extends IteratingSystem implements SoundEvent.Listener 
         //System.out.println(soundEmitter.emitter);
         SoundInstance soundInstance = soundEmitter.emitter.play(assetManager.getSound(sound), b);
         if(soundInstance != null) {
-            soundInstance.setVolume(50.f);
+            soundInstance.setVolume(100f);
         }
 
     }
