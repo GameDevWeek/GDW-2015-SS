@@ -95,7 +95,7 @@ public class SpawnSystem extends EntitySystem implements PlayerDiedEvent.Listene
         if(info.asObject == null)
             return ;
         
-        if(info.asObject.getType().equalsIgnoreCase("Spawn")){
+        if(info.asObject.getName().equalsIgnoreCase("Spawn")){
             SpawnInfo spawnInfo = new SpawnInfo();
             String team = info.asObject.getProperty("Team", "@");
 

@@ -115,6 +115,7 @@ public class BoundedCamera extends SmoothCamera {
     
     @Override
     public void update(float delta) {
+    	int i = 0;
         moveDir.set(destination).sub(position);
 
         float distance = moveDir.len();
