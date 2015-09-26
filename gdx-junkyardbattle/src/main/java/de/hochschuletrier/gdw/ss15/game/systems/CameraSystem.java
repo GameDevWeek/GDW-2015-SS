@@ -11,6 +11,7 @@ import com.badlogic.ashley.core.EntityListener;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.MathUtils;
 
 import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
@@ -40,11 +41,11 @@ public class CameraSystem extends EntitySystem
              implements EntityListener, WeaponCharging.Listener, WeaponUncharged.Listener, SatelliteColliding.Listener {
 
     private BoundedCamera camera = MainCamera.get();    
-    private CameraRumble rumble = new CameraRumble();
+    private CameraShake shake = new CameraShake();
     private Entity player;
     
     // Camera shake intension and runtime
-    private final float shakeTime = 1.5f, shakeIntension = 100.f;
+    private final float shakeTime = 1.7f, shakeIntension = 150.f;
     
     //private final Logger logger = LoggerFactory.getLogger(getClass());
         
@@ -52,10 +53,7 @@ public class CameraSystem extends EntitySystem
         // Resizing Camera to match window dimensions
         camera.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         // Registering camering for resize-Events
-        Main.getInstance().addScreenListener(camera);
-        // TODO:
-        // to be replaced by future implementation of
-        // corresponding events by input / gamelogic group        
+        Main.getInstance().addScreenListener(camera);      
         WeaponCharging.register(this);
         WeaponUncharged.register(this);
         SatelliteColliding.register(this);
@@ -75,16 +73,16 @@ public class CameraSystem extends EntitySystem
         return camera;
     }
     
-    public void setCameraBounds(float minX, float minY, float maxX, float maxY){
-        // Set Camera Bounds to a matching region (e.g. map size)
-        // without using this method bounding is disabled
-        // ONLY WORKING WITH FIXED ZOOM LEVEL OF 1.0
+    /** <p>Set Camera Bounds to a matching region (e.g. map size)</br>
+     * without using this method bounding is disabled.</br>
+     * Currently only working with a zoom level of 1.f</p> **/
+    public void setBounds(float minX, float minY, float maxX, float maxY){
         camera.setBounds(minX, minY, maxX, maxY);
         camera.updateForced();
     }
     
     // Fixes the viewport size
-    public void setFixedViewport(boolean fixed){
+    public void setViewport(boolean fixed){
         camera.setFixedViewport(fixed);
     }
     
@@ -99,8 +97,8 @@ public class CameraSystem extends EntitySystem
             camera.setDestination(posComp.x, posComp.y);  
         }                
 
-        if(rumble.time != 0.f){
-            rumble.tick(deltaTime, camera, player);
+        if(shake.time != 0.f){
+            shake.update(deltaTime, camera, player);
         }
         
         camera.update(deltaTime);
@@ -120,7 +118,7 @@ public class CameraSystem extends EntitySystem
     @Override
     public void onSatelliteColliding() {
         // Initializes the camera shake
-        rumble.rumble(shakeIntension, shakeTime);
+        shake.shake(shakeIntension, shakeTime);
     }
     
     @Override
@@ -143,16 +141,15 @@ public class CameraSystem extends EntitySystem
 }
 
 // CameraSystem only used classes
-class CameraRumble {
+class CameraShake {
 
-    Random random;
     float x, y;
     float time;
     float current_time;
     float power;
     float current_power;
 
-    public CameraRumble(){
+    public CameraShake(){
       time = 0;
       current_time = 0;
       power = 0;
@@ -161,14 +158,13 @@ class CameraRumble {
     
     // Call this function with the force of the shake 
     // and how long it should last      
-    public void rumble(float power, float time) {
-      random = new Random();
+    public void shake(float power, float time) {
       this.power = power;
       this.time = time;
       this.current_time = 0;
     }
           
-    public void tick(float delta, BoundedCamera camera, Entity player){
+    public void update(float delta, BoundedCamera camera, Entity player){
         // BoundedCamera is the camera attached in CameraSystem
         // player is the character centre screen
         // who has an PositionComponent
@@ -179,8 +175,8 @@ class CameraRumble {
             current_power = power * ((time - current_time) / time);
             // generate random new x and y values taking into account
             // how much force was passed in
-            x = (random.nextFloat() - 0.5f) * 2 * current_power;
-            y = (random.nextFloat() - 0.5f) * 2 * current_power;
+            x = (MathUtils.random() - 0.5f) * 2 * current_power;
+            y = (MathUtils.random() - 0.5f) * 2 * current_power;
         
             // Set the camera to this new x/y position           
             camera.setDestination(poscomp.x+x, poscomp.y+y);
