@@ -11,8 +11,7 @@
 	"join_button": "data/ui/menu/Assets/join.png",
 	"host_button": "data/ui/menu/Assets/host.png",
 	"option_button":"data/ui/menu/Assets/Options.png",
-
-
+	"credits_button":"data/ui/menu/Assets/Options.png",
 	"join_bg":"data/ui/menu/Assets/Lobby.png",
 	"change_button":"data/ui/menu/Assets/change.png",
     "ball": "data/images/Ball_Grundtextur.png",
@@ -39,4 +38,7 @@
 	"option_button_over":"data/ui/menu/Assets/Options_hover.png",
 	"quit_button_over":"data/ui/menu/Assets/Quit_hover.png"
 
+    "crosshair": "data/images/crosshair.png",
+    "hudoverlay": "data/images/hudoverlay.png",
+    "projectile": "data/images/Ball_Grundtextur.png"
 }

@@ -27,6 +27,8 @@ import de.hochschuletrier.gdw.ss15.game.systems.renderers.ParticleSpawnSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.renderers.RenderSystem;
 import de.hochschuletrier.gdw.ss15.game.utils.TimerSystem;
 
+import java.util.function.Consumer;
+
 public class Game extends InputAdapter {
 
     //private final CVarBool physixDebug = new CVarBool("physix_debug", true, 0, "Draw physix debug");
@@ -67,6 +69,9 @@ public class Game extends InputAdapter {
     private final TestListenerClient TestoutputSystem = new TestListenerClient();
     private final EffectAddSystem effectAddSystem = new EffectAddSystem(engine);
     
+
+    private final HudSystem hudSystem = new HudSystem(cameraSystem.getCamera().getOrthographicCamera());
+
     public Game() {
         // If this is a build jar file, disable hotkeys
         if (!Main.IS_RELEASE) {
@@ -115,6 +120,7 @@ public class Game extends InputAdapter {
         engine.addSystem(testMovementSystem);
         engine.addSystem(updatePhysixSystem);
         engine.addSystem(soundSystem);
+        engine.addSystem(hudSystem);
 //        engine.addSystem(bulletClientSystem);
         engine.addSystem(effectAddSystem);
 

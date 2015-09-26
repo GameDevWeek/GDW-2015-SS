@@ -114,7 +114,6 @@ public class MenuPage extends Group {
 		image.addListener(new ClickListener() {
 			@Override
 			public void clicked(InputEvent event, float width, float height) {
-				System.out.println("Clicked");
 				if (runnable != null)
 					runnable.run();
 
@@ -128,7 +127,6 @@ public class MenuPage extends Group {
 
 			@Override
 			public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
-				System.out.println("Mouse Over");
 
 				/*
 				 * if(abspielen==true){ SoundEmitter.updateGlobal();
