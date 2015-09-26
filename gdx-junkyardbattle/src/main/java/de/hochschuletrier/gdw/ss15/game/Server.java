@@ -321,12 +321,5 @@ public class Server implements Runnable
         }
     }
 
-    public void kickPlayer(String name){
-
-    }
-
-    public void changeMap(String map){
-
-    }
 
 }
