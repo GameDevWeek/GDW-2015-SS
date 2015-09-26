@@ -15,6 +15,7 @@ import com.badlogic.gdx.graphics.g2d.ParticleEmitter;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
+import de.hochschuletrier.gdw.ss15.events.PlayerDiedEvent;
 import de.hochschuletrier.gdw.ss15.events.network.server.NetworkNewPlayerEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.GameConstants;
@@ -34,7 +35,7 @@ import java.util.ArrayList;
  *
  * @author Julien Saevecke
  */
-public class SpawnSystem extends EntitySystem implements NetworkNewPlayerEvent.Listener, MapLoader.TileCreationListener{
+public class SpawnSystem extends EntitySystem implements PlayerDiedEvent.Listener, NetworkNewPlayerEvent.Listener, MapLoader.TileCreationListener{
     
     float[] orange = new float[]{
         1,
@@ -48,7 +49,17 @@ public class SpawnSystem extends EntitySystem implements NetworkNewPlayerEvent.L
         1
     };
     
-    ImmutableArray<Entity> entities; 
+    private ImmutableArray<Entity> entities; 
+
+    @Override
+    public void onPlayerDied(Entity player) {
+        SpawnComponent spawnComponent = ComponentMappers.spawn.get(player);
+        spawnComponent.respawn = true;
+        spawnComponent.respawnTimer = GameConstants.RESPAWN_TIMER;
+        
+        PhysixBodyComponent body = ComponentMappers.physixBody.get(player);
+        body.setActive(false);
+    }
     
     public static class SpawnInfo
     {
@@ -123,8 +134,9 @@ public class SpawnSystem extends EntitySystem implements NetworkNewPlayerEvent.L
                 spawnComponent.spawnPoint = info.spawnPosition;
                 spawnComponent.respawn = true;
                 spawnComponent.respawnTimer = -1;
+                info.occupied = true;
                 
-                 return;
+                return;
             }
         }
         
@@ -142,13 +154,6 @@ public class SpawnSystem extends EntitySystem implements NetworkNewPlayerEvent.L
     {
         for(Entity entity : entities){
             SpawnComponent spawnComponent = ComponentMappers.spawn.get(entity);
-            
-            if(ComponentMappers.health.has(entity)){
-                if(ComponentMappers.health.get(entity).healthState == HealthState.DEAD)
-                {
-                    spawnComponent.respawn = true;
-                }
-            }
 
             if(spawnComponent.respawn){
                 spawnComponent.respawnTimer -= deltaTime;
@@ -161,6 +166,7 @@ public class SpawnSystem extends EntitySystem implements NetworkNewPlayerEvent.L
                 
                 if(spawnComponent.respawnTimer <= 0.f){
                     PhysixBodyComponent body = ComponentMappers.physixBody.get(entity);
+                    body.setActive(true);
                     
                     if(ComponentMappers.animator.has(entity))
                         ComponentMappers.animator.get(entity).draw = true;
