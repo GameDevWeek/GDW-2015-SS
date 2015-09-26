@@ -161,7 +161,7 @@ public class Main extends StateBasedGame {
     }
 
     private void onLoadComplete() {
-        final MainMenuState mainMenuState = new MainMenuState(assetManager);
+        final MainMenuState mainMenuState = new MainMenuState(assetManager,0);
         addPersistentState(mainMenuState);
         changeState(mainMenuState, null, null);
         SandboxCommand.init(assetManager);
@@ -188,6 +188,7 @@ public class Main extends StateBasedGame {
 
         if(server!=null)
         {
+            System.out.println("Server stoped by closing");
             server.stop();
         }
     }
