@@ -135,7 +135,8 @@
             "Spawn":{},
             "Client": {},
             "PositionSynch": {
-                "clientname": "clientPlayer"
+                "clientname": "clientPlayer",
+                "updateDuration": 25
             },
             "Interpolate": {},
             "Inventory": {
