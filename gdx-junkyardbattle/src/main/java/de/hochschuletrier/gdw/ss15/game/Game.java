@@ -18,6 +18,7 @@ import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.PickupListenerClient;
 import de.hochschuletrier.gdw.ss15.game.systems.RealNetwork.NetworkClientSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.RealNetwork.TestListenerClient;
+import de.hochschuletrier.gdw.ss15.game.systems.hud.HudSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.input.InputSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.network.*;
 import de.hochschuletrier.gdw.ss15.game.systems.*;
@@ -26,8 +27,6 @@ import de.hochschuletrier.gdw.ss15.game.systems.renderers.EffectAddSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.renderers.ParticleSpawnSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.renderers.RenderSystem;
 import de.hochschuletrier.gdw.ss15.game.utils.TimerSystem;
-
-import java.util.function.Consumer;
 
 public class Game extends InputAdapter {
 

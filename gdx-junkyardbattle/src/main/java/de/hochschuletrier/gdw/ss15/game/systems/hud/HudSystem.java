@@ -1,4 +1,4 @@
-package de.hochschuletrier.gdw.ss15.game.systems;
+package de.hochschuletrier.gdw.ss15.game.systems.hud;
 
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
@@ -24,6 +24,7 @@ import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.components.input.InputComponent;
 import de.hochschuletrier.gdw.ss15.game.components.texture.TextureComponent;
 import de.hochschuletrier.gdw.ss15.game.hudDebugTemporary.HudDebug;
+import de.hochschuletrier.gdw.ss15.game.systems.network.TestSatelliteSystem;
 import jdk.internal.dynalink.linker.GuardingDynamicLinker;
 
 import javax.swing.text.Position;
@@ -33,9 +34,10 @@ import javax.swing.text.Position;
  */
 public class HudSystem extends IteratingSystem {
 
-    private float radarScale = 0.1337f;
-    Vector2 lineToPlayer = new Vector2(0,0);
-    Vector3 mouseScreenPos = new Vector3(0,0,0);
+    public static float radarScale = 0.1337f;
+    Vector3 lineToSatellite = new Vector3(0, 0, 0);
+    Vector3 lineToPlayer = new Vector3(0, 0, 0);
+    Vector3 mouseScreenPos = new Vector3(0, 0, 0);
     Camera camera;
     AssetManagerX assetManager;
     Texture crosshairTex;
@@ -47,8 +49,8 @@ public class HudSystem extends IteratingSystem {
 
     Entity localPlayer;
 
-    public HudSystem(Camera camera){
-        this(Family.one(PlayerComponent.class).get(), GameConstants.PRIORITY_HUD);
+    public HudSystem(Camera camera) {
+        this(Family.one((PlayerComponent.class), (SpawnSatelliteComponent.class)).get(), GameConstants.PRIORITY_HUD);
         this.camera = camera;
         this.crosshairTex = assetManager.getTexture("crosshair");
         this.hudoverlay = assetManager.getTexture("hud_blue");
@@ -66,24 +68,36 @@ public class HudSystem extends IteratingSystem {
 
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
-        PlayerComponent player = entity.getComponent(PlayerComponent.class);
         Main.getInstance().screenCamera.bind();
-        DrawUtil.resetColor();
-        if (player.isLocalPlayer){
-            if (localPlayer == null){
-                this.localPlayer = entity;
+        if (entity.getComponent(PlayerComponent.class) != null) {
+
+            PlayerComponent player = entity.getComponent(PlayerComponent.class);
+            if (player.isLocalPlayer) {
+                if (localPlayer == null) {
+                    this.localPlayer = entity;
+                }
+                drawCrosshair(entity);
+                lebensBalken();
+                showHudOverlay();
+                schrottAnzeige();
+                timer();
+                radar(entity);
             }
             drawCrosshair(entity);
             lebensBalken();
             showHudOverlay();
             schrottAnzeige();
             timer();
-            punktestand();
             radar(entity);
+        }
+        if (entity.getComponent(SpawnSatelliteComponent.class) != null) {
+            if (TestSatelliteSystem.satellite) {
+                lineToSatellite(entity);
+            }
         }
     }
 
-    private void drawCrosshair(Entity entity){
+    private void drawCrosshair(Entity entity) {
 
         mouseScreenPos.x = entity.getComponent(InputComponent.class).posX;
         mouseScreenPos.y = entity.getComponent(InputComponent.class).posY;
@@ -97,12 +111,27 @@ public class HudSystem extends IteratingSystem {
         lineToPlayer.x = entity.getComponent(PositionComponent.class).x - localPlayer.getComponent(PositionComponent.class).x;
         lineToPlayer.y = entity.getComponent(PositionComponent.class).y - localPlayer.getComponent(PositionComponent.class).y;
 
+        lineToPlayer = camera.project(lineToPlayer);
+
         lineToPlayer.scl(radarScale);
         //DrawUtil.batch.draw("icon für spieler", radarMitte + vector);
-        DrawUtil.drawRect(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2, 10, 10);
+        DrawUtil.drawRect(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() - Gdx.graphics.getHeight() / 8.3f, 10, 10);
         //Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()-Gdx.graphics.getHeight/4
     }
 
+    private void lineToSatellite(Entity entity) {
+        lineToSatellite.x = entity.getComponent(PositionComponent.class).x - localPlayer.getComponent(PositionComponent.class).x;
+        lineToSatellite.y = entity.getComponent(PositionComponent.class).y - localPlayer.getComponent(PositionComponent.class).y;
+
+        //lineToSatellite = camera.project(lineToSatellite);
+
+        lineToSatellite.nor();
+        lineToSatellite.scl(100.0f);
+        System.out.println("test");
+        DrawUtil.drawRect(Gdx.graphics.getWidth() / 2 + lineToSatellite.x,
+                Gdx.graphics.getHeight() - Gdx.graphics.getHeight()/2 + lineToSatellite.y, 10, 10);
+
+    }
 
     private void lebensBalken() {
         Color healthColor;
