@@ -4,7 +4,6 @@ import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
-
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -32,20 +31,25 @@ public class TestMovementSystem extends IteratingSystem{
     Vector2 vectorToAdd = new Vector2(0,0);
     private ComponentMapper<InputComponent> input;
     private ComponentMapper<SoundEmitterComponent> soundEmitter;
+    private ComponentMapper<InventoryComponent> inventory;
+    private ComponentMapper<MoveComponent> move;
     public TestMovementSystem(Game game, Camera cam)
     {
-        super(Family.all(MoveComponent.class).get());
+        super(Family.all(MoveComponent.class, PlayerComponent.class).get());
         this.game = game;
         this.camera = cam;
         input = ComponentMappers.input;
         soundEmitter = ComponentMappers.soundEmitter;
+        inventory = ComponentMappers.inventory;
+        move = ComponentMappers.move;
 
         
     }
 
 	protected void processEntity(Entity entity, float deltaTime) {
 
-		
+	    InventoryComponent inventory = ComponentMappers.inventory.get(entity);
+	    MoveComponent move = ComponentMappers.move.get(entity);
 		timer.Update();
         if(timer.get_CounterMilliseconds()>50)
         {
@@ -59,6 +63,10 @@ public class TestMovementSystem extends IteratingSystem{
 	        
 	        mousepos2.sub(new Vector2(posc.x,posc.y));
 	        float angle = mousepos2.angle();
+	        float invtemp = (float)inventory.getMetalShards()/(float)inventory.maxMetalShards;
+	        float movetemp = move.speed-move.speed*(invtemp*0.75f);
+            vectorToAdd.scl(movetemp);
+            System.out.println(inventory.getMetalShards());
 
 	        MovementPacket packet = new MovementPacket(vectorToAdd.x,vectorToAdd.y,angle);
 	        SendPacketClientEvent.emit(packet, true);

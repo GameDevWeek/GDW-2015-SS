@@ -140,13 +140,12 @@
             },
             "Interpolate": {},
             "Inventory": {
-                "metalShards": 20,
                 "minMetalShards": 0,
                 "minMetalShardsForBase": 20,
                 "maxMetalShards": 700
             },
             "Move": {
-                "speed": 500
+                "speed": 30
             },
             "Health": {
                 "health": 30
@@ -208,12 +207,11 @@
                 "draw": false
             },
             "Move": {
-                "speed": 500
+                "speed": 30
             },
             "Input": {},
             "Interpolate": {},
             "Inventory": {
-                "metalShards": 20,
                 "minMetalShards": 0,
                 "minMetalShardsForBase": 20,
                 "maxMetalShards": 700

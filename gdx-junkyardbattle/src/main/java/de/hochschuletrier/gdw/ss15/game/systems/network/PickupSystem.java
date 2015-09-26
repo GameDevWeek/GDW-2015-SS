@@ -32,13 +32,14 @@ public class PickupSystem extends IntervalIteratingSystem implements PickupEvent
 
     @Override
     public void onPickupEvent(PhysixContact physixContact) {
-         if (player.has(physixContact.getOtherComponent().getEntity())) {
+         if (player.has(physixContact.getOtherComponent().getEntity()))
+         {
 
             Entity pickup = physixContact.getMyComponent().getEntity();
             Entity player = physixContact.getOtherComponent().getEntity();
             InventoryComponent invPickup = inventory.get(pickup);
             InventoryComponent invPlayer = inventory.get(player);
-
+            System.out.println(invPlayer.getMetalShards());
              if (invPlayer.addMetalShards(invPickup.getMetalShards()) > 0)
              {
                  this.engine.removeEntity(pickup);

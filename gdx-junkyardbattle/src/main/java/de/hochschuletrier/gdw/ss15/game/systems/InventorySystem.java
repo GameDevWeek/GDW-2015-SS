@@ -21,8 +21,7 @@ public class InventorySystem extends EntitySystem {
 	@Override
 	public void update(float deltaTime) {
 		for (Entity entity : entities) {
-			InventoryComponent inventoryComponent = ComponentMappers.inventory
-					.get(entity);
+			InventoryComponent inventoryComponent = ComponentMappers.inventory.get(entity);
 			if (inventoryComponent.secondsToRegenerationMax > 0 && inventoryComponent.shardRegeneration > 0) {
 				if (inventoryComponent.secondsToRegeneration > 0){
 					inventoryComponent.secondsToRegeneration -= deltaTime;
