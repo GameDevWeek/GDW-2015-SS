@@ -40,5 +40,10 @@
 
     "crosshair": "data/images/crosshair.png",
     "hudoverlay": "data/images/hudoverlay.png",
-    "projectile": "data/images/Ball_Grundtextur.png"
+    "projectile": "data/images/Ball_Grundtextur.png",
+    "hud_orange": "data/images/HUD_orange.png",
+    "hud_blue" : "data/images/HUD_blau.png",
+    "hud_punktestand" : "data/images/Punktestand.png",
+    "hud_uhr": "data/images/Uhr.png",
+    "hud_schrott" : "data/images/Schrott.png"
 }

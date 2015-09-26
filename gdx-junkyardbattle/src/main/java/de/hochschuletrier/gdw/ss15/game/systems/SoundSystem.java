@@ -63,6 +63,7 @@ public class SoundSystem extends IteratingSystem implements SoundEvent.Listener 
     @Override
     public void onSoundEvent(String sound, Entity entity, boolean b) {
         SoundEmitterComponent soundEmitter = ComponentMappers.soundEmitter.get(entity);
+        //soundEmitter.emitter.play(assetManager.getSound(sound), b);
         //System.out.println(soundEmitter.emitter);
         SoundInstance soundInstance = soundEmitter.emitter.play(assetManager.getSound(sound), b);
         if(soundInstance != null) {

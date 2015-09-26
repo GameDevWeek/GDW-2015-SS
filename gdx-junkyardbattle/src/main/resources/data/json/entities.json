@@ -135,7 +135,8 @@
             "Spawn":{},
             "Client": {},
             "PositionSynch": {
-                "clientname": "clientPlayer"
+                "clientname": "clientPlayer",
+                "updateDuration": 25
             },
             "Interpolate": {},
             "Inventory": {
@@ -260,6 +261,7 @@
                 "friction": 0.5,
                 "restitution": 0.1,
                 "type": "dynamic",
+                "sensor": false,
                 "category": "BULLET"
             },
             "Bullet": {
@@ -487,6 +489,18 @@
                 "metalShards": 1,
                 "minMetalShards": 0,
                 "maxMetalShards": 1
+            }
+        }
+    },
+    "SpawnCar": {
+        "meta": {},
+        "components": {
+            "Position": {},
+            "SpawnSatellite": {},
+            "Inventory": {
+                "metalShards": 650,
+                "minMetalShards": 0,
+                "maxMetalShards": 650
             }
         }
     }

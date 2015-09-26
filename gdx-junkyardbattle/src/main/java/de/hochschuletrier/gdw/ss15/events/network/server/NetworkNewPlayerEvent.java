@@ -13,7 +13,7 @@ public class NetworkNewPlayerEvent{
 
     private static final SnapshotArray<Listener> listeners = new SnapshotArray();
 
-    public static void clearListeners()
+    public static void unregisterAll()
     {
         listeners.clear();
     }

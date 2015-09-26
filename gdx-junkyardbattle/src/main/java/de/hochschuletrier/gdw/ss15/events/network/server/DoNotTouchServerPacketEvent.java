@@ -13,7 +13,7 @@ public class DoNotTouchServerPacketEvent {
         void onDoNotTouchServerPacket(Packet pack);
     }
 
-    public static void clearListeners()
+    public static void unregisterAll()
     {
         listeners.clear();
     }

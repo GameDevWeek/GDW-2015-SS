@@ -33,5 +33,9 @@ public class DisconnectEvent {
     public static void unregisterListener(Listener listener){
         listeners.removeValue(listener, true);
     }
+    
+    public static void unregisterAll() {
+        listeners.clear();
+    }
 
 }

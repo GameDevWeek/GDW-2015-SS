@@ -38,8 +38,6 @@ public class WeaponSystem extends IteratingSystem {
 
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
-
-        //System.out.println("GatherBoolean: " + ComponentMappers.soundEmitter.get(tractorSound).isPlaying);
         PlayerComponent plc = ComponentMappers.player.get(entity);
         if(! plc.isLocalPlayer) return;
 
@@ -51,8 +49,6 @@ public class WeaponSystem extends IteratingSystem {
         InputComponent input = ComponentMappers.input.get(entity);
         Entity weaponSound = new Entity();
         weaponSound.add(new SoundEmitterComponent());
-
-        //ComponentMappers.soundEmitter.get(weaponSound).emitter.setGlobalVolume(100);
 
         
         if(attackCooldownTimer < wpc.fireCooldown){
@@ -66,10 +62,7 @@ public class WeaponSystem extends IteratingSystem {
         if(input.shoot && wpc.fireCooldownReady){
         // left button is clicked
             wpc.fireChannelTime = Math.min(wpc.fireChannelTime + deltaTime, WeaponComponent.maximumFireTime);
-            WeaponCharging.emit((float) (wpc.fireChannelTime / wpc.maximumFireTime));
-
-            //SoundEvent.emit("shotgun_shoot", entity, false);
-            //SoundEvent.emit("streetSteps", entity, true);
+            WeaponCharging.emit((float)(wpc.fireChannelTime/wpc.maximumFireTime));
             return; // left mouse > right mouse
         } else {
             if(wpc.fireChannelTime > 0) { // left button is released
@@ -81,7 +74,6 @@ public class WeaponSystem extends IteratingSystem {
 
                 FirePacket fire = new FirePacket(wpc.fireChannelTime);
                 SendPacketClientEvent.emit(fire, true);
-//                System.out.println("emit fire package! " + wpc.fireChannelTime);
 
                 wpc.fireChannelTime = 0f;
                 attackCooldownTimer = 0.0f;
@@ -97,7 +89,6 @@ public class WeaponSystem extends IteratingSystem {
 //                WeaponUncharged.emit(); // fürs harvesten?
                 GatherPacket gather = new GatherPacket(wpc.harvestChannelTime);
                 SendPacketClientEvent.emit(gather, true);
-                System.out.println("gathered for " + wpc.harvestChannelTime + "m/n/whatevsec");
                 
                 wpc.harvestChannelTime = 0f;
             }

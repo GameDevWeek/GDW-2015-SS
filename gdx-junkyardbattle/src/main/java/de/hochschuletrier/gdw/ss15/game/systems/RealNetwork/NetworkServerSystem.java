@@ -72,14 +72,12 @@ public class NetworkServerSystem extends EntitySystem implements SendPacketServe
 
         while (!toDelete.isEmpty())
         {
-            System.out.println("Client lost connection");
             game.get_Engine().removeEntity(toDelete.poll());
         }
     }
 
     private void ReceivedPacket(Packet pack,Entity ent)
     {
-        //System.out.println("Received packet server");
         NetworkReceivedNewPacketServerEvent.emit(pack,ent);
         
 

@@ -86,7 +86,6 @@ public class MapLoader
 
     /**
      * laedt die Map in das Spiel
-     * @param game Spielstand fuer das die Entities geladen werden sollen
      * @param filename Name der Mapdatei die geladen werden soll
      */
     public void run(EntityCreator creator, String filename,PhysixSystem pSystem,EntityFactory entityFactory,AssetManagerX aMana)
@@ -139,7 +138,6 @@ public class MapLoader
                 body.getFixtureList().get(i).setUserData(new AboveAbyssComponent());
             }
             
-            //System.out.println(body.getClass());
         }
         else
             body.createFixture(new PhysixFixtureDef(pSystem).density(1).friction(0.5f).shapeBox(width, height));
@@ -147,7 +145,6 @@ public class MapLoader
     
     /** 
      * Objekte aus tiledMap laden und per Entitycreator im Game erstellen
-     * @param game Spiel das gefuellt werden soll
      * @param tiledMap Map die geladen wird
      */     
     private void loadObjectsFromMap(PhysixSystem pSystem,EntityCreator entCreator,TiledMap tiledMap,EntityFactory entityFactory,AssetManagerX aMana)

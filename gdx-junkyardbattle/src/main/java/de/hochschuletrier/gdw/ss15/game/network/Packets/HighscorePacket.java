@@ -2,8 +2,6 @@ package de.hochschuletrier.gdw.ss15.game.network.Packets;
 
 import de.hochschuletrier.gdw.ss15.game.network.PacketIds;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
-import javafx.util.Pair;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
