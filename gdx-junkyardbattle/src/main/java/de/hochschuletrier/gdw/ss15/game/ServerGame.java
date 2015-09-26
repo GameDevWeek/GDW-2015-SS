@@ -128,7 +128,7 @@ public class ServerGame{
         mapLoader.listen(spawnSystem);
         mapLoader.run((String name, float x, float y) -> {
             return this.createEntity(name, x, y);
-        }, "data/maps/3v3Alpha.tmx", physixSystem, entityFactory, Main.getInstance().getAssetManager());
+        }, "data/maps/alpha_three_on_three.tmx", physixSystem, entityFactory, Main.getInstance().getAssetManager());
     }
 
     private void addSystems() {
