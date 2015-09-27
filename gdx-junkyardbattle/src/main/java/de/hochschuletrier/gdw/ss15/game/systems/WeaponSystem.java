@@ -27,7 +27,9 @@ public class WeaponSystem extends IteratingSystem implements NetworkReceivedNewP
     MyTimer timer = new MyTimer(true);
     float attackCooldownTimer = 0;
     Entity tractorSound = new Entity();
-
+    
+    private static final GatherPacket gather = new GatherPacket();
+    
     public WeaponSystem() {
         super(Family.all(PlayerComponent.class,
                 WeaponComponent.class,
@@ -100,10 +102,10 @@ public class WeaponSystem extends IteratingSystem implements NetworkReceivedNewP
         { // right button is clicked
             wpc.harvestChannelTime += deltaTime;
             timer.Update();
-            if(timer.get_CounterMilliseconds()>50)
+            if(timer.get_CounterMilliseconds()>200)
             {
                 timer.StartCounter();
-                GatherPacket gather = new GatherPacket(wpc.harvestChannelTime);
+                gather.set(wpc.harvestChannelTime);
                 SendPacketClientEvent.emit(gather, true);
             }
             //System.out.println("gather: " + wpc.harvestChannelTime);
