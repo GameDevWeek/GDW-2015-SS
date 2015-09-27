@@ -81,6 +81,10 @@ public class FireServerListener extends EntitySystem implements NetworkReceivedN
         PhysixBodyComponent physixComp = ComponentMappers.physixBody.get(shootingEntity);
         float angleStep = radiansConeDegree / shardNum;
 
+        // Player should not be able to shoot if he is dead!
+        if(ComponentMappers.death.has(shootingEntity))
+            return;
+        
         boolean shooted = false;
 
         for(int i = -shardNum / 2; i <= shardNum / 2; ++i) {
