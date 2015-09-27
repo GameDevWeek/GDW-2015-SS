@@ -33,10 +33,27 @@ public class MiningSystem extends EntitySystem implements MiningEvent.Listener {
     }
 
     @Override
-    public void onMiningEvent(Entity playerEnt, Entity mineableEnt, float channelTime) {
-    	if(channelTime > 1.2f)
-    		channelTime = 1.2f;
-        int minedMetalShards = (int)Math.ceil((GameConstants.MINING_PER_SECOND * channelTime));
+    public void onMiningEvent(Entity playerEnt, Entity mineableEnt, float channelTime, float deltaTime) {
+    	
+    	//THIS IS WHERE DARK MAGIC HAPPENS
+    	float chosenMiningPerSeconds = 0.f;
+    	if(channelTime <= GameConstants.MINING_TIME_NEEDED_1)
+    		chosenMiningPerSeconds = GameConstants.MINING_PER_SECOND_STAGE_1;
+    	
+    	
+    	else if(channelTime > GameConstants.MINING_TIME_NEEDED_1 && channelTime <=GameConstants.MINING_TIME_NEEDED_2)
+    		chosenMiningPerSeconds = GameConstants.MINING_PER_SECOND_STAGE_2;
+    	
+    	
+    	else if(channelTime > GameConstants.MINING_TIME_NEEDED_2 && channelTime <= GameConstants.MINING_TIME_NEEDED_3)
+    		chosenMiningPerSeconds = GameConstants.MINING_PER_SECOND_STAGE_3;
+    	
+    	
+    	else if(channelTime > GameConstants.MINING_TIME_NEEDED_3)
+    		chosenMiningPerSeconds = GameConstants.MINING_PER_SECOND_STAGE_4;
+    	
+    	
+        int minedMetalShards = (int)Math.ceil(chosenMiningPerSeconds*deltaTime);
 
         transferMines(mineableEnt, playerEnt, minedMetalShards);
 

@@ -7,12 +7,14 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.graphics.Color;
+
 import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended;
 import de.hochschuletrier.gdw.ss15.events.WeaponCharging;
 import de.hochschuletrier.gdw.ss15.events.WeaponUncharged;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.GameConstants;
 import de.hochschuletrier.gdw.ss15.game.GameGlobals;
+import de.hochschuletrier.gdw.ss15.game.components.ClientIsShootingComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.components.animation.AnimationState;
@@ -29,10 +31,11 @@ public class EffectAddSystem extends IteratingSystem implements EntityListener, 
     private final PooledEngine engine;
     private Entity player;
     private final float CHARGE_EFFECT_START = 0.1f;
+    private final float gatherTime = 0.3f;
     
     @SuppressWarnings("unchecked")
     public EffectAddSystem(PooledEngine engine) {
-        super(Family.all(PlayerComponent.class).one(ConeLightComponent.class).get());
+        super(Family.all(PlayerComponent.class).one(ConeLightComponent.class).get(), GameConstants.PRIORITY_ADD_EFFECT_SYSTEM);
         this.engine = engine;
     }
 
@@ -40,7 +43,7 @@ public class EffectAddSystem extends IteratingSystem implements EntityListener, 
     @Override
     public void addedToEngine(Engine engine) {
         super.addedToEngine(engine);
-        engine.addEntityListener(Family.all(PlayerComponent.class).get(), this);
+        engine.addEntityListener(Family.all(PlayerComponent.class, ClientIsShootingComponent.class).get(), this);
         
         WeaponCharging.register(this);
         WeaponUncharged.register(this);
@@ -57,24 +60,23 @@ public class EffectAddSystem extends IteratingSystem implements EntityListener, 
 //        ConeLightComponent coneLightComp = ComponentMappers.coneLight.get(entity);
         AttachedEntityComponent particleEntityComp = ComponentMappers.attachedEntity.get(entity);
         InputComponent inputComp = ComponentMappers.input.get(entity);
-        
-        if(inputComp == null)
-            return;
-        
-//        if(coneLightComp != null) {
-//            coneLightComp.coneLight.setDirection(posComp.rotation);
-//        }
+        ClientIsShootingComponent shootingComp = ComponentMappers.ClientIsSchooting.get(entity);
         
         if(particleEntityComp != null) {
             for(Entity attachedEntity : particleEntityComp.entities) {
                 AnimatorComponent animatorComp = ComponentMappers.animator.get(attachedEntity);
-                if(ComponentMappers.magneticBeamEffect.has(attachedEntity) && animatorComp != null)
-                    animatorComp.draw = inputComp.gather;
+                MagneticBeamEffectComponent beamComp = ComponentMappers.magneticBeamEffect.get(attachedEntity);
+                if(beamComp != null && animatorComp != null) {
+                    beamComp.gatherStateTime += deltaTime;
+                    animatorComp.draw = (beamComp.gatherStateTime <= gatherTime);
+                    if(shootingComp.onGather)
+                        beamComp.gatherStateTime = 0.f;
+                }
                 
                 if(ComponentMappers.chargeEffect.has(attachedEntity) && animatorComp != null) {
                     ChargeEffectComponent chargeEffectComp = ComponentMappers.chargeEffect.get(attachedEntity);
                     PositionComponent attachedEntityPosComp = ComponentMappers.position.get(attachedEntity);
-                    if(inputComp.shoot) {
+                    if(inputComp != null && inputComp.shoot && !inputComp.gather) {
                         chargeEffectComp.stateTime += deltaTime;
                         if(chargeEffectComp.stateTime >= CHARGE_EFFECT_START) {
                             animatorComp.draw = true;

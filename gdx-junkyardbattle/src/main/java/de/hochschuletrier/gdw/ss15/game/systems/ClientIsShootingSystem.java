@@ -3,9 +3,11 @@ package de.hochschuletrier.gdw.ss15.game.systems;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
+
 import de.hochschuletrier.gdw.ss15.events.network.client.NetworkReceivedNewPacketClientEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.Game;
+import de.hochschuletrier.gdw.ss15.game.GameConstants;
 import de.hochschuletrier.gdw.ss15.game.components.ClientIsShootingComponent;
 import de.hochschuletrier.gdw.ss15.game.components.InventoryComponent;
 import de.hochschuletrier.gdw.ss15.game.network.PacketIds;
@@ -22,7 +24,7 @@ public class ClientIsShootingSystem extends IteratingSystem implements NetworkRe
 
     public ClientIsShootingSystem(Game gaem) {
 
-        super(Family.all(ClientIsShootingComponent.class).get());
+        super(Family.all(ClientIsShootingComponent.class).get(), GameConstants.PRIORITY_CLIENT_SHOOTING_SYSTEM);
         game = gaem;
         NetworkReceivedNewPacketClientEvent.registerListener(PacketIds.ReceiveShootClient,this);
     }
@@ -52,7 +54,7 @@ public class ClientIsShootingSystem extends IteratingSystem implements NetworkRe
                 //Todo start harvesting
             }
             comp.onGather = false;
-            comp.Gathertime = 0.100f;
+            comp.Gathertime = 0.300f;
 
         }
 

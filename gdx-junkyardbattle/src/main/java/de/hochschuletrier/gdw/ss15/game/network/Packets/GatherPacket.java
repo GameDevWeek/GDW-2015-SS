@@ -19,6 +19,10 @@ public class GatherPacket extends Packet{
 		this();
 		this.channelTime = channelTime;
 	}
+	
+	public void set(float channelTime) {
+	    this.channelTime = channelTime;
+	}
 
 	@Override
 	protected void pack(DataOutputStream dataOutput) throws IOException {
