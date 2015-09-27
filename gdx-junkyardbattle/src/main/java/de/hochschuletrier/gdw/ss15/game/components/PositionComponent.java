@@ -7,7 +7,7 @@ public class PositionComponent extends Component implements Pool.Poolable {
 
     public float x;
     public float y;
-    public int layer = 0;
+    public float layer = 0.f;
     public float rotation;
 
     @Override

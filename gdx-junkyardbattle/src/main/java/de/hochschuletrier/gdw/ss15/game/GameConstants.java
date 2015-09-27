@@ -55,7 +55,7 @@ public class GameConstants {
     public static final float PLAYER_POINT_LIGHT_ALPHA = 0.7f;
     public static final float RESPAWN_TIMER = 5;
     public static final float PROTECTION_DURATION = 4;
-    public static final int DEFAULT_LAYER = 2;
+    public static final float DEFAULT_LAYER = 2.f;
     
     // Camera constants
     public static final modes ZOOM_MODE = modes.pow4;

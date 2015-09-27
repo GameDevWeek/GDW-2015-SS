@@ -151,7 +151,7 @@ public class EffectAddSystem extends IteratingSystem implements EntityListener, 
         PositionComponent posComp = engine.createComponent(PositionComponent.class);
         posComp.x = entityPos.x;
         posComp.y = entityPos.y;
-        posComp.layer = entityPos.layer - 1;
+        posComp.layer = entityPos.layer - 0.1f;
         
         AnimatorComponent animatorComp = engine.createComponent(AnimatorComponent.class);
         AnimationExtended animExtended = null; 
