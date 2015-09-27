@@ -158,8 +158,6 @@ public class ServerLobby
             ChangeNamePacket nPack = (ChangeNamePacket)pack;
             client.name = nPack.name;
             SendChangePlayerStatusToAll(client);
-
-
             SimplePacket sPack = new SimplePacket(SimplePacket.SimplePacketId.TimeMenuePacket.getValue(),(long)(SecondsToStart-actualTime));
             client.socket.sendPacket(sPack, true);
         }

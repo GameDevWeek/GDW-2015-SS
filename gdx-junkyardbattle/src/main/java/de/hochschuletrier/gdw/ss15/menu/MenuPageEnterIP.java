@@ -66,10 +66,6 @@ public class MenuPageEnterIP extends MenuPage
 					ip = textAreaIP.getText();
 				}
 
-				if(Main.getInstance().getClientConnection().getSocket().isByConnect() == false &&
-						Main.getInstance().getClientConnection().getSocket().isConnected()) {
-					Main.getInstance().getClientConnection().disconnect();
-				}
 
 				if (Main.getInstance().getClientConnection().connect(ip, port) == false) {
 					System.out.println("Could not Connect to Server");
@@ -142,6 +138,15 @@ public class MenuPageEnterIP extends MenuPage
 	public void onConnectFinishPacket(boolean status) {
 		if (!status) {
 			labelError.setText("Verbindungsfehler");
+		}
+	}
+
+	@Override
+	public void setVisible(boolean value)
+	{
+		if(value == true)
+		{
+			Main.getInstance().getClientConnection().disconnect();
 		}
 	}
 

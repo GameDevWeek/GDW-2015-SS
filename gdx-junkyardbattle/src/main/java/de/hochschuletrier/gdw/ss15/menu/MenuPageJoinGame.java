@@ -275,6 +275,8 @@ public class MenuPageJoinGame extends MenuPage implements DoNotTouchPacketEvent.
 	}
 
 
+
+
 	private void changeTeam(boolean team, int id) {
 		if (team) {
 			Array<Actor> hglist = scrollTableBlue.getChildren();

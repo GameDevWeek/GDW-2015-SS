@@ -202,5 +202,15 @@ public class MenuPageHostGame extends MenuPage implements ConnectTryFinishEvent.
 			Main.getInstance().stopServer();
 		}
 	}
+
+	@Override
+	public void setVisible(boolean value)
+	{
+		if(value == true)
+		{
+			Main.getInstance().getClientConnection().disconnect();
+			Main.getInstance().stopServer();
+		}
+	}
 	
 }
