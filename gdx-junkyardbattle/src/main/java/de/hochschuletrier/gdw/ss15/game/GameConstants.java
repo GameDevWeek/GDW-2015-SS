@@ -30,6 +30,9 @@ public class GameConstants {
     public static final int BOX2D_SCALE = 40;
     public static final float GATHERING_RANGE = 180f;
     
+    //GAME SETTINGS
+    public static final int NEEDED_POINTS = 1500;
+    
     // Light parameters
     public static final int LIGHT_RAYS = 360;
     public static final float LIGHT_AMBIENT = 0.9f;

@@ -67,6 +67,8 @@ public class HudSystem extends IteratingSystem implements NetworkReceivedNewPack
 
     int schrottcount = 20;
     int timcounter = 0;
+    int teamA = 0;
+    int teamB = 0;
     //....
     Entity localPlayer;
     SpriteBatch batch = new SpriteBatch();
@@ -229,8 +231,8 @@ public class HudSystem extends IteratingSystem implements NetworkReceivedNewPack
     private void punktestand() {
         DrawUtil.batch.draw(punktestand, Gdx.graphics.getWidth() / 2 - punktestand.getWidth() / 6, punktestand.getHeight() / 3, punktestand.getWidth() / 3, punktestand.getHeight() / -3);
 
-//        font.draw(DrawUtil.batch, ""+Highscore.Get().getTeamStat(0,"points"), Gdx.graphics.getWidth()/2 - 75, 15);
-//        font.draw(DrawUtil.batch, ""+Highscore.Get().getTeamStat(1,"points"), Gdx.graphics.getWidth()/2 + 25, 15);
+        font.draw(DrawUtil.batch, ""+teamA, Gdx.graphics.getWidth()/2 - 75, 15);
+        font.draw(DrawUtil.batch, ""+teamB, Gdx.graphics.getWidth()/2 + 25, 15);
     }
 
     private void showHudOverlay() {
@@ -241,8 +243,12 @@ public class HudSystem extends IteratingSystem implements NetworkReceivedNewPack
     public void onReceivedNewPacket(Packet pack, Entity ent) {
         if (pack.getPacketId() == PacketIds.Simple.getValue()) {
             SimplePacket sPack = (SimplePacket) pack;
+            
+            //METALSHARDS
             if (SimplePacket.SimplePacketId.MetalShardsUpdate.getValue() == sPack.m_SimplePacketId) {
                 schrottcount = (int) sPack.m_Moredata;
+                
+            //TIMER
             } else if (sPack.m_SimplePacketId == SimplePacket.SimplePacketId.GameCounter.getValue()) {
                 timcounter = (int) sPack.m_Moredata;
 
@@ -252,6 +258,24 @@ public class HudSystem extends IteratingSystem implements NetworkReceivedNewPack
                         timcounter--;
                     }
                 }, 1000, 1000);
+            }
+            
+            //PUNKTE
+            else if(sPack.m_SimplePacketId == SimplePacket.SimplePacketId.HighscorePacket.getValue())
+            {
+            	int points = (int) sPack.m_Moredata;
+            	
+            	//TEAM A
+            	if(points < 0)
+            	{
+            		teamA = -points;
+            		
+            	}
+            	//TEAM B
+            	if(points > 0)
+            	{
+            		teamB = points;
+            	}
             }
         }
     }
