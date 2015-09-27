@@ -81,7 +81,7 @@ public class FireServerListener extends EntitySystem implements NetworkReceivedN
         float angleStep = radiansConeDegree / shardNum;
 
         // Player should not be able to shoot if he is dead!
-        if(ComponentMappers.death.has(shootingEntity))
+        if(ComponentMappers.spawn.get(shootingEntity).respawnTimer != 0)
             return;
         
         boolean shooted = false;

@@ -32,6 +32,7 @@ public class PlayerHurtSystem extends EntitySystem implements PlayerHurtEvent.Li
 
             //System.out.println("Health: " + healthCom.get(hurtPlayer).health);
 
+            //todo
 
             if(healthCom.get(hurtPlayer).health < 0){
                 int killerID = ComponentMappers.bullet.get(projectile).playerID;
@@ -44,6 +45,7 @@ public class PlayerHurtSystem extends EntitySystem implements PlayerHurtEvent.Li
             //pack.health
             healthPacket.id = ComponentMappers.positionSynch.get(hurtPlayer).networkID;
             healthPacket.health = healthCom.get(hurtPlayer).health;
+            //System.out.println("health server: "+healthPacket.health);
             
             SendPacketServerEvent.emit(healthPacket, true);
         }
