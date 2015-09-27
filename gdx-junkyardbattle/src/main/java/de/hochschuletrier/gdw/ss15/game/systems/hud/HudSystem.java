@@ -146,8 +146,6 @@ public class HudSystem extends IteratingSystem implements NetworkReceivedNewPack
 
     private void radar(Entity entity) {
 
-        radarRange = Gdx.graphics.getWidth() * 2.50f;
-
         lineToPlayer.x = entity.getComponent(PositionComponent.class).x - localPlayer.getComponent(PositionComponent.class).x;
         lineToPlayer.y = entity.getComponent(PositionComponent.class).y - localPlayer.getComponent(PositionComponent.class).y;
 

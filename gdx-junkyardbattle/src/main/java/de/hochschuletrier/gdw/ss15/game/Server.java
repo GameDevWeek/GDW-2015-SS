@@ -59,6 +59,17 @@ public class Server implements Runnable
                     }
                 }
             }
+            else if(info.equals("restartCounter"))
+            {
+                if(lobby == null)
+                {
+                    logger.error("Lobby nicht aktiv");
+                }
+                else
+                {
+                    lobby.resetCounter();
+                }
+            }
             else
             {
                 logger.error(info+" falsches parameter für command serverCommand");
@@ -68,6 +79,8 @@ public class Server implements Runnable
     /**
      * End Command
      */
+
+    private boolean lastJoinedTeam = false;
 
     private AtomicBoolean isRunning = new AtomicBoolean(false);
     Thread runThread;
@@ -216,7 +229,10 @@ public class Server implements Runnable
                 {
                     logger.info("Insert player to game");
                     sock.sendPacket(new SimplePacket(SimplePacket.SimplePacketId.StartGame.getValue(), 0));
-                    listToAddInGame.push(new LobyClient(sock));
+                    LobyClient c =new LobyClient(sock);
+                    c.Team1 = lastJoinedTeam;
+                    listToAddInGame.push(c);
+                    lastJoinedTeam = !lastJoinedTeam;
                 }
                 else
                 {
