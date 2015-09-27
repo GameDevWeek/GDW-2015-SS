@@ -82,9 +82,9 @@ public class WeaponSystem extends IteratingSystem implements
 				 * SoundEvent.emit("shotgun_shoot", weaponSound); }
 				 */
 				WeaponUncharged.emit();
-				wpc.fireChannelTime = 0f;
 				FirePacket fire = new FirePacket(wpc.fireChannelTime);
 				SendPacketClientEvent.emit(fire, true);
+                wpc.fireChannelTime = 0f;
 			}
 		}
 		if (input.gather && wpc.fireCooldownReady && !input.shoot) { // right button is clicked
