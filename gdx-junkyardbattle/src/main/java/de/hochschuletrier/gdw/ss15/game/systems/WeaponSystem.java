@@ -30,7 +30,7 @@ public class WeaponSystem extends IteratingSystem implements
 	MyTimer timer = new MyTimer(true);
 	float attackCooldownTimer = 0;
 	Entity tractorSound = new Entity();
-    
+    private static final FirePacket firePacket = new FirePacket();
     private static final GatherPacket gather = new GatherPacket();
     
 	public WeaponSystem() {
@@ -82,8 +82,8 @@ public class WeaponSystem extends IteratingSystem implements
 				 * SoundEvent.emit("shotgun_shoot", weaponSound); }
 				 */
 				WeaponUncharged.emit();
-				FirePacket fire = new FirePacket(wpc.fireChannelTime);
-				SendPacketClientEvent.emit(fire, true);
+				firePacket.set(wpc.fireChannelTime);
+				SendPacketClientEvent.emit(firePacket, true);
                 wpc.fireChannelTime = 0f;
 			}
 		}
