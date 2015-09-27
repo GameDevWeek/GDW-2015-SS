@@ -37,11 +37,18 @@ public class ServerLobby
 
     public int mapId = 1;
 
+    public void resetCounter()
+    {
+        actualTime = 0;
+        SimplePacket sPack = new SimplePacket(SimplePacket.SimplePacketId.TimeMenuePacket.getValue(),(long)(SecondsToStart-actualTime));
+        SendPackettoAll(sPack);
+    }
 
     public ServerLobby()
     {
         //WARNING!!!! hurts by reading XD
         mapId = Dataholder.MapId.get();
+
     }
 
     public boolean ChangeMap(String s)
