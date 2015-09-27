@@ -27,6 +27,7 @@ public class HighscoreSyncListener extends EntitySystem implements NetworkReceiv
 
     @Override
     public void onReceivedNewPacket(Packet _pack, Entity ent) {
+    	/*
         try {
             HighscorePacket packet = (HighscorePacket) _pack;
 
@@ -47,5 +48,6 @@ public class HighscoreSyncListener extends EntitySystem implements NetworkReceiv
             }
 
         }catch (ClassCastException ex){}
+        */
     }
 }

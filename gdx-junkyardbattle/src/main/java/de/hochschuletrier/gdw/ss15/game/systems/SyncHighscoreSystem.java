@@ -12,10 +12,11 @@ import java.util.HashMap;
  * Created by oliver on 26.09.15.
  */
 public class SyncHighscoreSystem {
-
+	/*
     Timer t = new Timer(1000); //ms
 
     public SyncHighscoreSystem(TimerSystem system) {
+    	
         system.addTimer(t);
         t.start();
         t.addListener(t::restart);
@@ -49,5 +50,5 @@ public class SyncHighscoreSystem {
             }
         });
     }
-
+*/
 }
