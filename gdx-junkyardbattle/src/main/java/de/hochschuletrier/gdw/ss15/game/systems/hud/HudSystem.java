@@ -259,8 +259,10 @@ public class HudSystem extends IteratingSystem implements NetworkReceivedNewPack
         }
         if(pack.getPacketId() == PacketIds.Health.getValue())
         {
+
             HealthPacket hPack = (HealthPacket)pack;
             healthpoints = hPack.health;
+            //System.out.println(hPack.health);
         }
     }
 
