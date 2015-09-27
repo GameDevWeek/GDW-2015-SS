@@ -18,6 +18,9 @@ import de.hochschuletrier.gdw.ss15.game.components.SpawnSatelliteComponent;
 import de.hochschuletrier.gdw.ss15.game.components.network.server.PositionSynchComponent;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.MyTimer;
 
+//Hier beginnt Magie
+
+
 public class TestSatelliteSystem extends IteratingSystem
 {
     

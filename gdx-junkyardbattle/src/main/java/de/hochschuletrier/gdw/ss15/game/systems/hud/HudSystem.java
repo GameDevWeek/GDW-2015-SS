@@ -44,7 +44,8 @@ import javax.swing.text.Position;
  */
 public class HudSystem extends IteratingSystem implements NetworkReceivedNewPacketClientEvent.Listener {
 
-    public static float radarScale = 0.1337f;
+    private static float radarRange;
+    private static float radarScale = 123;
     Vector3 lineToSatellite = new Vector3(0, 0, 0);
     Vector3 lineToPlayer = new Vector3(0, 0, 0);
     Vector3 mouseScreenPos = new Vector3(0, 0, 0);
@@ -52,35 +53,44 @@ public class HudSystem extends IteratingSystem implements NetworkReceivedNewPack
     AssetManagerX assetManager;
     Texture crosshairTex;
     Texture hudoverlay;
+    Texture hudoverlay_blue;
+    Texture hudoverlay_orange;
     Texture punktestand;
     Texture uhr;
     Texture schrott;
     BitmapFont font;
+    Texture miniSatellite;
+    Texture gegnerPunktO;
+    Texture gegnerPunktB;
 
     Timer timer = new Timer();
-    
+
     int schrottcount;
     int timcounter = 0;
-
+    //....
     Entity localPlayer;
     SpriteBatch batch = new SpriteBatch();
-    
+
     public HudSystem(Camera camera) {
         this(Family.one((PlayerComponent.class), (SpawnSatelliteComponent.class)).get(), GameConstants.PRIORITY_HUD);
         this.camera = camera;
         this.crosshairTex = assetManager.getTexture("crosshair");
-        this.hudoverlay = assetManager.getTexture("hud_blue");
+        this.hudoverlay_blue = assetManager.getTexture("hud_blue");
+        this.hudoverlay_orange = assetManager.getTexture("hud_orange");
         this.punktestand = assetManager.getTexture("hud_punktestand");
         this.uhr = assetManager.getTexture("hud_uhr");
         this.schrott = assetManager.getTexture("hud_schrott");
         font = assetManager.getFont("quartz_40");
+        this.miniSatellite = assetManager.getTexture("mini_satellite");
+        this.gegnerPunktO = assetManager.getTexture("gegner_punkt_orange");
+        this.gegnerPunktB = assetManager.getTexture("gegner_punkt_blau");
     }
 
     public HudSystem(Family family, int priority) {
         super(family);
         this.priority = priority;
         this.assetManager = Main.getInstance().getAssetManager();
-        NetworkReceivedNewPacketClientEvent.registerListener(PacketIds.Simple,this);
+        NetworkReceivedNewPacketClientEvent.registerListener(PacketIds.Simple, this);
     }
 
     @Override
@@ -95,6 +105,11 @@ public class HudSystem extends IteratingSystem implements NetworkReceivedNewPack
             if (player.isLocalPlayer) {
                 if (localPlayer == null) {
                     this.localPlayer = entity;
+                }
+                if (player.teamID == 0) {
+                    this.hudoverlay = hudoverlay_orange;
+                } else {
+                    this.hudoverlay = hudoverlay_blue;
                 }
                 drawCrosshair(entity);
                 lebensBalken();
@@ -126,27 +141,41 @@ public class HudSystem extends IteratingSystem implements NetworkReceivedNewPack
 
     private void radar(Entity entity) {
 
+        radarRange = Gdx.graphics.getWidth() * 1.50f;
+
         lineToPlayer.x = entity.getComponent(PositionComponent.class).x - localPlayer.getComponent(PositionComponent.class).x;
         lineToPlayer.y = entity.getComponent(PositionComponent.class).y - localPlayer.getComponent(PositionComponent.class).y;
 
         lineToPlayer = camera.project(lineToPlayer);
 
-        lineToPlayer.scl(radarScale);
-        //DrawUtil.batch.draw("icon für spieler", radarMitte + vector);
-        DrawUtil.drawRect(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() - Gdx.graphics.getHeight() / 8.3f, 10, 10);
-        //Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()-Gdx.graphics.getHeight/4
+        lineToPlayer.scl(radarRange / 90);
+
+        if (localPlayer.getComponent(PlayerComponent.class).teamID == 0) { // orange
+            DrawUtil.batch.draw(gegnerPunktB, Gdx.graphics.getWidth() / 2,
+                    Gdx.graphics.getHeight() - Gdx.graphics.getHeight() / 8.3f, 10, 10);
+        } else {                                                           // blau
+            DrawUtil.batch.draw(gegnerPunktO, Gdx.graphics.getWidth() / 2,
+                    Gdx.graphics.getHeight() - Gdx.graphics.getHeight() / 8.3f, 10, 10);
+        }
+
     }
 
     private void lineToSatellite(Entity entity) {
+
+        if (entity == null || localPlayer == null) {
+            return;
+        }
+
         lineToSatellite.x = entity.getComponent(PositionComponent.class).x - localPlayer.getComponent(PositionComponent.class).x;
         lineToSatellite.y = entity.getComponent(PositionComponent.class).y - localPlayer.getComponent(PositionComponent.class).y;
 
         //lineToSatellite = camera.project(lineToSatellite);
 
         lineToSatellite.nor();
-        lineToSatellite.scl(100.0f);
-        DrawUtil.drawRect(Gdx.graphics.getWidth() / 2 + lineToSatellite.x,
-                Gdx.graphics.getHeight() - Gdx.graphics.getHeight()/2 + lineToSatellite.y, 10, 10);
+        lineToSatellite.scl(Gdx.graphics.getWidth() / 10);
+        DrawUtil.batch.draw(miniSatellite, Gdx.graphics.getWidth() / 2 + lineToSatellite.x,
+                Gdx.graphics.getHeight() - Gdx.graphics.getHeight() / 2 + lineToSatellite.y,
+                camera.viewportWidth / 80, camera.viewportWidth / 80);
 
     }
 
@@ -176,17 +205,24 @@ public class HudSystem extends IteratingSystem implements NetworkReceivedNewPack
         DrawUtil.fillRect(relativeXPosRight, relativeYPosRight, barWidth * healthSizeFactor, barHeight, healthColor);
     }
 
-    private void schrottAnzeige(){
-        
-        DrawUtil.batch.draw(schrott, Gdx.graphics.getWidth()/2 - 450,Gdx.graphics.getHeight() + 3, schrott.getWidth() / 2, schrott.getHeight() / -2);
-        DrawUtil.batch.draw(schrott, Gdx.graphics.getWidth()/2 - 450,Gdx.graphics.getHeight() + 3, schrott.getWidth() / 2, schrott.getHeight() / -2);
-        font.draw(DrawUtil.batch, "" + schrottcount,Gdx.graphics.getWidth()/2 - 366, Gdx.graphics.getHeight()-45);
-        
+    private void schrottAnzeige() {
+
+        DrawUtil.batch.draw(schrott, Gdx.graphics.getWidth() / 2 - 450, Gdx.graphics.getHeight() + 3, schrott.getWidth() / 2, schrott.getHeight() / -2);
+        DrawUtil.batch.draw(schrott, Gdx.graphics.getWidth() / 2 - 450, Gdx.graphics.getHeight() + 3, schrott.getWidth() / 2, schrott.getHeight() / -2);
+        font.draw(DrawUtil.batch, "" + schrottcount, Gdx.graphics.getWidth() / 2 - 366, Gdx.graphics.getHeight() - 45);
+
     }
 
     private void timer() {
-        DrawUtil.batch.draw(uhr, Gdx.graphics.getWidth()/2 + 250,Gdx.graphics.getHeight() + 3, uhr.getWidth() / 2, uhr.getHeight() / -2);
-        font.draw(DrawUtil.batch, "" + timcounter,Gdx.graphics.getWidth()/2 + 326, Gdx.graphics.getHeight()-45);
+        DrawUtil.batch.draw(uhr, Gdx.graphics.getWidth() / 2 + 250, Gdx.graphics.getHeight() + 3, uhr.getWidth() / 2, uhr.getHeight() / -2);
+        int timerMin = timcounter / 60;
+        String timerSec = "";
+        if ((timcounter % 60) >= 10) {
+            timerSec += timcounter % 60;
+        } else {
+            timerSec += ("0" + timcounter % 60);
+        }
+        font.draw(DrawUtil.batch, "" + timerMin + ":" + timerSec, Gdx.graphics.getWidth() / 2 + 316, Gdx.graphics.getHeight() - 45);
 
     }
 
@@ -201,31 +237,24 @@ public class HudSystem extends IteratingSystem implements NetworkReceivedNewPack
         DrawUtil.batch.draw(hudoverlay, 0, Gdx.graphics.getHeight(), Gdx.graphics.getWidth(), -Gdx.graphics.getHeight());
     }
 
-	@Override
-	public void onReceivedNewPacket(Packet pack, Entity ent) {
-		if(pack.getPacketId() == PacketIds.Simple.getValue())
-		{
-			SimplePacket sPack = (SimplePacket) pack;
-			if(SimplePacket.SimplePacketId.MetalShardsUpdate.getValue() == sPack.m_SimplePacketId)
-			{
-				schrottcount = (int) sPack.m_Moredata;
-			}
-            else if(sPack.m_SimplePacketId == SimplePacket.SimplePacketId.GameCounter.getValue())
-            {
+    @Override
+    public void onReceivedNewPacket(Packet pack, Entity ent) {
+        if (pack.getPacketId() == PacketIds.Simple.getValue()) {
+            SimplePacket sPack = (SimplePacket) pack;
+            if (SimplePacket.SimplePacketId.MetalShardsUpdate.getValue() == sPack.m_SimplePacketId) {
+                schrottcount = (int) sPack.m_Moredata;
+            } else if (sPack.m_SimplePacketId == SimplePacket.SimplePacketId.GameCounter.getValue()) {
                 timcounter = (int) sPack.m_Moredata;
 
-                timer.schedule(new TimerTask()
-                {
+                timer.schedule(new TimerTask() {
                     @Override
-                    public void run ()
-                    {
+                    public void run() {
                         timcounter--;
                     }
-                },1000,1000);
+                }, 1000, 1000);
             }
-		}
-	}
-
+        }
+    }
 
 
 }
