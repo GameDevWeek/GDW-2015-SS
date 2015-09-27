@@ -2,6 +2,7 @@ package de.hochschuletrier.gdw.ss15.menu;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
@@ -12,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 
 import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
@@ -123,44 +125,37 @@ public class MenuPageOptions extends MenuPage {
 		// Skin für die Optionsseite wird übergeben
 		super(skin, background);
 		
+		
 		barSound.setCurrentValue((SoundEmitter.getGlobalVolume()));
 		barMusic.setCurrentValue((MusicManager.getGlobalVolume()));
+		
 		imageMinusMusic.setWidth(iconWidth);
 		imageMinusMusic.setHeight(iconHeight);
-		// imageMinus.addListener(plusClicked);
 		imagePlusMusic.setWidth(iconWidth);
-		imagePlusMusic.setHeight(iconHeight);// imagePlus.addListener(minusClicked);
+		imagePlusMusic.setHeight(iconHeight);
 
 		imageMinusSound.setWidth(iconWidth);
 		imageMinusSound.setHeight(iconHeight);
-		// imageMinus.addListener(plusClicked);
 		imagePlusSound.setWidth(iconWidth);
 		imagePlusSound.setHeight(iconHeight);
 
 		imageBack.setWidth(60);
 		imageBack.setHeight(30);
 
-		addCenteredImage(350, 250/*-iconHeight*/, iconWidth, iconHeight, imageMinusMusic, actionMinusMusic);
-		addCenteredImage(620, 250/*-iconHeight*/, iconWidth, iconHeight, imagePlusMusic, actionPlusMusic);
-		addCenteredImage(350, 120/*-iconHeight*/, iconWidth, iconHeight, imageMinusSound, actionMinusSound);
-		addCenteredImage(620, 120/*-iconHeight*/, iconWidth, iconHeight, imagePlusSound, actionPlusSound);
+		addCenteredImage(350, 250, iconWidth, iconHeight, imageMinusMusic, actionMinusMusic);
+		addCenteredImage(620, 250, iconWidth, iconHeight, imagePlusMusic, actionPlusMusic);
+		addCenteredImage(350, 120, iconWidth, iconHeight, imageMinusSound, actionMinusSound);
+		addCenteredImage(620, 120, iconWidth, iconHeight, imagePlusSound, actionPlusSound);
 		
 		addCenteredImage(355, 40, 60, 30, imageBack, () -> menuManager.popPage());
-		// ImageButton imgb= new ImageButton(new );
+		
 
 		addUIActor(barMusic, 0, (int) barMusic.getHeight(), null);
 		addUIActor(barSound, 0, 0, null);
-		// textureMinus.addListener(minusClicked);
-		// addUIActor(textureMinus, 0, 0,null);
-		// addImageButton(x, y, width, height, runnable)(630-iconWidth,
-		// 345-iconHeight, imagePlus, actionPlus);
-		// hg.add(imageMinus);
-		// hg.add(bar);
-		// hg.add(imagePlus);
-		// addHorizontalGroupe(hg, 380, 245);
-
-		// addUIActor(bar, 555, 380,null);
-
+		
+		
+		
+		
 	}
 
 	protected final void addPageEntry(MenuManager menuManager, int x, int y, String text, MenuPage page) {

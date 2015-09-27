@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 
+import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
+
 public class Bar extends Actor {
 	private  float heightBar = 0;
 	private  float widthBar = 0;
@@ -16,11 +18,6 @@ public class Bar extends Actor {
 	private int x,y;
 	
 	
-	private ShapeRenderer drawer= new ShapeRenderer();
-	
-	private Color SoundbarColorLeft= Color.RED;
-	private Color SoundbarColorRight= Color.RED;
-
 	public Bar(float height,float width,int x,int y)
 	{
 		this.heightBar=height;
@@ -32,18 +29,8 @@ public class Bar extends Actor {
 
 	@Override
 	public void draw(Batch batch, float parentAlpha) {
-		batch.end();
-		drawer.setAutoShapeType(true);
-		drawer.begin();
-		drawer.setColor(Color.BLACK);
-		drawer.set(ShapeType.Line);
-		
-		
-		drawer.rect(x, y, 0, 0, widthBar , heightBar, 1, 1, 0,Color.BLACK,Color.BLACK,Color.BLACK,Color.BLACK);
-		drawer.set(ShapeType.Filled);
-		drawer.rect(x, y, 0, 0, currentValue, heightBar, 1, 1, 0, SoundbarColorLeft, SoundbarColorRight ,SoundbarColorRight,SoundbarColorLeft);
-		drawer.end();
-		batch.begin();
+		DrawUtil.setColor(Color.RED);
+		DrawUtil.fillRect(x, y, currentValue, heightBar);
 	}
 	public boolean increaseMaxValue(int increase)
 	{
