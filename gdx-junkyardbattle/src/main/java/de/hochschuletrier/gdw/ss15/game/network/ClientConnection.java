@@ -115,7 +115,7 @@ public class ClientConnection implements SendPacketClientEvent.Listener,
     {
         if(clientSocket==null)
         {
-            logger.error("Clint war nicht verbunden");
+            //logger.error("Clint war nicht verbunden");
         }
         else
         {

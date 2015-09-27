@@ -18,6 +18,7 @@ import de.hochschuletrier.gdw.ss15.events.network.server.NetworkReceivedNewPacke
 import de.hochschuletrier.gdw.ss15.events.network.server.SendPacketServerEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.GameConstants;
+import de.hochschuletrier.gdw.ss15.game.components.GatherComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PickableComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
@@ -47,7 +48,8 @@ public class GatherServerListener extends EntitySystem implements NetworkReceive
 
     @Override
     public void onReceivedNewPacket(Packet pack, Entity ent) {
-        // TODO Auto-generated method stub
+    	//ent = spieler
+        //entity = objekt
         try{
             GatherPacket packet = (GatherPacket)pack;
 
@@ -60,19 +62,35 @@ public class GatherServerListener extends EntitySystem implements NetworkReceive
 
             float channelTime = packet.channelTime;
             Entity entity = checkHarvestRayCollision(ent);
-
-            if (entity != null)
-                //ent = spieler
-                //entity = objekt
+            GatherComponent gatherComp = ComponentMappers.gather.get(ent);
+            if(ComponentMappers.gather.has(ent))
             {
-                //for (int i = 0; i < entity.getComponents().size(); i++) {
-                //}
+            	if(entity == null || !ComponentMappers.mineable.has(entity) || channelTime == 0f)
+            	{
+            		gatherComp.lastEntity = null;
+            		gatherComp.currentGatheringTime = 0.0f;
+            		gatherComp.mining = false;
+            	}
+            }
+            
+            
+            if (entity != null)
+            {
                 if (ComponentMappers.player.has(ent) && ComponentMappers.mineable.has(entity)) {
-                    MiningEvent.emit(ent, entity, channelTime);
-                } else if (ComponentMappers.player.has(ent)) {
+                	if(entity != gatherComp.lastEntity)
+                	{
+                		gatherComp.lastEntity = entity;
+                		gatherComp.currentGatheringTime = 0.0f;
+                		gatherComp.mining = false;
+                	}
+                	
+                	gatherComp.mining = true;
+                	gatherComp.currentGatheringTime += channelTime;
+                    MiningEvent.emit(ent, entity, gatherComp.currentGatheringTime, channelTime);
+                }/* else if (ComponentMappers.player.has(ent)) {
                     SimplePacket miningPacket = new SimplePacket(SimplePacket.SimplePacketId.MiningPacket.getValue(), 1);
                     SendPacketServerEvent.emit(packet, true);
-                }
+                }*/
             }
 
 
