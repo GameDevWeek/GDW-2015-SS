@@ -57,7 +57,7 @@ public class MenuPageEnterIP extends MenuPage
 		@Override
 		public void run() {
 			try {
-				
+
 				String temp = textAreaPort.getText();
 				String ip = "localhost";
 				int port = Integer.parseInt((temp.trim()));
@@ -65,6 +65,7 @@ public class MenuPageEnterIP extends MenuPage
 				{
 					ip = textAreaIP.getText();
 				}
+
 
 
 				if (Main.getInstance().getClientConnection().connect(ip, port) == false) {

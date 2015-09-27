@@ -57,8 +57,6 @@ public class ChangeAnimationStateSystem implements NetworkReceivedNewPacketClien
             
             PlayerComponent playerComponent = ComponentMappers.player.get(ent);
             
-            System.out.println("ANIMATIONCHANGE: " + playerComponent.teamID);
-            
             if(playerComponent.teamID == 0)
             {
                 idleAnimation = assetManager.getAnimation("character_orange_idle");

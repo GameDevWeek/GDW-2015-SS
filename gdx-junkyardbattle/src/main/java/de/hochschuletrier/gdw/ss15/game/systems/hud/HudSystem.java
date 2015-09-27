@@ -31,6 +31,7 @@ import de.hochschuletrier.gdw.ss15.game.components.input.InputComponent;
 import de.hochschuletrier.gdw.ss15.game.components.texture.TextureComponent;
 import de.hochschuletrier.gdw.ss15.game.hudDebugTemporary.HudDebug;
 import de.hochschuletrier.gdw.ss15.game.network.PacketIds;
+import de.hochschuletrier.gdw.ss15.game.network.Packets.HealthPacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket.SimplePacketId;
 import de.hochschuletrier.gdw.ss15.game.systems.network.TestSatelliteSystem;
@@ -65,8 +66,9 @@ public class HudSystem extends IteratingSystem implements NetworkReceivedNewPack
 
     Timer timer = new Timer();
 
-    int schrottcount;
+    int schrottcount = 20;
     int timcounter = 0;
+    int healthpoints = 100;
     //....
     Entity localPlayer;
     SpriteBatch batch = new SpriteBatch();
@@ -91,6 +93,7 @@ public class HudSystem extends IteratingSystem implements NetworkReceivedNewPack
         this.priority = priority;
         this.assetManager = Main.getInstance().getAssetManager();
         NetworkReceivedNewPacketClientEvent.registerListener(PacketIds.Simple, this);
+        NetworkReceivedNewPacketClientEvent.registerListener(PacketIds.Health, this);
     }
 
     @Override
@@ -117,8 +120,8 @@ public class HudSystem extends IteratingSystem implements NetworkReceivedNewPack
                 schrottAnzeige();
                 timer();
                 punktestand();
-                radar(entity);
             }
+            radar(entity);
         }
         if (entity.getComponent(SpawnSatelliteComponent.class) != null) {
             if (TestSatelliteSystem.satellite) {
@@ -141,21 +144,21 @@ public class HudSystem extends IteratingSystem implements NetworkReceivedNewPack
 
     private void radar(Entity entity) {
 
-        radarRange = Gdx.graphics.getWidth() * 1.50f;
+        radarRange = Gdx.graphics.getWidth() * 2.50f;
 
         lineToPlayer.x = entity.getComponent(PositionComponent.class).x - localPlayer.getComponent(PositionComponent.class).x;
         lineToPlayer.y = entity.getComponent(PositionComponent.class).y - localPlayer.getComponent(PositionComponent.class).y;
 
-        lineToPlayer = camera.project(lineToPlayer);
-
-        lineToPlayer.scl(radarRange / 90);
+        lineToPlayer.nor();
+        lineToPlayer.scl(Gdx.graphics.getWidth()/90);
 
         if (localPlayer.getComponent(PlayerComponent.class).teamID == 0) { // orange
             DrawUtil.batch.draw(gegnerPunktB, Gdx.graphics.getWidth() / 2,
                     Gdx.graphics.getHeight() - Gdx.graphics.getHeight() / 8.3f, 10, 10);
         } else {                                                           // blau
             DrawUtil.batch.draw(gegnerPunktO, Gdx.graphics.getWidth() / 2,
-                    Gdx.graphics.getHeight() - Gdx.graphics.getHeight() / 8.3f, 10, 10);
+                    Gdx.graphics.getHeight() - Gdx.graphics.getHeight() / 8.3f,
+                    Gdx.graphics.getWidth() / 80, Gdx.graphics.getWidth() / 80);
         }
 
     }
@@ -181,7 +184,7 @@ public class HudSystem extends IteratingSystem implements NetworkReceivedNewPack
 
     private void lebensBalken() {
         Color healthColor;
-        int health = localPlayer.getComponent(HealthComponent.class).health;
+        int health = healthpoints;
 
         if (health >= 50 && health <= 100)
             healthColor = Color.GREEN;
@@ -253,6 +256,13 @@ public class HudSystem extends IteratingSystem implements NetworkReceivedNewPack
                     }
                 }, 1000, 1000);
             }
+        }
+        if(pack.getPacketId() == PacketIds.Health.getValue())
+        {
+
+            HealthPacket hPack = (HealthPacket)pack;
+            healthpoints = hPack.health;
+            //System.out.println(hPack.health);
         }
     }
 

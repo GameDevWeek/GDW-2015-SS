@@ -1,4 +1,4 @@
-package de.hochschuletrier.gdw.ss15.game;
+﻿package de.hochschuletrier.gdw.ss15.game;
 
 import de.hochschuletrier.gdw.ss15.game.rendering.ZoomingModes.modes;
 
@@ -49,13 +49,22 @@ public class GameConstants {
     public static final float START_X_POSITION = 0;
     public static final float START_Y_POSITION = 0;
     public static final float DYING_TIMER = 0;
-    public static final float MINING_PER_SECOND = 5;
+    
+    public static final float MINING_PER_SECOND_STAGE_1 = 0f;
+    public static final float MINING_PER_SECOND_STAGE_2 = 2.f;
+    public static final float MINING_PER_SECOND_STAGE_3 = 4.0f;
+    public static final float MINING_PER_SECOND_STAGE_4 = 13.0f;
+    public static final float MINING_TIME_NEEDED_1 = 1.5f;
+    public static final float MINING_TIME_NEEDED_2 = 2.5f;
+    public static final float MINING_TIME_NEEDED_3 = 4.0f;
+    public static final float MINING_TIME_NEEDED_4 = 10.0f;
+    
     public static final float PLAYER_POINT_LIGHT_DISTANCE = 8.f;
     public static final float PLAYER_POINT_LIGHT_DISTANCE_CHARGED = 4.f;
     public static final float PLAYER_POINT_LIGHT_ALPHA = 0.7f;
     public static final float RESPAWN_TIMER = 5;
     public static final float PROTECTION_DURATION = 4;
-    public static final int DEFAULT_LAYER = 2;
+    public static final float DEFAULT_LAYER = 2.f;
     
     // Camera constants
     public static final modes ZOOM_MODE = modes.pow4;

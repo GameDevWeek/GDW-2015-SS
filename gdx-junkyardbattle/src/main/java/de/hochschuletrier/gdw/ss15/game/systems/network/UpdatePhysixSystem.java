@@ -27,7 +27,6 @@ import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
 public class UpdatePhysixSystem extends IteratingSystem
         implements NetworkReceivedNewPacketClientEvent.Listener{
 
-    Timer timer = new Timer(200); // 200 ms timer
 	long lastTimestamp = 0;
 
     public UpdatePhysixSystem(TimerSystem timerSystem)
@@ -68,8 +67,6 @@ public class UpdatePhysixSystem extends IteratingSystem
                 	phxc.setLinearVelocity(p.velocityX,p.velocityY);
 
                     phxc.setAngle(p.rotation*MathUtils.degreesToRadians);
-                	
-                    
                 }
             }
             }catch(ClassCastException ex){

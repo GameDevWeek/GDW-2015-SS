@@ -41,7 +41,12 @@ public class UdpSocket implements Closeable
 		m_Ip=ip;
 		m_Port = port;
 		m_Socket = new DatagramSocket();
+		try {
 		m_InetAddress = InetAddress.getByName(m_Ip);
+		}
+		catch (UnknownHostException e){
+
+		}
 	}
 
 	public boolean Send(String message,InetAddress destination,int port)

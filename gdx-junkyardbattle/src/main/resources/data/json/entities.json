@@ -3,7 +3,7 @@
         "meta": {},
         "components": {
             "Position": {
-                "layer": 1
+                "layer": 5
             },
             "ParticleEffect": {
                 "effectname": "shoot",
@@ -122,7 +122,9 @@
         "meta": {},
         "components": {
             "Player": {},
-            "Position": {},
+            "Position": {
+                "layer": 3
+            },
             "PhysixBody": {
                 "shape": "circle",
                 "size": 40,
@@ -136,7 +138,7 @@
             "Client": {},
             "PositionSynch": {
                 "clientname": "clientPlayer",
-                "updateDuration": 40
+                "updateDuration": 50
             },
             "Interpolate": {},
             "Inventory": {
@@ -150,13 +152,18 @@
             },
             "Health": {
                 "health": 100
+            },
+            "Gather": {
+            	"currentGatheringTime": 0.0
             }
         }
     },
     "clientPlayer": {
         "meta": {},
         "components": {
-            "Position": {},
+            "Position": {
+                "layer": 3
+            },
             "Player": {},
             "Health": {
                 "health": 100
@@ -191,7 +198,9 @@
             "Health": {
                 "health": 100
             },
-            "Position": {},
+            "Position": {
+                "layer": 3
+            },
             "PhysixBody": {
                 "shape": "circle",
                 "size": 40,
@@ -249,7 +258,7 @@
         "meta": {},
         "components": {
             "Position": {
-                "layer": 1
+                "layer": 5
             },
             "PhysixBody": {
                 "shape": "circle",

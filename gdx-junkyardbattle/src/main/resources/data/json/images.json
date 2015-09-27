@@ -15,6 +15,8 @@
     "map2":"data/maps/thumbnails/InYourFace.png",
     "map3":"data/maps/thumbnails/prototypeV2.png",
     "map4":"data/maps/thumbnails/salvage_shootout.png",
+    "map5":"data/maps/thumbnails/2vs2final.png",
+    "map6":"data/maps/thumbnails/4vs4Inselfinal.png",
 
     "start_button":"data/ui/menu/Assets/Start.png",
 	"join_button": "data/ui/menu/Assets/join.png",
