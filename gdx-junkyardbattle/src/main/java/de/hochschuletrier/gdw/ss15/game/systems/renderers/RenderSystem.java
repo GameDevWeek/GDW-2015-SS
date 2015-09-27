@@ -33,7 +33,12 @@ public class RenderSystem extends SortedSubIteratingSystem{
             PositionComponent p1 = ComponentMappers.position.get(e1);
             PositionComponent p2 = ComponentMappers.position.get(e2);
             
-            return p1.layer - p2.layer;
+            if(p1.layer < p2.layer)
+                return -1;
+            if(p1.layer > p2.layer)
+                return 1;
+            return 0;
+//            return (int)(p1.layer - p2.layer);
         }
     }
 

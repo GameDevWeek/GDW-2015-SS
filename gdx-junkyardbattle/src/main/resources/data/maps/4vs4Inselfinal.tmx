@@ -18,12 +18,17 @@
    eJztmW1u8yAQhLlWcgbbuU5v06+3ldqkbdpcsFgvI02m65AQb0JVfowcYwI8LOwu9jqEsG5qampq+pO6qVzncOH3bdRd1L1xfXCY01x/c3E9Ry2i+qiOtIx6ceAa+1ul/qAhlb04cHXUR1/INdriK6Nd6m9I0nn04GK2Eq7n1IbVHjPgOebQkwv9nsvFNu+kXVwXYZ+X+/OwF9o/hwvjfIz6F/WU2td7tqEnF9up1G8w12sq26T2+X4Vfq7Nuf3GW9R7mkfwjHP7EbV14Hoz7AZbbmfkWlP/pX5Q91d3gGst5b088+A6N27BXjzWHNcQ/Lly9srFpx3Z6zP8zx9q4MrZi9mXYd+Xw4+y/3k9gusS6zBnrw2NmeNBT/ccj47h6kId9mIu1GcuLq+F61R7KY/FhTiiMcN7f8EX7Ghcn6lMzylsU7UX58u8DqfG4G0vPaewHay1Ax7sI2bpw74vqYGL/Rr4YDf243jOeSv7xo7q6P+nzive9uJ9wjk424bPH2xjK2/XnF5zQvTpycVz3xl985h6ubKd9IzSG/V0vry5sFdwRT4KPVE9trGuwWHi/9oWmC+9vyy/AQZ+d7A0fufyTMQML66pcwrODYe41B+qP81xae4/J5f2cyjuIH5Zfp7zRj7/jvHReme3oXZq4LL8IrMoF9a5tabx/xq41F669k7h8vTzOuZj7KX+Xrl4f9VgrxwXfMyHXPEbcWBsZ/Q92wyXZ/zSfnL56iGhDfZxOS4vf8j5PNbPmNeVfHew9sy19peVzyM2nfr+xvLdysXziLo8j575IXKJEi7NjZRrrMPfU4b0fJXqeOXzHJdKuBDfcEbBeUTv9X099rXXdyL0U7oOeX44L+ZyfT//m7isMxvKFuHnOvTiGqSfEq5cfOP38nwu8+CaGkvJd4djbboiG4Jrbr9xaeF7iqU5vqfUrGvNeVNTU1PT9fUNDF2nvA==
   </data>
  </layer>
- <layer name="Walls" width="54" height="54">
+ <layer name="Krater" width="54" height="54">
+  <data encoding="base64" compression="zlib">
+   eJztzqcNwEAABEFX6ZxD/y34mJnRS09mpOXbNAAAAAAA/GlTl/o0VH4paUxTmtNS+aWkNW1pT0fdlaLOdKU7PZVfAAAAAAD4vE3qBdk=
+  </data>
+ </layer>
+ <layer name="Walls" width="54" height="54" visible="0">
   <data encoding="base64" compression="zlib">
    eJztlsEOwiAMhnkc9a7ePKgPQJa90N7cNZEE/wzbJayUrV+yA2OjhbY/DcFxHMdxnN4ZWjvgsGjGqGRrr3my131pYCEva3OqsAb62jrH4vxclW0+FGzQuT4V7BwBjXitgauZSfDtWMmXWpC2XLJxhLkzzP9Dq74kekjacs/G6dyH79wN5jmbGnB6SPtGv3PfSHde8/MW2tOIF+UTp4dcPKbCe+tgPEr1JNEEOkdtPYzMfIpLip8076yA+8Mxagi3BsbR2v2VfC3tC/1fykt6Z21fmIdYX1weWwN1Yq2uIxrxkvQIPeq8pEeg+OC+8tqx2EdJQa2I4VdH1vRRWuQ+lqCYlerJYh8l6RFG+K70j7TOrOhGTbT6qHvY5t5pfZe16PEs6eFRWZN3W+bo0tqta2Iv9HiOrXxeult7PD/HcRzHcZwafABPBiX9
   </data>
  </layer>
- <objectgroup name="Spawn/Junk">
+ <objectgroup name="Spawn/Junk" visible="0">
   <object id="181" name="SatelliteSite" type="Satellite" x="1672" y="3336" width="256" height="256">
    <properties>
     <property name="SatelliteSpawn" value="1"/>
@@ -207,12 +212,12 @@
     <property name="Team" value="A"/>
    </properties>
   </object>
-  <object id="333" name="Base" type="Base" x="5012" y="1172" width="600" height="600">
+  <object id="333" name="Base" type="Team A" x="5012" y="1172" width="600" height="600">
    <properties>
     <property name="Team" value="A"/>
    </properties>
   </object>
-  <object id="334" name="Base" type="Base" x="5012" y="5172" width="600" height="600">
+  <object id="334" name="Base" type="Team B" x="5012" y="5172" width="600" height="600">
    <properties>
     <property name="Team" value="B"/>
    </properties>
@@ -220,14 +225,14 @@
   <object id="335" name="SpawnCar" type="SpawnCar" x="1768" y="1520"/>
   <object id="336" name="SpawnCar" type="SpawnCar" x="1784" y="5248"/>
  </objectgroup>
- <layer name="Panzer" width="54" height="54">
+ <layer name="Panzer" width="54" height="54" visible="0">
   <data encoding="base64" compression="zlib">
    eJzt2UEKgDAUQ8GqVFHvf9/mEIVvcQbePvu0BgDwb1va01E9ZLKeznRVD5nsTk96q4cAAAAAAADL8xOtxU8EAHzVAIonAG0=
   </data>
  </layer>
  <layer name="PanzerTop/Krater/Auto" width="54" height="54">
   <data encoding="base64" compression="zlib">
-   eJzt19ltAlEQBVESYDVmswGzxITZzE7+KVCTARq5e0CqI9X3fZ+vazVJkqTnDGlEX8E7K/qlNW2CtwrfNKZJ8M6WdrSnv+CtwpR+aBa8c6AjnegcvFWY04KWwTsXutKN7sFbkiRJen3Zd0qW7DslS/adksU7RZIkqRz/8+8l+z9fpwY1g3ey//MtalMnYSvTB3Xps+qH/LMe9WlQ9UMkSVJpD58uE9U=
+   eJztztkJAgEQBcFNQF2v9b7NP0ZfCCIDg1AF/d/DAADwnUM6plP3SLFzuqRr90ixW7qnR/NHtWd6pXf3CAAAAAAA8PdmaZ4W3SPFxrRMq+6RYuu0SdvukWJT2qV99wgA8LMPT5UCTQ==
   </data>
  </layer>
 </map>

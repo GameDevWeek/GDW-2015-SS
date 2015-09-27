@@ -64,7 +64,7 @@ public class WeaponSystem extends IteratingSystem implements
 		}
 
 		// ask for left click
-		if (input.shoot && wpc.fireCooldownReady && !input.gather) {
+		if (input.shoot && (wpc.fireCooldownReady || wpc.fireChannelTime > 0) && !input.gather) {
 			// left button is clicked
 			wpc.fireChannelTime = Math.min(wpc.fireChannelTime + deltaTime,
 					WeaponComponent.maximumFireTime);
@@ -72,8 +72,7 @@ public class WeaponSystem extends IteratingSystem implements
 			
 			//Set cooldown active
 			attackCooldownTimer = 0.0f;
-			wpc.fireCooldownReady = false;
-			
+			wpc.fireCooldownReady = false;			
 			
 			return; // left mouse > right mouse
 		} else {

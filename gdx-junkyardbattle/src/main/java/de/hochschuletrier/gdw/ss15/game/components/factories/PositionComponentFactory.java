@@ -19,7 +19,7 @@ public class PositionComponentFactory extends ComponentFactory<EntityFactoryPara
         PositionComponent component = engine.createComponent(PositionComponent.class);
         component.x = param.x;
         component.y = param.y;
-        component.layer = properties.getInt("layer", GameConstants.DEFAULT_LAYER);
+        component.layer = properties.getFloat("layer", GameConstants.DEFAULT_LAYER);
         entity.add(component);
     }
 }

@@ -7,7 +7,7 @@ public class DeathComponent extends Component implements Poolable
 {
     public float dyingDuration = 30000;
     public float stateTime = 0;
-
+    
     @Override
     public void reset()
     {
