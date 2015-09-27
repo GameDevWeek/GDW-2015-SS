@@ -27,11 +27,13 @@ public class ServerLobby
 
     String Mapname;
     private int MaximumPlayers = 8;
-    public float SecondsToStart = 60;
+    public float SecondsToStart = 120;
     public float actualTime = 0;
 
     public LinkedList<LobyClient> connectedClients = new LinkedList<>();
 
+    private int team1 = 0;
+    private int team2 = 0;
 
     public int mapId = 1;
 
@@ -129,8 +131,26 @@ public class ServerLobby
             SimplePacket spacket = (SimplePacket) pack;
             if(spacket.m_SimplePacketId == SimplePacket.SimplePacketId.ChangeTeamPacket.getValue())
             {
-                client.Team1 = !client.Team1;
-                SendChangePlayerStatusToAll(client);
+                if(client.Team1)
+                {
+                    if(team2<4)
+                    {
+                        team1--;
+                        team2++;
+                        client.Team1 = !client.Team1;
+                        SendChangePlayerStatusToAll(client);
+                    }
+                }
+                else
+                {
+                    if(team1<4)
+                    {
+                        team2--;
+                        team1++;
+                        client.Team1 = !client.Team1;
+                        SendChangePlayerStatusToAll(client);
+                    }
+                }
             }
         }
         if(pack.getPacketId() == PacketIds.ChangeName.getValue())
@@ -149,7 +169,14 @@ public class ServerLobby
         if (connectedClients.size() >= MaximumPlayers) {
             return false;
         }
+
         LobyClient client = new LobyClient(sock);
+
+        if(team1>=4)
+        {
+            client.Team1 = !client.Team1;
+        }
+
         SendAllTonewPlyer(client);
         connectedClients.push(client);
         SendChangePlayerStatusToAll(client);

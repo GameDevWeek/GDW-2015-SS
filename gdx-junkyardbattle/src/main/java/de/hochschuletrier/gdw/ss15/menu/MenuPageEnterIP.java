@@ -66,6 +66,11 @@ public class MenuPageEnterIP extends MenuPage
 					ip = textAreaIP.getText();
 				}
 
+				if(Main.getInstance().getClientConnection().getSocket().isByConnect() == false &&
+						Main.getInstance().getClientConnection().getSocket().isConnected()) {
+					Main.getInstance().getClientConnection().disconnect();
+				}
+
 				if (Main.getInstance().getClientConnection().connect(ip, port) == false) {
 					System.out.println("Could not Connect to Server");
 					labelError.setText("Error");

@@ -1,5 +1,7 @@
 package de.hochschuletrier.gdw.ss15.menu;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.assets.AssetManager;
@@ -126,9 +128,19 @@ public class MenuPageHostGame extends MenuPage implements ConnectTryFinishEvent.
 		addCenteredImage(420, 365, buttonImageWidth, buttonImageHeight, imageHost, runnableHost);
 		addUIActor(textAreaPort, 390, (int) (290 - textAreaPort.getHeight()), null);
 		addUIActor(imageMap, 420, (int) (215 - imageMap.getHeight()), null);
-		addUIActor(labelIP, 783, (int) (120-labelIP.getHeight()), null);
+		addUIActor(labelIP, 783, (int) (120 - labelIP.getHeight()), null);
 
 		Dataholder.MapId.set(actualMap);
+
+		try {
+			String adresse = InetAddress.getLocalHost().toString();
+			adresse = adresse.substring(0,adresse.indexOf('/'));
+			labelIP.setText(adresse);
+		}
+		catch (UnknownHostException ex)
+		{
+			labelIP.setText("Keine Ip");
+		}
 
 		ConnectTryFinishEvent.unregisterAll();
 		ConnectTryFinishEvent.unregisterAll();
