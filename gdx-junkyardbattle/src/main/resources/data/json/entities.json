@@ -150,6 +150,9 @@
             },
             "Health": {
                 "health": 100
+            },
+            "Gather": {
+            	"currentGatheringTime": 0.0
             }
         }
     },

@@ -9,6 +9,7 @@ import de.hochschuletrier.gdw.ss15.game.components.BasePointComponent;
 import de.hochschuletrier.gdw.ss15.game.components.BulletComponent;
 import de.hochschuletrier.gdw.ss15.game.components.DamageComponent;
 import de.hochschuletrier.gdw.ss15.game.components.DeathComponent;
+import de.hochschuletrier.gdw.ss15.game.components.GatherComponent;
 import de.hochschuletrier.gdw.ss15.game.components.HealthComponent;
 import de.hochschuletrier.gdw.ss15.game.components.ImpactSoundComponent;
 import de.hochschuletrier.gdw.ss15.game.components.InterpolatePositionComponent;
@@ -82,4 +83,5 @@ public class ComponentMappers {
     public static final ComponentMapper<AboveAbyssComponent> abyss = ComponentMapper.getFor(AboveAbyssComponent.class);
     public static final ComponentMapper<MagneticBeamEffectComponent> magneticBeamEffect = ComponentMapper.getFor(MagneticBeamEffectComponent.class);
     public static final ComponentMapper<ChargeEffectComponent> chargeEffect = ComponentMapper.getFor(ChargeEffectComponent.class);
+    public static final ComponentMapper<GatherComponent> gather = ComponentMapper.getFor(GatherComponent.class);
 }
