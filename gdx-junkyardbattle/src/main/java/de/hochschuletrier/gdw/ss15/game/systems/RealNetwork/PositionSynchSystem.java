@@ -4,6 +4,7 @@ import com.badlogic.ashley.core.*;
 import com.badlogic.ashley.utils.ImmutableArray;
 
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
+import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.events.network.server.SendPacketServerEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.ServerGame;
@@ -18,6 +19,7 @@ import de.hochschuletrier.gdw.ss15.game.network.Packets.SpawnBulletPacket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serverclientsocket;
 
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
+import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.MyTimer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,6 +34,8 @@ public class PositionSynchSystem extends EntitySystem implements EntityListener 
     private ImmutableArray<Entity> entities;
     ServerGame game;
     private Family family;
+
+    private EntityUpdatePacket pack = new EntityUpdatePacket();
 
     public PositionSynchSystem(ServerGame game,int priotity){
         super(priotity);
@@ -71,8 +75,16 @@ public class PositionSynchSystem extends EntitySystem implements EntityListener 
                     comp.lastVelocityY =physComp.getLinearVelocity().y;
                     comp.lastRot=pos.rotation;
 
+                    pack.entityID = comp.networkID;
+                    pack.xPos = comp.lastX;
+                    pack.yPos = comp.lastY;
+                    pack.velocityX = comp.lastVelocityX;
+                    pack.velocityY = comp.lastVelocityY;
+                    pack.rotation = comp.lastRot;
 
-                    EntityUpdatePacket pack = new EntityUpdatePacket(comp.networkID,comp.lastX,comp.lastY,comp.lastVelocityX,  comp.lastVelocityY,comp.lastRot);
+                    pack.setTimestamp(MyTimer.get_TimestampNanoseconds());
+
+                    //System.out.println(comp.sendSave);
                     SendPacketServerEvent.emit(pack, comp.sendSave);
                }
             }
