@@ -100,7 +100,7 @@ public class MapLoader
                 TmxImage img = tileset.getImage();
                 String fn = CurrentResourceLocator.combinePaths(tileset.getFilename(), img.getSource());
                 Texture tex = new Texture(fn);
-                tex.setFilter(TextureFilter.Linear, TextureFilter.Linear);
+                tex.setFilter(TextureFilter.Nearest, TextureFilter.Nearest);
                 tilesetImages.put(tileset, tex);
             }
             for (TileSet tileset : tiledMap.getTileSets()) {
