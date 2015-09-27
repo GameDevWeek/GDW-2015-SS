@@ -31,6 +31,7 @@ import de.hochschuletrier.gdw.ss15.game.components.input.InputComponent;
 import de.hochschuletrier.gdw.ss15.game.components.texture.TextureComponent;
 import de.hochschuletrier.gdw.ss15.game.hudDebugTemporary.HudDebug;
 import de.hochschuletrier.gdw.ss15.game.network.PacketIds;
+import de.hochschuletrier.gdw.ss15.game.network.Packets.HealthPacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket.SimplePacketId;
 import de.hochschuletrier.gdw.ss15.game.systems.network.TestSatelliteSystem;
@@ -67,6 +68,7 @@ public class HudSystem extends IteratingSystem implements NetworkReceivedNewPack
 
     int schrottcount;
     int timcounter = 0;
+    int healthpoints = 100;
     //....
     Entity localPlayer;
     SpriteBatch batch = new SpriteBatch();
@@ -91,6 +93,7 @@ public class HudSystem extends IteratingSystem implements NetworkReceivedNewPack
         this.priority = priority;
         this.assetManager = Main.getInstance().getAssetManager();
         NetworkReceivedNewPacketClientEvent.registerListener(PacketIds.Simple, this);
+        NetworkReceivedNewPacketClientEvent.registerListener(PacketIds.Health, this);
     }
 
     @Override
@@ -181,7 +184,7 @@ public class HudSystem extends IteratingSystem implements NetworkReceivedNewPack
 
     private void lebensBalken() {
         Color healthColor;
-        int health = localPlayer.getComponent(HealthComponent.class).health;
+        int health = healthpoints;
 
         if (health >= 50 && health <= 100)
             healthColor = Color.GREEN;
@@ -253,6 +256,11 @@ public class HudSystem extends IteratingSystem implements NetworkReceivedNewPack
                     }
                 }, 1000, 1000);
             }
+        }
+        if(pack.getPacketId() == PacketIds.Health.getValue())
+        {
+            HealthPacket hPack = (HealthPacket)pack;
+            healthpoints = hPack.health;
         }
     }
 
