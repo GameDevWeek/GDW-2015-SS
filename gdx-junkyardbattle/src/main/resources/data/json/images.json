@@ -60,6 +60,10 @@
     "hud_punktestand" : "data/images/Punktestand.png",
     "hud_uhr": "data/images/Uhr.png",
     "hud_schrott" : "data/images/Schrott.png",
-    
+    "mini_satellite" : "data/images/Satellit_mini.png",
+    "gegner_punkt_orange" : "data/images/Gegnerpunkt_orange.png",
+    "gegner_punkt_blau" : "data/images/Gegnerpunkt.png",
+
+
     "car" : "data/images/Auto.png"
 }
