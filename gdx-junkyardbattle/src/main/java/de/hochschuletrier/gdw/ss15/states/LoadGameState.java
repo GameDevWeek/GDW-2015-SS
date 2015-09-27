@@ -14,7 +14,7 @@ public class LoadGameState extends BaseGameState {
     private boolean isDone;
     private final AssetManagerX assetManager;
     private final Runnable completeFunc;
-	private Texture texture= new Texture(Gdx.files.internal("data/ui/menu/Assets/Ladescreen_zusammengefuegt.png"));
+	private Texture texture= new Texture(Gdx.files.internal("data/ui/menu/Assets/LoadScreen.png"));
 	private Color colorBg= new Color(255f/255f, 181f/255f, 76f/255f, 1);
     public LoadGameState(AssetManagerX assetManager, Runnable completeFunc) {
         this.assetManager = assetManager;
@@ -25,10 +25,10 @@ public class LoadGameState extends BaseGameState {
         Main.getInstance().screenCamera.bind();
         DrawUtil.fillRect(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight(), Color.BLACK);
 
-        float drawWidth = Gdx.graphics.getWidth() - 454.0f;
+        float drawWidth = 400;//Gdx.graphics.getWidth() - 454.0f;
        
         DrawUtil.fillRect(195,150, (int) (drawWidth * assetManager.getProgress()), 400, colorBg);
-        DrawUtil.drawRect(50, Gdx.graphics.getHeight() / 2 - 25, drawWidth, 50, colorBg);
+        
         DrawUtil.draw(texture);
     }
 

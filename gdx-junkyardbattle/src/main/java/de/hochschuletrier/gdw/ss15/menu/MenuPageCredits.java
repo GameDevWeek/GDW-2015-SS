@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended;
+import de.hochschuletrier.gdw.commons.gdx.audio.MusicManager;
 import de.hochschuletrier.gdw.commons.gdx.input.hotkey.Hotkey;
 import de.hochschuletrier.gdw.commons.gdx.input.hotkey.HotkeyModifier;
 import de.hochschuletrier.gdw.commons.gdx.menu.MenuManager;
@@ -12,6 +13,8 @@ import de.hochschuletrier.gdw.commons.gdx.menu.widgets.DecoImage;
 import de.hochschuletrier.gdw.commons.gdx.sceneanimator.SceneAnimator;
 import de.hochschuletrier.gdw.commons.gdx.sceneanimator.SceneAnimatorActor;
 import de.hochschuletrier.gdw.ss15.Main;
+import de.hochschuletrier.gdw.ss15.game.GameConstants;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,9 +43,9 @@ public class MenuPageCredits extends MenuPage implements SceneAnimator.Getter {
     public MenuPageCredits(Skin skin, MenuManager menuManager) {
         super(skin,"credits" );
 
-      		imageBack.setWidth(60);
+      	imageBack.setWidth(60);
 		imageBack.setHeight(30);
-		addCenteredImage(825, 125-30, 115, 30, imageBack, () -> menuManager.popPage());
+		addCenteredImage(35, 45-30, 115, 30, imageBack, () -> menuManager.popPage());
         try {
             sceneAnimator = new SceneAnimator(this, "data/json/credits.json");
             addActor(new SceneAnimatorActor(sceneAnimator));
@@ -74,4 +77,19 @@ public class MenuPageCredits extends MenuPage implements SceneAnimator.Getter {
     public Texture getTexture(String name) {
         return assetManager.getTexture(name);
     }
+    @Override
+	public void setVisible(boolean visible)
+	{
+	super.setVisible(visible);
+	if(visible)
+	{
+		
+		MusicManager.play(assetManager.getMusic("klavier"), GameConstants.MUSIC_FADE_TIME);
+	}
+	else
+	{
+		MusicManager.play(assetManager.getMusic("menu"), GameConstants.MUSIC_FADE_TIME);
+		
+	}
+	}
 }

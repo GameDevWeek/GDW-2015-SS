@@ -8,7 +8,7 @@
     "start_bg": "data/ui/menu/Assets/Start_menu.png",
     "join_bg":"data/ui/menu/Assets/Lobby.png",
     "enterip_bg":"data/ui/menu/Assets/enter_ip.png",
-    "load_bg":"data/ui/menu/Assets/Lobby.png",
+    "load_bg":"data/ui/menu/Assets/LoadScreen.png",
     "host_bg":"data/ui/menu/Assets/host_menue_map.png",
     
     "map1":"data/ui/menu/Assets/Thumbnail/InYourFace.png",

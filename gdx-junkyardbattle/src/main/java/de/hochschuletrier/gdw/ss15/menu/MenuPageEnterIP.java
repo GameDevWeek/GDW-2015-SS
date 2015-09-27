@@ -142,9 +142,10 @@ public class MenuPageEnterIP extends MenuPage
 	}
 
 	@Override
-	public void setVisible(boolean value)
+	public void setVisible(boolean visible)
 	{
-		if(value == true)
+		super.setVisible(visible);
+		if(visible == true)
 		{
 			Main.getInstance().getClientConnection().disconnect();
 		}

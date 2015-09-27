@@ -42,6 +42,7 @@ public class MenuPage extends Group {
 
 		Gdx.input.setCursorImage(new Pixmap(Gdx.files.internal("data/ui/menu/Assets/mouse_ready.png")), 0, 0);
 
+
 		addActor(new DecoImage(assetManager.getTexture(background)));
 
 		setVisible(false);
@@ -53,6 +54,7 @@ public class MenuPage extends Group {
 			super.act(delta);
 		}
 	}
+	
 
 	@Override
 	protected void drawChildren(Batch batch, float parentAlpha) {
