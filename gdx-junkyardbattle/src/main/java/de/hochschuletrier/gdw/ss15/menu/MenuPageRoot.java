@@ -103,7 +103,7 @@ public class MenuPageRoot extends MenuPage {
            
             
         } else {
-            addLeftAlignedButton(x, y - YSTEP_BUTTON * (i++), WIDTH_BUTTON, HEIGHT_BUTTON, "Fortsetzen", () -> menuManager.popPage());
+           // addLeftAlignedButton(x, y - YSTEP_BUTTON * (i++), WIDTH_BUTTON, HEIGHT_BUTTON, "Fortsetzen", () -> menuManager.popPage());
             addLeftAlignedButton(x, y - YSTEP_BUTTON * (i++), WIDTH_BUTTON, HEIGHT_BUTTON, "Spiel verlassen", this::stopGame);
         }
        

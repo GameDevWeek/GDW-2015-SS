@@ -54,6 +54,7 @@ public class MenuPage extends Group {
 			super.act(delta);
 		}
 	}
+	
 
 	@Override
 	protected void drawChildren(Batch batch, float parentAlpha) {
