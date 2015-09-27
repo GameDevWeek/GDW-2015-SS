@@ -146,6 +146,9 @@ public class HudSystem extends IteratingSystem implements NetworkReceivedNewPack
 
     private void radar(Entity entity) {
 
+        if(entity.getComponent(PositionComponent.class) == null){
+            return;
+        }
         lineToPlayer.x = entity.getComponent(PositionComponent.class).x - localPlayer.getComponent(PositionComponent.class).x;
         lineToPlayer.y = entity.getComponent(PositionComponent.class).y - localPlayer.getComponent(PositionComponent.class).y;
 
