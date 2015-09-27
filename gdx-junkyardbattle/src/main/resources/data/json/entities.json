@@ -178,7 +178,8 @@
                 "draw": false
             },
             "Interpolate": {},
-            "SoundEmitter": {}
+            "SoundEmitter": {},
+            "ClientIsShooting": {}
         }
     },
     "clientOwnPlayer": {
@@ -213,7 +214,8 @@
             "Input": {},
             "Interpolate": {},
             "Weapon": {},
-            "SoundEmitter": {}
+            "SoundEmitter": {},
+            "ClientIsShooting": {}
         }
     },
     "projectile": {

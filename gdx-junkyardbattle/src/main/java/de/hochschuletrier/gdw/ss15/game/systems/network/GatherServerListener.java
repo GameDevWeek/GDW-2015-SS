@@ -21,8 +21,10 @@ import de.hochschuletrier.gdw.ss15.game.GameConstants;
 import de.hochschuletrier.gdw.ss15.game.components.PickableComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
+import de.hochschuletrier.gdw.ss15.game.components.network.server.PositionSynchComponent;
 import de.hochschuletrier.gdw.ss15.game.network.PacketIds;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.GatherPacket;
+import de.hochschuletrier.gdw.ss15.game.network.Packets.ReciveShotPacketClient;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
 
@@ -48,6 +50,14 @@ public class GatherServerListener extends EntitySystem implements NetworkReceive
         // TODO Auto-generated method stub
         try{
             GatherPacket packet = (GatherPacket)pack;
+
+
+            PositionSynchComponent comp = ComponentMappers.positionSynch.get(ent);
+            ReciveShotPacketClient packett = new ReciveShotPacketClient(comp.networkID,2);
+            SendPacketServerEvent.emit(packett,true);
+
+
+
             float channelTime = packet.channelTime;
             Entity entity = checkHarvestRayCollision(ent);
 

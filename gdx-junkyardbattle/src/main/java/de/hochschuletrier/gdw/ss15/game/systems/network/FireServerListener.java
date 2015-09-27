@@ -1,5 +1,6 @@
 package de.hochschuletrier.gdw.ss15.game.systems.network;
 
+import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
@@ -9,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixModifierComponent;
 import de.hochschuletrier.gdw.ss15.events.network.server.NetworkReceivedNewPacketServerEvent;
+import de.hochschuletrier.gdw.ss15.events.network.server.SendPacketServerEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.GameConstants;
 import de.hochschuletrier.gdw.ss15.game.ServerGame;
@@ -16,8 +18,10 @@ import de.hochschuletrier.gdw.ss15.game.components.BulletComponent;
 import de.hochschuletrier.gdw.ss15.game.components.InventoryComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.WeaponComponent;
+import de.hochschuletrier.gdw.ss15.game.components.network.server.PositionSynchComponent;
 import de.hochschuletrier.gdw.ss15.game.network.PacketIds;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.FirePacket;
+import de.hochschuletrier.gdw.ss15.game.network.Packets.ReciveShotPacketClient;
 import de.hochschuletrier.gdw.ss15.game.rendering.ZoomingModes;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
 
@@ -58,6 +62,7 @@ public class FireServerListener extends EntitySystem implements NetworkReceivedN
         
         FirePacket packet = (FirePacket)pack;
 
+
         // Should be in [0, 1]
         float channelFactor = packet.channeltime / WeaponComponent.maximumFireTime + 0.0001f;
         
@@ -75,11 +80,15 @@ public class FireServerListener extends EntitySystem implements NetworkReceivedN
         
         PhysixBodyComponent physixComp = ComponentMappers.physixBody.get(shootingEntity);
         float angleStep = radiansConeDegree / shardNum;
-        
+
+        boolean shooted = false;
+
         for(int i = -shardNum / 2; i <= shardNum / 2; ++i) {
             if(i == 0 && shardNum % 2 == 0)
                 continue;
-            
+
+
+            shooted = true;
             float rotation = physixComp.getAngle() + i * angleStep;
             dummyVector.set((float) Math.cos(rotation), (float) Math.sin(rotation));
             
@@ -98,6 +107,13 @@ public class FireServerListener extends EntitySystem implements NetworkReceivedN
             bullet.power = chargePower;
             bullet.playerrotation = physixComp.getAngle() * MathUtils.radiansToDegrees;
             bullet.playerpos.set(physixComp.getPosition());
+        }
+
+        if(shooted == true)
+        {
+            PositionSynchComponent comp = ComponentMappers.positionSynch.get(shootingEntity);
+            ReciveShotPacketClient pack = new ReciveShotPacketClient(comp.networkID,1);
+            SendPacketServerEvent.emit(pack,true);
         }
     }
 

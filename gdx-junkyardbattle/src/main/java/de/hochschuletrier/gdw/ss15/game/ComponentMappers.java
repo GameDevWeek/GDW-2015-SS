@@ -4,28 +4,7 @@ import com.badlogic.ashley.core.ComponentMapper;
 
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixModifierComponent;
-import de.hochschuletrier.gdw.ss15.game.components.AboveAbyssComponent;
-import de.hochschuletrier.gdw.ss15.game.components.BasePointComponent;
-import de.hochschuletrier.gdw.ss15.game.components.BulletComponent;
-import de.hochschuletrier.gdw.ss15.game.components.DamageComponent;
-import de.hochschuletrier.gdw.ss15.game.components.DeathComponent;
-import de.hochschuletrier.gdw.ss15.game.components.HealthComponent;
-import de.hochschuletrier.gdw.ss15.game.components.ImpactSoundComponent;
-import de.hochschuletrier.gdw.ss15.game.components.InterpolatePositionComponent;
-import de.hochschuletrier.gdw.ss15.game.components.InventoryComponent;
-import de.hochschuletrier.gdw.ss15.game.components.LineOfSightComponent;
-import de.hochschuletrier.gdw.ss15.game.components.MetalShardSpawnComponent;
-import de.hochschuletrier.gdw.ss15.game.components.MineableComponent;
-import de.hochschuletrier.gdw.ss15.game.components.MoveComponent;
-import de.hochschuletrier.gdw.ss15.game.components.PickableComponent;
-import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
-import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
-import de.hochschuletrier.gdw.ss15.game.components.SoundEmitterComponent;
-import de.hochschuletrier.gdw.ss15.game.components.SpawnComponent;
-import de.hochschuletrier.gdw.ss15.game.components.SpawnSatelliteComponent;
-import de.hochschuletrier.gdw.ss15.game.components.TimerComponent;
-import de.hochschuletrier.gdw.ss15.game.components.TriggerComponent;
-import de.hochschuletrier.gdw.ss15.game.components.WeaponComponent;
+import de.hochschuletrier.gdw.ss15.game.components.*;
 import de.hochschuletrier.gdw.ss15.game.components.animation.AnimatorComponent;
 import de.hochschuletrier.gdw.ss15.game.components.effects.AttachedEntityComponent;
 import de.hochschuletrier.gdw.ss15.game.components.effects.ChargeEffectComponent;
@@ -82,4 +61,5 @@ public class ComponentMappers {
     public static final ComponentMapper<AboveAbyssComponent> abyss = ComponentMapper.getFor(AboveAbyssComponent.class);
     public static final ComponentMapper<MagneticBeamEffectComponent> magneticBeamEffect = ComponentMapper.getFor(MagneticBeamEffectComponent.class);
     public static final ComponentMapper<ChargeEffectComponent> chargeEffect = ComponentMapper.getFor(ChargeEffectComponent.class);
+    public static final ComponentMapper<ClientIsShootingComponent> ClientIsSchooting = ComponentMapper.getFor(ClientIsShootingComponent.class);
 }

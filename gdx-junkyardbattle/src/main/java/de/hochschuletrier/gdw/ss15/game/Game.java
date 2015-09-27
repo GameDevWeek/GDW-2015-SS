@@ -39,13 +39,7 @@ import de.hochschuletrier.gdw.ss15.game.components.BulletComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PickableComponent;
 import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.PickupListenerClient;
-import de.hochschuletrier.gdw.ss15.game.systems.CameraSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.DeathSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.HealthUpdateSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.RenderStateUpdateSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.SoundSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.UpdatePositionSystem;
-import de.hochschuletrier.gdw.ss15.game.systems.WeaponSystem;
+import de.hochschuletrier.gdw.ss15.game.systems.*;
 import de.hochschuletrier.gdw.ss15.game.systems.RealNetwork.NetworkClientSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.RealNetwork.TestListenerClient;
 import de.hochschuletrier.gdw.ss15.game.systems.hud.HudSystem;
@@ -91,6 +85,7 @@ public class Game extends InputAdapter {
     private final InputSystem inputSystem = new InputSystem(0,cameraSystem.getCamera().getOrthographicCamera());
     private final SoundSystem soundSystem = new SoundSystem(cameraSystem.getCamera());
     private final MapLoader mapLoader = new MapLoader();
+    private final ClientIsShootingSystem shootingSystem = new ClientIsShootingSystem(this);
     
     private final FireClientListener fireClientListener = new FireClientListener(this);
 //    private final BulletClientSystem bulletClientSystem = new BulletClientSystem(engine);
@@ -189,6 +184,7 @@ public class Game extends InputAdapter {
 //        engine.addSystem(bulletClientSystem);
         engine.addSystem(effectAddSystem);
         engine.addSystem(renderStateUpdateSystem);
+        engine.addSystem(shootingSystem);
 
         // add to engine to get removed from listeners:
         engine.addSystem(fireClientListener);
