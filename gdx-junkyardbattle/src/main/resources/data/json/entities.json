@@ -495,7 +495,7 @@
                 "maxMetalShards": 1
             },
             "Death":{
-                "dyingDuration": 15
+                "dyingDuration": 10
             }
         }
     },
