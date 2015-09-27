@@ -9269,12 +9269,12 @@
   </data>
  </layer>
  <objectgroup name="spawn">
-  <object id="7" name="Base" type="Base" x="6620.48" y="6745.94" width="650" height="650">
+  <object id="7" name="Base" type="Team B" x="6620.48" y="6745.94" width="650" height="650">
    <properties>
     <property name="Base" value="B"/>
    </properties>
   </object>
-  <object id="8" name="Base" type="Base" x="1198" y="3106" width="650" height="650">
+  <object id="8" name="Base" type="Team A" x="1198" y="3106" width="650" height="650">
    <properties>
     <property name="Base" value="A"/>
    </properties>
@@ -9666,37 +9666,37 @@
   </object>
  </objectgroup>
  <objectgroup name="player">
-  <object id="65" name="Spawn" type="Spawn" x="6721.33" y="6845.33">
+  <object id="65" name="Spawn" type="Team B" x="6721.33" y="6845.33">
    <properties>
     <property name="Spawn" value="3"/>
     <property name="Team" value="B"/>
    </properties>
   </object>
-  <object id="66" name="Spawn" type="Spawn" x="6721.33" y="7102.67">
+  <object id="66" name="Spawn" type="Team B" x="6721.33" y="7102.67">
    <properties>
     <property name="Spawn" value="2"/>
     <property name="Team" value="B"/>
    </properties>
   </object>
-  <object id="68" name="Spawn" type="Spawn" x="6978.67" y="6844">
+  <object id="68" name="Spawn" type="Team B" x="6978.67" y="6844">
    <properties>
     <property name="Spawn" value="1"/>
     <property name="Team" value="B"/>
    </properties>
   </object>
-  <object id="70" name="Spawn" type="Spawn" x="1730" y="3646">
+  <object id="70" name="Spawn" type="Team A" x="1730" y="3646">
    <properties>
     <property name="Spawn" value="3"/>
     <property name="Team" value="A"/>
    </properties>
   </object>
-  <object id="71" name="Spawn" type="Spawn" x="1730" y="3392">
+  <object id="71" name="Spawn" type="Team A" x="1730" y="3392">
    <properties>
     <property name="Spawn" value="2"/>
     <property name="Team" value="A"/>
    </properties>
   </object>
-  <object id="72" name="Spawn" type="Spawn" x="1472" y="3646">
+  <object id="72" name="Spawn" type="Team A" x="1472" y="3646">
    <properties>
     <property name="Spawn" value="1"/>
     <property name="Team" value="A"/>

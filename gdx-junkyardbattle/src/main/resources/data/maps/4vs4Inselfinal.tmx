@@ -207,12 +207,12 @@
     <property name="Team" value="A"/>
    </properties>
   </object>
-  <object id="333" name="Base" type="Base" x="5012" y="1172" width="600" height="600">
+  <object id="333" name="Base" type="Team A" x="5012" y="1172" width="600" height="600">
    <properties>
     <property name="Team" value="A"/>
    </properties>
   </object>
-  <object id="334" name="Base" type="Base" x="5012" y="5172" width="600" height="600">
+  <object id="334" name="Base" type="Team B" x="5012" y="5172" width="600" height="600">
    <properties>
     <property name="Team" value="B"/>
    </properties>
