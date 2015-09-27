@@ -62,7 +62,6 @@ public class FireServerListener extends EntitySystem implements NetworkReceivedN
         
         FirePacket packet = (FirePacket)pack;
 
-
         // Should be in [0, 1]
         float channelFactor = packet.channeltime / WeaponComponent.maximumFireTime + 0.0001f;
         
