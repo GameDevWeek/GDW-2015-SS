@@ -65,7 +65,7 @@ public class HudSystem extends IteratingSystem implements NetworkReceivedNewPack
 
     Timer timer = new Timer();
 
-    int schrottcount;
+    int schrottcount = 20;
     int timcounter = 0;
     //....
     Entity localPlayer;

@@ -92,8 +92,9 @@ public class WeaponSystem extends IteratingSystem implements
 			wpc.harvestChannelTime = deltaTime;
 			timer.Update();
             if(timer.get_CounterMilliseconds()>200)
+            {
 				timer.StartCounter();
-				GatherPacket gather = new GatherPacket(wpc.harvestChannelTime+0.2);
+				GatherPacket gather = new GatherPacket(wpc.harvestChannelTime+0.2f);
 				SendPacketClientEvent.emit(gather, true);
 			}
 			if (!ComponentMappers.soundEmitter.get(tractorSound).isPlaying) {
