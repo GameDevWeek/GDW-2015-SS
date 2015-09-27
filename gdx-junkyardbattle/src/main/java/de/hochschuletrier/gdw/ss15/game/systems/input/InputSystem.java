@@ -111,14 +111,20 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
             case Input.Keys.A:
                 horizontal -= 1.0f;
                 break;
+            case Input.Keys.UP:
+                vertical -= 1.0f;
+                break;
+            case Input.Keys.DOWN:
+                vertical += 1.0f;
+                break;
+            case Input.Keys.RIGHT:
+                horizontal += 1.0f;
+                break;
+            case Input.Keys.LEFT:
+                horizontal -= 1.0f;
+                break;
             case Input.Keys.ESCAPE:
                 escape = true;
-                break;
-            case Input.Keys.PLUS:
-                HudDebug.health += 5;
-                break;
-            case Input.Keys.MINUS:
-                HudDebug.health -= 5;
                 break;
         }
         //debug();
@@ -140,6 +146,19 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
                 horizontal -= 1.0f;
                 break;
             case Input.Keys.A:
+                horizontal += 1.0f;
+                break;
+
+            case Input.Keys.UP:
+                vertical += 1.0f;
+                break;
+            case Input.Keys.DOWN:
+                vertical -= 1.0f;
+                break;
+            case Input.Keys.RIGHT:
+                horizontal -= 1.0f;
+                break;
+            case Input.Keys.LEFT:
                 horizontal += 1.0f;
                 break;
             case Input.Keys.ESCAPE:

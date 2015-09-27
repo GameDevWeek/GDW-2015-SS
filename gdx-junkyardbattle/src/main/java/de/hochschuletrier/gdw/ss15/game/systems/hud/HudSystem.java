@@ -120,8 +120,8 @@ public class HudSystem extends IteratingSystem implements NetworkReceivedNewPack
                 schrottAnzeige();
                 timer();
                 punktestand();
-                radar(entity);
             }
+            radar(entity);
         }
         if (entity.getComponent(SpawnSatelliteComponent.class) != null) {
             if (TestSatelliteSystem.satellite) {
@@ -144,21 +144,21 @@ public class HudSystem extends IteratingSystem implements NetworkReceivedNewPack
 
     private void radar(Entity entity) {
 
-        radarRange = Gdx.graphics.getWidth() * 1.50f;
+        radarRange = Gdx.graphics.getWidth() * 2.50f;
 
         lineToPlayer.x = entity.getComponent(PositionComponent.class).x - localPlayer.getComponent(PositionComponent.class).x;
         lineToPlayer.y = entity.getComponent(PositionComponent.class).y - localPlayer.getComponent(PositionComponent.class).y;
 
-        lineToPlayer = camera.project(lineToPlayer);
-
-        lineToPlayer.scl(radarRange / 90);
+        lineToPlayer.nor();
+        lineToPlayer.scl(Gdx.graphics.getWidth()/90);
 
         if (localPlayer.getComponent(PlayerComponent.class).teamID == 0) { // orange
             DrawUtil.batch.draw(gegnerPunktB, Gdx.graphics.getWidth() / 2,
                     Gdx.graphics.getHeight() - Gdx.graphics.getHeight() / 8.3f, 10, 10);
         } else {                                                           // blau
             DrawUtil.batch.draw(gegnerPunktO, Gdx.graphics.getWidth() / 2,
-                    Gdx.graphics.getHeight() - Gdx.graphics.getHeight() / 8.3f, 10, 10);
+                    Gdx.graphics.getHeight() - Gdx.graphics.getHeight() / 8.3f,
+                    Gdx.graphics.getWidth() / 80, Gdx.graphics.getWidth() / 80);
         }
 
     }
