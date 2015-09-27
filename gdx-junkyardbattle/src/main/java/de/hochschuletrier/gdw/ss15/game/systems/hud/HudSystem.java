@@ -44,7 +44,8 @@ import javax.swing.text.Position;
  */
 public class HudSystem extends IteratingSystem implements NetworkReceivedNewPacketClientEvent.Listener {
 
-    public static float radarScale = 0.1337f;
+    private static float radarRange;
+    private static float radarScale =123;
     Vector3 lineToSatellite = new Vector3(0, 0, 0);
     Vector3 lineToPlayer = new Vector3(0, 0, 0);
     Vector3 mouseScreenPos = new Vector3(0, 0, 0);
@@ -56,6 +57,9 @@ public class HudSystem extends IteratingSystem implements NetworkReceivedNewPack
     Texture uhr;
     Texture schrott;
     BitmapFont font;
+    Texture miniSatellite;
+    Texture gegnerPunktO;
+    Texture gegnerPunktB;
 
     Timer timer = new Timer();
     
@@ -74,6 +78,9 @@ public class HudSystem extends IteratingSystem implements NetworkReceivedNewPack
         this.uhr = assetManager.getTexture("hud_uhr");
         this.schrott = assetManager.getTexture("hud_schrott");
         font = assetManager.getFont("quartz_40");
+        this.miniSatellite = assetManager.getTexture("mini_satellite");
+        this.gegnerPunktO = assetManager.getTexture("gegner_punkt_orange");
+        this.gegnerPunktB = assetManager.getTexture("gegner_punkt_blau");
     }
 
     public HudSystem(Family family, int priority) {
@@ -126,12 +133,14 @@ public class HudSystem extends IteratingSystem implements NetworkReceivedNewPack
 
     private void radar(Entity entity) {
 
+        radarRange = Gdx.graphics.getWidth()*1.50f;
+
         lineToPlayer.x = entity.getComponent(PositionComponent.class).x - localPlayer.getComponent(PositionComponent.class).x;
         lineToPlayer.y = entity.getComponent(PositionComponent.class).y - localPlayer.getComponent(PositionComponent.class).y;
 
         lineToPlayer = camera.project(lineToPlayer);
 
-        lineToPlayer.scl(radarScale);
+        lineToPlayer.scl(radarRange/90);
         //DrawUtil.batch.draw("icon für spieler", radarMitte + vector);
         DrawUtil.drawRect(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() - Gdx.graphics.getHeight() / 8.3f, 10, 10);
         //Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()-Gdx.graphics.getHeight/4
@@ -144,9 +153,10 @@ public class HudSystem extends IteratingSystem implements NetworkReceivedNewPack
         //lineToSatellite = camera.project(lineToSatellite);
 
         lineToSatellite.nor();
-        lineToSatellite.scl(100.0f);
-        DrawUtil.drawRect(Gdx.graphics.getWidth() / 2 + lineToSatellite.x,
-                Gdx.graphics.getHeight() - Gdx.graphics.getHeight()/2 + lineToSatellite.y, 10, 10);
+        lineToSatellite.scl(Gdx.graphics.getWidth()/10);
+        DrawUtil.batch.draw(miniSatellite, Gdx.graphics.getWidth() / 2 + lineToSatellite.x,
+                Gdx.graphics.getHeight() - Gdx.graphics.getHeight() / 2 + lineToSatellite.y,
+                camera.viewportWidth / 80, camera.viewportWidth/80);
 
     }
 
