@@ -2,6 +2,7 @@ package de.hochschuletrier.gdw.ss15.game.components.factories;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 
@@ -47,6 +48,7 @@ public class PhysixBodyComponentFactory extends ComponentFactory<EntityFactoryPa
             switch(shape) {
                 case "circle": addCircle(param, entity, properties); break;
                 case "box": addBox(param, entity, properties); break;
+                case "rectangle": addRectangle(param, entity, properties); break;
                 default: logger.error("Unknown type: {}", shape); break;
             }
         });
@@ -58,7 +60,7 @@ public class PhysixBodyComponentFactory extends ComponentFactory<EntityFactoryPa
     private void addCircle(EntityFactoryParam param, Entity entity, SafeProperties properties) {
         PhysixBodyComponent bodyComponent = getBodyComponent(param, entity);
         PhysixFixtureDef fixtureDef = getFixtureDef(properties)
-                .shapeCircle(properties.getFloat("size", 5));
+                .shapeCircle(properties.getFloat("size", 5), new Vector2(properties.getFloat("offsetX", 0),properties.getFloat("offsetY", 0)));
         bodyComponent.createFixture(fixtureDef);
         bodyComponent.setPosition(param.x,param.y);
         addProperties(entity, properties, bodyComponent);
@@ -68,6 +70,15 @@ public class PhysixBodyComponentFactory extends ComponentFactory<EntityFactoryPa
         PhysixBodyComponent bodyComponent = getBodyComponent(param, entity);
         PhysixFixtureDef fixtureDef = getFixtureDef(properties)
                 .shapeBox(properties.getFloat("size", 5), properties.getFloat("size", 5));
+        bodyComponent.createFixture(fixtureDef);
+        bodyComponent.setPosition(param.x,param.y);
+        addProperties(entity, properties, bodyComponent);
+    }
+    
+    private void addRectangle(EntityFactoryParam param, Entity entity, SafeProperties properties) {
+        PhysixBodyComponent bodyComponent = getBodyComponent(param, entity);
+        PhysixFixtureDef fixtureDef = getFixtureDef(properties)
+                .shapeBox(properties.getFloat("width", 10), properties.getFloat("height", 5),new Vector2(properties.getFloat("offsetX", 0),properties.getFloat("offsetY", 0)),0);
         bodyComponent.createFixture(fixtureDef);
         bodyComponent.setPosition(param.x,param.y);
         addProperties(entity, properties, bodyComponent);

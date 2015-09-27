@@ -40,7 +40,7 @@ public class GameplayState extends BaseGameState implements DisconnectEvent.List
     public GameplayState(AssetManagerX assetManager, Game game) {
         this.game = game;
 
-        music = assetManager.getMusic("gameplay");
+        music = assetManager.getMusic("game");
 
         Skin skin = ((MainMenuState)Main.getInstance().getPersistentState(MainMenuState.class)).getSkin();
         final MenuPageRoot menuPageRoot = new MenuPageRoot(skin, menuManager, MenuPageRoot.Type.INGAME);
@@ -118,7 +118,6 @@ public class GameplayState extends BaseGameState implements DisconnectEvent.List
 
     @Override
     public void onDisconnectPacket() {
-        System.out.println("jfsdkljfkldl  jetzt");
         Main.getInstance().changeState(new GameplayState(Main.getInstance().getAssetManager(), game), new SplitHorizontalTransition(500), null);
     }
 }

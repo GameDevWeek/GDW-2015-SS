@@ -24,8 +24,6 @@ public class ComeToBaseEvent {
     public static void emit(Entity player, Entity base) {
         Object[] items = listeners.begin();
         for (int i = 0, n = listeners.size; i < n; i++) {
-//            System.out.println("PlayerID: " + ComponentMappers.player.get(player).teamID);
-//            System.out.println("BaseID: " + ComponentMappers.basePoint.get(base).teamID);
             if (ComponentMappers.player.get(player).teamID == ComponentMappers.basePoint.get(base).teamID) {
                 ((Listener) items[i]).onComeToBase(player, base);
             }

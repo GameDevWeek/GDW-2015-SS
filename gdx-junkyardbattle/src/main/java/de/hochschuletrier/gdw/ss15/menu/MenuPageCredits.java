@@ -8,6 +8,7 @@ import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended;
 import de.hochschuletrier.gdw.commons.gdx.input.hotkey.Hotkey;
 import de.hochschuletrier.gdw.commons.gdx.input.hotkey.HotkeyModifier;
 import de.hochschuletrier.gdw.commons.gdx.menu.MenuManager;
+import de.hochschuletrier.gdw.commons.gdx.menu.widgets.DecoImage;
 import de.hochschuletrier.gdw.commons.gdx.sceneanimator.SceneAnimator;
 import de.hochschuletrier.gdw.commons.gdx.sceneanimator.SceneAnimatorActor;
 import de.hochschuletrier.gdw.ss15.Main;
@@ -21,6 +22,7 @@ public class MenuPageCredits extends MenuPage implements SceneAnimator.Getter {
     private final Hotkey decreaseSpeed = new Hotkey(this::decreaseSpeed, Input.Keys.PAGE_DOWN, HotkeyModifier.CTRL);
     private final Hotkey resetSpeed = new Hotkey(this::resetSpeed, Input.Keys.HOME, HotkeyModifier.CTRL);
 
+        private final DecoImage imageBack = new DecoImage(assetManager.getTexture("back_button"));
     private SceneAnimator sceneAnimator;
 
     private void increaseSpeed() {
@@ -36,8 +38,11 @@ public class MenuPageCredits extends MenuPage implements SceneAnimator.Getter {
     }
 
     public MenuPageCredits(Skin skin, MenuManager menuManager) {
-        super(skin, "menu_bg");
+        super(skin,"credits" );
 
+      		imageBack.setWidth(60);
+		imageBack.setHeight(30);
+		addCenteredImage(825, 125-30, 115, 30, imageBack, () -> menuManager.popPage());
         try {
             sceneAnimator = new SceneAnimator(this, "data/json/credits.json");
             addActor(new SceneAnimatorActor(sceneAnimator));
@@ -52,7 +57,7 @@ public class MenuPageCredits extends MenuPage implements SceneAnimator.Getter {
             logger.error("Error loading credits", ex);
         }
 
-        addCenteredButton(menuManager.getWidth() - 100, 54, 100, 40, "Zurück", () -> menuManager.popPage());
+       // addCenteredButton(menuManager.getWidth() - 100, 54, 100, 40, "Zurück", () -> menuManager.popPage());
     }
 
     @Override

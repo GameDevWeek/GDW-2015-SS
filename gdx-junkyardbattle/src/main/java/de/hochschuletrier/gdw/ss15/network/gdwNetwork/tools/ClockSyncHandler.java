@@ -62,14 +62,12 @@ public class ClockSyncHandler
 		m_TimoutTimer.Update();
 		if(m_TimoutTimer.get_CounterMilliseconds()>m_TimeUntilTimeout)
 		{
-			System.out.println("Clocksync timed out");
 			return -1;
 		}
 		
 		m_ClockTimer.Update();
 		if(m_ClockTimer.get_CounterMilliseconds()>m_TimeNextClockSnySend)
 		{
-			//System.out.println("send sync request");
 			m_ClockTimer.StartCounter();
 			ByteArrayOutputStream output = new ByteArrayOutputStream();
 			DataOutputStream dataoutput = new DataOutputStream(output);
@@ -82,14 +80,11 @@ public class ClockSyncHandler
 		if(input.available()==m_ClockSyncAnswerSize && m_UdpData.equals(m_ClockSocket.get_UdpData()))
 		{
 			long actualtimestamp = MyTimer.get_TimestampNanoseconds();
-			//System.out.println("Received anser of clock request");
 			DataInputStream inputdata = new DataInputStream(input);
 			byte synccount = inputdata.readByte();
-			//System.out.println("Synccoutn: "+synccount);
 			
 			if(synccount == m_ActualSyncCount)
 			{
-				//System.out.println("Received anser of clock request sdkflöasdkf");
 				long mytimestamp = inputdata.readLong();
 				long servertimestamp = inputdata.readLong();
 				
@@ -97,17 +92,7 @@ public class ClockSyncHandler
 				long calculatedservertime = servertimestamp - latenz/2;// %2 because time to send and back
 				long timedistanz = calculatedservertime - MyTimer.get_TimestampNanoseconds();
 				
-				//System.out.println("Received count: "+m_ActualClockSyncNumber);
-				//System.out.println("Mytimestamp: "+mytimestamp);
-				//System.out.println("Servertimestamp: "+servertimestamp);
-				//System.out.println("Actualtime: "+MyTimer.get_TimestampNanoseconds());
-				//System.out.println("Calculated timestamp: "+calculatedservertime);
-				//System.out.println("Timedistanz: "+timedistanz);
-				//System.out.println("Latenz: "+latenz);
-				
-				
-				
-				//System.out.println("Differenzum einene timer: "+m_CalculatedDifference);
+
 				m_CalculatedDifference = (m_CalculatedDifference * m_ActualClockSyncNumber +timedistanz) / (m_ActualClockSyncNumber+1);
 				
 				m_ActualClockSyncNumber++;
@@ -115,11 +100,6 @@ public class ClockSyncHandler
 				{
 					m_ToSyncTimer.StartCounterandUpdate(MyTimer.get_TimestampNanoseconds()+m_CalculatedDifference);
 					
-					System.out.println("CalculatedDifference: "+m_CalculatedDifference);
-					//System.out.println("Test real snytime: "+(MyTimer.get_TimestampNanoseconds()-m_ToSyncTimer.get_CounterNanoseconds()));
-					System.out.println("Serverzeit synconisierung abgeschlossen");
-					//System.out.println("Servertime: "+m_ToSyncTimer.get_CounterMilliseconds());
-					//System.out.println("Differenzum einene timer: "+m_CalculatedDifference);
 					return 1;
 				}
 			}

@@ -35,8 +35,8 @@ public class PlayerHurtSystem extends EntitySystem implements PlayerHurtEvent.Li
                 int killerID = ComponentMappers.bullet.get(projectile).playerID;
                 int dyingID = ComponentMappers.player.get(hurtPlayer).playerID;
 
-                Highscore.Get().setPlayerStat(killerID, "kills",
-                        Highscore.Get().getPlayerStat(killerID, "kills") + 1);
+                //Highscore.Get().setPlayerStat(killerID, "kills",
+                  //      Highscore.Get().getPlayerStat(killerID, "kills") + 1);
             }
 
             

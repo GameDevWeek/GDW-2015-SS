@@ -129,6 +129,7 @@ public class MusicManager {
     }
 
     public static void setGlobalVolume(float globalVolume) {
+    	if(1>=globalVolume&&globalVolume>=0)
         MusicManager.globalVolume = globalVolume;
     }
 }

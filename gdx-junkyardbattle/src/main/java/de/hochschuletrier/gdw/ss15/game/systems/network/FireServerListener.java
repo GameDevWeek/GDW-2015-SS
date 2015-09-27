@@ -5,18 +5,20 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixModifierComponent;
 import de.hochschuletrier.gdw.ss15.events.network.server.NetworkReceivedNewPacketServerEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
+import de.hochschuletrier.gdw.ss15.game.GameConstants;
 import de.hochschuletrier.gdw.ss15.game.ServerGame;
 import de.hochschuletrier.gdw.ss15.game.components.BulletComponent;
 import de.hochschuletrier.gdw.ss15.game.components.InventoryComponent;
 import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ss15.game.components.WeaponComponent;
-import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
 import de.hochschuletrier.gdw.ss15.game.network.PacketIds;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.FirePacket;
+import de.hochschuletrier.gdw.ss15.game.rendering.ZoomingModes;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
 
 /**
@@ -27,11 +29,17 @@ import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
 public class FireServerListener extends EntitySystem implements NetworkReceivedNewPacketServerEvent.Listener{
 
     private ServerGame game;
-    private static final float power = 1000;
-    private static final float damping = 10;
+    private static final float damping = 5.f;
     private static final float projectPlayerDistance = 55;
-
-
+    private static final float NORMAL_SHOOT_POWER = 1000.f;
+    private static final float MAX_SHOOT_POWER = 1800.f;
+    private static final float SHOT_CONE_DEGREE = 45.f;
+    private static final float CHARGED_CONE_DEGREE = 10.f;
+    
+    // Just to avoid garbage collection
+    private static Vector2 dummyVector = new Vector2(); 
+    private static Vector2 dummyVector2 = new Vector2();
+    
     public FireServerListener(ServerGame game){
         super();
         this.game = game;
@@ -46,75 +54,68 @@ public class FireServerListener extends EntitySystem implements NetworkReceivedN
 
     @Override
     public void onReceivedNewPacket(Packet pack, Entity ent) {
-        PhysixBodyComponent phxc = ComponentMappers.physixBody.get(ent);
         InventoryComponent invc = ComponentMappers.inventory.get(ent);
         
-        //System.out.print("akjsdklasdjlaskdashkdjashkjdahjksad");
-        try{
-            FirePacket packet = (FirePacket)pack;
+        FirePacket packet = (FirePacket)pack;
 
-            float p = packet.channeltime / WeaponComponent.maximumFireTime + 0.0001f;
-            float scatter = WeaponComponent.maximumScattering * (1.05f-p);
-            Vector2 dir = Vector2.Zero;
-//            System.out.printf("\n fireing: %.2f -> scattering: %.2f \n", packet.channeltime, scatter);
+        // Should be in [0, 1]
+        float channelFactor = packet.channeltime / WeaponComponent.maximumFireTime + 0.0001f;
+        
+        int shootshards = Math.min(invc.getMetalShards(), WeaponComponent.ShardsPerShot);
+        invc.addMetalShards(-shootshards);
 
-
-            int shootshards = Math.min(invc.getMetalShards(), WeaponComponent.ShardsPerShot);
-            invc.addMetalShards(-shootshards);
-            for (int i = 0; i < shootshards; ++i) {
-//                System.out.println("shard shot");
-
-                Vector2 playerLookDirection = new Vector2((float) Math.cos(phxc.getAngle()), (float) Math.sin(phxc.getAngle()));
-
-                // create projectile
-                //Components: Bullet, Damage, Physix
-                //physix component
-                playerLookDirection.nor().scl(projectPlayerDistance);
-                EntityFactoryParam param = new EntityFactoryParam();
-                Vector2 startPosition = playerLookDirection.add(phxc.getPosition()); // dir.setLength(projectPlayerDistance).add(phxc.getPosition());
-
-
-
-
-                //System.out.println(invc.getMetalShards());
-
-                Entity projectile = game.createEntity("projectile", startPosition.x, startPosition.y);
-
-                float rotation = (float) (phxc.getAngle() + (Math.random() - 0.5f) * scatter);
-                int chargepower = (int) (power * (1 + 0.8*p));
-                createProjectile(projectile, rotation, chargepower);
-
-                BulletComponent bullet = projectile.getComponent(BulletComponent.class);
-                bullet.playerID = ent.getComponent(PlayerComponent.class).playerID;
-                bullet.rotation = rotation;
-                bullet.power = chargepower;
-                bullet.playerrotation = phxc.getAngle() * MathUtils.radiansToDegrees;
-                bullet.playerpos = phxc.getPosition();
-//
-//                SpawnBulletPacket spawnBulletPacket = new SpawnBulletPacket();
-////                spawnBulletPacket.position = new Vector2(startPosition.x, startPosition.y);
-//                spawnBulletPacket.bulletID = projectile.getComponent(PositionSynchComponent.class).networkID;
-//                SendPacketServerEvent.emit(spawnBulletPacket, true);
-            }
-            }catch (ClassCastException e){}
+        float coneDegree = ZoomingModes.interpolate(GameConstants.ZOOM_MODE, 
+                SHOT_CONE_DEGREE, CHARGED_CONE_DEGREE, channelFactor);
+        shoot(ent, channelFactor, shootshards, (float) Math.toRadians(coneDegree));
+    }
+    
+    public void shoot(Entity shootingEntity, float channelFactor, int shardNum, float radiansConeDegree) {
+        if(shardNum <= 0)
+            return;
+        
+        PhysixBodyComponent physixComp = ComponentMappers.physixBody.get(shootingEntity);
+        float angleStep = radiansConeDegree / shardNum;
+        
+        for(int i = -shardNum / 2; i <= shardNum / 2; ++i) {
+            if(i == 0 && shardNum % 2 == 0)
+                continue;
+            
+            float rotation = physixComp.getAngle() + i * angleStep;
+            dummyVector.set((float) Math.cos(rotation), (float) Math.sin(rotation));
+            
+            // unit circle -> no need to normalize
+            dummyVector.scl(projectPlayerDistance);
+            dummyVector.add(physixComp.getPosition());
+            
+            int chargePower = (int) (ZoomingModes.interpolate(GameConstants.ZOOM_MODE, 
+                    NORMAL_SHOOT_POWER, MAX_SHOOT_POWER, channelFactor));
+            Entity projectile = game.createEntity("projectile", dummyVector.x, dummyVector.y);
+            createProjectile(projectile, rotation, chargePower);
+            
+            BulletComponent bullet = projectile.getComponent(BulletComponent.class);
+            bullet.playerID = shootingEntity.getComponent(PlayerComponent.class).playerID;
+            bullet.rotation = rotation;
+            bullet.power = chargePower;
+            bullet.playerrotation = physixComp.getAngle() * MathUtils.radiansToDegrees;
+            bullet.playerpos.set(physixComp.getPosition());
+        }
     }
 
-    public static void createProjectile(Entity entity, float rotation, int chargepower){
+    public static void createProjectile(Entity entity, float rotation, int chargePower){
         if(entity.getComponent(PhysixModifierComponent.class) == null){
             entity.add(new PhysixModifierComponent());
         }
 
         entity.getComponent(PhysixModifierComponent.class).runnables.add(() -> {
             PhysixBodyComponent physixBodyComponent = entity.getComponent(PhysixBodyComponent.class);
-            entity.getComponent(BulletComponent.class).playerpos = new Vector2(physixBodyComponent.getPosition());
+            entity.getComponent(BulletComponent.class).playerpos.set(physixBodyComponent.getPosition());
 
             physixBodyComponent.setAngle(rotation);
-            Vector2 v2 = new Vector2((float)Math.cos(physixBodyComponent.getAngle()), (float)Math.sin(physixBodyComponent.getAngle()));
-            v2.nor().scl(chargepower);
-            physixBodyComponent.applyImpulse(v2);
-//            physixBodyComponent.setLinearVelocity(v2.x, v2.y);
+            dummyVector2.set((float)Math.cos(physixBodyComponent.getAngle()), (float)Math.sin(physixBodyComponent.getAngle()));
+            dummyVector2.scl(chargePower); // No need to normalize since it's a unit circle
+            physixBodyComponent.applyImpulse(dummyVector2);
 
-//            physixBodyComponent.setLinearDamping(damping);
+            physixBodyComponent.setLinearDamping(damping);
         });
     }
 }

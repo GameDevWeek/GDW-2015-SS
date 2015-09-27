@@ -44,7 +44,6 @@ public class ReliablePackethandler
 	{
 		try
 		{
-			//System.out.println("Send packet with number:  "+ m_ActuallPacketnumber);
 			ReliablePacketWrapper wrapper = new ReliablePacketWrapper((byte)SaveSocketFlag.Packet.getValue(), m_ActuallPacketnumber, pack.getOutputstream(rebuildPacket));
 			Send(wrapper.output);
 			synchronized (m_UnreliaedPackets)
@@ -58,7 +57,6 @@ public class ReliablePackethandler
 		}
 		catch (IOException ex)
 		{
-			//System.out.println("Stream Fehler biem senden im reliiable packethandler");
 			ex.printStackTrace();
 			return false;
 		}
@@ -74,7 +72,6 @@ public class ReliablePackethandler
 		}
 		if(wrapper!=null)
 		{
-			//System.out.println("Missed acke resend packet");
 			Send(wrapper.output);
 			m_Timer.schedule(new MyTimerTask(m_ActuallPacketnumber), m_PacketTimeout);
 		}
@@ -94,7 +91,6 @@ public class ReliablePackethandler
 		
 	public void ReceivedAck(long PacketNumber)
 	{
-		//System.out.println("Received Ackk: "+PacketNumber);
 		synchronized (m_UnreliaedPackets)
 		{
 			m_UnreliaedPackets.remove(PacketNumber);
@@ -103,11 +99,9 @@ public class ReliablePackethandler
 	
 	public boolean ReceivedPacketShouldUse(long packetNumber) throws IOException
 	{
-		//System.out.println("Send akc packet: "+packetNumber);
 		SendAck(packetNumber);
 		if(packetNumber<=m_LowestPacketNumber)
 		{//packet allready used
-			//System.out.println("Beretis genutztes packet verwofen: "+packetNumber);
 			return false;
 		}
 		else
@@ -122,7 +116,6 @@ public class ReliablePackethandler
 				while(m_AckedPackets.peek()==m_LowestPacketNumber+1)
 				{
 					m_LowestPacketNumber++;
-					//System.out.println("neues lowest packet: "+m_LowestPacketNumber);
 					m_AckedPackets.remove();
 					
 					if(m_AckedPackets.peek() == null)
@@ -130,7 +123,6 @@ public class ReliablePackethandler
 						break;
 					}
 				}
-				//System.out.println("Use received packet ->");
 				return true;
 			}
 		}
@@ -143,7 +135,6 @@ public class ReliablePackethandler
 		dataoutput.write(SaveSocketFlag.Ack.getValue());
 		dataoutput.writeLong(packetnumber);//TODO senden mehr headerdaten
 		Send(output);
-		//System.out.println("Sende Ack");
 	}
 	
 	static public int getReliableHeadSize()

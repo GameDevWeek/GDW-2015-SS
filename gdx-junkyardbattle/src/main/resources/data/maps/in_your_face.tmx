@@ -3221,7 +3221,7 @@
   <object id="1" name="SatelliteSite" type="Satellite" x="4612.12" y="500">
    <ellipse/>
   </object>
-  <object id="4" name="JunkPile" type="Schrotthauffen" x="2666.67" y="2251.52"/>
+  <object id="4" name="SpawnCar" type="Schrotthauffen" x="2666.67" y="2251.52"/>
   <object id="11" name="JunkSpawn" type="Schrott" x="3396" y="4908"/>
   <object id="12" name="JunkSpawn" type="Schrott" x="3284" y="4912"/>
   <object id="13" name="JunkSpawn" type="Schrott" x="3176" y="4924"/>
@@ -3264,8 +3264,8 @@
   <object id="50" name="JunkSpawn" type="Schrott" x="3816" y="208"/>
   <object id="51" name="JunkSpawn" type="Schrott" x="3888" y="216"/>
   <object id="52" name="JunkSpawn" type="Schrott" x="3964" y="220"/>
-  <object id="53" name="JunkPile" type="Schrotthauffen" x="948.485" y="666.667"/>
-  <object id="54" name="JunkPile" type="Schrotthauffen" x="4417.94" y="3916.97"/>
+  <object id="53" name="SpawnCar" type="Schrotthauffen" x="948.485" y="666.667"/>
+  <object id="54" name="SpawnCar" type="Schrotthauffen" x="4417.94" y="3916.97"/>
   <object id="57" name="Spawn" type="TeamA" x="312.485" y="4026.42">
    <properties>
     <property name="Player" value="1"/>

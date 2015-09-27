@@ -30,7 +30,7 @@ public class GameConstants {
     
     // Light parameters
     public static final int LIGHT_RAYS = 360;
-    public static final float LIGHT_AMBIENT = 0.4f;
+    public static final float LIGHT_AMBIENT = 0.9f;
     public static final boolean LIGHT_BLUR = true;
     public static final int LIGHT_BLURNUM = 2;
     public static final boolean LIGHT_SHADOW = true;
@@ -43,7 +43,7 @@ public class GameConstants {
     public static float MUSIC_FADE_TIME = 2;
 
     // PlayerParameters
-    public static final int START_HEALTH = 30;
+    public static final int START_HEALTH = 100;
     public static final float START_X_POSITION = 0;
     public static final float START_Y_POSITION = 0;
     public static final float DYING_TIMER = 2;
