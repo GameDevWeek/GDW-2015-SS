@@ -67,7 +67,7 @@ public class HudSystem extends IteratingSystem implements NetworkReceivedNewPack
 
     int schrottcount;
     int timcounter = 0;
-
+    //....
     Entity localPlayer;
     SpriteBatch batch = new SpriteBatch();
 

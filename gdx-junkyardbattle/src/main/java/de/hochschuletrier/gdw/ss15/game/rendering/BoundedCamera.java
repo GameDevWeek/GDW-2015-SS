@@ -37,7 +37,7 @@ public class BoundedCamera extends SmoothCamera {
     private boolean useBounds = false;
     
     // Viewport settings
-    boolean fixedViewport = false;
+    boolean fixedViewport = true;
     int viewportX = 1920, viewportY = 1080;
 
     // Camera zoom settings

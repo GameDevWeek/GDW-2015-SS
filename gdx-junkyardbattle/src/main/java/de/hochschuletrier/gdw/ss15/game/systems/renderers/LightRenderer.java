@@ -66,6 +66,7 @@ public class LightRenderer extends SortedSubIteratingSystem.SubSystem {
         ChainLightComponent chainLight = ComponentMappers.chainLight.get(entity);
         ConeLightComponent coneLight = ComponentMappers.coneLight.get(entity);
         
+        
         if(pointLight != null){
             pointLight.pointLight.setPosition((position.x + pointLight.offsetX) / GameConstants.BOX2D_SCALE, 
                                               (position.y + pointLight.offsetY) / GameConstants.BOX2D_SCALE);
@@ -77,6 +78,7 @@ public class LightRenderer extends SortedSubIteratingSystem.SubSystem {
         if(coneLight != null){
             coneLight.coneLight.setPosition((position.x + coneLight.offsetX) / GameConstants.BOX2D_SCALE, 
                                             (position.y + coneLight.offsetY) / GameConstants.BOX2D_SCALE);
+            coneLight.coneLight.setDirection(position.rotation);
         }
     }
     
