@@ -32,12 +32,12 @@
   </data>
  </layer>
  <objectgroup name="Spawn/Junk">
-  <object id="209" name="Base" type="Base" x="4099.27" y="3979.03" width="600" height="600">
+  <object id="209" name="Base" type="Team A" x="4099.27" y="3979.03" width="600" height="600">
    <properties>
     <property name="Team" value="B"/>
    </properties>
   </object>
-  <object id="210" name="Base" type="Base" x="951.273" y="1059.03" width="600" height="600">
+  <object id="210" name="Base" type="Team B" x="951.273" y="1059.03" width="600" height="600">
    <properties>
     <property name="Team" value="A"/>
    </properties>
