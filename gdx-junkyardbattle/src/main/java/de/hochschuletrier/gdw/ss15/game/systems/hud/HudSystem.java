@@ -53,6 +53,8 @@ public class HudSystem extends IteratingSystem implements NetworkReceivedNewPack
     AssetManagerX assetManager;
     Texture crosshairTex;
     Texture hudoverlay;
+    Texture hudoverlay_blue;
+    Texture hudoverlay_orange;
     Texture punktestand;
     Texture uhr;
     Texture schrott;
@@ -73,7 +75,8 @@ public class HudSystem extends IteratingSystem implements NetworkReceivedNewPack
         this(Family.one((PlayerComponent.class), (SpawnSatelliteComponent.class)).get(), GameConstants.PRIORITY_HUD);
         this.camera = camera;
         this.crosshairTex = assetManager.getTexture("crosshair");
-        this.hudoverlay = assetManager.getTexture("hud_blue");
+        this.hudoverlay_blue = assetManager.getTexture("hud_blue");
+        this.hudoverlay_orange = assetManager.getTexture("hud_orange");
         this.punktestand = assetManager.getTexture("hud_punktestand");
         this.uhr = assetManager.getTexture("hud_uhr");
         this.schrott = assetManager.getTexture("hud_schrott");
@@ -87,7 +90,7 @@ public class HudSystem extends IteratingSystem implements NetworkReceivedNewPack
         super(family);
         this.priority = priority;
         this.assetManager = Main.getInstance().getAssetManager();
-        NetworkReceivedNewPacketClientEvent.registerListener(PacketIds.Simple,this);
+        NetworkReceivedNewPacketClientEvent.registerListener(PacketIds.Simple, this);
     }
 
     @Override
@@ -102,6 +105,12 @@ public class HudSystem extends IteratingSystem implements NetworkReceivedNewPack
             if (player.isLocalPlayer) {
                 if (localPlayer == null) {
                     this.localPlayer = entity;
+                }
+                if (player.teamID == 0) {
+                    this.hudoverlay = hudoverlay_orange;
+                }
+                else {
+                    this.hudoverlay = hudoverlay_blue;
                 }
                 drawCrosshair(entity);
                 lebensBalken();
@@ -196,7 +205,15 @@ public class HudSystem extends IteratingSystem implements NetworkReceivedNewPack
 
     private void timer() {
         DrawUtil.batch.draw(uhr, Gdx.graphics.getWidth()/2 + 250,Gdx.graphics.getHeight() + 3, uhr.getWidth() / 2, uhr.getHeight() / -2);
-        font.draw(DrawUtil.batch, "" + timcounter,Gdx.graphics.getWidth()/2 + 326, Gdx.graphics.getHeight()-45);
+        int timerMin = timcounter / 60;
+        String timerSec = "";
+        if ((timcounter % 60) >= 10) {
+            timerSec += timcounter % 60;
+        }
+        else {
+            timerSec += ("0"+ timcounter % 60);
+        }
+        font.draw(DrawUtil.batch, "" + timerMin + ":" + timerSec,Gdx.graphics.getWidth()/2 + 316, Gdx.graphics.getHeight()-45);
 
     }
 
