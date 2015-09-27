@@ -26,6 +26,12 @@ public class MovementPacket extends Packet {
         this.yPos = yPos;
         this.rotation = rotation;
     }
+    
+    public void set(float xPos, float yPos, float rotation) {
+        this.xPos = xPos;
+        this.yPos = yPos;
+        this.rotation = rotation;
+    }
 
     @Override
     protected void pack(DataOutputStream dataOutput) throws IOException {

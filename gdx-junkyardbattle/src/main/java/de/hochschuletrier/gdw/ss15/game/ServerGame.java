@@ -217,6 +217,10 @@ public class ServerGame{
         {//game is ending
             return false;
         }
+        if(Highscore.Get().teamPoints[0] >= GameConstants.NEEDED_POINTS || Highscore.Get().teamPoints[1] >= GameConstants.NEEDED_POINTS)
+        {
+        	return false;
+        }
         return true;
     }
 

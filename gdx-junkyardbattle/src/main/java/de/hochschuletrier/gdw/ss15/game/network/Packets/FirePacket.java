@@ -22,6 +22,10 @@ public class FirePacket extends Packet {
         this();
         this.channeltime = channelTime;
     }
+    
+    public void set(float channelTime) {
+        this.channeltime = channelTime;
+    }
 
     @Override
     protected void pack(DataOutputStream dataOutput) throws IOException {

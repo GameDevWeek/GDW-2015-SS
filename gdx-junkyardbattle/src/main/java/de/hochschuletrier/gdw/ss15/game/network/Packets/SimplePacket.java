@@ -27,6 +27,7 @@ public class SimplePacket extends Packet
         MetalShardsUpdate((short)10),
         TeamPointsUpdate((short)20),
         MiningPacket((byte)21),
+        HighscorePacket((short)815),
         GameCounter((byte)46);
 
         private final short m_Value;

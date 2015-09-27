@@ -21,7 +21,7 @@ public class HealthPacket extends Packet
 
 	@Override
 	protected void pack(DataOutputStream dataOutput) throws IOException {
-		dataOutput.writeFloat(health);
+		dataOutput.writeInt(health);
         dataOutput.writeLong(id);
 	}
 

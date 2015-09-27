@@ -15,13 +15,13 @@ public class MiningEvent {
     public static interface Listener
 
     {
-        void onMiningEvent(Entity player, Entity mineable, float channelTime);
+        void onMiningEvent(Entity player, Entity mineable, float channelTime, float deltaTime);
     }
 
-    public static void emit(Entity player, Entity mineable, float channelTime) {
+    public static void emit(Entity player, Entity mineable, float channelTime, float deltaTime) {
         Object[] items = listeners.begin();
         for (int i = 0, n = listeners.size; i < n; i++) {
-            ((Listener)items[i]).onMiningEvent(player, mineable, channelTime);
+            ((Listener)items[i]).onMiningEvent(player, mineable, channelTime, deltaTime);
         }
         listeners.end();
     }

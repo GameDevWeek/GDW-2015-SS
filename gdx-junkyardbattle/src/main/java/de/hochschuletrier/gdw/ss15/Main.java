@@ -366,7 +366,7 @@ public class Main extends StateBasedGame {
     {
        if(server==null)
         {
-            logger.error("Server läuft nicht");
+            //logger.error("Server läuft nicht");
         }
         else
         {

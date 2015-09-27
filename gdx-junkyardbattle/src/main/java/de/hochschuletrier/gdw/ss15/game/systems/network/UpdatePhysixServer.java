@@ -23,7 +23,7 @@ import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
  * Receives Movement packets and updates physixbody
  */
 public class UpdatePhysixServer extends EntitySystem implements NetworkReceivedNewPacketServerEvent.Listener{
-
+    private final static Vector2 dummyVector = new Vector2();
 	
     public UpdatePhysixServer()
     {
@@ -47,7 +47,7 @@ public class UpdatePhysixServer extends EntitySystem implements NetworkReceivedN
             InventoryComponent inventory = ComponentMappers.inventory.get(ent);
             MoveComponent move = ComponentMappers.move.get(ent);
             
-            Vector2 vel = new Vector2(p.xPos,p.yPos);
+            Vector2 vel = dummyVector.set(p.xPos,p.yPos);
 
 			if( (inventory.getMetalShards()<=inventory.maxMetalShards) && (inventory.getMetalShards()>0) )
             {
