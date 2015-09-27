@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.input.InputForwarder;
@@ -102,11 +103,15 @@ public class GameplayState extends BaseGameState implements DisconnectEvent.List
     public void onEnterComplete() {
         Main.inputMultiplexer.addProcessor(inputForwarder);
         inputForwarder.set(gameInputProcessor);
+        Gdx.input.setCursorImage(new Pixmap(Gdx.files.internal("data/ui/menu/Assets/mouse_null.png")), 0, 0);
+
     }
 
     @Override
     public void onLeave(BaseGameState nextState) {
         Main.inputMultiplexer.removeProcessor(inputForwarder);
+        Gdx.input.setCursorImage(new Pixmap(Gdx.files.internal("data/ui/menu/Assets/mouse_ready.png")), 0, 0);
+
     }
 
     @Override

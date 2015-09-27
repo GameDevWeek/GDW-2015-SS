@@ -126,6 +126,7 @@ public class SpawnSystem extends EntitySystem implements PlayerDiedEvent.Listene
     }
     
     public static ArrayList<SpawnInfo> spawnpoints = new ArrayList<>();
+    private int spawnsOccupied = 0;
     
     public SpawnSystem()
     {
@@ -134,6 +135,13 @@ public class SpawnSystem extends EntitySystem implements PlayerDiedEvent.Listene
     
     @Override
     public void onNetworkNewPacket(Entity ent) {
+        if(spawnsOccupied > spawnpoints.size()-1){
+            for(SpawnInfo info : spawnpoints){
+                info.occupied = false;
+            }
+            spawnsOccupied = 0;
+        }
+        
         for(SpawnInfo info : spawnpoints)
         {
             if(info.occupied)
@@ -147,6 +155,7 @@ public class SpawnSystem extends EntitySystem implements PlayerDiedEvent.Listene
                 spawnComponent.respawn = true;
                 spawnComponent.respawnTimer = -1;
                 info.occupied = true;
+                spawnsOccupied++;
                 
                 return;
             }

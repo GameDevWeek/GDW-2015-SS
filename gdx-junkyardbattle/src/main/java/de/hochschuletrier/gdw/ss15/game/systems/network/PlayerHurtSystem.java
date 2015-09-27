@@ -18,6 +18,7 @@ public class PlayerHurtSystem extends EntitySystem implements PlayerHurtEvent.Li
 
     ComponentMapper<HealthComponent> healthCom = ComponentMappers.health;
     ComponentMapper<DamageComponent> damageCom = ComponentMappers.damage;
+    private static final HealthPacket healthPacket = new HealthPacket();
     
     public PlayerHurtSystem()
     {
@@ -29,8 +30,6 @@ public class PlayerHurtSystem extends EntitySystem implements PlayerHurtEvent.Li
         if (damageCom.get(projectile).damageToPlayer) {
             healthCom.get(hurtPlayer).health -= damageCom.get(projectile).damage;
 
-
-
             if(healthCom.get(hurtPlayer).health < 0){
                 int killerID = ComponentMappers.bullet.get(projectile).playerID;
                 int dyingID = ComponentMappers.player.get(hurtPlayer).playerID;
@@ -38,14 +37,12 @@ public class PlayerHurtSystem extends EntitySystem implements PlayerHurtEvent.Li
                 //Highscore.Get().setPlayerStat(killerID, "kills",
                   //      Highscore.Get().getPlayerStat(killerID, "kills") + 1);
             }
-
             
-            HealthPacket pack = new HealthPacket();
             //pack.health
-            pack.id = ComponentMappers.positionSynch.get(hurtPlayer).networkID;
-            pack.health = healthCom.get(hurtPlayer).health;
+            healthPacket.id = ComponentMappers.positionSynch.get(hurtPlayer).networkID;
+            healthPacket.health = healthCom.get(hurtPlayer).health;
             
-            SendPacketServerEvent.emit(pack, true);
+            SendPacketServerEvent.emit(healthPacket, true);
         }
     }
 }

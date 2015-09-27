@@ -181,7 +181,8 @@
                 "draw": false
             },
             "Interpolate": {},
-            "SoundEmitter": {}
+            "SoundEmitter": {},
+            "ClientIsShooting": {}
         }
     },
     "clientOwnPlayer": {
@@ -216,7 +217,8 @@
             "Input": {},
             "Interpolate": {},
             "Weapon": {},
-            "SoundEmitter": {}
+            "SoundEmitter": {},
+            "ClientIsShooting": {}
         }
     },
     "projectile": {
@@ -482,9 +484,9 @@
             },
             "Pickable": {},
             "Inventory": {
-                "metalShards": 2,
+                "metalShards": 1,
                 "minMetalShards": 0,
-                "maxMetalShards": 2
+                "maxMetalShards": 1
             },
             "Death":{
                 "dyingDuration": 15

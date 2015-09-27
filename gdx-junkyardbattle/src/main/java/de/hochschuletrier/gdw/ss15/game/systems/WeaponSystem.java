@@ -30,7 +30,9 @@ public class WeaponSystem extends IteratingSystem implements
 	MyTimer timer = new MyTimer(true);
 	float attackCooldownTimer = 0;
 	Entity tractorSound = new Entity();
-
+    
+    private static final GatherPacket gather = new GatherPacket();
+    
 	public WeaponSystem() {
 		super(Family.all(PlayerComponent.class, WeaponComponent.class,
 				HealthComponent.class, InputComponent.class).get());
@@ -89,9 +91,9 @@ public class WeaponSystem extends IteratingSystem implements
 		if (input.gather && wpc.fireCooldownReady && !input.shoot) { // right button is clicked
 			wpc.harvestChannelTime = deltaTime;
 			timer.Update();
-			if (timer.get_CounterMilliseconds() > 50) {
+            if(timer.get_CounterMilliseconds()>200)
 				timer.StartCounter();
-				GatherPacket gather = new GatherPacket(wpc.harvestChannelTime);
+				GatherPacket gather = new GatherPacket(wpc.harvestChannelTime+0.2);
 				SendPacketClientEvent.emit(gather, true);
 			}
 			if (!ComponentMappers.soundEmitter.get(tractorSound).isPlaying) {

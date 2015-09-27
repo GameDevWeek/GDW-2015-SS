@@ -41,7 +41,7 @@ public class Serversocket implements Closeable
 	HashMap<UdpData,Serverclientsocket> m_HashMapClientsUnsave = new HashMap<>();
 	HashMap<Long,UdpData> m_TryToLoginClients = new HashMap<>();
 	
-	private ThreadPoolExecutor m_ThreadPool = new ThreadPoolExecutor(1, 2, 3, TimeUnit.MINUTES, new LinkedBlockingDeque<Runnable>());
+	private ThreadPoolExecutor m_ThreadPool = new ThreadPoolExecutor(1, 1, 3, TimeUnit.MINUTES, new LinkedBlockingDeque<Runnable>());
 	
 	private AtomicBoolean m_Running = new AtomicBoolean(false);
 	private boolean m_Localnetwork;
@@ -119,7 +119,7 @@ public class Serversocket implements Closeable
 			try
 			{
 				m_Sockets[i] = new UdpSocket(m_Ports[i]);
-				m_Sockets[i].setTimeout(100);
+				m_Sockets[i].setTimeout(1000);
 			}
 			catch(SocketException ex)
 			{

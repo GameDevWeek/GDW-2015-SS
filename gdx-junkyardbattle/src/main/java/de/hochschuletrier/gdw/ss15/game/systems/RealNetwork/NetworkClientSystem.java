@@ -11,11 +11,7 @@ import de.hochschuletrier.gdw.ss15.game.Game;
 import de.hochschuletrier.gdw.ss15.game.components.network.client.NetworkIDComponent;
 import de.hochschuletrier.gdw.ss15.game.network.ClientConnection;
 import de.hochschuletrier.gdw.ss15.game.network.PacketIds;
-import de.hochschuletrier.gdw.ss15.game.network.Packets.EntityUpdatePacket;
-import de.hochschuletrier.gdw.ss15.game.network.Packets.HealthPacket;
-import de.hochschuletrier.gdw.ss15.game.network.Packets.InitEntityPacket;
-import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
-import de.hochschuletrier.gdw.ss15.game.network.Packets.SpawnBulletPacket;
+import de.hochschuletrier.gdw.ss15.game.network.Packets.*;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Clientsocket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.Tools;
@@ -147,9 +143,18 @@ public class NetworkClientSystem extends EntitySystem implements EntityListener,
                 NetworkReceivedNewPacketClientEvent.emit(pack,ent);
             }
         }
+        else if(pack.getPacketId() == PacketIds.ReceiveShootClient.getValue())
+        {
+            //System.out.println("Received packet");
+            ReciveShotPacketClient rPack = (ReciveShotPacketClient) pack;
+            Entity ent = hashMap.get(rPack.networkId);
+            if(ent!=null) {
+                NetworkReceivedNewPacketClientEvent.emit(pack, ent);
+            }
+        }
         else 
         {
-            NetworkReceivedNewPacketClientEvent.emit(pack,null);
+            NetworkReceivedNewPacketClientEvent.emit(pack, null);
         }
     }
 
