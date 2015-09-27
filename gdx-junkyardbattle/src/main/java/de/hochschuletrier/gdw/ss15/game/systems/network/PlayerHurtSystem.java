@@ -45,6 +45,7 @@ public class PlayerHurtSystem extends EntitySystem implements PlayerHurtEvent.Li
             //pack.health
             healthPacket.id = ComponentMappers.positionSynch.get(hurtPlayer).networkID;
             healthPacket.health = healthCom.get(hurtPlayer).health;
+            //System.out.println("health server: "+healthPacket.health);
             
             SendPacketServerEvent.emit(healthPacket, true);
         }
