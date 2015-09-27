@@ -123,7 +123,7 @@ public class HudSystem extends IteratingSystem implements NetworkReceivedNewPack
                 timer();
                 punktestand();
             }
-            radar(entity);
+            // radar(entity); geht nicht D:
         }
         if (entity.getComponent(SpawnSatelliteComponent.class) != null) {
             if (TestSatelliteSystem.satellite) {
