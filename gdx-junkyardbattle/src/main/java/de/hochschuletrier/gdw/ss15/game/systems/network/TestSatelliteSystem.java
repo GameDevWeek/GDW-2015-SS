@@ -57,7 +57,7 @@ public class TestSatelliteSystem extends IteratingSystem
 		timer.Update();
 		
 		
-		if(timer.get_CounterSeconds()>60 && satellite == false)
+		if(timer.get_CounterSeconds()>180 && satellite == false)
         {
 		    
 		    satellite = true;

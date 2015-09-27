@@ -10,11 +10,13 @@
     "enterip_bg":"data/ui/menu/Assets/enter_ip.png",
     "load_bg":"data/ui/menu/Assets/LoadScreen.png",
     "host_bg":"data/ui/menu/Assets/host_menue_map.png",
-    
-    "map1":"data/ui/menu/Assets/Thumbnail/InYourFace.png",
-    "map2":"data/ui/menu/Assets/Thumbnail/prototypeV2.png",
-    "map3":"data/ui/menu/Assets/Thumbnail/RoyalRubbel.png",
-    "map4":"data/ui/menu/Assets/Thumbnail/salvage_shootout.png",
+
+    "map1":"data/maps/thumbnails/royalrubbel.png",
+    "map2":"data/maps/thumbnails/InYourFace.png",
+    "map3":"data/maps/thumbnails/prototypeV2.png",
+    "map4":"data/maps/thumbnails/salvage_shootout.png",
+    "map5":"data/maps/thumbnails/2vs2final.png",
+    "map6":"data/maps/thumbnails/4vs4Inselfinal.png",
 
     "start_button":"data/ui/menu/Assets/Start.png",
 	"join_button": "data/ui/menu/Assets/join.png",

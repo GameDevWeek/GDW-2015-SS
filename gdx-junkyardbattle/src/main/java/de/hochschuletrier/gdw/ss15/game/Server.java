@@ -169,7 +169,6 @@ public class Server implements Runnable
     {
         while(isRunning.get())
         {
-            Tools.Sleep(1);
             timer.Update();
             if(lobby!=null)
             {

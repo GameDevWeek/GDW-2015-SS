@@ -15,7 +15,6 @@ import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.Game;
 import de.hochschuletrier.gdw.ss15.game.components.*;
 import de.hochschuletrier.gdw.ss15.game.components.input.InputComponent;
-import de.hochschuletrier.gdw.ss15.game.components.light.NormalMapComponent;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.MovementPacket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.MyTimer;
 
@@ -23,32 +22,25 @@ import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.MyTimer;
  * Created by lukas on 22.09.15.
  */
 public class TestMovementSystem extends IteratingSystem{
-
-    private Game game;
     private Camera camera;
     private MyTimer timer = new MyTimer(true);
-    private Vector2 velVector = new Vector2();
     private Vector2 vectorToAdd = new Vector2(0,0);
     private ComponentMapper<InputComponent> input;
     private ComponentMapper<SoundEmitterComponent> soundEmitter;
-    private ComponentMapper<MoveComponent> move;
     public static boolean interpolate = true;
+    private static final MovementPacket movePacket = new MovementPacket();
+    
+    @SuppressWarnings("unchecked")
     public TestMovementSystem(Game game, Camera cam)
     {
         super(Family.all(MoveComponent.class).get());
-        this.game = game;
         this.camera = cam;
         input = ComponentMappers.input;
         soundEmitter = ComponentMappers.soundEmitter;
-        move = ComponentMappers.move;
-
-        
     }
 
 	protected void processEntity(Entity entity, float deltaTime) {
 
-	    InventoryComponent inventory = ComponentMappers.inventory.get(entity);
-	    MoveComponent move = ComponentMappers.move.get(entity);
 		timer.Update();
         if(timer.get_CounterMilliseconds()>50)
         {
@@ -64,8 +56,8 @@ public class TestMovementSystem extends IteratingSystem{
 	        float angle = mousepos2.angle();
 
             vectorToAdd.nor();
-	        MovementPacket packet = new MovementPacket(vectorToAdd.x,vectorToAdd.y,angle);
-	        SendPacketClientEvent.emit(packet, true);
+            movePacket.set(vectorToAdd.x,vectorToAdd.y,angle);
+	        SendPacketClientEvent.emit(movePacket, true);
 
 
             vectorToAdd.setZero();

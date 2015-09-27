@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.ComponentMapper;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixModifierComponent;
 import de.hochschuletrier.gdw.ss15.game.components.*;
+import de.hochschuletrier.gdw.ss15.game.components.GatherComponent;
 import de.hochschuletrier.gdw.ss15.game.components.animation.AnimatorComponent;
 import de.hochschuletrier.gdw.ss15.game.components.effects.AttachedEntityComponent;
 import de.hochschuletrier.gdw.ss15.game.components.effects.ChargeEffectComponent;
@@ -61,5 +62,6 @@ public class ComponentMappers {
     public static final ComponentMapper<AboveAbyssComponent> abyss = ComponentMapper.getFor(AboveAbyssComponent.class);
     public static final ComponentMapper<MagneticBeamEffectComponent> magneticBeamEffect = ComponentMapper.getFor(MagneticBeamEffectComponent.class);
     public static final ComponentMapper<ChargeEffectComponent> chargeEffect = ComponentMapper.getFor(ChargeEffectComponent.class);
+    public static final ComponentMapper<GatherComponent> gather = ComponentMapper.getFor(GatherComponent.class);
     public static final ComponentMapper<ClientIsShootingComponent> ClientIsSchooting = ComponentMapper.getFor(ClientIsShootingComponent.class);
 }
