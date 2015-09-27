@@ -69,7 +69,7 @@ public class Clientsocket extends BaseClient implements Closeable
 		m_Clocksocket=null;
 		m_Ip=ip;
 		
-		m_ThreadPool = new ThreadPoolExecutor(1, 2, 3, TimeUnit.MINUTES, new LinkedBlockingDeque<Runnable>());
+		m_ThreadPool = new ThreadPoolExecutor(1, 1, 3, TimeUnit.MINUTES, new LinkedBlockingDeque<Runnable>());
 	}
 	
 	public boolean connect()
