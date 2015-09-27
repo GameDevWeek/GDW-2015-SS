@@ -191,8 +191,8 @@ public class SpawnSystem extends EntitySystem implements PlayerDiedEvent.Listene
                     healthPacket.id = ComponentMappers.positionSynch.get(entity).networkID;
                     
                     SendPacketServerEvent.emit(healthPacket, true);
-
-                    spawnComponent.respawnTimer = GameConstants.RESPAWN_TIMER;
+                    spawnComponent.respawnTimer=0;
+                    //spawnComponent.respawnTimer = GameConstants.RESPAWN_TIMER;
                     spawnComponent.respawn = false;
                 }
             }
