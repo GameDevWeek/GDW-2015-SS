@@ -30,6 +30,9 @@ public class PlayerHurtSystem extends EntitySystem implements PlayerHurtEvent.Li
         if (damageCom.get(projectile).damageToPlayer) {
             healthCom.get(hurtPlayer).health -= damageCom.get(projectile).damage;
 
+            //System.out.println("Health: " + healthCom.get(hurtPlayer).health);
+
+
             if(healthCom.get(hurtPlayer).health < 0){
                 int killerID = ComponentMappers.bullet.get(projectile).playerID;
                 int dyingID = ComponentMappers.player.get(hurtPlayer).playerID;
