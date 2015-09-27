@@ -76,7 +76,7 @@ public class EffectAddSystem extends IteratingSystem implements EntityListener, 
                 if(ComponentMappers.chargeEffect.has(attachedEntity) && animatorComp != null) {
                     ChargeEffectComponent chargeEffectComp = ComponentMappers.chargeEffect.get(attachedEntity);
                     PositionComponent attachedEntityPosComp = ComponentMappers.position.get(attachedEntity);
-                    if(inputComp != null && inputComp.shoot) {
+                    if(inputComp != null && inputComp.shoot && !inputComp.gather) {
                         chargeEffectComp.stateTime += deltaTime;
                         if(chargeEffectComp.stateTime >= CHARGE_EFFECT_START) {
                             animatorComp.draw = true;

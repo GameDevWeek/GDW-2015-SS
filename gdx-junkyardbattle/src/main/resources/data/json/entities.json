@@ -136,7 +136,7 @@
             "Client": {},
             "PositionSynch": {
                 "clientname": "clientPlayer",
-                "updateDuration": 40
+                "updateDuration": 50
             },
             "Interpolate": {},
             "Inventory": {
@@ -150,6 +150,9 @@
             },
             "Health": {
                 "health": 100
+            },
+            "Gather": {
+            	"currentGatheringTime": 0.0
             }
         }
     },
