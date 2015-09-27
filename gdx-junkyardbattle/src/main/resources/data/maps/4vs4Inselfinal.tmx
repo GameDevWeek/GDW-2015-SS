@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="54" height="54" tilewidth="128" tileheight="128" nextobjectid="337">
+ <tileset firstgid="1" source="tilesets/Tank_Body.tsx"/>
+ <tileset firstgid="13" source="tilesets/Tank_Rohr_Down.tsx"/>
+ <tileset firstgid="25" source="tilesets/Tank_Rohr_Up.tsx"/>
+ <tileset firstgid="37" source="tilesets/Terrain.tsx"/>
+ <tileset firstgid="76" source="tilesets/tileset_ground_ambience.tsx"/>
+ <tileset firstgid="86" source="tilesets/Krater.tsx"/>
+ <tileset firstgid="102" source="tilesets/Auto.tsx"/>
+ <tileset firstgid="108" source="tilesets/abyss_block_shoot.tsx"/>
+ <tileset firstgid="129" source="tilesets/light_360.tsx"/>
+ <tileset firstgid="130" source="tilesets/light_weapon.tsx"/>
+ <tileset firstgid="131" source="tilesets/tileset_ground_wall001.tsx"/>
+ <tileset firstgid="159" source="tilesets/abyss.tsx"/>
+ <tileset firstgid="180" source="tilesets/abyss.tsx"/>
+ <layer name="Floor" width="54" height="54">
+  <data encoding="base64" compression="zlib">
+   eJztmW1u8yAQhLlWcgbbuU5v06+3ldqkbdpcsFgvI02m65AQb0JVfowcYwI8LOwu9jqEsG5qampq+pO6qVzncOH3bdRd1L1xfXCY01x/c3E9Ry2i+qiOtIx6ceAa+1ul/qAhlb04cHXUR1/INdriK6Nd6m9I0nn04GK2Eq7n1IbVHjPgOebQkwv9nsvFNu+kXVwXYZ+X+/OwF9o/hwvjfIz6F/WU2td7tqEnF9up1G8w12sq26T2+X4Vfq7Nuf3GW9R7mkfwjHP7EbV14Hoz7AZbbmfkWlP/pX5Q91d3gGst5b088+A6N27BXjzWHNcQ/Lly9srFpx3Z6zP8zx9q4MrZi9mXYd+Xw4+y/3k9gusS6zBnrw2NmeNBT/ccj47h6kId9mIu1GcuLq+F61R7KY/FhTiiMcN7f8EX7Ghcn6lMzylsU7UX58u8DqfG4G0vPaewHay1Ax7sI2bpw74vqYGL/Rr4YDf243jOeSv7xo7q6P+nzive9uJ9wjk424bPH2xjK2/XnF5zQvTpycVz3xl985h6ubKd9IzSG/V0vry5sFdwRT4KPVE9trGuwWHi/9oWmC+9vyy/AQZ+d7A0fufyTMQML66pcwrODYe41B+qP81xae4/J5f2cyjuIH5Zfp7zRj7/jvHReme3oXZq4LL8IrMoF9a5tabx/xq41F669k7h8vTzOuZj7KX+Xrl4f9VgrxwXfMyHXPEbcWBsZ/Q92wyXZ/zSfnL56iGhDfZxOS4vf8j5PNbPmNeVfHew9sy19peVzyM2nfr+xvLdysXziLo8j575IXKJEi7NjZRrrMPfU4b0fJXqeOXzHJdKuBDfcEbBeUTv9X099rXXdyL0U7oOeX44L+ZyfT//m7isMxvKFuHnOvTiGqSfEq5cfOP38nwu8+CaGkvJd4djbboiG4Jrbr9xaeF7iqU5vqfUrGvNeVNTU1PT9fUNDF2nvA==
+  </data>
+ </layer>
+ <layer name="Walls" width="54" height="54">
+  <data encoding="base64" compression="zlib">
+   eJztlsEOwiAMhnkc9a7ePKgPQJa90N7cNZEE/wzbJayUrV+yA2OjhbY/DcFxHMdxnN4ZWjvgsGjGqGRrr3my131pYCEva3OqsAb62jrH4vxclW0+FGzQuT4V7BwBjXitgauZSfDtWMmXWpC2XLJxhLkzzP9Dq74kekjacs/G6dyH79wN5jmbGnB6SPtGv3PfSHde8/MW2tOIF+UTp4dcPKbCe+tgPEr1JNEEOkdtPYzMfIpLip8076yA+8Mxagi3BsbR2v2VfC3tC/1fykt6Z21fmIdYX1weWwN1Yq2uIxrxkvQIPeq8pEeg+OC+8tqx2EdJQa2I4VdH1vRRWuQ+lqCYlerJYh8l6RFG+K70j7TOrOhGTbT6qHvY5t5pfZe16PEs6eFRWZN3W+bo0tqta2Iv9HiOrXxeult7PD/HcRzHcZwafABPBiX9
+  </data>
+ </layer>
+ <objectgroup name="Spawn/Junk">
+  <object id="181" name="SatelliteSite" type="Satellite" x="1672" y="3336" width="256" height="256">
+   <properties>
+    <property name="SatelliteSpawn" value="1"/>
+   </properties>
+  </object>
+  <object id="182" name="JunkSpawn" type="JunkSpawn" x="4680" y="1480"/>
+  <object id="183" name="JunkSpawn" type="JunkSpawn" x="4400" y="1464"/>
+  <object id="184" name="JunkSpawn" type="JunkSpawn" x="4160" y="1472"/>
+  <object id="185" name="JunkSpawn" type="JunkSpawn" x="3904" y="1472"/>
+  <object id="186" name="JunkSpawn" type="JunkSpawn" x="3904" y="1728"/>
+  <object id="187" name="JunkSpawn" type="JunkSpawn" x="3896" y="2000"/>
+  <object id="188" name="JunkSpawn" type="JunkSpawn" x="3896" y="2232"/>
+  <object id="189" name="JunkSpawn" type="JunkSpawn" x="4792" y="1576"/>
+  <object id="190" name="JunkSpawn" type="JunkSpawn" x="4528" y="1576"/>
+  <object id="191" name="JunkSpawn" type="JunkSpawn" x="4296" y="1584"/>
+  <object id="192" name="JunkSpawn" type="JunkSpawn" x="4024" y="1576"/>
+  <object id="193" name="JunkSpawn" type="JunkSpawn" x="4040" y="1864"/>
+  <object id="194" name="JunkSpawn" type="JunkSpawn" x="4016" y="2088"/>
+  <object id="195" name="JunkSpawn" type="JunkSpawn" x="4016" y="2368"/>
+  <object id="196" name="JunkSpawn" type="JunkSpawn" x="4784" y="5312"/>
+  <object id="197" name="JunkSpawn" type="JunkSpawn" x="4544" y="5304"/>
+  <object id="198" name="JunkSpawn" type="JunkSpawn" x="4288" y="5296"/>
+  <object id="199" name="JunkSpawn" type="JunkSpawn" x="4024" y="5280"/>
+  <object id="200" name="JunkSpawn" type="JunkSpawn" x="4016" y="5048"/>
+  <object id="201" name="JunkSpawn" type="JunkSpawn" x="4008" y="4800"/>
+  <object id="202" name="JunkSpawn" type="JunkSpawn" x="4008" y="4544"/>
+  <object id="203" name="JunkSpawn" type="JunkSpawn" x="3904" y="4680"/>
+  <object id="204" name="JunkSpawn" type="JunkSpawn" x="3896" y="4936"/>
+  <object id="205" name="JunkSpawn" type="JunkSpawn" x="3904" y="5176"/>
+  <object id="206" name="JunkSpawn" type="JunkSpawn" x="3912" y="5440"/>
+  <object id="207" name="JunkSpawn" type="JunkSpawn" x="4160" y="5440"/>
+  <object id="208" name="JunkSpawn" type="JunkSpawn" x="4432" y="5432"/>
+  <object id="209" name="JunkSpawn" type="JunkSpawn" x="4688" y="5432"/>
+  <object id="210" name="JunkSpawn" type="JunkSpawn" x="4920" y="5432"/>
+  <object id="211" name="JunkSpawn" type="JunkSpawn" x="5424" y="1984"/>
+  <object id="212" name="JunkSpawn" type="JunkSpawn" x="5432" y="2232"/>
+  <object id="213" name="JunkSpawn" type="JunkSpawn" x="5424" y="2488"/>
+  <object id="214" name="JunkSpawn" type="JunkSpawn" x="5440" y="2752"/>
+  <object id="215" name="JunkSpawn" type="JunkSpawn" x="5440" y="3000"/>
+  <object id="216" name="JunkSpawn" type="JunkSpawn" x="5440" y="3248"/>
+  <object id="217" name="JunkSpawn" type="JunkSpawn" x="5448" y="3640"/>
+  <object id="218" name="JunkSpawn" type="JunkSpawn" x="5456" y="3920"/>
+  <object id="219" name="JunkSpawn" type="JunkSpawn" x="5440" y="4168"/>
+  <object id="220" name="JunkSpawn" type="JunkSpawn" x="5432" y="4424"/>
+  <object id="221" name="JunkSpawn" type="JunkSpawn" x="5440" y="4664"/>
+  <object id="222" name="JunkSpawn" type="JunkSpawn" x="5456" y="4936"/>
+  <object id="223" name="JunkSpawn" type="JunkSpawn" x="5312" y="2104"/>
+  <object id="224" name="JunkSpawn" type="JunkSpawn" x="5296" y="2352"/>
+  <object id="225" name="JunkSpawn" type="JunkSpawn" x="5296" y="2624"/>
+  <object id="226" name="JunkSpawn" type="JunkSpawn" x="5304" y="2872"/>
+  <object id="227" name="JunkSpawn" type="JunkSpawn" x="5312" y="3144"/>
+  <object id="228" name="JunkSpawn" type="JunkSpawn" x="5320" y="3376"/>
+  <object id="229" name="JunkSpawn" type="JunkSpawn" x="5320" y="3520"/>
+  <object id="230" name="JunkSpawn" type="JunkSpawn" x="5320" y="3784"/>
+  <object id="231" name="JunkSpawn" type="JunkSpawn" x="5312" y="4032"/>
+  <object id="232" name="JunkSpawn" type="JunkSpawn" x="5304" y="4296"/>
+  <object id="233" name="JunkSpawn" type="JunkSpawn" x="5312" y="4568"/>
+  <object id="234" name="JunkSpawn" type="JunkSpawn" x="5312" y="4808"/>
+  <object id="235" name="JunkSpawn" type="JunkSpawn" x="5304" y="5048"/>
+  <object id="236" name="JunkSpawn" type="JunkSpawn" x="2728" y="3392"/>
+  <object id="237" name="JunkSpawn" type="JunkSpawn" x="2632" y="3392"/>
+  <object id="238" name="JunkSpawn" type="JunkSpawn" x="2496" y="3384"/>
+  <object id="239" name="JunkSpawn" type="JunkSpawn" x="2368" y="3384"/>
+  <object id="240" name="JunkSpawn" type="JunkSpawn" x="2232" y="3384"/>
+  <object id="241" name="JunkSpawn" type="JunkSpawn" x="2232" y="3520"/>
+  <object id="242" name="JunkSpawn" type="JunkSpawn" x="2352" y="3528"/>
+  <object id="243" name="JunkSpawn" type="JunkSpawn" x="2504" y="3520"/>
+  <object id="244" name="JunkSpawn" type="JunkSpawn" x="2616" y="3504"/>
+  <object id="245" name="JunkSpawn" type="JunkSpawn" x="2744" y="3520"/>
+  <object id="246" name="JunkSpawn" type="JunkSpawn" x="1864" y="2360"/>
+  <object id="247" name="JunkSpawn" type="JunkSpawn" x="1864" y="2472"/>
+  <object id="248" name="JunkSpawn" type="JunkSpawn" x="1864" y="2632"/>
+  <object id="249" name="JunkSpawn" type="JunkSpawn" x="1712" y="4304"/>
+  <object id="250" name="JunkSpawn" type="JunkSpawn" x="1712" y="4408"/>
+  <object id="251" name="JunkSpawn" type="JunkSpawn" x="1712" y="4160"/>
+  <object id="256" name="JunkSpawn" type="JunkSpawn" x="1464" y="3136"/>
+  <object id="257" name="JunkSpawn" type="JunkSpawn" x="1592" y="3136"/>
+  <object id="258" name="JunkSpawn" type="JunkSpawn" x="1720" y="3136"/>
+  <object id="259" name="JunkSpawn" type="JunkSpawn" x="1840" y="3128"/>
+  <object id="260" name="JunkSpawn" type="JunkSpawn" x="1984" y="3144"/>
+  <object id="261" name="JunkSpawn" type="JunkSpawn" x="2104" y="3144"/>
+  <object id="262" name="JunkSpawn" type="JunkSpawn" x="1448" y="3776"/>
+  <object id="263" name="JunkSpawn" type="JunkSpawn" x="1592" y="3776"/>
+  <object id="264" name="JunkSpawn" type="JunkSpawn" x="1728" y="3784"/>
+  <object id="265" name="JunkSpawn" type="JunkSpawn" x="1872" y="3784"/>
+  <object id="266" name="JunkSpawn" type="JunkSpawn" x="1976" y="3776"/>
+  <object id="267" name="JunkSpawn" type="JunkSpawn" x="2096" y="3784"/>
+  <object id="268" name="JunkSpawn" type="JunkSpawn" x="2096" y="3648"/>
+  <object id="269" name="JunkSpawn" type="JunkSpawn" x="2104" y="3520"/>
+  <object id="270" name="JunkSpawn" type="JunkSpawn" x="2112" y="3376"/>
+  <object id="271" name="JunkSpawn" type="JunkSpawn" x="2112" y="3256"/>
+  <object id="272" name="JunkSpawn" type="JunkSpawn" x="1448" y="3264"/>
+  <object id="273" name="JunkSpawn" type="JunkSpawn" x="1456" y="3416"/>
+  <object id="274" name="JunkSpawn" type="JunkSpawn" x="1448" y="3512"/>
+  <object id="275" name="JunkSpawn" type="JunkSpawn" x="1456" y="3632"/>
+  <object id="276" name="JunkSpawn" type="JunkSpawn" x="1472" y="4928"/>
+  <object id="277" name="JunkSpawn" type="JunkSpawn" x="1592" y="4936"/>
+  <object id="278" name="JunkSpawn" type="JunkSpawn" x="1704" y="4928"/>
+  <object id="279" name="JunkSpawn" type="JunkSpawn" x="1848" y="4944"/>
+  <object id="280" name="JunkSpawn" type="JunkSpawn" x="1984" y="4928"/>
+  <object id="281" name="JunkSpawn" type="JunkSpawn" x="2104" y="4936"/>
+  <object id="282" name="JunkSpawn" type="JunkSpawn" x="2096" y="5064"/>
+  <object id="283" name="JunkSpawn" type="JunkSpawn" x="2104" y="5192"/>
+  <object id="284" name="JunkSpawn" type="JunkSpawn" x="2096" y="5312"/>
+  <object id="285" name="JunkSpawn" type="JunkSpawn" x="2096" y="5440"/>
+  <object id="286" name="JunkSpawn" type="JunkSpawn" x="2096" y="5576"/>
+  <object id="287" name="JunkSpawn" type="JunkSpawn" x="1960" y="5576"/>
+  <object id="288" name="JunkSpawn" type="JunkSpawn" x="1840" y="5576"/>
+  <object id="289" name="JunkSpawn" type="JunkSpawn" x="1728" y="5576"/>
+  <object id="290" name="JunkSpawn" type="JunkSpawn" x="1592" y="5576"/>
+  <object id="291" name="JunkSpawn" type="JunkSpawn" x="1464" y="5568"/>
+  <object id="292" name="JunkSpawn" type="JunkSpawn" x="1464" y="5448"/>
+  <object id="293" name="JunkSpawn" type="JunkSpawn" x="1456" y="5320"/>
+  <object id="294" name="JunkSpawn" type="JunkSpawn" x="1456" y="5200"/>
+  <object id="295" name="JunkSpawn" type="JunkSpawn" x="1456" y="5040"/>
+  <object id="296" name="JunkSpawn" type="JunkSpawn" x="1464" y="1224"/>
+  <object id="297" name="JunkSpawn" type="JunkSpawn" x="1592" y="1216"/>
+  <object id="298" name="JunkSpawn" type="JunkSpawn" x="1728" y="1208"/>
+  <object id="299" name="JunkSpawn" type="JunkSpawn" x="1856" y="1208"/>
+  <object id="300" name="JunkSpawn" type="JunkSpawn" x="1976" y="1208"/>
+  <object id="301" name="JunkSpawn" type="JunkSpawn" x="2096" y="1216"/>
+  <object id="302" name="JunkSpawn" type="JunkSpawn" x="2096" y="1352"/>
+  <object id="303" name="JunkSpawn" type="JunkSpawn" x="2104" y="1480"/>
+  <object id="304" name="JunkSpawn" type="JunkSpawn" x="2096" y="1600"/>
+  <object id="305" name="JunkSpawn" type="JunkSpawn" x="2112" y="1744"/>
+  <object id="306" name="JunkSpawn" type="JunkSpawn" x="2104" y="1856"/>
+  <object id="307" name="JunkSpawn" type="JunkSpawn" x="1968" y="1872"/>
+  <object id="308" name="JunkSpawn" type="JunkSpawn" x="1864" y="1872"/>
+  <object id="309" name="JunkSpawn" type="JunkSpawn" x="1720" y="1864"/>
+  <object id="310" name="JunkSpawn" type="JunkSpawn" x="1608" y="1856"/>
+  <object id="311" name="JunkSpawn" type="JunkSpawn" x="1480" y="1856"/>
+  <object id="312" name="JunkSpawn" type="JunkSpawn" x="1472" y="1720"/>
+  <object id="313" name="JunkSpawn" type="JunkSpawn" x="1472" y="1600"/>
+  <object id="314" name="JunkSpawn" type="JunkSpawn" x="1464" y="1472"/>
+  <object id="315" name="JunkSpawn" type="JunkSpawn" x="1464" y="1352"/>
+  <object id="325" name="Spawn" type="Team B" x="5056" y="5054">
+   <properties>
+    <property name="Player" value="1"/>
+    <property name="Team" value="B"/>
+   </properties>
+  </object>
+  <object id="326" name="Spawn" type="Team B" x="5696" y="5696">
+   <properties>
+    <property name="Player" value="3"/>
+    <property name="Team" value="B"/>
+   </properties>
+  </object>
+  <object id="327" name="Spawn" type="Team B" x="5054" y="5692">
+   <properties>
+    <property name="Player" value="4"/>
+    <property name="Team" value="B"/>
+   </properties>
+  </object>
+  <object id="328" name="Spawn" type="Team B" x="5698" y="5055.58">
+   <properties>
+    <property name="Player" value="2"/>
+    <property name="Team" value="B"/>
+   </properties>
+  </object>
+  <object id="329" name="Spawn" type="Team A" x="5060" y="1852">
+   <properties>
+    <property name="Player" value="2"/>
+    <property name="Team" value="A"/>
+   </properties>
+  </object>
+  <object id="330" name="Spawn" type="Team A" x="5696" y="1854">
+   <properties>
+    <property name="Player" value="1"/>
+    <property name="Team" value="A"/>
+   </properties>
+  </object>
+  <object id="331" name="Spawn" type="Team A" x="5056" y="1210">
+   <properties>
+    <property name="Player" value="3"/>
+    <property name="Team" value="A"/>
+   </properties>
+  </object>
+  <object id="332" name="Spawn" type="Team A" x="5696" y="1212">
+   <properties>
+    <property name="Player" value="4"/>
+    <property name="Team" value="A"/>
+   </properties>
+  </object>
+  <object id="333" name="Base" type="Base" x="5012" y="1172" width="600" height="600">
+   <properties>
+    <property name="Team" value="A"/>
+   </properties>
+  </object>
+  <object id="334" name="Base" type="Base" x="5012" y="5172" width="600" height="600">
+   <properties>
+    <property name="Team" value="B"/>
+   </properties>
+  </object>
+  <object id="335" name="SpawnCar" type="SpawnCar" x="1768" y="1520"/>
+  <object id="336" name="SpawnCar" type="SpawnCar" x="1784" y="5248"/>
+ </objectgroup>
+ <layer name="Panzer" width="54" height="54">
+  <data encoding="base64" compression="zlib">
+   eJzt2UEKgDAUQ8GqVFHvf9/mEIVvcQbePvu0BgDwb1va01E9ZLKeznRVD5nsTk96q4cAAAAAAADL8xOtxU8EAHzVAIonAG0=
+  </data>
+ </layer>
+ <layer name="PanzerTop/Krater/Auto" width="54" height="54">
+  <data encoding="base64" compression="zlib">
+   eJzt19ltAlEQBVESYDVmswGzxITZzE7+KVCTARq5e0CqI9X3fZ+vazVJkqTnDGlEX8E7K/qlNW2CtwrfNKZJ8M6WdrSnv+CtwpR+aBa8c6AjnegcvFWY04KWwTsXutKN7sFbkiRJen3Zd0qW7DslS/adksU7RZIkqRz/8+8l+z9fpwY1g3ey//MtalMnYSvTB3Xps+qH/LMe9WlQ9UMkSVJpD58uE9U=
+  </data>
+ </layer>
+</map>
