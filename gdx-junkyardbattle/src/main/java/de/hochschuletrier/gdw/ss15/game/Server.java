@@ -59,6 +59,17 @@ public class Server implements Runnable
                     }
                 }
             }
+            else if(info.equals("restartCounter"))
+            {
+                if(lobby == null)
+                {
+                    logger.error("Lobby nicht aktiv");
+                }
+                else
+                {
+                    lobby.resetCounter();
+                }
+            }
             else
             {
                 logger.error(info+" falsches parameter für command serverCommand");
