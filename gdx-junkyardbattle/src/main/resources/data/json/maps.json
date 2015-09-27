@@ -2,7 +2,7 @@
     "map1": {
         "id": 1,
         "name": "RoyalRubble",
-        "playerPerTeam": 4,
+        "playerPerTeam": 8,
         "file":"data/maps/royalrubbel.tmx",
         "thumbnail":"data/maps/thumbnails/RoyalRubbel.png"
     },
@@ -19,5 +19,26 @@
         "playerPerTeam": 8,
         "file":"data/maps/prototype.tmx",
         "thumbnail":"data/maps/thumbnails/prototypeV2.png"
+    },
+    "map4": {
+        "id": 4,
+        "name": "Salvage Shootout",
+        "playerPerTeam": 8,
+        "file":"data/maps/salvage_shootout.tmx",
+        "thumbnail":"data/maps/thumbnails/salvage_shootout.png"
+    },
+    "map5": {
+        "id": 5,
+        "name": "2 vs 2",
+        "playerPerTeam": 8,
+        "file":"data/maps/2vs2final.tmx",
+        "thumbnail":"data/maps/thumbnails/2vs2final.png"
+    },
+    "map6": {
+        "id": 6,
+        "name": "4 vs 4 - Insel",
+        "playerPerTeam": 8,
+        "file":"data/maps/4vs4Inselfinal.tmx",
+        "thumbnail":"data/maps/thumbnails/4vs4Inselfinal.png"
     }
 }
