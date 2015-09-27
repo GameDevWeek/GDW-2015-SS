@@ -40,7 +40,7 @@ public class EffectAddSystem extends IteratingSystem implements EntityListener, 
     @Override
     public void addedToEngine(Engine engine) {
         super.addedToEngine(engine);
-        engine.addEntityListener(Family.all(PlayerComponent.class, InputComponent.class).get(), this);
+        engine.addEntityListener(Family.all(PlayerComponent.class).get(), this);
         
         WeaponCharging.register(this);
         WeaponUncharged.register(this);
@@ -54,13 +54,16 @@ public class EffectAddSystem extends IteratingSystem implements EntityListener, 
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
         PositionComponent posComp = ComponentMappers.position.get(entity);
-        ConeLightComponent coneLightComp = ComponentMappers.coneLight.get(entity);
+//        ConeLightComponent coneLightComp = ComponentMappers.coneLight.get(entity);
         AttachedEntityComponent particleEntityComp = ComponentMappers.attachedEntity.get(entity);
         InputComponent inputComp = ComponentMappers.input.get(entity);
         
-        if(coneLightComp != null) {
-            coneLightComp.coneLight.setDirection(posComp.rotation);
-        }
+        if(inputComp == null)
+            return;
+        
+//        if(coneLightComp != null) {
+//            coneLightComp.coneLight.setDirection(posComp.rotation);
+//        }
         
         if(particleEntityComp != null) {
             for(Entity attachedEntity : particleEntityComp.entities) {
