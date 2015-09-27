@@ -29,9 +29,19 @@ public class MenuPageStart extends MenuPage /*implements ConnectTryFinishEvent.L
 		
 		@Override
 		public void run() {
-			MenuPageEnterIP page= new MenuPageEnterIP(skin, menuManager, "menu_bg");
+			MenuPageEnterIP page= new MenuPageEnterIP(skin, menuManager, "enterip_bg");
 			menuManager.addLayer(page);
 			menuManager.pushPage(page);
+		}
+	};
+	Runnable runnablehost= new Runnable() {
+		
+		@Override
+		public void run() {
+			MenuPageHostGame page= new MenuPageHostGame(skin, menuManager, "host_bg");
+			menuManager.addLayer(page);
+			menuManager.pushPage(page);
+			
 		}
 	};
 	public MenuPageStart(Skin skin, MenuManager menuManager, String background) {
@@ -41,10 +51,11 @@ public class MenuPageStart extends MenuPage /*implements ConnectTryFinishEvent.L
 		imageJoin.setHeight(buttonImageHeight);
 		imageHost.setWidth(buttonImageWidth);
 		imageHost.setHeight(buttonImageHeight);
+		
 		imageBack.setWidth(60);
 		imageBack.setHeight(30);
-		addCenteredImage(460, 315, buttonImageWidth,(int)imageJoin.getHeight(), imageJoin,runnablejoin);/**/;
-		addCenteredImage(460, 215, buttonImageWidth,buttonImageHeight, imageHost,()->{/*Change Screen*/});
+		addCenteredImage(460, 315, buttonImageWidth,(int)imageJoin.getHeight(), imageJoin,runnablejoin);
+		addCenteredImage(460, 215, buttonImageWidth,buttonImageHeight, imageHost,runnablehost);
 		addCenteredImage(355, 40, 60,30, imageBack, ()-> menuManager.popPage());
 		/*
 		ConnectTryFinishEvent.registerListener(this);

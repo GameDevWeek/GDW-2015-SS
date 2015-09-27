@@ -58,6 +58,7 @@ import de.hochschuletrier.gdw.ss15.game.systems.renderers.ChangeAnimationStateSy
 import de.hochschuletrier.gdw.ss15.game.systems.renderers.EffectAddSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.renderers.ParticleSpawnSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.renderers.RenderSystem;
+import de.hochschuletrier.gdw.ss15.game.utils.LoadedMaps;
 import de.hochschuletrier.gdw.ss15.game.utils.TimerSystem;
 
 public class Game extends InputAdapter {
@@ -153,15 +154,6 @@ public class Game extends InputAdapter {
 
     public void init(AssetManagerX assetManager,int mapid) {
 
-        String mapname = new String("");
-        if(mapid == 1)
-        {
-            mapname = "prototype_v2";
-        }
-        else
-        {
-            mapname = "alpha_three_on_three";
-        }
 
         addSystems();
         addContactListeners();
@@ -169,7 +161,8 @@ public class Game extends InputAdapter {
         entityFactory.init(engine, assetManager);
         mapLoader.listen(renderSystem.getTileMapCreator());
         mapLoader.run((String name, float x, float y) -> createEntity(name, x, y),
-                "data/maps/salvage_shootout.tmx", physixSystem, entityFactory, assetManager );
+                Main.maps.get("map"+mapid).file, physixSystem, entityFactory, assetManager );
+
 
 
         renderSystem.init(mapLoader.getTiledMap(), this);

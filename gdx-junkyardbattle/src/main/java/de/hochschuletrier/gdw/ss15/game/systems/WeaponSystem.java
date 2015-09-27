@@ -7,18 +7,22 @@ import com.badlogic.ashley.systems.IteratingSystem;
 import de.hochschuletrier.gdw.ss15.events.SoundEvent;
 import de.hochschuletrier.gdw.ss15.events.WeaponCharging;
 import de.hochschuletrier.gdw.ss15.events.WeaponUncharged;
+import de.hochschuletrier.gdw.ss15.events.network.client.NetworkReceivedNewPacketClientEvent;
 import de.hochschuletrier.gdw.ss15.events.network.client.SendPacketClientEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.components.*;
 import de.hochschuletrier.gdw.ss15.game.components.input.InputComponent;
+import de.hochschuletrier.gdw.ss15.game.network.PacketIds;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.FirePacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.GatherPacket;
+import de.hochschuletrier.gdw.ss15.game.network.Packets.InitEntityPacket;
+import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.MyTimer;
 
 /**
  * Created by oliver on 21.09.15.
  */
-public class WeaponSystem extends IteratingSystem {
+public class WeaponSystem extends IteratingSystem implements NetworkReceivedNewPacketClientEvent.Listener {
     
     MyTimer timer = new MyTimer(true);
     float attackCooldownTimer = 0;
@@ -31,6 +35,7 @@ public class WeaponSystem extends IteratingSystem {
                 InputComponent.class).get());
         tractorSound.add(new SoundEmitterComponent());
         ComponentMappers.soundEmitter.get(tractorSound).isPlaying = false;
+        NetworkReceivedNewPacketClientEvent.registerListener(PacketIds.InitEntity, this);
         //ComponentMappers.soundEmitter.get(tractorSound).emitter.
         //System.out.println("TractorVol: " + ComponentMappers.soundEmitter.get(tractorSound).emitter.getGlobalVolume());
         //ComponentMappers.soundEmitter.get(tractorSound).emitter.setGlobalVolume(100);
@@ -47,8 +52,7 @@ public class WeaponSystem extends IteratingSystem {
         WeaponComponent wpc = ComponentMappers.weapon.get(entity);
         PositionComponent psc = ComponentMappers.position.get(entity);
         InputComponent input = ComponentMappers.input.get(entity);
-        Entity weaponSound = new Entity();
-        weaponSound.add(new SoundEmitterComponent());
+
 
         
         if(attackCooldownTimer < wpc.fireCooldown){
@@ -66,10 +70,9 @@ public class WeaponSystem extends IteratingSystem {
             return; // left mouse > right mouse
         } else {
             if(wpc.fireChannelTime > 0) { // left button is released
-                if (ComponentMappers.soundEmitter.has(entity)) {
-                    //System.out.println("Shotgun");
+                /*if (ComponentMappers.soundEmitter.has(entity)) {
                     SoundEvent.emit("shotgun_shoot", weaponSound);
-                }
+                }*/
                 WeaponUncharged.emit();
 
                 FirePacket fire = new FirePacket(wpc.fireChannelTime);
@@ -109,6 +112,7 @@ public class WeaponSystem extends IteratingSystem {
             //System.out.println("GatherBoolean: " + ComponentMappers.soundEmitter.get(tractorSound).isPlaying);
             //SoundEvent.emit("magnet_beam1", tractorSound, true);
 
+
             if(!ComponentMappers.soundEmitter.get(tractorSound).isPlaying)
             {
                 //System.out.println("Gathersound is playing");
@@ -128,4 +132,15 @@ public class WeaponSystem extends IteratingSystem {
             }
         }
     }
+
+    @Override
+    public void onReceivedNewPacket(Packet pack, Entity ent) {
+        InitEntityPacket ePack = (InitEntityPacket)pack;
+        Entity weaponSound = new Entity();
+        weaponSound.add(new SoundEmitterComponent());
+        if(ePack.name.equals("projectileClient"))
+        {
+            SoundEvent.emit("shotgun_shoot", weaponSound);
+        }
+            }
 }

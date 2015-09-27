@@ -28,6 +28,7 @@ import de.hochschuletrier.gdw.ss15.game.contactlisteners.ImpactSoundListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.MetalShardSpawnListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.PickupListener;
 import de.hochschuletrier.gdw.ss15.game.contactlisteners.TriggerListener;
+import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
 import de.hochschuletrier.gdw.ss15.game.systems.BulletSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.DeathSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.HealthSystem;
@@ -117,6 +118,8 @@ public class ServerGame{
         //ent.add(comp);
         Main.getInstance().getServer().LastConnectedClient = null;
 
+        sock.sendPacket(new SimplePacket(SimplePacket.SimplePacketId.GameCounter.getValue(),(long)(maxTimeGameIsRunning-timeGameRunns)),true);
+
         //ComponentMappers.client.get(ent).client = sock;
         ComponentMappers.player.get(ent).name = name;
         ComponentMappers.player.get(ent).playerID = name.hashCode();
@@ -131,15 +134,6 @@ public class ServerGame{
     public void init(int mapid) {
         // Main.getInstance().console.register(physixDebug);
 
-        String mapname = new String("");
-        if(mapid == 1)
-        {
-            mapname = "prototype_v2";
-        }
-        else
-        {
-            mapname = "alpha_three_on_three";
-        }
 
         addSystems();
         addContactListeners();
@@ -154,8 +148,9 @@ public class ServerGame{
             return this.createEntity(name, x, y);
         }, "data/maps/"+mapname+".tmx", physixSystem, entityFactory, Main.getInstance().getAssetManager());
     */
-        mapLoader.run(this::createEntity, "data/maps/salvage_shootout.tmx", physixSystem, entityFactory, Main.getInstance().getAssetManager());
+        System.out.println("Load map with id: "+mapid);
 
+        mapLoader.run(this::createEntity,  Main.maps.get("map"+mapid).file, physixSystem, entityFactory, Main.getInstance().getAssetManager());
 
 //        Highscore.reset();
 //        Highscore.Get().addPlayerCategory("team");
@@ -191,7 +186,7 @@ public class ServerGame{
         engine.addSystem(updatePhysixServer);
         engine.addSystem(gatherServerListener);
         engine.addSystem(miningSystem);
-        
+
         PlayerDiedEvent.register(spawnSystem);
         engine.addSystem(bringHomeSystem);
     }

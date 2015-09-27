@@ -32,12 +32,11 @@ public class MiningSystem extends EntitySystem implements MiningEvent.Listener {
         MiningEvent.register(this);
     }
 
-
-
     @Override
     public void onMiningEvent(Entity playerEnt, Entity mineableEnt, float channelTime) {
+    	if(channelTime > 1.2f)
+    		channelTime = 1.2f;
         int minedMetalShards = (int)Math.ceil((GameConstants.MINING_PER_SECOND * channelTime));
-
 
         transferMines(mineableEnt, playerEnt, minedMetalShards);
 

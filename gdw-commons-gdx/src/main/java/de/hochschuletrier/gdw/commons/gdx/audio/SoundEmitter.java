@@ -57,6 +57,7 @@ public class SoundEmitter implements Disposable {
     }
 
     public static void setGlobalVolume(float globalVolume) {
+    	if(1>=globalVolume&&globalVolume>=0)
         SoundEmitter.globalVolume = globalVolume;
     }
 

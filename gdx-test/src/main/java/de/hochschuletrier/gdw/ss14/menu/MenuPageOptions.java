@@ -1,4 +1,4 @@
-﻿package de.hochschuletrier.gdw.ss14.menu;
+package de.hochschuletrier.gdw.ss14.menu;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 
@@ -15,7 +15,7 @@ import de.hochschuletrier.gdw.ss14.menu.MenuPageRoot.Type;
 public class MenuPageOptions extends MenuPage {
 
 	public MenuPageOptions(Skin skin, MenuManager manager, Type type) {
-		//Skin für die Optionsseite wird übergeben
+		//Skin f?r die Optionsseite wird ?bergeben
 		super(skin, "menu_bg");
 		
 		VerticalGroup vg = new VerticalGroup();

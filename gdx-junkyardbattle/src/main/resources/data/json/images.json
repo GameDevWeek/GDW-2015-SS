@@ -7,7 +7,15 @@
     "sound_bg": "data/ui/menu/Assets/Sound_menu.png",
     "start_bg": "data/ui/menu/Assets/Start_menu.png",
     "join_bg":"data/ui/menu/Assets/Lobby.png",
+    "enterip_bg":"data/ui/menu/Assets/enter_ip.png",
+    "load_bg":"data/ui/menu/Assets/Lobby.png",
+    "host_bg":"data/ui/menu/Assets/host_menue_map.png",
     
+    "map1":"data/ui/menu/Assets/Thumbnail/InYourFace.png",
+    "map2":"data/ui/menu/Assets/Thumbnail/prototypeV2.png",
+    "map3":"data/ui/menu/Assets/Thumbnail/RoyalRubbel.png",
+    "map4":"data/ui/menu/Assets/Thumbnail/salvage_shootout.png",
+
     "start_button":"data/ui/menu/Assets/Start.png",
 	"join_button": "data/ui/menu/Assets/join.png",
 	"host_button": "data/ui/menu/Assets/host.png",
@@ -27,11 +35,13 @@
     "satellite": "data/images/Satellit.png",
     "projectile": "data/images/Ball_Grundtextur.png",
 
-
 	"credits_button":"data/ui/menu/Assets/Credits.png",
 	"quit_button":"data/ui/menu/Assets/Quit.png",
 	"change_button":"data/ui/menu/Assets/change.png",
 	"back_button":"data/ui/menu/Assets/pfeil.png",
+
+	"changeMap_button_left":"data/ui/menu/Assets/change_map_l.png",
+	"changeMap_button_right":"data/ui/menu/Assets/change_map_r.png",
 
 	"start_button_over":"data/ui/menu/Assets/Start_hover.png",
 	"join_button_over": "data/ui/menu/Assets/join_hover.png",
@@ -41,7 +51,10 @@
 
     "crosshair": "data/images/crosshair.png",
     "hudoverlay": "data/images/hudoverlay.png",
-    "projectile": "data/images/Ball_Grundtextur.png",
+	"back_button_over":"data/ui/menu/Assets/pfeil_hover.png",
+	"changeMap_button_left_over":"data/ui/menu/Assets/change_map_hover_l.png",
+	"changeMap_button_right_over":"data/ui/menu/Assets/change_map_hover_r.png",
+
     "hud_orange": "data/images/HUD_orange.png",
     "hud_blue" : "data/images/HUD_blau.png",
     "hud_punktestand" : "data/images/Punktestand.png",

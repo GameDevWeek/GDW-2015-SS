@@ -132,11 +132,11 @@
                 "fixedRotation": true,
                 "type": "dynamic"
             },
-            "Spawn":{},
+            "Spawn": {},
             "Client": {},
             "PositionSynch": {
                 "clientname": "clientPlayer",
-                "updateDuration": 25
+                "updateDuration": 40
             },
             "Interpolate": {},
             "Inventory": {
@@ -146,10 +146,10 @@
                 "maxMetalShards": 700
             },
             "Move": {
-                "speed": 500
+                "speed": 300
             },
             "Health": {
-                "health": 30
+                "health": 100
             }
         }
     },
@@ -159,7 +159,7 @@
             "Position": {},
             "Player": {},
             "Health": {
-                "health": 30
+                "health": 100
             },
             "PhysixBody": {
                 "shape": "circle",
@@ -188,7 +188,7 @@
                 "isLocalPlayer": true
             },
             "Health": {
-                "health": 30
+                "health": 100
             },
             "Position": {},
             "PhysixBody": {
@@ -208,16 +208,10 @@
                 "draw": false
             },
             "Move": {
-                "speed": 500
+                "speed": 300
             },
             "Input": {},
             "Interpolate": {},
-            "Inventory": {
-                "metalShards": 20,
-                "minMetalShards": 0,
-                "minMetalShardsForBase": 20,
-                "maxMetalShards": 700
-            },
             "Weapon": {},
             "SoundEmitter": {}
         }
@@ -245,9 +239,8 @@
                 "damageToPlayer": true,
                 "damageToTile": false
             },
-            "Bullet": {
-            },
-            "AboveAbyss":{}
+            "Bullet": {},
+            "AboveAbyss": {}
         }
     },
     "projectileClient": {
@@ -266,8 +259,7 @@
                 "sensor": false,
                 "category": "BULLET"
             },
-            "Bullet": {
-            },
+            "Bullet": {},
             "NetworkID": {},
             "ParticleEffect": {
                 "effectname": "particleglow",
@@ -328,6 +320,8 @@
             "PhysixBody": {
                 "shape": "circle",
                 "size": 75,
+                "offsetX": 10,
+                "offsetY": 30,
                 "density": 10,
                 "friction": 0.5,
                 "restitution": 0.1,
@@ -346,7 +340,8 @@
                 "maxMetalShards": 650
             },
             "SoundEmitter": {},
-            "Mineable": {}
+            "Mineable": {},
+            "AboveAbyss": {}
         }
     },
     "SatelliteClient": {
@@ -359,22 +354,26 @@
                 "height": 800,
                 "srcX": 0,
                 "srcY": 0,
-                "scaleX": 0.25,
-                "scaleY": 0.25,
+                "scaleX": 0.5,
+                "scaleY": 0.5,
                 "flipX": false,
                 "flipY": false,
+                "offsetY":-100,
                 "initialRotation": 180
             },
             "NetworkID": {},
             "PhysixBody": {
                 "shape": "circle",
                 "size": 75,
+                "offsetX": 10,
+                "offsetY": 30,
                 "density": 10,
                 "friction": 0.5,
                 "restitution": 0.1,
                 "sensor": false,
                 "type": "kinematic"
-            }
+            },
+            "AboveAbyss": {}
         }
     },
     "Spawn": {
@@ -403,15 +402,7 @@
                 "sensor": true
             },
             "MetalShardSpawn": {
-                "spawnTime": 5
-            }
-        }
-    },
-    "JunkPile": {
-        "meta": {},
-        "components": {
-            "Position": {
-                "layer": 1
+                "spawnTime": 15
             }
         }
     },
@@ -488,9 +479,12 @@
             },
             "Pickable": {},
             "Inventory": {
-                "metalShards": 1,
+                "metalShards": 2,
                 "minMetalShards": 0,
-                "maxMetalShards": 1
+                "maxMetalShards": 2
+            },
+            "Death":{
+                "dyingDuration": 15
             }
         }
     },
@@ -499,8 +493,10 @@
         "components": {
             "Position": {},
             "PhysixBody": {
-                "shape": "box",
-                "size": 40,
+                "shape": "rectangle",
+                "width": 300,
+                "height": 125,
+                "offsetY": 25,
                 "density": 2,
                 "friction": 0.3,
                 "restitution": 0.2,
@@ -518,16 +514,14 @@
                 "flipY": false
             },
             "Inventory": {
-                "metalShards": 5,
+                "metalShards": 70,
                 "minMetalShards": 0,
-                "maxMetalShards": 5,
-                "secondsToRegeneration":1,
-                "secondsToRegenerationMax": 3,
-                "shardRegeneration": 1
+                "maxMetalShards": 70,
+                "secondsToRegenerate": 3,
+                "amountToRegenerate": 5
             },
-            "Mineable":{
-                }
-            }
+            "Mineable": {},
+            "AboveAbyss": {}
         }
     }
-
+}

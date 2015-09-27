@@ -23,6 +23,7 @@ import de.hochschuletrier.gdw.commons.gdx.assets.AnimationExtended;
 import de.hochschuletrier.gdw.commons.gdx.assets.AssetManagerX;
 import de.hochschuletrier.gdw.commons.gdx.assets.loaders.AnimationExtendedLoader;
 import de.hochschuletrier.gdw.commons.gdx.devcon.DevConsoleView;
+import de.hochschuletrier.gdw.commons.gdx.audio.MusicManager;
 import de.hochschuletrier.gdw.commons.gdx.audio.SoundDistanceModel;
 import de.hochschuletrier.gdw.commons.gdx.audio.SoundEmitter;
 import de.hochschuletrier.gdw.commons.gdx.audio.SoundInstance;
@@ -32,6 +33,7 @@ import de.hochschuletrier.gdw.commons.gdx.state.StateBasedGame;
 import de.hochschuletrier.gdw.commons.gdx.utils.DrawUtil;
 import de.hochschuletrier.gdw.commons.gdx.utils.GdxResourceLocator;
 import de.hochschuletrier.gdw.commons.gdx.utils.KeyUtil;
+import de.hochschuletrier.gdw.commons.gdx.viewport.ExtendScreenViewport;
 import de.hochschuletrier.gdw.commons.jackson.JacksonReader;
 import de.hochschuletrier.gdw.commons.resourcelocator.CurrentResourceLocator;
 import de.hochschuletrier.gdw.commons.utils.ClassUtils;
@@ -39,6 +41,7 @@ import de.hochschuletrier.gdw.ss15.game.GameGlobals;
 import de.hochschuletrier.gdw.ss15.game.Server;
 import de.hochschuletrier.gdw.ss15.game.network.ClientConnection;
 import de.hochschuletrier.gdw.ss15.game.network.PacketIds;
+import de.hochschuletrier.gdw.ss15.game.utils.LoadedMaps;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serversocket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.PacketFactory;
 import de.hochschuletrier.gdw.ss15.sandbox.SandboxCommand;
@@ -55,7 +58,9 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -65,7 +70,7 @@ import java.util.List;
 public class Main extends StateBasedGame {
 
     //-----------------------------------------server on off-------------------
-    private static final boolean m_StartServerByGameStart = true;
+    private static final boolean m_StartServerByGameStart = false;
     //-------------------------------------------------------------------------
 
     private static final Logger logger = LoggerFactory.getLogger(Main.class);
@@ -87,7 +92,7 @@ public class Main extends StateBasedGame {
     private final CVarEnum<SoundDistanceModel> distanceModel = new CVarEnum("snd_distanceModel", SoundDistanceModel.INVERSE, SoundDistanceModel.class, 0, "sound distance model");
     private final CVarEnum<SoundEmitter.Mode> emitterMode = new CVarEnum("snd_mode", SoundEmitter.Mode.STEREO, SoundEmitter.Mode.class, 0, "sound mode");
 
-    private HashMap<String,String> maps;
+    public static HashMap<String,LoadedMaps> maps;
 
     //------------netowrk------------
     private Server server = null;
@@ -177,11 +182,15 @@ public class Main extends StateBasedGame {
         }
 
         Main.getInstance().console.register(serverCommand);
+
+        LoadMaps();
+
         if(m_StartServerByGameStart) {
-            server = new Server();
+            server = new Server(12345);
             server.start();
             logger.info("Server wurde gestartet");
         }
+
     }
 
     @Override
@@ -220,6 +229,7 @@ public class Main extends StateBasedGame {
             consoleView.update(delta);
         }
         console.executeCmdQueue();
+        MusicManager.update(delta);
         SoundEmitter.updateGlobal();
 
         preRender();
@@ -287,8 +297,6 @@ public class Main extends StateBasedGame {
 
     //----------------------------------------server stuff---------------------------------------
 
-    //Server stuff
-    Serversocket serverSocket = null;
 
     ConsoleCmd serverCommand = new ConsoleCmd("server", 0, "startet oder beendet server", 1) {
         @Override
@@ -296,34 +304,15 @@ public class Main extends StateBasedGame {
 
             String info = list.get(1);
             if(info.equals("start")) {
-                if(server == null){
-                    server = new Server();
-                    if(server.start())
-                    {
-                        logger.info("Server gestartet");
-                    }
-                    else
-                    {
-                        logger.error("Server konnte nicht gestartet werden");
-                    }
-                }
-                else {
-                    logger.error("Server läuft bereits");
+                if (list.size() >= 3) {
+                    startServer(Integer.parseInt(list.get(2)));
+                } else {
+                    startServer(12345);
                 }
             }
             else if(info.equals("stop"))
             {
-                if(server==null)
-                {
-                    logger.error("Server läuft nicht");
-                }
-                else
-                {
-                    logger.info("Server wird beendet ...");
-                    server.stop();
-                    logger.info("Server wurde beendet");
-                    server=null;
-                }
+                stopServer();
             }
             else
             {
@@ -333,20 +322,14 @@ public class Main extends StateBasedGame {
     };
 
 
-    public void LoadMaps()
+    public static void LoadMaps()
     {
         try {
-            JacksonReader.readMap("data/json/maps.json",String.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (ParseException e) {
-            e.printStackTrace();
+            maps = JacksonReader.readMap("data/json/maps.json", LoadedMaps.class);
+        }
+        catch(Exception ex)
+        {
+            ex.printStackTrace();
         }
     }
 
@@ -356,4 +339,40 @@ public class Main extends StateBasedGame {
         return server;
     }
 
+
+
+    public boolean startServer(int port)
+    {
+        if(server == null){
+            server = new Server(port);
+            if(server.start())
+            {
+                logger.info("Server gestartet");
+            }
+            else
+            {
+                logger.error("Server konnte nicht gestartet werden");
+                return false;
+            }
+        }
+        else {
+            logger.error("Server läuft bereits");
+        }
+        return true;
+    }
+
+    public void stopServer()
+    {
+       if(server==null)
+        {
+            logger.error("Server läuft nicht");
+        }
+        else
+        {
+            logger.info("Server wird beendet ...");
+            server.stop();
+            logger.info("Server wurde beendet");
+            server=null;
+        }
+    }
 }
