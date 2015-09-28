@@ -305,13 +305,13 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
     public boolean axisMoved(Controller controller, int axisCode, float value) {
         controllerActive = true;
         switch (axisCode) {
-            case XBox360KeyMap.LTRIGGER: // linker Trigger
+            case XBox360KeyMap.RTRIGGER: // linker Trigger
                 if (value > 0)
                     leftMBDown = true;
                 else
                     leftMBDown =  false;
                 break;
-            case XBox360KeyMap.RTRIGGER: // rechter Trigger
+            case XBox360KeyMap.LTRIGGER: // rechter Trigger
                 if (value > 0)
                     rightMBDown = true;
                 else
