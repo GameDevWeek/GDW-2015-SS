@@ -9,7 +9,6 @@ import de.hochschuletrier.gdw.ss15.events.network.Base.DoNotTouchPacketEvent;
 import de.hochschuletrier.gdw.ss15.events.network.client.SendPacketClientEvent;
 import de.hochschuletrier.gdw.ss15.game.Game;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
-import de.hochschuletrier.gdw.ss15.menu.MenuPageEnterIP;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Clientsocket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.basic.SocketConnectListener;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.basic.SocketDisconnectListener;
@@ -20,8 +19,6 @@ import de.hochschuletrier.gdw.ss15.states.GameplayState;
 import de.hochschuletrier.gdw.ss15.states.MainMenuState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.sql.ConnectionEventListener;
 import java.util.List;
 
 /**

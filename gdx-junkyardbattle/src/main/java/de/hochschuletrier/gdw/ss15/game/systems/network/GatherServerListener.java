@@ -1,9 +1,5 @@
 package de.hochschuletrier.gdw.ss15.game.systems.network;
 
-import ch.qos.logback.core.net.SyslogOutputStream;
-
-import com.badlogic.ashley.core.Component;
-import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
@@ -19,14 +15,10 @@ import de.hochschuletrier.gdw.ss15.events.network.server.SendPacketServerEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.GameConstants;
 import de.hochschuletrier.gdw.ss15.game.components.GatherComponent;
-import de.hochschuletrier.gdw.ss15.game.components.PickableComponent;
-import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
-import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.components.network.server.PositionSynchComponent;
 import de.hochschuletrier.gdw.ss15.game.network.PacketIds;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.GatherPacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.ReciveShotPacketClient;
-import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
 
 public class GatherServerListener extends EntitySystem implements NetworkReceivedNewPacketServerEvent.Listener{

@@ -12,9 +12,7 @@ import de.hochschuletrier.gdw.ss15.game.components.network.client.NetworkIDCompo
 import de.hochschuletrier.gdw.ss15.game.network.ClientConnection;
 import de.hochschuletrier.gdw.ss15.game.network.PacketIds;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.*;
-import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Clientsocket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
-import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.Tools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

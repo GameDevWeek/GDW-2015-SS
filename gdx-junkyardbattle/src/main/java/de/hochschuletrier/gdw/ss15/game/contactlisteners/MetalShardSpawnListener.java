@@ -2,7 +2,6 @@ package de.hochschuletrier.gdw.ss15.game.contactlisteners;
 
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixContact;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixContactAdapter;
-import de.hochschuletrier.gdw.ss15.events.PickupEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 
 public class MetalShardSpawnListener extends PhysixContactAdapter{

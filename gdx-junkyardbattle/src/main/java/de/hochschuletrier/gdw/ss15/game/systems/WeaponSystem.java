@@ -1,6 +1,5 @@
 package de.hochschuletrier.gdw.ss15.game.systems;
 
-import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
@@ -17,7 +16,6 @@ import de.hochschuletrier.gdw.ss15.game.network.PacketIds;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.FirePacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.GatherPacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.InitEntityPacket;
-import de.hochschuletrier.gdw.ss15.game.systems.network.FireClientListener;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.MyTimer;
 

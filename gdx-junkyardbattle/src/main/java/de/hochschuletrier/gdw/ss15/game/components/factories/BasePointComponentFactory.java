@@ -4,8 +4,6 @@ import com.badlogic.ashley.core.Entity;
 import de.hochschuletrier.gdw.commons.gdx.ashley.ComponentFactory;
 import de.hochschuletrier.gdw.commons.utils.SafeProperties;
 import de.hochschuletrier.gdw.ss15.game.components.BasePointComponent;
-import de.hochschuletrier.gdw.ss15.game.components.BulletComponent;
-import de.hochschuletrier.gdw.ss15.game.components.factories.EntityFactoryParam;
 
 public class BasePointComponentFactory extends ComponentFactory<EntityFactoryParam> {
 

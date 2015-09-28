@@ -5,7 +5,6 @@ package de.hochschuletrier.gdw.ss15.events.network.Base;
  */
 
 import com.badlogic.gdx.utils.SnapshotArray;
-import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
 
 /**
  * Created by lukas on 22.09.15.

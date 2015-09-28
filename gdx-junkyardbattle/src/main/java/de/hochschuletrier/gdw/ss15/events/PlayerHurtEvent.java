@@ -2,8 +2,6 @@ package de.hochschuletrier.gdw.ss15.events;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.utils.SnapshotArray;
-import de.hochschuletrier.gdw.commons.gdx.physix.PhysixContact;
-import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
 
 /**
  * Created by Ricardo on 25.09.2015.

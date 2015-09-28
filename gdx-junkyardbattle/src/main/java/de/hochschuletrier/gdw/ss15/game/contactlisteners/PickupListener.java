@@ -7,7 +7,6 @@ import com.badlogic.gdx.physics.box2d.Manifold;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixContact;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixContactListener;
 import de.hochschuletrier.gdw.ss15.events.PickupEvent;
-import de.hochschuletrier.gdw.ss15.game.components.InventoryComponent;
 
 public class PickupListener implements PhysixContactListener{
 

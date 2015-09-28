@@ -24,14 +24,9 @@ import de.hochschuletrier.gdw.ss15.game.MapLoader;
 import de.hochschuletrier.gdw.ss15.game.MapSpecialEntities;
 import de.hochschuletrier.gdw.ss15.game.components.DeathComponent;
 import de.hochschuletrier.gdw.ss15.game.components.HealthComponent;
-import de.hochschuletrier.gdw.ss15.game.components.HealthComponent.HealthState;
 import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
-import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 import de.hochschuletrier.gdw.ss15.game.components.SpawnComponent;
-import de.hochschuletrier.gdw.ss15.game.components.animation.AnimationState;
-import de.hochschuletrier.gdw.ss15.game.components.animation.AnimatorComponent;
 import de.hochschuletrier.gdw.ss15.game.components.effects.ParticleEffectComponent;
-import de.hochschuletrier.gdw.ss15.game.network.Packets.EntityUpdatePacket;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.HealthPacket;
 import de.hochschuletrier.gdw.ss15.game.systems.network.TestMovementSystem;
 

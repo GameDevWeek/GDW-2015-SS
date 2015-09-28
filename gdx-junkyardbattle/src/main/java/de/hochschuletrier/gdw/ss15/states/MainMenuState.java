@@ -14,7 +14,6 @@ import de.hochschuletrier.gdw.commons.gdx.menu.widgets.DecoImage;
 import de.hochschuletrier.gdw.commons.gdx.audio.MusicManager;
 import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.game.GameConstants;
-import de.hochschuletrier.gdw.ss15.menu.MenuPageEnterIP;
 import de.hochschuletrier.gdw.ss15.menu.MenuPageRoot;
 
 /**

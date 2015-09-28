@@ -4,10 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 
 import de.hochschuletrier.gdw.commons.gdx.settings.BooleanSetting;
-import de.hochschuletrier.gdw.commons.gdx.settings.FloatSetting;
-import de.hochschuletrier.gdw.commons.gdx.settings.IntegerSetting;
 import de.hochschuletrier.gdw.commons.gdx.settings.SettingsUtil;
-import de.hochschuletrier.gdw.commons.gdx.settings.StringSetting;
 
 public class Settings {
     private static final Preferences prefs = Gdx.app.getPreferences(Settings.class.getName() + ".xml");

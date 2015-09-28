@@ -5,7 +5,6 @@ import com.badlogic.ashley.core.Entity;
 import de.hochschuletrier.gdw.commons.gdx.ashley.ComponentFactory;
 import de.hochschuletrier.gdw.commons.utils.SafeProperties;
 import de.hochschuletrier.gdw.ss15.game.components.MetalShardSpawnComponent;
-import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;
 
 public class MetalShardSpawnComponentFactory extends ComponentFactory<EntityFactoryParam>{
 

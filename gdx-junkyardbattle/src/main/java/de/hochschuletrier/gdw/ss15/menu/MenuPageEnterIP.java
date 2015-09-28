@@ -1,34 +1,17 @@
 package de.hochschuletrier.gdw.ss15.menu;
 
-import java.util.ArrayList;
-
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextField;
-import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-
-import ch.qos.logback.core.net.SyslogOutputStream;
 import de.hochschuletrier.gdw.commons.gdx.menu.MenuManager;
 import de.hochschuletrier.gdw.commons.gdx.menu.widgets.DecoImage;
-import de.hochschuletrier.gdw.commons.gdx.state.transition.SplitHorizontalTransition;
 import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.events.network.Base.ConnectTryFinishEvent;
 import de.hochschuletrier.gdw.ss15.events.network.Base.DoNotTouchPacketEvent;
-import de.hochschuletrier.gdw.ss15.game.Game;
-import de.hochschuletrier.gdw.ss15.game.components.network.server.ClientComponent;
-import de.hochschuletrier.gdw.ss15.game.network.ClientConnection;
 import de.hochschuletrier.gdw.ss15.game.network.PacketIds;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
-import de.hochschuletrier.gdw.ss15.network.gdwNetwork.basic.SocketConnectListener;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
-import de.hochschuletrier.gdw.ss15.network.gdwNetwork.enums.ConnectStatus;
-import de.hochschuletrier.gdw.ss15.states.GameplayState;
 
 public class MenuPageEnterIP extends MenuPage
 		implements ConnectTryFinishEvent.Listener, DoNotTouchPacketEvent.Listener {

@@ -1,7 +1,5 @@
 package de.hochschuletrier.gdw.ss15.game.systems;
 
-import com.badlogic.ashley.core.EntitySystem;
-
 /**
  * Created by Ricardo on 24.09.2015.
  */

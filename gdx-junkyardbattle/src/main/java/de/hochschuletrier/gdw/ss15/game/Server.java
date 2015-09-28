@@ -2,12 +2,10 @@ package de.hochschuletrier.gdw.ss15.game;
 
 import de.hochschuletrier.gdw.commons.devcon.ConsoleCmd;
 import de.hochschuletrier.gdw.ss15.Main;
-import de.hochschuletrier.gdw.ss15.game.network.ClientConnection;
 import de.hochschuletrier.gdw.ss15.game.network.LobyClient;
 import de.hochschuletrier.gdw.ss15.game.network.PacketIds;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
 import de.hochschuletrier.gdw.ss15.game.network.ServerLobby;
-import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Clientsocket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serverclientsocket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.Serversocket;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
@@ -17,12 +15,10 @@ import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.Tools;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.rmi.server.ServerCloneException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.LongBinaryOperator;
 
 
 /**

@@ -4,7 +4,6 @@ import com.badlogic.ashley.core.Entity;
 import de.hochschuletrier.gdw.commons.gdx.ashley.ComponentFactory;
 import de.hochschuletrier.gdw.commons.utils.SafeProperties;
 import de.hochschuletrier.gdw.ss15.game.components.ClientIsShootingComponent;
-import de.hochschuletrier.gdw.ss15.game.components.DamageComponent;
 
 /**
  * Created by lukas on 27.09.15.

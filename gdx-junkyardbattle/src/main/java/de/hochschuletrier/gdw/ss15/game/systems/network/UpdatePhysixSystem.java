@@ -4,22 +4,14 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Interpolation;
-import com.badlogic.gdx.math.Vector2;
 
 import de.hochschuletrier.gdw.commons.gdx.physix.components.PhysixBodyComponent;
-import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.ss15.Main;
 import de.hochschuletrier.gdw.ss15.events.network.client.NetworkReceivedNewPacketClientEvent;
-import de.hochschuletrier.gdw.ss15.events.network.client.SendPacketClientEvent;
-import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.GameConstants;
 import de.hochschuletrier.gdw.ss15.game.components.InterpolatePositionComponent;
-import de.hochschuletrier.gdw.ss15.game.components.PlayerComponent;
 import de.hochschuletrier.gdw.ss15.game.network.PacketIds;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.EntityUpdatePacket;
-import de.hochschuletrier.gdw.ss15.game.network.Packets.MovementPacket;
-import de.hochschuletrier.gdw.ss15.game.utils.Timer;
 import de.hochschuletrier.gdw.ss15.game.utils.TimerSystem;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
 

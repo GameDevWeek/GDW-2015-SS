@@ -12,7 +12,6 @@ import de.hochschuletrier.gdw.commons.tiled.TileInfo;
 import de.hochschuletrier.gdw.commons.tiled.TileSet;
 import de.hochschuletrier.gdw.commons.tiled.TileSetAnimation;
 import de.hochschuletrier.gdw.commons.tiled.TiledMap;
-import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
 import de.hochschuletrier.gdw.ss15.game.MapLoader.TileCreationListener;
 import de.hochschuletrier.gdw.ss15.game.MapSpecialEntities.CreatorInfo;
 import de.hochschuletrier.gdw.ss15.game.components.PositionComponent;

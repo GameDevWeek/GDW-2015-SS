@@ -4,14 +4,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import de.hochschuletrier.gdw.commons.gdx.menu.MenuManager;
 import de.hochschuletrier.gdw.commons.gdx.menu.widgets.DecoImage;
-import de.hochschuletrier.gdw.ss15.Main;
-import de.hochschuletrier.gdw.ss15.events.network.Base.ConnectTryFinishEvent;
-import de.hochschuletrier.gdw.ss15.events.network.Base.DoNotTouchPacketEvent;
-import de.hochschuletrier.gdw.ss15.game.network.PacketIds;
-import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
-import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket.SimplePacketId;
-import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
-import de.hochschuletrier.gdw.ss15.network.gdwNetwork.enums.ConnectStatus;
 
 public class MenuPageStart extends MenuPage /*implements ConnectTryFinishEvent.Listener , DoNotTouchPacketEvent.Listener*/ {
 	private final DecoImage imageJoin = new DecoImage(assetManager.getTexture("join_button"));

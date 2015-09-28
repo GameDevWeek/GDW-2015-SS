@@ -3,9 +3,6 @@ package de.hochschuletrier.gdw.ss15.game.components;
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.utils.Pool;
 
-import de.hochschuletrier.gdw.ss15.events.network.server.SendPacketServerEvent;
-import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;
-
 /**
  * Stores the number of MetallShards some object contains.
  *      for a player it is e.g. his ammunation

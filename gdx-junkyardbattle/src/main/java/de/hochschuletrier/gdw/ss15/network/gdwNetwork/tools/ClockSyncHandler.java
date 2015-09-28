@@ -1,9 +1,6 @@
 package de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools;
 
-import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.*;
-import de.hochschuletrier.gdw.ss15.network.gdwNetwork.enums.*;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.basic.*;
-import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.*;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

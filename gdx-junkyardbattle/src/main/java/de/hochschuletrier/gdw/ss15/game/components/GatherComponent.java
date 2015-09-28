@@ -4,8 +4,6 @@ import com.badlogic.ashley.core.Component;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.utils.Pool.Poolable;
 
-import de.hochschuletrier.gdw.ss15.game.GameConstants;
-
 public class GatherComponent extends Component implements Poolable
 {
 	public float currentGatheringTime;

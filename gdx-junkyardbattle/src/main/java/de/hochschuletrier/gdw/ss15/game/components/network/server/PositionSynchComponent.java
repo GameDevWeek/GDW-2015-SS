@@ -3,11 +3,6 @@ package de.hochschuletrier.gdw.ss15.game.components.network.server;
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.utils.Pool;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.tools.MyTimer;
-//import de.hochschuletrier.gdw.ss14.networktest.gdwNetwork.interfaces.Sendable;
-
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
 
 public class PositionSynchComponent extends Component implements Pool.Poolable {
 

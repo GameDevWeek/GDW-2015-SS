@@ -1,7 +1,5 @@
 package de.hochschuletrier.gdw.ss15.game.components.factories;
 
-import java.awt.SecondaryLoop;
-
 import com.badlogic.ashley.core.Entity;
 
 import de.hochschuletrier.gdw.commons.gdx.ashley.ComponentFactory;

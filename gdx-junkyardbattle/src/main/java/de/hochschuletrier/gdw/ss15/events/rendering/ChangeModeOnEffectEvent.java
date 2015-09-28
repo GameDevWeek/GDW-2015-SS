@@ -7,7 +7,6 @@ package de.hochschuletrier.gdw.ss15.events.rendering;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.utils.SnapshotArray;
-import de.hochschuletrier.gdw.ss15.game.components.animation.AnimationState;
 import de.hochschuletrier.gdw.ss15.game.components.effects.EffectMode;
 
 /**

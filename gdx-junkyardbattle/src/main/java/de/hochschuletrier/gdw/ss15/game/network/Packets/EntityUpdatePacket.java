@@ -1,7 +1,5 @@
 package de.hochschuletrier.gdw.ss15.game.network.Packets;
 
-import com.badlogic.ashley.core.Entity;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;

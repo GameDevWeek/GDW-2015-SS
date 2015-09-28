@@ -1,6 +1,5 @@
 package de.hochschuletrier.gdw.ss15.game.utils;
 
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**

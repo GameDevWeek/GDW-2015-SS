@@ -14,24 +14,12 @@ import de.hochschuletrier.gdw.commons.gdx.physix.PhysixComponentAwareContactList
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixDebugRenderSystem;
 import de.hochschuletrier.gdw.commons.gdx.physix.systems.PhysixSystem;
 import de.hochschuletrier.gdw.ss15.Main;
-import de.hochschuletrier.gdw.ss15.events.ComeToBaseEvent;
-import de.hochschuletrier.gdw.ss15.events.MiningEvent;
-import de.hochschuletrier.gdw.ss15.events.PickupEvent;
-import de.hochschuletrier.gdw.ss15.events.PlayerDiedEvent;
-import de.hochschuletrier.gdw.ss15.events.PlayerHurtEvent;
 import de.hochschuletrier.gdw.ss15.events.SatelliteColliding;
 import de.hochschuletrier.gdw.ss15.events.SoundEvent;
 import de.hochschuletrier.gdw.ss15.events.WeaponCharging;
 import de.hochschuletrier.gdw.ss15.events.WeaponUncharged;
-import de.hochschuletrier.gdw.ss15.events.network.Base.ConnectTryFinishEvent;
-import de.hochschuletrier.gdw.ss15.events.network.Base.DisconnectEvent;
-import de.hochschuletrier.gdw.ss15.events.network.Base.DoNotTouchPacketEvent;
 import de.hochschuletrier.gdw.ss15.events.network.client.NetworkReceivedNewPacketClientEvent;
 import de.hochschuletrier.gdw.ss15.events.network.client.SendPacketClientEvent;
-import de.hochschuletrier.gdw.ss15.events.network.server.DoNotTouchServerPacketEvent;
-import de.hochschuletrier.gdw.ss15.events.network.server.NetworkNewPlayerEvent;
-import de.hochschuletrier.gdw.ss15.events.network.server.NetworkReceivedNewPacketServerEvent;
-import de.hochschuletrier.gdw.ss15.events.network.server.SendPacketServerEvent;
 import de.hochschuletrier.gdw.ss15.events.rendering.ChangeAnimationEvent;
 import de.hochschuletrier.gdw.ss15.events.rendering.ChangeModeOnEffectEvent;
 import de.hochschuletrier.gdw.ss15.events.rendering.ChangePositionOnEffectEvent;
@@ -52,7 +40,6 @@ import de.hochschuletrier.gdw.ss15.game.systems.renderers.ChangeAnimationStateSy
 import de.hochschuletrier.gdw.ss15.game.systems.renderers.EffectAddSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.renderers.ParticleSpawnSystem;
 import de.hochschuletrier.gdw.ss15.game.systems.renderers.RenderSystem;
-import de.hochschuletrier.gdw.ss15.game.utils.LoadedMaps;
 import de.hochschuletrier.gdw.ss15.game.utils.TimerSystem;
 
 public class Game extends InputAdapter {

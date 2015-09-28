@@ -6,7 +6,6 @@ import com.badlogic.ashley.core.EntitySystem;
 import de.hochschuletrier.gdw.ss15.events.PlayerHurtEvent;
 import de.hochschuletrier.gdw.ss15.events.network.server.SendPacketServerEvent;
 import de.hochschuletrier.gdw.ss15.game.ComponentMappers;
-import de.hochschuletrier.gdw.ss15.game.Highscore;
 import de.hochschuletrier.gdw.ss15.game.components.DamageComponent;
 import de.hochschuletrier.gdw.ss15.game.components.HealthComponent;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.HealthPacket;

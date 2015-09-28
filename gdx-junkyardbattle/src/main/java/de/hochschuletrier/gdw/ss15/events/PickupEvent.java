@@ -2,7 +2,6 @@ package de.hochschuletrier.gdw.ss15.events;
 
 import com.badlogic.gdx.utils.SnapshotArray;
 import de.hochschuletrier.gdw.commons.gdx.physix.PhysixContact;
-import de.hochschuletrier.gdw.commons.gdx.physix.PhysixContactListener;
 
 /**
  * Created by Ricardo on 23.09.2015.

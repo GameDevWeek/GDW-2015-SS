@@ -1,7 +1,5 @@
 package de.hochschuletrier.gdw.ss15.game;
 
-import java.util.HashMap;
-import java.util.HashSet;
 
 import de.hochschuletrier.gdw.ss15.events.network.server.SendPacketServerEvent;
 import de.hochschuletrier.gdw.ss15.game.network.Packets.SimplePacket;

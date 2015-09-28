@@ -1,6 +1,5 @@
 package de.hochschuletrier.gdw.ss15.game.rendering;
 
-import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.collision.BoundingBox;
 

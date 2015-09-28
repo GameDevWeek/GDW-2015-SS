@@ -25,25 +25,7 @@ import de.hochschuletrier.gdw.commons.tiled.tmx.TmxImage;
 import de.hochschuletrier.gdw.commons.tiled.utils.RectangleGenerator;
 import de.hochschuletrier.gdw.commons.utils.Rectangle;
 import de.hochschuletrier.gdw.ss15.game.components.AboveAbyssComponent;
-import de.hochschuletrier.gdw.ss15.game.components.factories.PhysixBodyComponentFactory;
 
-/**
- * 
- * @author tobidot (Tobias Gepp)
- * 
- *      DOKUMENTATION
- * 
- * In dieser Klasse( MapLoader ) sollten keine Aendereungen gemacht werden 
- * Entities oder aehnliches werden in 'MapSpecialEntities' modifiziert
- * 
- * eine Klasse die den 'TileCreationListener' implmentiert
- * kann sich per 
- *      ('MapLoader').listen( ('TileCreationListener') );
- * regristieren 
- * die Methode TileCreationListener.onTileCreate() wird 
- * bei jeder erstellung (aus der Map) eines Tiles oder eines LayerObjects aufgerufen.
- *
- */
 
 
 public class MapLoader

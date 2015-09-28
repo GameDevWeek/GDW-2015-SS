@@ -4,7 +4,6 @@ package de.hochschuletrier.gdw.ss15.events.network.client;
  * Created by lukas on 22.09.15.
  */
 
-import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.utils.SnapshotArray;
 import de.hochschuletrier.gdw.ss15.network.gdwNetwork.data.Packet;
 
