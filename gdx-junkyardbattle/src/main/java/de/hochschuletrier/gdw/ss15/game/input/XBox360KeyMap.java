@@ -2,10 +2,6 @@ package de.hochschuletrier.gdw.ss15.game.input;
 
 import com.badlogic.gdx.Input;
 
-/**
- * Created by johannes somewhen in the past
- * fick dich glumbatsch
- */
 public class XBox360KeyMap {
 
     final public static int UP = Input.Keys.W;
