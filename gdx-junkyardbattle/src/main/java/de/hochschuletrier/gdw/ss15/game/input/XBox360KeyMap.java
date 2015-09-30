@@ -2,10 +2,6 @@ package de.hochschuletrier.gdw.ss15.game.input;
 
 import com.badlogic.gdx.Input;
 
-/**
- * Created by glumbatsch on 22.09.2015.
- * KameHameHAH!
- */
 public class XBox360KeyMap {
 
     final public static int UP = Input.Keys.W;
@@ -29,12 +25,12 @@ public class XBox360KeyMap {
     // AnalogSticks
     final public static int L1Y = 0;
     final public static int L1X = 1;
-    final public static int R1Y = 2;
-    final public static int R1X = 3;
+    final public static int R1Y = 3;
+    final public static int R1X = 4;
 
     //Trigger
-    final public static int TRIGGER = 4;
-
+    final public static int LTRIGGER = 2;
+    final public static int RTRIGGER = 5;
 
 
 }

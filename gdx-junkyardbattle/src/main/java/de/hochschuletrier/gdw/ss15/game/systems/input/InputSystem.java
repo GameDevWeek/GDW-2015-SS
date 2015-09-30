@@ -282,6 +282,7 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
     @Override
     public boolean buttonUp(Controller controller, int buttonCode) {
         controllerActive = true;
+        System.out.println(buttonCode);
         switch (buttonCode) {
             case XBox360KeyMap.X:
                 leftMBDown = false;
@@ -301,32 +302,39 @@ public class InputSystem extends IteratingSystem implements InputProcessor, Cont
     public boolean axisMoved(Controller controller, int axisCode, float value) {
         controllerActive = true;
         switch (axisCode) {
-            case XBox360KeyMap.TRIGGER: //Triggertasten
-                if (value < -0.1)
+            case XBox360KeyMap.RTRIGGER: // linker Trigger
+                if (value > 0)
                     leftMBDown = true;
-                else if (value > 0.1)
+                else
+                    leftMBDown =  false;
+                break;
+            case XBox360KeyMap.LTRIGGER: // rechter Trigger
+                if (value > 0)
                     rightMBDown = true;
                 else
-                    leftMBDown = rightMBDown = false;
+                    rightMBDown=  false;
                 break;
             case XBox360KeyMap.L1X:
-                if (value > STICKDEADZONE || value < -STICKDEADZONE)
-                    horizontal = value;
-                else
-                    horizontal = 0.0f;
-                break;
-            case XBox360KeyMap.L1Y:
                 if (value > STICKDEADZONE || value < -STICKDEADZONE)
                     vertical = value;
                 else
                     vertical = 0.0f;
                 break;
+            case XBox360KeyMap.L1Y:
+                if (value > STICKDEADZONE || value < -STICKDEADZONE)
+                    horizontal = value;
+                else
+                    horizontal = 0.0f;
+                break;
             case XBox360KeyMap.R1X:
-                   r1Horizontal = value;
+                r1Vertical = value;
                 break;
             case XBox360KeyMap.R1Y:
-                    r1Vertical = value;
+                r1Horizontal = value;
                 break;
+//            default:
+//                System.out.println(axisCode);
+//                break;
         }
         rightStick.set(r1Horizontal, r1Vertical);
         return false;
