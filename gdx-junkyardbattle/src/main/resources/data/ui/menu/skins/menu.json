@@ -20,10 +20,10 @@
         "default": {"down": "default-round-down", "up": "default-round"},
         "toggle": {"down": "default-round-down", "checked": "default-round-down", "up": "default-round"}
     },
-    com.badlogic.gdx.scenes.scene2d.ui.ProgressBar$ProgressBarStyle: {
-	default-horizontal: { background: default-slider, knob: default-slider-knob },
-	default-vertical: { background: default-slider, knob: default-round-large }
-},
+    "com.badlogic.gdx.scenes.scene2d.ui.ProgressBar$ProgressBarStyle": {
+        "default-horizontal": { "background": "default-slider", "knob": "default-slider-knob" },
+        "default-vertical": { "background": "default-slider", "knob": "default-round-large" }
+    },
     "com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle": {
         "default": {"down": "default-round-down", "up": "default-round", "font": "default-font", "fontColor": "white"},
         "toggle": {"down": "default-round-down", "up": "default-round", "checked": "default-round-down", "font": "default-font", "fontColor": "white", "downFontColor": "cyan", "overFontColor": "softOrange"},
